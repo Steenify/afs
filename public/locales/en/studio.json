@@ -1,0 +1,30 @@
+{
+  "baseApp": {
+    "studio": {
+      "home": {
+        "title": "Studios",
+        "createLabel": "Create a new Studio",
+        "createOrEditLabel": "Create or edit a Studio",
+        "notFound": "No Studios found"
+      },
+      "created": "A new Studio is created with identifier {{ param }}",
+      "updated": "A Studio is updated with identifier {{ param }}",
+      "deleted": "A Studio is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Studio {{ id }}?"
+      },
+      "detail": {
+        "title": "Studio"
+      },
+      "name": "Name",
+      "address": "Address",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "calendar": "Calendar",
+      "managedBy": "Managed By",
+      "workoutPackage": "Workout Package",
+      "user": "User",
+      "franchise": "Franchise"
+    }
+  }
+}

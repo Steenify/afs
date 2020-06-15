@@ -1,0 +1,10 @@
+{
+  "baseApp": {
+    "PaymentStatus": {
+      "null": "",
+      "SUCCESSFUL": "SUCCESSFUL",
+      "ERROR": "ERROR",
+      "WAITING": "WAITING"
+    }
+  }
+}

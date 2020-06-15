@@ -1,0 +1,11 @@
+{
+  "baseApp": {
+    "CalendarStatus": {
+      "null": "",
+      "RESERVE": "RESERVE",
+      "CHECKIN": "CHECKIN",
+      "CANCEL_BEFORE_TIME": "CANCEL_BEFORE_TIME",
+      "CANCEL_AFTER_TIME": "CANCEL_AFTER_TIME"
+    }
+  }
+}

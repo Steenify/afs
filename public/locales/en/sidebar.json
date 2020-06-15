@@ -1,0 +1,18 @@
+{
+  "baseApp": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "userManagement": "User Management",
+      "customerManagement": "Customer Management",
+      "notificationManagement": "Notification Management",
+      "home": "Home",
+      "user": "All Users",
+      "role": "Role",
+      "permission": "Permission",
+      "notification": "Notification",
+      "customer": "Customers",
+      "customerGroup": "Group List",
+      "systemProperty": "System Property"
+    }
+  }
+}

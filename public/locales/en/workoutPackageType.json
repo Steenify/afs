@@ -1,0 +1,9 @@
+{
+  "baseApp": {
+    "WorkoutPackageType": {
+      "null": "",
+      "FULLTIME": "FULLTIME",
+      "OFFPEAK": "OFFPEAK"
+    }
+  }
+}

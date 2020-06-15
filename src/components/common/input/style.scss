@@ -1,0 +1,70 @@
+@import 'styles/var.scss';
+
+.form-group {
+  &--input {
+    .form-control {
+      background: $white;
+      border: 1px solid #e2e5ed;
+      box-sizing: border-box;
+      box-shadow: inset 0px 1px 2px rgba(102, 113, 123, 0.21);
+      border-radius: 4px;
+      height: 38px;
+      padding: 0 16px;
+      font-size: 15px;
+      line-height: 22px;
+
+      &:hover,
+      &:focus {
+        border-color: hsl(0, 0%, 70%);
+      }
+    }
+  }
+
+  &--inline {
+    display: flex;
+    margin-bottom: 11px;
+    max-width: 715px;
+
+    label {
+      width: 189px;
+      font-size: 16px;
+      line-height: 22px;
+      letter-spacing: 0.5px;
+      padding-left: 24px;
+      margin-bottom: 0;
+      padding-top: 11px;
+      display: block;
+    }
+
+    .form-control {
+      height: 46px;
+      font-size: 18px;
+      line-height: 22px;
+      color: $black;
+      flex: 1;
+    }
+
+    .css-2b097c-container {
+      flex: 1;
+    }
+  }
+
+  &--textarea {
+    .form-control {
+      padding: 8px 16px;
+      height: 102px;
+    }
+  }
+
+  .form-control {
+    &:disabled {
+      background-color: hsl(0, 0%, 90%);
+    }
+  }
+
+  label {
+    &:empty {
+      display: none;
+    }
+  }
+}

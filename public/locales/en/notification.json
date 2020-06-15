@@ -1,0 +1,27 @@
+{
+  "baseApp": {
+    "notification": {
+      "home": {
+        "title": "Notifications",
+        "createLabel": "Create a new Notification",
+        "createOrEditLabel": "Create or edit a Notification",
+        "notFound": "No Notifications found"
+      },
+      "created": "A new Notification is created with identifier {{ param }}",
+      "updated": "A Notification is updated with identifier {{ param }}",
+      "deleted": "A Notification is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Notification {{ id }}?"
+      },
+      "detail": {
+        "title": "Notification"
+      },
+      "title": "Title",
+      "description": "Description",
+      "status": "Status",
+      "users": "Users",
+      "publish": "Publish",
+      "publishNotification": "Publish Notification"
+    }
+  }
+}

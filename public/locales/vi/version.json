@@ -1,0 +1,23 @@
+{
+  "baseApp": {
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Thêm mới một Version",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Version",
+        "notFound": "No Versions found"
+      },
+      "created": "Một Version mới được tạo với định danh {{ param }}",
+      "updated": "Một Version cập nhật với định danh {{ param }}",
+      "deleted": "Một Version đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Version {{ id }}?"
+      },
+      "detail": {
+        "title": "Version"
+      },
+      "value": "Value",
+      "description": "Description"
+    }
+  }
+}

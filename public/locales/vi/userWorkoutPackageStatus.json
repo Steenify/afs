@@ -1,0 +1,11 @@
+{
+  "baseApp": {
+    "UserWorkoutPackageStatus": {
+      "null": "",
+      "AVAILABLE": "AVAILABLE",
+      "RETENTION": "RETENTION",
+      "TRANSFER": "TRANSFER",
+      "END": "END"
+    }
+  }
+}

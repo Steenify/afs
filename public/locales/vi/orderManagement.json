@@ -1,0 +1,40 @@
+{
+  "baseApp": {
+    "orderManagement": {
+      "home": {
+        "title": "Đơn hàng",
+        "createLabel": "Tạo đơn hàng mới",
+        "createOrEditLabel": "Tạo hoặc sửa đơn hàng"
+      },
+      "created": "Một đơn hàng mới đã được tạo với định danh {{ param }}",
+      "updated": "Một đơn hàng đã được cập nhật với định danh {{ param }}",
+      "deleted": "Một đơn hàng đã bị xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc chắn muốn xóa đơn hàng {{ login }}?"
+      },
+      "detail": {
+        "title": "Đơn hàng"
+      },
+      "login": "Tên đăng nhập",
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "email": "Email",
+      "activated": "Kích hoạt",
+      "deactivated": "Khóa",
+      "profiles": "Các quyền",
+      "langKey": "Ngôn ngữ",
+      "createdBy": "Người tạo",
+      "createdDate": "Ngày tạo",
+      "lastModifiedBy": "Người sửa",
+      "lastModifiedDate": "Ngày sửa",
+      "phoneNumber": "Số điện thoại",
+      "status": "Trạng thái",
+      "authorities": "Quyền hạn",
+      "role": "Vai trò",
+      "search": {
+        "emailUserName": "Nhập email, username",
+        "role": "Chọn Role"
+      }
+    }
+  }
+}

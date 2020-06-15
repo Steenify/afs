@@ -1,0 +1,23 @@
+{
+  "baseApp": {
+    "versioning": {
+      "home": {
+        "title": "Versionings",
+        "createLabel": "Create a new Versioning",
+        "createOrEditLabel": "Create or edit a Versioning",
+        "notFound": "No Versionings found"
+      },
+      "created": "A new Versioning is created with identifier {{ param }}",
+      "updated": "A Versioning is updated with identifier {{ param }}",
+      "deleted": "A Versioning is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Versioning {{ id }}?"
+      },
+      "detail": {
+        "title": "Versioning"
+      },
+      "value": "Value",
+      "description": "Description"
+    }
+  }
+}

@@ -1,0 +1,100 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
+import Layout from 'components/common/Layout';
+import Breadcrumb from 'components/common/breadcrumb';
+import PageTitle from 'components/common/PageTitle';
+
+import { WEB_ROUTES } from 'config';
+
+import { ReactComponent as Settings } from 'assets/img/settings.svg';
+
+import './style.scss';
+
+const SettingsList = [
+  {
+    ...WEB_ROUTES.USER_ROLE,
+    icon: <Settings />,
+    des: 'View and update user role',
+  },
+  {
+    ...WEB_ROUTES.USER_PERMISSION,
+    icon: <Settings />,
+    des: 'View and update user permission',
+  },
+  {
+    ...WEB_ROUTES.SYSTEM_PROPERTY_LIST,
+    icon: <Settings />,
+    des: 'View and update system property',
+  },
+];
+
+const SettingsPage = (props) => {
+  const { t } = useTranslation();
+  const { accountInfo, history } = props;
+  const { permissions } = accountInfo;
+
+  const handleNavigate = (item) => {
+    history.push(item.path);
+  };
+  return (
+    <Layout documentTitle={WEB_ROUTES.SETTINGS.title} container fluid>
+      <Breadcrumb
+        data={[
+          {
+            title: WEB_ROUTES.SETTINGS.title,
+            active: false,
+            path: WEB_ROUTES.SETTINGS.path,
+          },
+        ]}
+      />
+
+      <div className='settings__page'>
+        <PageTitle title={WEB_ROUTES.SETTINGS.title} className='mb-0 mr-3' />
+        <div className='settings__content box'>
+          <div className='row'>
+            {SettingsList.map((set, index) => {
+              if (
+                !set.permission ||
+                (set.permission &&
+                  permissions &&
+                  permissions.indexOf(set.permission) !== -1)
+              ) {
+                return (
+                  <div
+                    onClick={() => handleNavigate(set)}
+                    key={`list_settings_page__${index.toString()}`}
+                    className='col-md-4'>
+                    <div className='settings__item'>
+                      <div className='icon'>
+                        {set.icon ? set.icon : <Settings />}
+                      </div>
+                      <div className='content'>
+                        <div className='title'>{t(set.title)}</div>
+                        <div className='description'>{set.des}</div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              return null;
+            })}
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+const mapStateToProps = ({ auth, global }) => {
+  return {
+    accountInfo: auth.data.accountInfo,
+    isMenuOpen: global.ui.isMenuOpen,
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage);

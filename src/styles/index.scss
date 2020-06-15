@@ -1,0 +1,69 @@
+@import './var.scss';
+
+@import './helper/font.scss';
+@import './helper/reset.scss';
+@import './helper/ultil.scss';
+@import './react-confirm-alert.scss';
+@import './toastify.scss';
+
+// .app {
+// 	&__main {
+// 		// max-width: $screen-xl;
+// 		margin: auto;
+// 		min-height: 100vh;
+// 		background: $background_color;
+// 		overflow: auto;
+// 	}
+// }
+
+.title {
+	font-size: em($font_lg);
+
+	@media (max-width: 768px) {
+		font-size: em($font_md);
+	}
+}
+
+.font-xl {
+	font-size: em($font-xl);
+	font-weight: bold;
+}
+
+.font-lg {
+	font-size: em($font-lg);
+	font-weight: bold;
+}
+
+.font-md {
+	font-size: em($font-md);
+	font-weight: bold;
+}
+
+.font-sm {
+	font-size: em($font-sm);
+	font-weight: bold;
+}
+
+*::-webkit-scrollbar {
+	width: 8px;
+	background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+	background: #55555580;
+	border-radius: 8px;
+}
+
+.search__box {
+	padding-left: 30px;
+	background: url(../assets/img/search_left.svg) no-repeat;
+	background-position: left 10px center;
+}
+
+.search__box__wrapper {
+	.form-control {
+		padding-left: 30px !important;
+		background: url(../assets/img/search_left.svg) no-repeat !important;
+		background-position: left 10px center !important;
+	}
+}

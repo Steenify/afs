@@ -1,0 +1,37 @@
+{
+  "baseApp": {
+    "customerManagement": {
+      "home": {
+        "title": "Khách hàng",
+        "createLabel": "Thêm mới một Khách hàng",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Khách hàng",
+        "notFound": "Không tìm thấy khách hàng nào"
+      },
+      "created": "Một Khách hàng mới được tạo với định danh {{ param }}",
+      "updated": "Một Khách hàng cập nhật với định danh {{ param }}",
+      "deleted": "Một Khách hàng đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Khách hàng {{ id }}?"
+      },
+      "detail": {
+        "title": "Khách hàng"
+      },
+      "login": "Tên đăng nhập",
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "email": "Email",
+      "activated": "Kích hoạt",
+      "deactivated": "Khóa",
+      "createdDate": "Ngày tạo",
+      "status": "Trạng thái",
+      "phoneNumber": "Số điện thoại",
+      "name": "Name",
+      "description": "Mô tả",
+      "user": "User",
+      "search": {
+        "name": "Nhập tên",
+        "group": "Chọn nhóm"
+      }
+    }
+  }
+}

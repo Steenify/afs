@@ -1,0 +1,22 @@
+@import 'styles/var.scss';
+
+.footer {
+  height: 80px;
+  display: flex;
+  align-items: center;
+
+  .listlinks {
+    a {
+      color: #6c757d;
+      margin-left: 10px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:hover {
+        color: $main_color;
+      }
+    }
+  }
+}

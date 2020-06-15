@@ -1,0 +1,23 @@
+{
+  "baseApp": {
+    "retentionHistory": {
+      "home": {
+        "title": "Retention Histories",
+        "createLabel": "Thêm mới một Retention History",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Retention History",
+        "notFound": "No Retention Histories found"
+      },
+      "created": "Một Retention History mới được tạo với định danh {{ param }}",
+      "updated": "Một Retention History cập nhật với định danh {{ param }}",
+      "deleted": "Một Retention History đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Retention History {{ id }}?"
+      },
+      "detail": {
+        "title": "Retention History"
+      },
+      "retentionTime": "Retention Time",
+      "userWorkoutPackage": "User Workout Package"
+    }
+  }
+}

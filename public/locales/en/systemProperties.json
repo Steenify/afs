@@ -1,0 +1,17 @@
+{
+  "baseApp": {
+    "systemProperties": {
+      "home": {
+        "title": "System Properties",
+        "notFound": "No System Properties found"
+      },
+      "updated": "A System Property is updated with identifier {{ param }}",
+      "detail": {
+        "title": "System Property"
+      },
+      "name": "Name",
+      "value": "Value",
+      "description": "Description"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+@import 'styles/var.scss';
+
+.breadcrumb-menu {
+  margin-bottom: 19px;
+
+  .breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #838383;
+
+    .active {
+      color: $black;
+    }
+  }
+}

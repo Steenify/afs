@@ -1,0 +1,23 @@
+{
+  "baseApp": {
+    "retentionHistory": {
+      "home": {
+        "title": "Retention Histories",
+        "createLabel": "Create a new Retention History",
+        "createOrEditLabel": "Create or edit a Retention History",
+        "notFound": "No Retention Histories found"
+      },
+      "created": "A new Retention History is created with identifier {{ param }}",
+      "updated": "A Retention History is updated with identifier {{ param }}",
+      "deleted": "A Retention History is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Retention History {{ id }}?"
+      },
+      "detail": {
+        "title": "Retention History"
+      },
+      "retentionTime": "Retention Time",
+      "userWorkoutPackage": "User Workout Package"
+    }
+  }
+}

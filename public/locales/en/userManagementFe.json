@@ -1,0 +1,14 @@
+{
+  "userManagement": {
+    "imageUrl": "Image Url",
+    "phoneNumber": "Phone Number",
+    "status": "Status",
+    "name": "Name",
+    "role": "Role",
+    "create": "Create",
+    "cancel": "Cancel",
+    "search": "Search",
+    "clear": "Clear",
+    "edit": "Edit"
+  }
+}

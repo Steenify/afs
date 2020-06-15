@@ -1,0 +1,39 @@
+// size
+$fullWidth: 100%;
+
+// font
+$font: 'SFProDisplay';
+$title: 'SFProDisplay';
+
+// base color
+$nocolor: transparent;
+$white: #ffffff;
+$black: #000000;
+
+// web color
+$main_color: #0086ff;
+$second_color: #4badf3;
+$text_color: #000000;
+$title_color: #333333;
+$border_color: #e9f3f5;
+$place_holder: #494949;
+$web_bg: #eff3f9;
+
+$font_size: 14px;
+$font_size_sm: 13px;
+$font_size_xm: 12px;
+$font_size_xxm: 11px;
+
+$font_xl: 34px;
+$font_lg: 27px;
+$font_md: 24px;
+$font_sm: 16px;
+
+$screen-xs: 400px;
+$screen-sm: 576px;
+$screen-md: 767px;
+$screen-lg: 991px;
+$screen-ml: 1024px;
+$screen-xl: 1310px;
+
+@import './mixin.scss';

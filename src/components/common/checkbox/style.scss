@@ -1,0 +1,13 @@
+.form-check {
+  &--hide-input {
+    padding: 0 !important;
+
+    input {
+      display: none;
+    }
+
+    label {
+      padding-left: 0;
+    }
+  }
+}

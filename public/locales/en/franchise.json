@@ -1,0 +1,23 @@
+{
+  "baseApp": {
+    "franchise": {
+      "home": {
+        "title": "Franchises",
+        "createLabel": "Create a new Franchise",
+        "createOrEditLabel": "Create or edit a Franchise",
+        "notFound": "No Franchises found"
+      },
+      "created": "A new Franchise is created with identifier {{ param }}",
+      "updated": "A Franchise is updated with identifier {{ param }}",
+      "deleted": "A Franchise is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Franchise {{ id }}?"
+      },
+      "detail": {
+        "title": "Franchise"
+      },
+      "name": "Name",
+      "studio": "Studio"
+    }
+  }
+}

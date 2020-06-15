@@ -1,0 +1,53 @@
+version: 2.1
+orbs:
+  node: circleci/node@1.1.6
+  rsync: germade/rsync@0.0.1
+jobs:
+  build:
+    working_directory: ~/working
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/working
+      - node/with-cache:
+          steps:
+            - run: npm install
+            - run:
+                name: build app
+                command: CI=false && npm run build
+            - persist_to_workspace:
+                root: ~/working
+                paths:
+                  - build/*
+  deploy:
+    working_directory: ~/working
+    executor:
+      name: rsync/rsync_box
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/working
+      - add_ssh_keys:
+          fingerprints:
+            - '7e:50:fe:60:60:54:5d:6d:95:71:fc:23:b4:3e:96:53'
+      - rsync/rsync:
+          folder: /root/working/build
+          user: ubuntu
+          host: 3.0.40.66
+          dest: /var/www/steen_base
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - dev
+                - feature/user_management

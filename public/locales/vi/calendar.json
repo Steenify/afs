@@ -1,0 +1,25 @@
+{
+  "baseApp": {
+    "calendar": {
+      "home": {
+        "title": "Calendars",
+        "createLabel": "Thêm mới một Calendar",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Calendar",
+        "notFound": "No Calendars found"
+      },
+      "created": "Một Calendar mới được tạo với định danh {{ param }}",
+      "updated": "Một Calendar cập nhật với định danh {{ param }}",
+      "deleted": "Một Calendar đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Calendar {{ id }}?"
+      },
+      "detail": {
+        "title": "Calendar"
+      },
+      "date": "Date",
+      "workAt": "Work At",
+      "calendarItem": "Calendar Item",
+      "studio": "Studio"
+    }
+  }
+}

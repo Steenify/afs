@@ -1,0 +1,28 @@
+{
+  "baseApp": {
+    "notification": {
+      "home": {
+        "title": "Thông báo",
+        "createLabel": "Thêm mới một Thông báo",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Thông báo",
+        "notFound": "No Thông báo found"
+      },
+      "created": "Một Thông báo mới được tạo với định danh {{ param }}",
+      "updated": "Một Thông báo cập nhật với định danh {{ param }}",
+      "deleted": "Một Thông báo đã xóa với định danh {{ param }}",
+      "published": "Thông báo đã được publish",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Thông báo {{ id }}?"
+      },
+      "detail": {
+        "title": "Thông báo"
+      },
+      "title": "Tiêu đề",
+      "description": "Mô tả",
+      "status": "Trạng thái",
+      "users": "Người dùng",
+      "publish": "Publish",
+      "publishNotification": "Gửi Thông báo"
+    }
+  }
+}
