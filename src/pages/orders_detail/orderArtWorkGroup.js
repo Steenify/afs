@@ -99,8 +99,11 @@ const OrderArtWorkGroup = ({
             onClose={onClose}
             onConfirm={(reason) => {
               if (reason) {
-                const data = new FormData();
-                data.append('content', reason);
+                const data = {
+                  content: reason,
+                  attachments: [],
+                };
+
                 uploadCommentWorkLog(
                   order.id,
                   LogId,
@@ -175,6 +178,11 @@ const OrderArtWorkGroup = ({
                 );
               } else return null;
             }
+            console.log(
+              '!(work.attachments.length > 0) && needCheckFile',
+              !(work.attachments.length > 0) && needCheckFile,
+            );
+            console.log('needCheckFile', needCheckFile);
 
             return (
               <div

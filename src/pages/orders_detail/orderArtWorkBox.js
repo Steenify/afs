@@ -81,8 +81,6 @@ const OrderArtWorkBox = ({
     [],
   );
 
-  const Fakelink = 'https://afs.netlify.app/';
-
   return (
     <div className='order_detail__work_list'>
       <div className='row'>
