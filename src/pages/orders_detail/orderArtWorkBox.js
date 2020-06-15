@@ -21,7 +21,9 @@ const OrderArtWorkBox = ({
   workLog,
 }) => {
   useEffect(() => {
-    getOrderWorkLog(order.id);
+    if (order.id) {
+      getOrderWorkLog(order.id);
+    }
   }, [getOrderWorkLog, order.id]);
 
   const [tab, setTab] = useState('activity');
