@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { ReactComponent as FileIcon } from 'assets/img/file_Icon.svg';
 
 class ImageFile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       urlBase64: '',
+      isImage: true,
     };
   }
 
@@ -13,21 +15,31 @@ class ImageFile extends Component {
     if (!file) {
       return;
     }
-    const reader = new FileReader();
-    reader.onload = (e) => {
+    const isPSD = file?.name.indexOf('.psd') !== -1;
+
+    if (!isPSD) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.setState({
+          urlBase64: e.target.result,
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
       this.setState({
-        urlBase64: e.target.result,
+        isImage: false,
       });
-    };
-    reader.readAsDataURL(file);
+    }
   }
 
   render() {
     const { className } = this.props;
-    const { urlBase64 } = this.state;
+    const { urlBase64, isImage } = this.state;
     return (
       <div className={`image__file ${className}`}>
-        {urlBase64 && <img src={urlBase64} alt={className} />}
+        {!isImage && <FileIcon width='100px' height='100px' />}
+
+        {urlBase64 && isImage && <img src={urlBase64} alt={className} />}
       </div>
     );
   }

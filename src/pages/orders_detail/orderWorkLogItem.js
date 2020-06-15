@@ -318,7 +318,7 @@ const OrderWorkLogItem = ({
                       </span>
                     </div>
 
-                    {com?.attachments && com?.attachments.length && (
+                    {com?.attachments && com?.attachments.length > 0 && (
                       <div className='comments__img'>
                         <ImageGallery
                           images={getListImageUrl(com?.attachments || [])}

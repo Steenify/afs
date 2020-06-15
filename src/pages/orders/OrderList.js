@@ -15,6 +15,7 @@ import {
   getPaginationItemsNumber,
   getSelectedStatus,
   dateTimeToDeadline,
+  formatNumber,
 } from 'utils';
 
 import {
@@ -133,16 +134,7 @@ const OrderList = (props) => {
       minWidth: 100,
       className: 'text-right',
       Cell: ({ row: { original } }) =>
-        original.subtotal ? (
-          <NumberFormat
-            value={original?.subtotal || 0}
-            displayType={'text'}
-            thousandSeparator={true}
-            suffix={'$'}
-          />
-        ) : (
-          ''
-        ),
+        original?.subtotal ? `${formatNumber(original.subtotal)}$` : '',
     },
     {
       accessor: 'budget',

@@ -103,15 +103,6 @@ export const dateTimeStringFromDate = (date) =>
 export const dateTimeFromNow = (date) => moment(date).fromNow();
 export const dateTimeToDeadline = (date) => moment().to(date);
 
-// export const formatMoney = (input) => numeral(input).format('0,0');
-
-export const formatMoney = (input) => {
-  return new Intl.NumberFormat('en-EN', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(isNaN(input) ? 0 : input);
-};
-
 export const chunk = (inputArray = [], perChunk = 1) => {
   const result = inputArray.reduce((resultArray, item, index) => {
     const chunkIndex = Math.floor(index / perChunk);
@@ -217,14 +208,14 @@ export const getOrderOption = (name) => {
 
 export const getListImageUrl = (list = []) => {
   return list.map((item) => {
-    // if (item.thumbnailLink) {
-    //   return {
-    //     download: item.url,
-    //     fullscreen: item.url,
-    //     regular: item.url,
-    //     thumbnail: item.thumbnailLink,
-    //   };
-    // }
+    if (item.thumbnailLink && item.fileId) {
+      return {
+        download: item.url,
+        fullscreen: item.url,
+        regular: item.url,
+        thumbnail: `https://drive.google.com/thumbnail?sz=w100&id=${item.fileId}`,
+      };
+    }
     return item.url;
   });
 };
@@ -251,7 +242,6 @@ export const renderHTML = (text) => {
     return '';
   }
   var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-
   return text.replace(urlRegex, function (url) {
     if (
       url.indexOf('.jpg') > 0 ||
@@ -271,4 +261,46 @@ let UUID_COUNT = 0;
 export const getUniqueID = () => {
   UUID_COUNT += 1;
   return `UUID_${UUID_COUNT}`;
+};
+
+// export const formatMoney = (input) => numeral(input).format('0,0');
+
+export const formatMoney = (input) => {
+  return new Intl.NumberFormat('en-EN', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(isNaN(input) ? 0 : input);
+};
+
+export const formatNumber = (
+  amount,
+  decimalCount = 2,
+  decimal = '.',
+  thousands = ',',
+) => {
+  try {
+    decimalCount = Math.abs(decimalCount);
+    decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+
+    const negativeSign = amount < 0 ? '-' : '';
+
+    let i = parseInt(
+      (amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)),
+    ).toString();
+    let j = i.length > 3 ? i.length % 3 : 0;
+
+    return (
+      negativeSign +
+      (j ? i.substr(0, j) + thousands : '') +
+      i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + thousands) +
+      (decimalCount
+        ? decimal +
+          Math.abs(amount - i)
+            .toFixed(decimalCount)
+            .slice(2)
+        : '')
+    );
+  } catch (e) {
+    console.log(e);
+  }
 };

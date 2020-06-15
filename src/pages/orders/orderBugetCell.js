@@ -6,7 +6,7 @@ import Popover from 'react-tiny-popover';
 
 import Button from 'components/common/button';
 
-import { formatMoney } from 'utils';
+import { formatMoney, formatNumber } from 'utils';
 
 import { PERMITTIONS_CONFIG } from 'config';
 
@@ -52,8 +52,9 @@ const OrderBudgetCell = ({
   }
 
   if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_BUDGET)) {
-    return <div className=''>{formatMoney(original.budget)}</div>;
+    return <div className=''>{formatMoney(original?.budget)}</div>;
   }
+  console.log('original?.budget', original?.budget);
 
   return (
     <Popover
@@ -72,7 +73,7 @@ const OrderBudgetCell = ({
                   prefix={'$  '}
                   thousandSeparator={true}
                   className='form-control bugdet__input'
-                  value={value || 0}
+                  value={value}
                   onValueChange={onChange}
                 />
               </div>
@@ -105,13 +106,7 @@ const OrderBudgetCell = ({
             <span className='icon d-block mr-1'>
               <Pencil width='14px' height='14px' />
             </span>
-
-            <NumberFormat
-              value={original?.budget || 0}
-              displayType={'text'}
-              thousandSeparator={true}
-              suffix={'$'}
-            />
+            {formatNumber(original?.budget || 0)}$
           </div>
         </button>
       )}

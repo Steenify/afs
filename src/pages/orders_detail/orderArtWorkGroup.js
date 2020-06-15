@@ -178,11 +178,6 @@ const OrderArtWorkGroup = ({
                 );
               } else return null;
             }
-            console.log(
-              '!(work.attachments.length > 0) && needCheckFile',
-              !(work.attachments.length > 0) && needCheckFile,
-            );
-            console.log('needCheckFile', needCheckFile);
 
             return (
               <div
