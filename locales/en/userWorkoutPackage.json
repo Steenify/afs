@@ -1,0 +1,31 @@
+{
+  "baseApp": {
+    "userWorkoutPackage": {
+      "home": {
+        "title": "User Workout Packages",
+        "createLabel": "Create a new User Workout Package",
+        "createOrEditLabel": "Create or edit a User Workout Package",
+        "notFound": "No User Workout Packages found"
+      },
+      "created": "A new User Workout Package is created with identifier {{ param }}",
+      "updated": "A User Workout Package is updated with identifier {{ param }}",
+      "deleted": "A User Workout Package is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete User Workout Package {{ id }}?"
+      },
+      "detail": {
+        "title": "User Workout Package"
+      },
+      "activationDate": "Activation Date",
+      "expirationDate": "Expiration Date",
+      "status": "Status",
+      "paymentType": "Payment Type",
+      "remainingRetentionTime": "Remaining Retention Time",
+      "retentionHistory": "Retention History",
+      "paymentHistory": "Payment History",
+      "user": "User",
+      "studio": "Studio",
+      "workoutPackage": "Workout Package"
+    }
+  }
+}

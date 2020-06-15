@@ -1,0 +1,28 @@
+{
+  "baseApp": {
+    "workoutPackage": {
+      "home": {
+        "title": "Workout Packages",
+        "createLabel": "Thêm mới một Workout Package",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Workout Package",
+        "notFound": "No Workout Packages found"
+      },
+      "created": "Một Workout Package mới được tạo với định danh {{ param }}",
+      "updated": "Một Workout Package cập nhật với định danh {{ param }}",
+      "deleted": "Một Workout Package đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Workout Package {{ id }}?"
+      },
+      "detail": {
+        "title": "Workout Package"
+      },
+      "name": "Name",
+      "description": "Description",
+      "packageType": "Package Type",
+      "expirationAfter": "Expiration After",
+      "retentionTime": "Retention Time",
+      "userWorkoutPackage": "User Workout Package",
+      "studio": "Studio"
+    }
+  }
+}

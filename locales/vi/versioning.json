@@ -1,0 +1,23 @@
+{
+  "baseApp": {
+    "versioning": {
+      "home": {
+        "title": "Versionings",
+        "createLabel": "Thêm mới một Versioning",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Versioning",
+        "notFound": "No Versionings found"
+      },
+      "created": "Một Versioning mới được tạo với định danh {{ param }}",
+      "updated": "Một Versioning cập nhật với định danh {{ param }}",
+      "deleted": "Một Versioning đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Versioning {{ id }}?"
+      },
+      "detail": {
+        "title": "Versioning"
+      },
+      "value": "Value",
+      "description": "Description"
+    }
+  }
+}

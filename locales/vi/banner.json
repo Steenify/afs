@@ -1,0 +1,23 @@
+{
+  "baseApp": {
+    "banner": {
+      "home": {
+        "title": "Banners",
+        "createLabel": "Thêm mới một Banner",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Banner",
+        "notFound": "No Banners found"
+      },
+      "created": "Một Banner mới được tạo với định danh {{ param }}",
+      "updated": "Một Banner cập nhật với định danh {{ param }}",
+      "deleted": "Một Banner đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Banner {{ id }}?"
+      },
+      "detail": {
+        "title": "Banner"
+      },
+      "imageUrl": "Image Url",
+      "link": "Link"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "baseApp": {
+    "calendarItem": {
+      "home": {
+        "title": "Calendar Items",
+        "createLabel": "Create a new Calendar Item",
+        "createOrEditLabel": "Create or edit a Calendar Item",
+        "notFound": "No Calendar Items found"
+      },
+      "created": "A new Calendar Item is created with identifier {{ param }}",
+      "updated": "A Calendar Item is updated with identifier {{ param }}",
+      "deleted": "A Calendar Item is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Calendar Item {{ id }}?"
+      },
+      "detail": {
+        "title": "Calendar Item"
+      },
+      "status": "Status",
+      "inBody": "In Body",
+      "bookedBy": "Booked By",
+      "assignedTo": "Assigned To",
+      "calendar": "Calendar"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "baseApp": {
+    "loginSession": {
+      "home": {
+        "title": "Login Sessions",
+        "createLabel": "Thêm mới một Login Session",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Login Session",
+        "notFound": "No Login Sessions found"
+      },
+      "created": "Một Login Session mới được tạo với định danh {{ param }}",
+      "updated": "Một Login Session cập nhật với định danh {{ param }}",
+      "deleted": "Một Login Session đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Login Session {{ id }}?"
+      },
+      "detail": {
+        "title": "Login Session"
+      },
+      "deviceToken": "Device Token",
+      "user": "User"
+    }
+  }
+}

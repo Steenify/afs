@@ -1,0 +1,17 @@
+{
+  "baseApp": {
+    "systemProperties": {
+      "home": {
+        "title": "Thông số hệ thống",
+        "notFound": "No System Properties found"
+      },
+      "updated": "Một Thông số hệ thống cập nhật với định danh {{ param }}",
+      "detail": {
+        "title": "Thông số hệ thống"
+      },
+      "name": "Tên",
+      "value": "Giá Trị",
+      "description": "Mô tả"
+    }
+  }
+}

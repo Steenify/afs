@@ -1,0 +1,18 @@
+{
+  "baseApp": {
+    "sidebar": {
+      "dashboard": "Bảng điều khiển",
+      "userManagement": "Quản lý người dùng hệ thống",
+      "customerManagement": "Quản lý khách hàng",
+      "notificationManagement": "Quản lý thông báo",
+      "home": "Trang chủ",
+      "user": "Người dùng",
+      "role": "Vai trò",
+      "permission": "Quyền hạn",
+      "notification": "Thông báo",
+      "customer": "Khách hàng",
+      "customerGroup": "Nhóm khách hàng",
+      "systemProperty": "Thông số hệ thống"
+    }
+  }
+}

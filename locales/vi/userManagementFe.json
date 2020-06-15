@@ -1,0 +1,14 @@
+{
+  "userManagement": {
+    "imageUrl": "Liên kết hình ảnh",
+    "phoneNumber": "Số điện thoại",
+    "status": "Trạng thái",
+    "name": "Tên",
+    "role": "Vai trò",
+    "create": "Tạo mới",
+    "cancel": "Hủy",
+    "search": "Tìm kiếm",
+    "clear": "Xóa",
+    "edit": "Sửa"
+  }
+}

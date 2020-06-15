@@ -1,0 +1,10 @@
+{
+  "baseApp": {
+    "PaymentType": {
+      "null": "",
+      "FULL": "FULL",
+      "IN_TURN": "IN_TURN",
+      "INSTALLMENT": "INSTALLMENT"
+    }
+  }
+}

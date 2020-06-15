@@ -1,0 +1,10 @@
+{
+  "baseApp": {
+    "UserNotificationStatus": {
+      "null": "",
+      "DRAFT": "DRAFT",
+      "READ": "READ",
+      "RECEIVED": "RECEIVED"
+    }
+  }
+}

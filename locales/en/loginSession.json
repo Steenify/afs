@@ -1,0 +1,23 @@
+{
+  "baseApp": {
+    "loginSession": {
+      "home": {
+        "title": "Login Sessions",
+        "createLabel": "Create a new Login Session",
+        "createOrEditLabel": "Create or edit a Login Session",
+        "notFound": "No Login Sessions found"
+      },
+      "created": "A new Login Session is created with identifier {{ param }}",
+      "updated": "A Login Session is updated with identifier {{ param }}",
+      "deleted": "A Login Session is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Login Session {{ id }}?"
+      },
+      "detail": {
+        "title": "Login Session"
+      },
+      "deviceToken": "Device Token",
+      "user": "User"
+    }
+  }
+}

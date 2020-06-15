@@ -1,0 +1,25 @@
+{
+  "baseApp": {
+    "paymentHistory": {
+      "home": {
+        "title": "Payment Histories",
+        "createLabel": "Thêm mới một Payment History",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Payment History",
+        "notFound": "No Payment Histories found"
+      },
+      "created": "Một Payment History mới được tạo với định danh {{ param }}",
+      "updated": "Một Payment History cập nhật với định danh {{ param }}",
+      "deleted": "Một Payment History đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Payment History {{ id }}?"
+      },
+      "detail": {
+        "title": "Payment History"
+      },
+      "paymentStatus": "Payment Status",
+      "createdAt": "Created At",
+      "note": "Note",
+      "userWorkoutPackage": "User Workout Package"
+    }
+  }
+}

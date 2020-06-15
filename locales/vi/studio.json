@@ -1,0 +1,30 @@
+{
+  "baseApp": {
+    "studio": {
+      "home": {
+        "title": "Studios",
+        "createLabel": "Thêm mới một Studio",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Studio",
+        "notFound": "No Studios found"
+      },
+      "created": "Một Studio mới được tạo với định danh {{ param }}",
+      "updated": "Một Studio cập nhật với định danh {{ param }}",
+      "deleted": "Một Studio đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Studio {{ id }}?"
+      },
+      "detail": {
+        "title": "Studio"
+      },
+      "name": "Name",
+      "address": "Address",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "calendar": "Calendar",
+      "managedBy": "Managed By",
+      "workoutPackage": "Workout Package",
+      "user": "User",
+      "franchise": "Franchise"
+    }
+  }
+}
