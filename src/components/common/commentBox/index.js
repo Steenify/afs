@@ -93,7 +93,7 @@ class CommentBox extends Component {
     });
   };
 
-  setComment = (text) => {
+  setCommemt = (text) => {
     this.setState({
       text: text,
     });

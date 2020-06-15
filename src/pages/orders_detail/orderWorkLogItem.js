@@ -9,7 +9,6 @@ import { confirmAlert } from 'react-confirm-alert';
 import Dropbox from 'components/common/dropbox';
 import ImageGallery from 'components/common/imageGallery';
 import Button from 'components/common/button';
-import ImageFile from 'components/common/imageFile';
 import P from 'components/common/parapraph';
 import CommentBox from 'components/common/commentBox';
 
@@ -59,93 +58,89 @@ const OrderWorkLogItem = ({
   const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
 
   const handleUploadSketch = () => {
-    if (!dropbox.current) {
-      return;
-    }
-
-    const files = dropbox.current.getFiles();
-    if (!files.length) {
-      toast.warn('Please select your work!');
-      return;
-    }
-
-    let isDoneUpload = true;
-
-    files.forEach((file) => {
-      if (!file.isUploaded || !file.id) {
-        isDoneUpload = false;
+    if (dropbox.current) {
+      const files = dropbox.current.getFiles();
+      if (!files.length) {
+        toast.warn('Please select your work!');
+        return;
       }
-    });
 
-    if (!isDoneUpload) {
-      toast.warn('Files is uploading!');
-      return;
+      let isDoneUpload = true;
+
+      files.forEach((file) => {
+        if (!file.isUploaded || !file.id) {
+          isDoneUpload = false;
+        }
+      });
+
+      if (!isDoneUpload) {
+        toast.warn('Files is uploading!');
+        return;
+      }
+
+      const data = {
+        attachments: files.map((file) => ({ id: file.id })),
+      };
+
+      uploadFileWorkLog(order.id, work.id, data, workLogIndex, files, () => {
+        dropbox.current.clearFiles();
+        setIsEdit(false);
+      });
     }
-
-    const data = {
-      attachments: files.map((file) => ({ id: file.id })),
-    };
-
-    uploadFileWorkLog(order.id, work.id, data, workLogIndex, files, () => {
-      dropbox.current.clearFiles();
-      setIsEdit(false);
-    });
   };
 
   const handleUploadComment = (text, files) => {
-    if (!commentBox.current) {
-      return;
-    }
-
-    if (!text) {
-      toast.warn('Please Comment!');
-      return;
-    }
-
-    let isDoneUpload = true;
-    files.forEach((file) => {
-      if (!file.isUploaded || !file.id) {
-        isDoneUpload = false;
+    if (commentBox.current) {
+      if (!text) {
+        toast.warn('Please Comment!');
+        return;
       }
-    });
-    if (!isDoneUpload) {
-      toast.warn('Files is uploading!');
-      return;
-    }
 
-    const isEdit = !isEmpty(editComment);
-
-    const data = {
-      content: text,
-      attachments: files.map((file) => ({
-        id: file.id,
-        fileId: file?.fileId,
-        thumbnailLink: file?.thumbnailLink,
-        url: file?.url,
-        external: file?.external,
-      })),
-    };
-
-    if (isEdit) {
-      updateCommentWorkLog(
-        order.id,
-        work.id,
-        editComment.id,
-        data,
-        workLogIndex,
-        editCommentIndex,
-        () => {
-          commentBox.current.clearFiles();
-          commentBox.current.setComment('');
-          setEditComment({});
-          setEditCommentIndex(0);
-        },
-      );
-    } else {
-      uploadCommentWorkLog(order.id, work.id, data, workLogIndex, files, () => {
-        commentBox.current.clearFiles();
-        commentBox.current.setComment('');
+      let isDoneUpload = true;
+      files.forEach((file) => {
+        if (!file.isUploaded || !file.id) {
+          isDoneUpload = false;
+        }
       });
+      if (!isDoneUpload) {
+        toast.warn('Files is uploading!');
+        return;
+      }
+
+      const isEdit = !isEmpty(editComment);
+
+      const data = {
+        content: text,
+        attachments: files.map((file) => ({
+          id: file.id,
+          fileId: file?.fileId,
+          thumbnailLink: file?.thumbnailLink,
+          url: file?.url,
+          external: file?.external,
+        })),
+      };
+
+      if (isEdit) {
+        updateCommentWorkLog(
+          order.id,
+          work.id,
+          editComment.id,
+          data,
+          workLogIndex,
+          editCommentIndex,
+          () => {
+            commentBox.current.clearFiles();
+            commentBox.current.setCommemt('');
+            setEditComment({});
+            setEditCommentIndex(0);
+          },
+        );
+      } else {
+        uploadCommentWorkLog(order.id, work.id, data, workLogIndex, () => {
+          commentBox.current.clearFiles();
+          commentBox.current.setCommemt('');
+        });
+      }
     }
   };
 
@@ -154,12 +149,11 @@ const OrderWorkLogItem = ({
   };
 
   const handleCheckEdit = (com, index) => {
-    if (!commentBox.current) {
-      return;
+    if (commentBox.current) {
+      setEditComment(com);
+      commentBox.current.setCommemt(com.content);
+      setEditCommentIndex(index);
     }
-    setEditComment(com);
-    commentBox.current.setCommemt(com.content);
-    setEditCommentIndex(index);
   };
 
   const handleCancel = () => {
@@ -247,29 +241,31 @@ const OrderWorkLogItem = ({
       </div>
 
       <Collapse isOpen={isOpenWork}>
-        <div>
-          {!isRejected && !isAproved && (
-            <>
-              <Dropbox
-                className='upload'
-                ref={dropbox}
-                finalDriveId={isExported ? order.finalDriveId : ''}
-                id={`work_log__${work.status}__${work.id}`}
-              />
-              {isWorking && (
-                <div className='order_detail__ctas text-right'>
-                  <Button
-                    onClick={handleUploadSketch}
-                    color='primary'
-                    className='cta cta2'
-                    type='button'>
-                    Submit
-                  </Button>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+        {(!work.attachments.length || isEdit) && (
+          <div>
+            {!isRejected && !isAproved && (
+              <>
+                <Dropbox
+                  className='upload'
+                  ref={dropbox}
+                  finalDriveId={isExported ? order.finalDriveId : ''}
+                  id={`work_log__${work.status}__${work.id}`}
+                />
+                {isWorking && (
+                  <div className='order_detail__ctas text-right'>
+                    <Button
+                      onClick={handleUploadSketch}
+                      color='primary'
+                      className='cta cta2'
+                      type='button'>
+                      Submit
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
 
         {work.attachments.length > 0 && (
           <div className='photos'>
