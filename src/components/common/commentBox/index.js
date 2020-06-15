@@ -3,8 +3,10 @@ import { findIndex } from 'lodash';
 
 import Loading from 'components/common/Loading';
 
-import { ReactComponent as Upload } from 'assets/img/upload.svg';
 import { ReactComponent as Close } from 'assets/img/close.svg';
+
+import { ReactComponent as Send } from 'assets/img/send.svg';
+import { ReactComponent as UploadPhoto } from 'assets/img/loadPhoto.svg';
 
 import { uploadService } from 'services/attachment';
 import { actionTryCatchCreator, getUniqueID } from 'utils';
@@ -91,6 +93,12 @@ class CommentBox extends Component {
     });
   };
 
+  setComment = (text) => {
+    this.setState({
+      text: text,
+    });
+  };
+
   onDeleteFile = (index) => {
     const { fileList } = this.state;
     const temp = [...fileList];
@@ -147,11 +155,19 @@ class CommentBox extends Component {
     });
   };
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { fileList, text } = this.state;
+    const { onSubmit } = this.props;
+
+    onSubmit(text, fileList);
+  };
+
   render() {
     const { fileList, text } = this.state;
-    const { disabled, id, className } = this.props;
+    const { disabled, className } = this.props;
     return (
-      <div className='comment_box'>
+      <div className={`comment_box ${className}`}>
         <div className={`${!fileList.length && 'd-none'}`}>
           <div className='upload-file__list'>
             <div className='upload-file__items'>
@@ -178,25 +194,42 @@ class CommentBox extends Component {
           </div>
         </div>
 
-        <input
-          type='text'
-          placeholder='Enter comment here...'
-          className='form-control'
-          value={text}
-          ref={this.pasteRef}
-        />
+        <div className='comments__actions'>
+          <form action='' onSubmit={this.handleSubmit}>
+            <input
+              placeholder='Enter comment here..'
+              type='text'
+              onChange={this.handleChangeText}
+              value={text}
+              ref={this.pasteRef}
+              className='form-control comments__input'
+            />
 
-        <label className=''>
-          <input
-            multiple
-            type='file'
-            name='files[]'
-            className='sr-only'
-            disabled={disabled || false}
-            accept={'image/*'}
-            onChange={this.handleChangeFiles}
-          />
-        </label>
+            <label className='comments__action comments__upload'>
+              <span className='icon'>
+                <UploadPhoto />
+              </span>
+
+              <input
+                multiple
+                type='file'
+                name='files[]'
+                className='sr-only'
+                disabled={disabled || false}
+                accept={'image/*'}
+                onChange={this.handleChangeFiles}
+              />
+            </label>
+            <button
+              type='button'
+              onClick={this.handleSubmit}
+              className='comments__action comments__sent'>
+              <span className='icon'>
+                <Send />
+              </span>
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
@@ -205,6 +238,7 @@ class CommentBox extends Component {
 CommentBox.defaultProps = {
   className: '',
   id: 'comment',
+  onSubmit: () => {},
 };
 
 export default CommentBox;

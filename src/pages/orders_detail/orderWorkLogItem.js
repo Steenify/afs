@@ -11,10 +11,10 @@ import ImageGallery from 'components/common/imageGallery';
 import Button from 'components/common/button';
 import ImageFile from 'components/common/imageFile';
 import P from 'components/common/parapraph';
+import CommentBox from 'components/common/commentBox';
 
 // import { ReactComponent as EmojiIcon } from 'assets/img/emoji.svg';
-import { ReactComponent as Send } from 'assets/img/send.svg';
-import { ReactComponent as UploadPhoto } from 'assets/img/loadPhoto.svg';
+
 import { ReactComponent as Close } from 'assets/img/close.svg';
 import { ReactComponent as PencilLine } from 'assets/img/pencil_line.svg';
 import { ReactComponent as Message } from 'assets/img/message.svg';
@@ -44,16 +44,9 @@ const OrderWorkLogItem = ({
   const [isOpenCom, setIsOpenCom] = useState(isOpened || false);
   const toggleCom = () => setIsOpenCom(!isOpenCom);
 
-  // const [isOpenEmoji, setIsOpenEmoji] = useState(false);
-  // const toggleEmoji = () => setIsOpenEmoji(!isOpenEmoji);
-
-  // const [isOpenEdit, setIsOpenEdit] = useState(false);
-  // const toggleEdit = () => setIsOpenEdit(!isOpenEdit);
-
   const [isEdit, setIsEdit] = useState(false);
   const dropbox = useRef(null);
-  const [comment, setCommemt] = useState('');
-  const [file, setFile] = useState(null);
+  const commentBox = useRef(null);
 
   const [editComment, setEditComment] = useState({});
   const [editCommentIndex, setEditCommentIndex] = useState(0);
@@ -66,50 +59,72 @@ const OrderWorkLogItem = ({
   const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
 
   const handleUploadSketch = () => {
-    if (dropbox.current) {
-      const files = dropbox.current.getFiles();
-      if (!files.length) {
-        toast.warn('Please select your work!');
-        return;
-      }
-
-      let isDoneUpload = true;
-
-      files.forEach((file) => {
-        if (!file.isUploaded || !file.id) {
-          isDoneUpload = false;
-        }
-      });
-
-      if (!isDoneUpload) {
-        toast.warn('Files is uploading!');
-        return;
-      }
-
-      const data = {
-        attachments: files.map((file) => ({ id: file.id })),
-      };
-
-      uploadFileWorkLog(order.id, work.id, data, workLogIndex, files, () => {
-        dropbox.current.clearFiles();
-        setIsEdit(false);
-      });
+    if (!dropbox.current) {
+      return;
     }
+
+    const files = dropbox.current.getFiles();
+    if (!files.length) {
+      toast.warn('Please select your work!');
+      return;
+    }
+
+    let isDoneUpload = true;
+
+    files.forEach((file) => {
+      if (!file.isUploaded || !file.id) {
+        isDoneUpload = false;
+      }
+    });
+
+    if (!isDoneUpload) {
+      toast.warn('Files is uploading!');
+      return;
+    }
+
+    const data = {
+      attachments: files.map((file) => ({ id: file.id })),
+    };
+
+    uploadFileWorkLog(order.id, work.id, data, workLogIndex, files, () => {
+      dropbox.current.clearFiles();
+      setIsEdit(false);
+    });
   };
 
-  const handleUploadComment = (e) => {
-    e.preventDefault();
-    if (!comment) {
+  const handleUploadComment = (text, files) => {
+    if (!commentBox.current) {
+      return;
+    }
+
+    if (!text) {
       toast.warn('Please Comment!');
       return;
     }
-    const data = new FormData();
+
+    let isDoneUpload = true;
+    files.forEach((file) => {
+      if (!file.isUploaded || !file.id) {
+        isDoneUpload = false;
+      }
+    });
+    if (!isDoneUpload) {
+      toast.warn('Files is uploading!');
+      return;
+    }
+
     const isEdit = !isEmpty(editComment);
 
-    data.append('content', comment);
-    if (file) {
-      data.append('file', file);
-    }
+    const data = {
+      content: text,
+      attachments: files.map((file) => ({
+        id: file.id,
+        fileId: file?.fileId,
+        thumbnailLink: file?.thumbnailLink,
+        url: file?.url,
+        external: file?.external,
+      })),
+    };
 
     if (isEdit) {
       updateCommentWorkLog(
@@ -120,16 +135,16 @@ const OrderWorkLogItem = ({
         workLogIndex,
         editCommentIndex,
         () => {
-          setFile(null);
-          setCommemt('');
+          commentBox.current.clearFiles();
+          commentBox.current.setComment('');
           setEditComment({});
           setEditCommentIndex(0);
         },
       );
     } else {
-      uploadCommentWorkLog(order.id, work.id, data, workLogIndex, () => {
-        setFile(null);
-        setCommemt('');
+      uploadCommentWorkLog(order.id, work.id, data, workLogIndex, files, () => {
+        commentBox.current.clearFiles();
+        commentBox.current.setComment('');
       });
     }
   };
@@ -139,23 +154,12 @@ const OrderWorkLogItem = ({
   };
 
   const handleCheckEdit = (com, index) => {
+    if (!commentBox.current) {
+      return;
+    }
     setEditComment(com);
-    setCommemt(com.content);
+    commentBox.current.setCommemt(com.content);
     setEditCommentIndex(index);
-  };
-
-  const hanleChangeComment = (e) => {
-    const { value } = e.target;
-    setCommemt(value);
-  };
-
-  const handleSelectFile = (e) => {
-    const { files } = e.target;
-    setFile(files[0]);
-  };
-
-  const handleRemoveFile = () => {
-    setFile(null);
   };
 
   const handleCancel = () => {
@@ -243,31 +247,30 @@ const OrderWorkLogItem = ({
       </div>
 
       <Collapse isOpen={isOpenWork}>
-        {(!work.attachments.length || isEdit) && (
-          <div>
-            {!isReview && !isRejected && !isAproved && (
-              <>
-                <Dropbox
-                  className='upload'
-                  ref={dropbox}
-                  finalDriveId={isExported ? order.finalDriveId : ''}
-                  id={`work_log__${work.status}__${work.id}`}
-                />
-                {isWorking && (
-                  <div className='order_detail__ctas text-right'>
-                    <Button
-                      onClick={handleUploadSketch}
-                      color='primary'
-                      className='cta cta2'
-                      type='button'>
-                      Submit
-                    </Button>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        )}
+        <div>
+          {!isRejected && !isAproved && (
+            <>
+              <Dropbox
+                className='upload'
+                ref={dropbox}
+                finalDriveId={isExported ? order.finalDriveId : ''}
+                id={`work_log__${work.status}__${work.id}`}
+              />
+              {isWorking && (
+                <div className='order_detail__ctas text-right'>
+                  <Button
+                    onClick={handleUploadSketch}
+                    color='primary'
+                    className='cta cta2'
+                    type='button'>
+                    Submit
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+
         {work.attachments.length > 0 && (
           <div className='photos'>
             <ImageGallery
@@ -318,16 +321,16 @@ const OrderWorkLogItem = ({
                         />
                       </span>
                     </div>
-                    {com.fileUrl && (
+
+                    {com?.attachments && com?.attachments.length && (
                       <div className='comments__img'>
                         <ImageGallery
-                          images={[com.fileUrl]}
+                          images={getListImageUrl(com?.attachments || [])}
                           alt={'comment'}
                           caption={'comment'}
                         />
                       </div>
                     )}
-
                     <div className='comments__controls'>
                       <button
                         onClick={() => handleCheckEdit(com, index)}
@@ -357,55 +360,7 @@ const OrderWorkLogItem = ({
           </div>
           {(isWorking || isReview) && (
             <div>
-              {file && (
-                <div className='comments__file'>
-                  <ImageFile className='file' file={file} />
-                  <button
-                    type='button'
-                    onClick={handleRemoveFile}
-                    className='delete'>
-                    <div className='icon'>
-                      <Close />
-                    </div>
-                  </button>
-                </div>
-              )}
-
-              <div className='comments__actions'>
-                <form action='' onSubmit={handleUploadComment}>
-                  <input
-                    placeholder='Enter comment here..'
-                    type='text'
-                    value={comment}
-                    onChange={hanleChangeComment}
-                    className='form-control comments__input'
-                  />
-
-                  <label
-                    htmlFor={`file-upload__comment__${work.id}`}
-                    className='comments__action comments__upload'>
-                    <span className='icon'>
-                      <UploadPhoto />
-                    </span>
-                  </label>
-                  <button
-                    type='button'
-                    onClick={handleUploadComment}
-                    className='comments__action comments__sent'>
-                    <span className='icon'>
-                      <Send />
-                    </span>
-                  </button>
-
-                  <input
-                    type='file'
-                    id={`file-upload__comment__${work.id}`}
-                    className='sr-only'
-                    accept={'image/*'}
-                    onChange={handleSelectFile}
-                  />
-                </form>
-              </div>
+              <CommentBox ref={commentBox} onSubmit={handleUploadComment} />
             </div>
           )}
         </Collapse>

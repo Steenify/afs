@@ -311,6 +311,7 @@ export const uploadCommentWorkLogAction = (
   logId,
   payload,
   index,
+  files,
   cb,
 ) => async (dispatch) => {
   const onPending = () => {

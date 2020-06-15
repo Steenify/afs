@@ -406,12 +406,16 @@
 
 			&__wrapper {
 				margin-bottom: 3px;
+				width: 100%;
 			}
 
 			&__img {
 				margin-top: 10px;
 
 				.images_gallerry__item {
+					margin-right: 10px;
+					margin-bottom: 10px;
+
 					img {
 						border-radius: 6px;
 						width: 70px;
@@ -484,7 +488,6 @@
 			&__controls {
 				display: flex;
 				align-items: center;
-				margin-top: 10px;
 
 				.dot {
 					color: #8d949e;

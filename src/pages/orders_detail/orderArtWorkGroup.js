@@ -209,7 +209,9 @@ const OrderArtWorkGroup = ({
                             handleConfirmRejectWorkLog(work.id, workLogIndex)
                           }
                           className='cta cta2 mr-2 mb-3'
-                          disabled={!(work.attachments.length > 0)}
+                          disabled={
+                            !(work.attachments.length > 0) && needCheckFile
+                          }
                           type='button'>
                           Reject
                         </Button>
