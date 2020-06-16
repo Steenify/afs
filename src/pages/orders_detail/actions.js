@@ -511,7 +511,7 @@ export const getEmailTemplateAction = (id, templateId) => async (dispatch) => {
   const onSuccess = (data) => {
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.SUCCESS,
-      payload: { data: data.content, templateId },
+      payload: { data, templateId },
     });
   };
   const onError = (error) => {

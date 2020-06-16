@@ -40,6 +40,7 @@ const OrderArtWorkGroup = ({
   isNewOrder,
   uploadCommentWorkLog,
   workLog,
+  lastWorkLog,
 }) => {
   let isOpened = false;
 
@@ -145,8 +146,7 @@ const OrderArtWorkGroup = ({
       <Collapse isOpen={isOpen}>
         <div className={`group__body ${isNewOrder && 'isNewOrder'}`}>
           {works.map((work) => {
-            const showActionState =
-              work.state !== 'REJECTED' && work.state !== 'APPROVED';
+            const showActionState = lastWorkLog.id === work.id;
             const showActionPermitions =
               canNotifyCustomer || canAprroved || canRejected;
 
@@ -185,8 +185,7 @@ const OrderArtWorkGroup = ({
                 className='order_detail__work'>
                 <OrderWorkLogItem
                   work={work}
-                  // isOpened={lastWork.id === work.id && showActionState}
-                  isOpened={true}
+                  isOpened={showActionState}
                   order={order}
                 />
 

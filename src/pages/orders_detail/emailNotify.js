@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import {
   Modal,
   ModalHeader,
@@ -9,6 +10,7 @@ import {
   Spinner,
 } from 'reactstrap';
 import { map } from 'lodash';
+import { toast } from 'react-toastify';
 
 import Button from 'components/common/button';
 
@@ -35,9 +37,11 @@ const EmaiNotify = (props) => {
     order,
     selectedEmailTemplate,
     getEmailTemplate,
+    emailTitle,
+    customer,
   } = props;
 
-  const { emailTemplates } = getSelectedStatus(order.status, status);
+  const { emailTemplates, name } = getSelectedStatus(order.status, status);
 
   const toggle = () => {
     updateShowEmailNotify(!isShowEmail);
@@ -76,7 +80,7 @@ const EmaiNotify = (props) => {
                 className='nav-item mr-2 mb-2'>
                 <button
                   onClick={() => handleGetNewTemplate(template.id)}
-                  className={`nav-link btn btn-link ${
+                  className={`nav-link btn btn-link ${name} ${
                     template.id === selectedEmailTemplate && 'active'
                   }`}>
                   {template.name}
@@ -92,24 +96,65 @@ const EmaiNotify = (props) => {
                 <Spinner />
               </div>
             ) : (
-              <Editor
-                apiKey='8yd4ibfq5z8v9bj8ddn2hezmxgm68ijow36krpjasr0ucty8'
-                initialValue={email || ''}
-                init={{
-                  height: 500,
-                  menubar: false,
-                  plugins: [
-                    'advlist autolink lists link image',
-                    'charmap print preview anchor help',
-                    'searchreplace visualblocks code',
-                    'insertdatetime media table paste wordcount',
-                  ],
-                  toolbar: `undo redo | formatselect | bold italic |
+              <div>
+                <div className='input-group clipboad mb-3'>
+                  <div className='input-group-append'>
+                    <span className='input-group-text'>Email: </span>
+                  </div>
+                  <input
+                    type='text'
+                    className='form-control clipboad__input'
+                    value={customer?.contact?.email || ''}
+                    onChange={() => {}}
+                    placeholder='Customer Email'
+                  />
+                  <CopyToClipboard
+                    text={customer?.contact?.email || ''}
+                    onCopy={() => toast.success('Copied')}>
+                    <div className='input-group-append clipboad__input'>
+                      <span className='input-group-text'>Copy</span>
+                    </div>
+                  </CopyToClipboard>
+                </div>
+                <div className='input-group clipboad mb-3'>
+                  <div className='input-group-append'>
+                    <span className='input-group-text'>Title: </span>
+                  </div>
+                  <input
+                    type='text'
+                    className='form-control clipboad__input'
+                    value={emailTitle || ''}
+                    onChange={() => {}}
+                    placeholder='Email Title'
+                  />
+                  <CopyToClipboard
+                    text={emailTitle || ''}
+                    onCopy={() => toast.success('Copied')}>
+                    <div className='input-group-append clipboad__input'>
+                      <span className='input-group-text'>Copy</span>
+                    </div>
+                  </CopyToClipboard>
+                </div>
+
+                <Editor
+                  apiKey='8yd4ibfq5z8v9bj8ddn2hezmxgm68ijow36krpjasr0ucty8'
+                  initialValue={email || ''}
+                  init={{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                      'advlist autolink lists link image',
+                      'charmap print preview anchor help',
+                      'searchreplace visualblocks code',
+                      'insertdatetime media table paste wordcount',
+                    ],
+                    toolbar: `undo redo | formatselect | bold italic |
               alignleft aligncenter alignright | code | \
               bullist numlist outdent indent | help`,
-                }}
-                onChange={handleUpdateEmail}
-              />
+                  }}
+                  onChange={handleUpdateEmail}
+                />
+              </div>
             )}
           </div>
         </ModalBody>
@@ -131,6 +176,8 @@ const mapStateToProps = ({ orderDetail, order }) => ({
   loadingEmail: orderDetail.ui.loadingEmail,
   selectedEmailTemplate: orderDetail.data.selectedEmailTemplate,
   email: orderDetail.data.email,
+  emailTitle: orderDetail.data.emailTitle,
+  customer: orderDetail.data.customer,
 });
 
 const mapDispatchToProps = {

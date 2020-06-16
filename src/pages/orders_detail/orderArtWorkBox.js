@@ -39,8 +39,8 @@ const OrderArtWorkBox = ({
   }
 
   const isNewOrder = workLog.length === 1;
+  const lastWorkLog = workLog[workLog.length - 1];
   const worklogGroup = groupBy(workLog, 'status');
-  delete worklogGroup.DONE;
 
   const NEW_ORDER = [...(worklogGroup.NEW_ORDER || [])];
 
@@ -133,6 +133,7 @@ const OrderArtWorkBox = ({
                       order={order}
                       group={key}
                       key={`workGroup__item__${key}`}
+                      lastWorkLog={lastWorkLog}
                       status={status}
                     />
                   );

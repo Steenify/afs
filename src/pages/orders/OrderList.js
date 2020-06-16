@@ -221,7 +221,9 @@ const OrderList = (props) => {
     const isNotDone = original.status !== 'DONE';
     return {
       ...tr,
-      className: isLated && isNotDone ? 'lated' : '',
+      className: `${isLated && isNotDone ? 'lated' : ''} ${
+        !isNotDone && 'DONE'
+      }`,
     };
   };
 

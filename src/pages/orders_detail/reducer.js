@@ -35,6 +35,8 @@ const initialState = {
     customer: {},
     workLog: [],
     email: '',
+    emailTitle: '',
+    emailUser: '',
     selectedEmailTemplate: 0,
   },
 };
@@ -345,7 +347,10 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           email: {
-            $set: payload.data,
+            $set: payload.data.content,
+          },
+          emailTitle: {
+            $set: payload.data.title,
           },
           selectedEmailTemplate: {
             $set: payload.templateId,

@@ -551,6 +551,44 @@
 					background-color: $main_color;
 					color: $white;
 				}
+
+				&.SKETCH {
+					background: #fff3cd;
+					border-color: #fff3cd;
+					color: $black;
+				}
+
+				&.SKETCH_REVIEW {
+					background: #ffebe0;
+					border-color: #ffebe0;
+					color: $black;
+				}
+
+				&.COLOR {
+					background: #f4ebff;
+					border-color: #f4ebff;
+					color: $black;
+				}
+
+				&.COLOR_REVIEW {
+					background: #ffe5f4;
+					border-color: #ffe5f4;
+					color: $black;
+				}
+
+				&.EXPORT_FILE,
+				&.SEND_FILE {
+					background: #ffe8e8;
+					border-color: #ffe8e8;
+					color: $black;
+				}
+
+				&.DONE,
+				&.PAID {
+					background: #ececec;
+					border-color: #ececec;
+					color: $black;
+				}
 			}
 		}
 	}
