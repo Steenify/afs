@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { ReactComponent as FileIcon } from 'assets/img/file_Icon.svg';
 
+import General from 'assets/img/general__image.jpg';
+
+import PSDFile from 'assets/img/psd__icon.jpg';
+
+const PSDFileType = 'image/vnd.adobe.photoshop';
+
 class ImageFile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       urlBase64: '',
       isImage: true,
+      isPSD: false,
     };
   }
 
@@ -15,9 +22,11 @@ class ImageFile extends Component {
     if (!file) {
       return;
     }
-    const isPSD = file?.name.indexOf('.psd') !== -1;
+    const isPSD = file?.type === PSDFileType;
 
-    if (!isPSD) {
+    const isImage = file?.type.indexOf('image/') !== -1;
+
+    if (!isPSD && isImage) {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.setState({
@@ -28,17 +37,18 @@ class ImageFile extends Component {
     } else {
       this.setState({
         isImage: false,
+        isPSD,
       });
     }
   }
 
   render() {
     const { className } = this.props;
-    const { urlBase64, isImage } = this.state;
+    const { urlBase64, isImage, isPSD } = this.state;
     return (
       <div className={`image__file ${className}`}>
-        {!isImage && <FileIcon width='100px' height='100px' />}
-
+        {!isImage && !isPSD && <img src={General} alt={className} />}
+        {!isImage && isPSD && <img src={PSDFile} alt={className} />}
         {urlBase64 && isImage && <img src={urlBase64} alt={className} />}
       </div>
     );

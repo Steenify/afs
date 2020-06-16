@@ -3,6 +3,9 @@ import moment from 'moment';
 import { toast } from 'react-toastify';
 import omit from 'lodash/omit';
 
+import { PSDFileType } from 'config';
+import PSDFile from 'assets/img/psd__icon.jpg';
+
 export const storeData = (key, value) => {
   try {
     localStorage.setItem(key, value);
@@ -208,12 +211,22 @@ export const getOrderOption = (name) => {
 
 export const getListImageUrl = (list = []) => {
   return list.map((item) => {
+    if (item.fileType === PSDFileType) {
+      return {
+        download: PSDFile,
+        fullscreen: PSDFile,
+        regular: PSDFile,
+        thumbnail: PSDFile,
+        type: item.fileType,
+      };
+    }
     if (item.thumbnailLink && item.fileId) {
       return {
         download: item.url,
         fullscreen: item.url,
         regular: item.url,
         thumbnail: `https://drive.google.com/thumbnail?sz=w100&id=${item.fileId}`,
+        type: item.fileType,
       };
     }
     return item.url;
@@ -303,4 +316,16 @@ export const formatNumber = (
   } catch (e) {
     console.log(e);
   }
+};
+
+export const checkImageLoadable = ({ url, onError, onSuccess }) => {
+  if (!url) {
+    onError();
+    return;
+  }
+  const img = new Image();
+  img.onerror = onError;
+  img.onabort = onError;
+  img.onload = onSuccess;
+  img.src = url;
 };

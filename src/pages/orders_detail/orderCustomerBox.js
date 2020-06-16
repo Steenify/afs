@@ -31,7 +31,7 @@ const OrderCustomerBox = ({
     ) || false;
 
   useEffect(() => {
-    if (canViewCustommer) {
+    if (canViewCustommer && order.id) {
       getOrderCustomer(order.id);
     }
   }, [getOrderCustomer, order.id, canViewCustommer]);

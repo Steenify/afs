@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import { isObject } from 'lodash';
 
+import ImageLoadAble from '../imageLoadAble';
+
 import './style.scss';
 
 class ImageGallery extends Component {
@@ -38,9 +40,12 @@ class ImageGallery extends Component {
               data={index}
               onClick={() => this.toggleModal(index)}>
               {isObject(img.source) ? (
-                <img src={img.source.thumbnail} alt={img.alt} />
+                <ImageLoadAble
+                  type={img.source.type}
+                  url={img.source.thumbnail}
+                />
               ) : (
-                <img src={img.source} alt={img.alt} />
+                <ImageLoadAble url={img.source} />
               )}
             </button>
           ))}

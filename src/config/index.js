@@ -56,7 +56,7 @@ export const mapStatusOpen = {
 export const mapStatusNotiy = [
   'CUSTOMER_REVIEW_COLOR',
   'CUSTOMER_REVIEW_SKETCH',
-  'EXPORT_FILE',
+  'SEND_FILE',
   'SKETCH_REVIEW',
   'COLOR_REVIEW',
 ];
@@ -79,5 +79,7 @@ export const mapStatusPayment = {
   UNPAID: 'Unpaid',
 };
 export const statusPayments = ['PAID', 'UNPAID'];
+
+export const PSDFileType = 'image/vnd.adobe.photoshop';
 
 export { default as WEB_ROUTES } from './web-routes';
