@@ -1,10 +1,11 @@
 import React from 'react';
-import Button from 'components/common/button';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { forEach, filter } from 'lodash';
 
 import { statusPayments } from 'config';
+
+import OrderSelectedCell from './orderSelectedAll';
 
 import {
   updateOrderPaymentStatusBulkAction,
@@ -44,15 +45,25 @@ const OrderBulkAction = ({
 
   return (
     <div className='order__bulk'>
-      {statusPayments.map((status) => (
-        <Button
-          key={`list__stastus__payment__${status}`}
-          color='primary'
-          className='order__bulk__item'
-          onClick={() => handleChangeStatus(status)}>
-          {status}
-        </Button>
-      ))}
+      <div className='btn-group'>
+        <div className='btn btn-group__item'>
+          <div className='d-flex align-items-center order__bulk__selected'>
+            <OrderSelectedCell />
+            <span className='number'>{selected?.length} selected</span>
+          </div>
+        </div>
+        <button
+          className='btn btn-group__item'
+          onClick={() => handleChangeStatus(statusPayments[0])}>
+          Paid
+        </button>
+        <button
+          type='button'
+          className='btn btn-group__item'
+          onClick={() => handleChangeStatus(statusPayments[1])}>
+          Unpaid
+        </button>
+      </div>
     </div>
   );
 };

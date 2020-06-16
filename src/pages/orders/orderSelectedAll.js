@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { forEach } from 'lodash';
+import { forEach, filter } from 'lodash';
 
 import { updateAllOrderSelectedAction } from './actions';
 
@@ -23,17 +23,11 @@ const OrderSelectedAll = ({ selected, updateAllOrderSelected }) => {
 };
 
 const mapStateToProps = ({ order }) => {
-  let hasCheckedAll = true;
   const { orders } = order.list;
-
-  forEach(orders, (or) => {
-    if (!or.selected) {
-      hasCheckedAll = false;
-    }
-  });
+  const selected = filter(orders, (or) => or.selected);
 
   return {
-    selected: hasCheckedAll,
+    selected: selected.length > 0,
   };
 };
 

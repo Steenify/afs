@@ -79,7 +79,13 @@ const OrderWorkLogItem = ({
       }
 
       const data = {
-        attachments: files.map((file) => ({ id: file.id })),
+        attachments: files.map((file) => ({
+          id: file.id,
+          fileId: file?.fileId,
+          thumbnailLink: file?.thumbnailLink,
+          url: file?.url,
+          external: file?.external,
+        })),
       };
 
       uploadFileWorkLog(order.id, work.id, data, workLogIndex, files, () => {

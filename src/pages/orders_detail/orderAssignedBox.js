@@ -121,14 +121,26 @@ const OrderAssignedBox = ({
                   className={`artist__select ${
                     art.login === assignedTo?.login ? 'active' : ''
                   }`}>
-                  <strong className='name'>
-                    {art?.fullName || `${art?.firstName} ${art?.lastName}`}
-                  </strong>
-                  <div className='status d-block'>
-                    <div className=''>{art.note && `${art.note}`}</div>
-                    <div className=''>
-                      Sketching: {art.currSketch || 0}, Coloring:
-                      {art.currColor || 0}
+                  <div className='avt'>
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${
+                        art?.fullName || ''
+                      }${art?.firstName || ''}${art?.lastName || ''}`}
+                      alt='comments__author'
+                    />
+                  </div>
+
+                  <div className='info'>
+                    <strong className='name'>
+                      {art?.fullName || `${art?.firstName} ${art?.lastName}`}
+                    </strong>
+                    <div className='status'>
+                      {art.note && (
+                        <div className='note text-break'>{`${art.note}`}</div>
+                      )}
+                      <div className='currProgress'>
+                        Sketching: {art.currSketch}, Coloring: {art.currColor}
+                      </div>
                     </div>
                   </div>
                 </button>

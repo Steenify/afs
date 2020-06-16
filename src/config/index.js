@@ -31,6 +31,19 @@ export const PERMITTIONS_CONFIG = {
   VIEW_CUSTOMER_GENERAL_INFO: 'VIEW_CUSTOMER_GENERAL_INFO',
 };
 
+export const listStatus = [
+  'NEW_ORDER',
+  'SKETCH',
+  'SKETCH_REVIEW',
+  'SKETCH_EDIT',
+  'COLOR',
+  'COLOR_REVIEW',
+  'COLOR_EDIT',
+  'EXPORT_FILE',
+  'SEND_FILE',
+  'DONE',
+];
+
 export const mapStatusOpen = {
   SKETCH: ['SKETCH', 'CUSTOMER_REVIEW_SKETCH'],
   COLOR: ['COLOR', 'CUSTOMER_REVIEW_COLOR'],

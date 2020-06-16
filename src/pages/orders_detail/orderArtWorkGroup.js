@@ -129,7 +129,7 @@ const OrderArtWorkGroup = ({
       <div className='group__header'>
         <div className='group__title' onClick={toggle}>
           <div className='state dot'>
-            {getSelectedStatus(group, status).description}
+            {getSelectedStatus(group, status).friendlyName}
           </div>
           <div className='deadline'>
             {dateTimeStringFromDate(lastWork?.createdDate)}
@@ -213,7 +213,9 @@ const OrderArtWorkGroup = ({
                           }
                           className='cta cta2 mr-2 mb-3'
                           disabled={
-                            !(work.attachments.length > 0) && needCheckFile
+                            !(work.attachments.length > 0) &&
+                            needCheckFile &&
+                            false
                           }
                           type='button'>
                           Reject
@@ -226,7 +228,9 @@ const OrderArtWorkGroup = ({
                           onClick={() => handleApproveWorkLog(work.id)}
                           className='cta cta2 mb-3'
                           disabled={
-                            !(work.attachments.length > 0) && needCheckFile
+                            !(work.attachments.length > 0) &&
+                            needCheckFile &&
+                            false
                           }
                           type='button'>
                           Approved

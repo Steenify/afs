@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Spinner, Alert } from 'reactstrap';
-import { groupBy, map, isEmpty, reduce } from 'lodash';
+import { groupBy, sortBy, map, isEmpty, reduce } from 'lodash';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
 
@@ -44,17 +44,28 @@ const OrderArtWorkBox = ({
 
   const NEW_ORDER = [...(worklogGroup.NEW_ORDER || [])];
 
-  const SKETCH = [
-    ...(worklogGroup.SKETCH || []),
-    ...(worklogGroup.CUSTOMER_REVIEW_SKETCH || []),
-  ];
+  const SKETCH = sortBy(
+    [
+      ...(worklogGroup.SKETCH || []),
+      ...(worklogGroup.SKETCH_REVIEW || []),
+      ...(worklogGroup.SKETCH_EDIT || []),
+    ],
+    (skethItem) => new Date(skethItem.createdDate),
+  );
 
-  const COLOR = [
-    ...(worklogGroup.COLOR || []),
-    ...(worklogGroup.CUSTOMER_REVIEW_COLOR || []),
-  ];
+  const COLOR = sortBy(
+    [
+      ...(worklogGroup.COLOR || []),
+      ...(worklogGroup.COLOR_REVIEW || []),
+      ...(worklogGroup.COLOR_EDIT || []),
+    ],
+    (colorItem) => new Date(colorItem.createdDate),
+  );
 
-  const EXPORT_FILE = [...(worklogGroup.EXPORT_FILE || [])];
+  const EXPORT_FILE = sortBy(
+    [...(worklogGroup.EXPORT_FILE || []), ...(worklogGroup.SEND_FILE || [])],
+    (exportItem) => new Date(exportItem.createdDate),
+  );
 
   const WorkGrouped = {
     NEW_ORDER,

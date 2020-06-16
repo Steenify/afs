@@ -160,7 +160,7 @@ const OrderList = (props) => {
             className={`order__status ${
               getSelectedStatus(original.status, status).name
             }`}>
-            {getSelectedStatus(original.status, status).description}
+            {getSelectedStatus(original.status, status).friendlyName}
           </span>
         </div>
       ),
@@ -232,28 +232,31 @@ const OrderList = (props) => {
         query={{ sortBy: [{ id: 'number', desc: true }] }}
       />
 
-      {isCanPay && <OrderBulkAction updateOrder={updateOrder} />}
+      <div className='order__wrapper relative'>
+        {isCanPay && <OrderBulkAction updateOrder={updateOrder} />}
 
-      <DataTable
-        data={orders}
-        columns={columns}
-        className='bg-white'
-        serverSide
-        totalPage={(size) => getPaginationItemsNumber(props.totalItems, size)}
-        onLoad={handleLoad}
-        updateCell={handleUpdate}
-        sortBy={[{ id: 'number', desc: true }]}
-        getCellProps={getCellProps}
-        getTrProps={getTrProps}
-        whiteListSort={[
-          'customer',
-          'assignedTo',
-          'budget',
-          'status',
-          'artistPaymentStatus',
-          'selected',
-        ]}
-      />
+        <DataTable
+          data={orders}
+          columns={columns}
+          className='bg-white'
+          serverSide
+          totalPage={(size) => getPaginationItemsNumber(props.totalItems, size)}
+          onLoad={handleLoad}
+          updateCell={handleUpdate}
+          sortBy={[{ id: 'number', desc: true }]}
+          getCellProps={getCellProps}
+          getTrProps={getTrProps}
+          whiteListSort={[
+            'customer',
+            'assignedTo',
+            'budget',
+            'status',
+            'artistPaymentStatus',
+            'selected',
+          ]}
+        />
+      </div>
+
       <InPageLoading isLoading={loading} />
     </div>
   );

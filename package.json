@@ -68,13 +68,12 @@
     "dev": "env-cmd -f .env.development node translate.js && react-app-rewired start",
     "build-dev": "env-cmd -f .env.development react-app-rewired build && cp build/index.html build/404.html && npm run cp-locale",
     "build": "env-cmd -f .env.production react-app-rewired build && cp build/index.html build/404.html && npm run cp-locale",
-    "build-prod": "env-cmd -f .env.production react-app-rewired build && cp build/index.html build/404.html && npm run cp-locale",
     "cp-locale": "cpx \"public/locales/*.json\" build/locales",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "flow": "flow",
     "eslint": "eslint ./src/*.js ./src/**/*.js ./src/**/**/*.js ./src/**/**/**/*.js",
-    "predeploy": "npm run build-prod",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -b master -d build"
   },
   "eslintConfig": {

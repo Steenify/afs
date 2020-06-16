@@ -54,7 +54,6 @@ const OrderBudgetCell = ({
   if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_BUDGET)) {
     return <div className=''>{formatMoney(original?.budget)}</div>;
   }
-  console.log('original?.budget', original?.budget);
 
   return (
     <Popover

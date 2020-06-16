@@ -473,17 +473,6 @@
 		}
 	}
 
-	&__bulk {
-		background: $white;
-		padding: 15px;
-		margin-top: 15px;
-		display: flex;
-
-		&__item {
-			margin-right: 15px;
-		}
-	}
-
 	&__assigned {
 		.name {
 			display: inline-block;
@@ -537,6 +526,51 @@
 			border-top: 1px solid #e2e5ed;
 			padding: 15px;
 			padding-bottom: 0;
+		}
+	}
+
+	&__wrapper {
+		position: relative;
+	}
+
+	&__bulk {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		background: $white;
+		padding: 5px;
+		display: flex;
+		z-index: 2;
+
+		.btn-group {
+			&__item {
+				background: $white;
+				border: 1px solid #e2e5ed;
+				background: linear-gradient(180deg, #ffffff 0%, #f3f4f6 99.88%);
+				box-shadow: 0px 1px 0px rgba(170, 170, 170, 0.1);
+				min-width: 100px;
+
+				&:hover,
+				&:active,
+				&:focus {
+					background: $white;
+				}
+			}
+		}
+
+		&__selected {
+			margin-left: -4px;
+
+			span.number {
+				display: inline-block;
+				margin-left: 30px;
+				margin-right: 30px;
+				color: $main_color;
+				font-weight: 500;
+				font-size: 15px;
+				line-height: 18px;
+			}
 		}
 	}
 }

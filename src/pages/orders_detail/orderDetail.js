@@ -44,7 +44,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
                   className={`order__status ${
                     getSelectedStatus(order.status, status).name
                   }`}>
-                  {getSelectedStatus(order.status, status).description}
+                  {getSelectedStatus(order.status, status).friendlyName}
                 </span>
               </span>
               <span className='deadline'>
