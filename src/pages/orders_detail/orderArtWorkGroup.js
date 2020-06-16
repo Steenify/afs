@@ -151,6 +151,8 @@ const OrderArtWorkGroup = ({
               canNotifyCustomer || canAprroved || canRejected;
 
             const isNewStatus = work.status === 'NEW_ORDER';
+            const isExportFile = work.status === 'EXPORT_FILE';
+            const isSendFile = work.status === 'SEND_FILE';
 
             const workLogIndex = findIndex(
               workLog,
@@ -204,7 +206,7 @@ const OrderArtWorkGroup = ({
                     </div>
 
                     <div className='d-flex'>
-                      {canRejected && (
+                      {canRejected && !isExportFile && !isSendFile && (
                         <Button
                           color='secondary'
                           onClick={() =>
@@ -219,7 +221,7 @@ const OrderArtWorkGroup = ({
                         </Button>
                       )}
 
-                      {canAprroved && (
+                      {canAprroved && !isSendFile && (
                         <Button
                           color='primary'
                           onClick={() => handleApproveWorkLog(work.id)}
@@ -229,6 +231,16 @@ const OrderArtWorkGroup = ({
                           }
                           type='button'>
                           Approved
+                        </Button>
+                      )}
+
+                      {isSendFile && (
+                        <Button
+                          color='primary'
+                          onClick={() => handleApproveWorkLog(work.id)}
+                          className='cta cta2 mb-3'
+                          type='button'>
+                          Mark as Done
                         </Button>
                       )}
                     </div>

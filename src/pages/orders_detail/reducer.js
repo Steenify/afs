@@ -36,7 +36,6 @@ const initialState = {
     workLog: [],
     email: '',
     emailTitle: '',
-    emailUser: '',
     selectedEmailTemplate: 0,
   },
 };

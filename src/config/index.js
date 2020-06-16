@@ -44,12 +44,16 @@ export const listStatus = [
   'DONE',
 ];
 
-export const mapStatusCanNotUpload = ['SKETCH_REVIEW', 'COLOR_REVIEW'];
+export const mapStatusCanNotUpload = [
+  'SKETCH_REVIEW',
+  'COLOR_REVIEW',
+  'SEND_FILE',
+];
 
 export const mapStatusOpen = {
   SKETCH: ['SKETCH', 'CUSTOMER_REVIEW_SKETCH', 'SKETCH_REVIEW', 'SKETCH_EDIT'],
   COLOR: ['COLOR', 'CUSTOMER_REVIEW_COLOR', 'COLOR_REVIEW', 'COLOR_EDIT'],
-  EXPORT_FILE: ['EXPORT_FILE'],
+  EXPORT_FILE: ['EXPORT_FILE', 'SEND_FILE'],
   NEW_ORDER: ['NEW_ORDER'],
 };
 

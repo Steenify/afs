@@ -267,7 +267,9 @@
 			}
 		}
 
-		&.CUSTOMER_REVIEW_SKETCH {
+		&.CUSTOMER_REVIEW_SKETCH,
+		&.SKETCH_REVIEW,
+		&.SKETCH_EDIT {
 			background: #ffebe0;
 
 			&::before {
@@ -283,7 +285,9 @@
 			}
 		}
 
-		&.CUSTOMER_REVIEW_COLOR {
+		&.CUSTOMER_REVIEW_COLOR,
+		&.COLOR_REVIEW,
+		&.COLOR_EDIT {
 			background: #ffe5f4;
 
 			&::before {
@@ -291,7 +295,8 @@
 			}
 		}
 
-		&.EXPORT_FILE {
+		&.EXPORT_FILE,
+		&.SEND_FILE {
 			background: #ffe8e8;
 
 			&::before {
@@ -393,7 +398,9 @@
 					}
 				}
 
-				&.CUSTOMER_REVIEW_SKETCH {
+				&.CUSTOMER_REVIEW_SKETCH,
+				&.SKETCH_REVIEW,
+				&.SKETCH_EDIT {
 					background: #ffebe0;
 					border: 1px solid #ffebe0;
 
@@ -425,7 +432,9 @@
 					}
 				}
 
-				&.CUSTOMER_REVIEW_COLOR {
+				&.CUSTOMER_REVIEW_COLOR,
+				&.COLOR_REVIEW,
+				&.COLOR_EDIT {
 					background: #ffddc1;
 
 					&::before {
@@ -440,7 +449,8 @@
 					}
 				}
 
-				&.EXPORT_FILE {
+				&.EXPORT_FILE,
+				&.SEND_FILE {
 					background: #ffd9d9;
 
 					&::before {

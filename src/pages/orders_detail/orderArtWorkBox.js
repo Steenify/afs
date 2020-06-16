@@ -67,11 +67,14 @@ const OrderArtWorkBox = ({
     (exportItem) => new Date(exportItem.createdDate),
   );
 
+  const DONE = [...(worklogGroup.DONE || [])];
+
   const WorkGrouped = {
     NEW_ORDER,
     SKETCH,
     COLOR,
     EXPORT_FILE,
+    DONE,
   };
 
   if (!SKETCH.length) {

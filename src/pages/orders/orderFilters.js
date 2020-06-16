@@ -65,7 +65,7 @@ const OrderFilters = ({ style, status, handleSubmit, onSearch, ...props }) => {
             data={sta.name}
             onClick={handleChangeStatus}
             key={`list__status_option__${sta.name}`}
-            className={`status ${orderStatusCount[sta.name]}  ${sta.name} ${
+            className={`status  ${sta.name} ${
               selectedStatus === sta.name && 'active'
             }`}>
             {sta.friendlyName}
