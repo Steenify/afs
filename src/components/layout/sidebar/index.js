@@ -10,10 +10,10 @@ import './style.scss';
 
 import { ReactComponent as Logo } from 'assets/img/logo.svg';
 import { ReactComponent as UserIcon } from 'assets/img/user.svg';
-import { ReactComponent as CustomerIcon } from 'assets/img/customer.svg';
 import { ReactComponent as Mensenger } from 'assets/img/Mensenger.svg';
 import { ReactComponent as POS } from 'assets/img/pos.svg';
-import { ReactComponent as Artist } from 'assets/img/Artist.svg';
+// import { ReactComponent as CustomerIcon } from 'assets/img/customer.svg';
+// import { ReactComponent as Artist } from 'assets/img/Artist.svg';
 import { ReactComponent as Settings } from 'assets/img/settings.svg';
 
 import { WEB_ROUTES } from 'config';
@@ -49,20 +49,21 @@ const SideBar = (props) => {
           ),
           icon: <POS />,
         },
-        {
-          ...WEB_ROUTES.ARTISTS,
-          icon: <Artist />,
-        },
+
         {
           ...WEB_ROUTES.USER_LIST,
           title: t(WEB_ROUTES.USER_LIST.title),
           icon: <UserIcon />,
         },
-        {
-          ...WEB_ROUTES.CUSTOMER_LIST,
-          title: t(WEB_ROUTES.CUSTOMER_LIST.title),
-          icon: <CustomerIcon />,
-        },
+        // {
+        //   ...WEB_ROUTES.ARTISTS,
+        //   icon: <Artist />,
+        // },
+        // {
+        //   ...WEB_ROUTES.CUSTOMER_LIST,
+        //   title: t(WEB_ROUTES.CUSTOMER_LIST.title),
+        //   icon: <CustomerIcon />,
+        // },
 
         // {
         //   ...WEB_ROUTES.CUSTOMER_GROUP_LIST,

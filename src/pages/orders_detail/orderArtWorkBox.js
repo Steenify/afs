@@ -86,6 +86,9 @@ const OrderArtWorkBox = ({
   if (!EXPORT_FILE.length) {
     delete WorkGrouped.EXPORT_FILE;
   }
+  if (!DONE.length) {
+    delete WorkGrouped.DONE;
+  }
 
   const allExportImage = reduce(
     EXPORT_FILE,

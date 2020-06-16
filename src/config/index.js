@@ -55,6 +55,7 @@ export const mapStatusOpen = {
   COLOR: ['COLOR', 'CUSTOMER_REVIEW_COLOR', 'COLOR_REVIEW', 'COLOR_EDIT'],
   EXPORT_FILE: ['EXPORT_FILE', 'SEND_FILE'],
   NEW_ORDER: ['NEW_ORDER'],
+  DONE: ['DONE'],
 };
 
 export const mapStatusNotiy = [

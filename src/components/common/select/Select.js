@@ -97,6 +97,8 @@ export class SelectInput extends Component {
 
     if (multi) {
       selected = [];
+      console.log('SelectInput -> render -> value', value);
+
       if (value && value.length) {
         options.forEach((opt) => {
           value.forEach((item) => {
@@ -111,6 +113,8 @@ export class SelectInput extends Component {
         ? options.filter((option) => option.value === input.value)[0]
         : '';
     }
+
+    console.log('SelectInput -> render -> selected', selected);
 
     return (
       <FormGroup

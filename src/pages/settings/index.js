@@ -9,31 +9,44 @@ import PageTitle from 'components/common/PageTitle';
 import { WEB_ROUTES } from 'config';
 
 import { ReactComponent as Settings } from 'assets/img/settings.svg';
+import { ReactComponent as CustomerIcon } from 'assets/img/customer.svg';
+import { ReactComponent as Artist } from 'assets/img/Artist.svg';
 
 import './style.scss';
-
-const SettingsList = [
-  {
-    ...WEB_ROUTES.USER_ROLE,
-    icon: <Settings />,
-    des: 'View and update user role',
-  },
-  {
-    ...WEB_ROUTES.USER_PERMISSION,
-    icon: <Settings />,
-    des: 'View and update user permission',
-  },
-  {
-    ...WEB_ROUTES.SYSTEM_PROPERTY_LIST,
-    icon: <Settings />,
-    des: 'View and update system property',
-  },
-];
 
 const SettingsPage = (props) => {
   const { t } = useTranslation();
   const { accountInfo, history } = props;
   const { permissions } = accountInfo;
+
+  const SettingsList = [
+    {
+      ...WEB_ROUTES.USER_ROLE,
+      icon: <Settings />,
+      des: 'View and update user role',
+    },
+    {
+      ...WEB_ROUTES.USER_PERMISSION,
+      icon: <Settings />,
+      des: 'View and update user permission',
+    },
+    {
+      ...WEB_ROUTES.SYSTEM_PROPERTY_LIST,
+      icon: <Settings />,
+      des: 'View and update system property',
+    },
+    {
+      ...WEB_ROUTES.ARTISTS,
+      icon: <Artist />,
+      des: 'Manage Artist',
+    },
+    {
+      ...WEB_ROUTES.CUSTOMER_LIST,
+      title: t(WEB_ROUTES.CUSTOMER_LIST.title),
+      icon: <CustomerIcon />,
+      des: 'Manage Customer',
+    },
+  ];
 
   const handleNavigate = (item) => {
     history.push(item.path);

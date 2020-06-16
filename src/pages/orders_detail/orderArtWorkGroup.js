@@ -151,6 +151,7 @@ const OrderArtWorkGroup = ({
               canNotifyCustomer || canAprroved || canRejected;
 
             const isNewStatus = work.status === 'NEW_ORDER';
+            const isDoneStatus = work.status === 'DONE';
             const isExportFile = work.status === 'EXPORT_FILE';
             const isSendFile = work.status === 'SEND_FILE';
 
@@ -158,6 +159,10 @@ const OrderArtWorkGroup = ({
               workLog,
               (log) => log.id === work.id,
             );
+
+            if (isDoneStatus) {
+              return null;
+            }
 
             if (isNewStatus) {
               if (isNewOrder) {

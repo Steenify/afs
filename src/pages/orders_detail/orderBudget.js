@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { DropdownMenu, DropdownToggle, Dropdown } from 'reactstrap';
+import NumberFormat from 'react-number-format';
 import Button from 'components/common/button';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
+import Popover from 'react-tiny-popover';
 
 import { formatMoney } from 'utils';
 
@@ -15,11 +16,11 @@ import { updateOrdersBudgetAction } from '../orders/actions';
 const OrderBudget = ({ order, accountInfo, updateOrdersBudget }) => {
   const { budget } = order;
   const [value, setValue] = useState(budget || '');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const toggle = () => setDropdownOpen((prevState) => !prevState);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const onChange = (data) => {
+    setValue(data.value);
   };
 
   const onSave = (e) => {
@@ -57,39 +58,60 @@ const OrderBudget = ({ order, accountInfo, updateOrdersBudget }) => {
   }
 
   return (
-    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle className='order__toggle budget p-0'>
-        <div className='d-flex align-items-end'>
-          <strong className='mb-1 mr-2'> Budget:</strong>
-          <span>{formatMoney(order.budget)} </span>
-          <span className='icon d-block ml-1'>
-            <Pencil width='14px' height='14px' />
-          </span>
+    <Popover
+      isOpen={isPopoverOpen}
+      position={'bottom'}
+      padding={10}
+      onClickOutside={toggle}
+      content={() => (
+        <div className='order__info order__user p-3'>
+          <form action='' onSubmit={onSave}>
+            <div className='order__budget'>
+              <div className='data'>
+                <strong className='title'>Budget</strong>
+                <NumberFormat
+                  prefix={'$  '}
+                  thousandSeparator={true}
+                  className='form-control bugdet__input'
+                  value={value}
+                  onValueChange={onChange}
+                />
+              </div>
+              <div className='ctas'>
+                <Button
+                  onClick={toggle}
+                  className='bugdet__cancel cta pl-0'
+                  type='button'
+                  color='link'>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={onSave}
+                  className='bugdet__save cta pr-0'
+                  type='button'
+                  color='link'>
+                  Save
+                </Button>
+              </div>
+            </div>
+          </form>
         </div>
-      </DropdownToggle>
-
-      <DropdownMenu className='order__dropdowns'>
-        <form action='' onSubmit={onSave}>
-          <div className='order__budget'>
-            <input
-              type='number'
-              name='newbudget'
-              placeholder='new budget'
-              value={value}
-              onChange={onChange}
-              className='form-control bugdet__input'
-            />
-            <Button
-              onClick={onSave}
-              className='bugdet__btn'
-              type='button'
-              color='primary'>
-              Save
-            </Button>
+      )}>
+      {(ref) => (
+        <button
+          ref={ref}
+          onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+          className='order__toggle budget p-0'>
+          <div className='d-flex align-items-end'>
+            <strong className='mb-1 mr-2'> Budget:</strong>
+            <span>{formatMoney(order.budget)} </span>
+            <span className='icon d-block ml-1'>
+              <Pencil width='14px' height='14px' />
+            </span>
           </div>
-        </form>
-      </DropdownMenu>
-    </Dropdown>
+        </button>
+      )}
+    </Popover>
   );
 };
 
