@@ -146,7 +146,7 @@ const OrderArtWorkGroup = ({
         <div className={`group__body ${isNewOrder && 'isNewOrder'}`}>
           {works.map((work) => {
             const showActionState =
-              work.state !== 'REJECTED' && work.state === 'APPROVED';
+              work.state !== 'REJECTED' && work.state !== 'APPROVED';
             const showActionPermitions =
               canNotifyCustomer || canAprroved || canRejected;
 
@@ -213,9 +213,7 @@ const OrderArtWorkGroup = ({
                           }
                           className='cta cta2 mr-2 mb-3'
                           disabled={
-                            !(work.attachments.length > 0) &&
-                            needCheckFile &&
-                            false
+                            !(work.attachments.length > 0) && needCheckFile
                           }
                           type='button'>
                           Reject
@@ -228,9 +226,7 @@ const OrderArtWorkGroup = ({
                           onClick={() => handleApproveWorkLog(work.id)}
                           className='cta cta2 mb-3'
                           disabled={
-                            !(work.attachments.length > 0) &&
-                            needCheckFile &&
-                            false
+                            !(work.attachments.length > 0) && needCheckFile
                           }
                           type='button'>
                           Approved

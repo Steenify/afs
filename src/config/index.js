@@ -44,9 +44,11 @@ export const listStatus = [
   'DONE',
 ];
 
+export const mapStatusCanNotUpload = ['SKETCH_REVIEW', 'COLOR_REVIEW'];
+
 export const mapStatusOpen = {
-  SKETCH: ['SKETCH', 'CUSTOMER_REVIEW_SKETCH'],
-  COLOR: ['COLOR', 'CUSTOMER_REVIEW_COLOR'],
+  SKETCH: ['SKETCH', 'CUSTOMER_REVIEW_SKETCH', 'SKETCH_REVIEW', 'SKETCH_EDIT'],
+  COLOR: ['COLOR', 'CUSTOMER_REVIEW_COLOR', 'COLOR_REVIEW', 'COLOR_EDIT'],
   EXPORT_FILE: ['EXPORT_FILE'],
   NEW_ORDER: ['NEW_ORDER'],
 };
@@ -55,6 +57,8 @@ export const mapStatusNotiy = [
   'CUSTOMER_REVIEW_COLOR',
   'CUSTOMER_REVIEW_SKETCH',
   'EXPORT_FILE',
+  'SKETCH_REVIEW',
+  'COLOR_REVIEW',
 ];
 
 export const mapRoles = {
@@ -62,7 +66,13 @@ export const mapRoles = {
   ROLE_ARTIST: 'ROLE_ARTIST',
 };
 
-export const mapStatusVerifyFile = ['SKETCH', 'COLOR', 'EXPORT_FILE'];
+export const mapStatusVerifyFile = [
+  'SKETCH',
+  'SKETCH_EDIT',
+  'COLOR',
+  'COLOR_EDIT',
+  'EXPORT_FILE',
+];
 
 export const mapStatusPayment = {
   PAID: 'Paid',

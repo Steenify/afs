@@ -19,6 +19,7 @@ import { ReactComponent as PencilLine } from 'assets/img/pencil_line.svg';
 import { ReactComponent as Message } from 'assets/img/message.svg';
 
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
+import { mapStatusCanNotUpload } from 'config';
 
 import {
   uploadFileWorkLogAction,
@@ -56,6 +57,8 @@ const OrderWorkLogItem = ({
   const isAproved = work.state === 'APPROVED';
   const isExported = order.status === 'EXPORT_FILE';
   const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
+
+  const notUpload = mapStatusCanNotUpload.indexOf(order.status) !== -1;
 
   const handleUploadSketch = () => {
     if (dropbox.current) {
@@ -225,7 +228,7 @@ const OrderWorkLogItem = ({
             {dateTimeToDeadline(work.lastModifiedDate)}
           </span>
         </div>
-        {isWorking && (
+        {isWorking && !notUpload && (
           <div className='control'>
             {isEdit ? (
               <button
@@ -247,7 +250,7 @@ const OrderWorkLogItem = ({
       </div>
 
       <Collapse isOpen={isOpenWork}>
-        {(!work.attachments.length || isEdit) && (
+        {(!work.attachments.length || isEdit) && !notUpload && (
           <div>
             {!isRejected && !isAproved && (
               <>

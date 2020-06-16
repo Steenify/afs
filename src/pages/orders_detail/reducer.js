@@ -156,9 +156,6 @@ const reducer = (state = initialState, action) => {
         data: {
           workLog: {
             [payload.index]: {
-              state: {
-                $set: 'WORKING',
-              },
               comments: {
                 $push: [payload.data],
               },
@@ -230,6 +227,11 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
+          order: {
+            status: {
+              $set: payload.data.status,
+            },
+          },
           workLog: {
             [payload.index]: {
               state: {

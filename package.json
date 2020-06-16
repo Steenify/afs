@@ -74,7 +74,8 @@
     "flow": "flow",
     "eslint": "eslint ./src/*.js ./src/**/*.js ./src/**/**/*.js ./src/**/**/**/*.js",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b master -d build"
+    "deploy": "gh-pages -b master -d build",
+    "deploy-dev": "npm run build-dev && netlify deploy --prod"
   },
   "eslintConfig": {
     "extends": "react-app"

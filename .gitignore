@@ -28,3 +28,6 @@ public/locales/vi.json
 
 yarn.lock
 package-lock.json
+
+# Local Netlify folder
+.netlify

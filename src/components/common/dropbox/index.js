@@ -246,8 +246,8 @@ class DropBox extends Component {
         </div>
         <input
           type='text'
-          placeholder='Copy and Paste'
-          className='form-control'
+          placeholder='Paste your image here'
+          className='form-control upload-file__input'
           ref={this.pasteRef}
         />
       </>
