@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { forEach, filter } from 'lodash';
+import { filter } from 'lodash';
 
 import { updateAllOrderSelectedAction } from './actions';
 

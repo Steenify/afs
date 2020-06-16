@@ -146,7 +146,7 @@ const OrderArtWorkGroup = ({
         <div className={`group__body ${isNewOrder && 'isNewOrder'}`}>
           {works.map((work) => {
             const showActionState =
-              work.state === 'WORKING' || work.state === 'REVIEWING';
+              work.state !== 'REJECTED' && work.state === 'APPROVED';
             const showActionPermitions =
               canNotifyCustomer || canAprroved || canRejected;
 
