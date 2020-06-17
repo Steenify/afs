@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import { forEach, filter } from 'lodash';
+import { forEach, filter, findIndex } from 'lodash';
 
 import { statusPayments } from 'config';
 
@@ -17,6 +17,7 @@ const OrderBulkAction = ({
   updateOrderPaymentStatusBulk,
   updateOrder,
   updateAllOrderSelected,
+  orders,
 }) => {
   if (!selected || !selected?.length) {
     return null;
@@ -32,8 +33,9 @@ const OrderBulkAction = ({
       () => {
         toast.success('Status Updated');
         forEach(selected, (item) => {
+          const index = findIndex(orders, (o) => o.id === item.id);
           updateOrder({
-            index: item.index,
+            index: index,
             key: 'artistPaymentStatus',
             value: status,
           });
@@ -74,6 +76,7 @@ const mapStateToProps = ({ order, auth }) => {
   return {
     accountInfo: auth.data.accountInfo,
     selected,
+    orders,
   };
 };
 

@@ -7,7 +7,7 @@ import {
   updateOrderArtistPaymentBulkService,
   getOrderCountByStatusService,
 } from 'services/order';
-import { getAllArtistsService, getAssignArtistsService } from 'services/artist';
+import { getAssignArtistsService } from 'services/artist';
 import { getAllStatusService } from 'services/status';
 
 export const ORDER_ACTIONS = {
@@ -262,7 +262,7 @@ export const updateOrderPaymentStatusBulkAction = (
     }
   };
   const onError = (error) => {
-    console.log('getOrderStatusAction', error);
+    console.log('updateOrderPaymentStatusBulkAction', error);
     dispatch({
       type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.ERROR,
       payload: error.response,
