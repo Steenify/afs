@@ -18,6 +18,7 @@ import './style.scss';
 
 const OrderDetail = ({ getOrderDetail, getOrderStatus }) => {
   let { id } = useParams();
+
   useEffect(() => {
     getOrderStatus();
     getOrderDetail(id);

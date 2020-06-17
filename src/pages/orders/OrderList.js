@@ -62,9 +62,14 @@ const OrderList = (props) => {
 
   const history = useHistory();
 
+  const canAssignOrder = accountInfo?.permissions?.includes(
+    PERMITTIONS_CONFIG.ASSIGN_BOOKING,
+  );
   useEffect(() => {
-    getArtists();
-  }, [getArtists]);
+    if (canAssignOrder) {
+      getArtists();
+    }
+  }, [getArtists, canAssignOrder]);
 
   const handleUpdate = (index, key, value, original) => {
     updateOrder({

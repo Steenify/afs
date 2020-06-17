@@ -7,7 +7,7 @@ import {
   updateOrderArtistPaymentBulkService,
   getOrderCountByStatusService,
 } from 'services/order';
-import { getAllArtistsService } from 'services/artist';
+import { getAllArtistsService, getAssignArtistsService } from 'services/artist';
 import { getAllStatusService } from 'services/status';
 
 export const ORDER_ACTIONS = {
@@ -144,7 +144,7 @@ export const getArtistsAction = (params = {}) => async (dispatch) => {
   };
 
   await actionTryCatchCreator({
-    service: getAllArtistsService(params),
+    service: getAssignArtistsService(params),
     onPending,
     onSuccess,
     onError,
