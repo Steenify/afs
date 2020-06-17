@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Badge } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
@@ -20,7 +20,7 @@ import {
 const CustomerList = (props) => {
   const { customerSearchBox = {}, sortColumns } = props;
   const { t } = useTranslation();
-
+  const history = useHistory();
   const columns = [
     {
       Header: '#',
@@ -35,9 +35,14 @@ const CustomerList = (props) => {
     { accessor: 'login', Header: t('baseApp.customerManagement.login') },
     {
       accessor: 'firstName',
+      minWidth: 100,
       Header: t('baseApp.customerManagement.firstName'),
     },
-    { accessor: 'lastName', Header: t('baseApp.customerManagement.lastName') },
+    {
+      accessor: 'lastName',
+      Header: t('baseApp.customerManagement.lastName'),
+      minWidth: 100,
+    },
     { accessor: 'email', Header: t('baseApp.customerManagement.email') },
     {
       accessor: 'createdDate',
@@ -111,6 +116,25 @@ const CustomerList = (props) => {
 
   const { customers = [], ui, error } = props;
 
+  const goToDetail = (login) => {
+    if (login) {
+      history.push(`/customer/detail/${login}`);
+    }
+  };
+
+  const listNoActionHeader = ['Login'];
+
+  const getCellProps = ({ column, row }) => {
+    const { original } = row;
+    console.log('getCellProps -> original', original);
+    if (listNoActionHeader.indexOf(column?.Header) !== -1) {
+      return {
+        onClick: () => goToDetail(original?.code),
+      };
+    }
+    return {};
+  };
+
   return (
     <div>
       <CustomerSearchBox onSearch={handleSearch} style={{ marginTop: 15 }} />
@@ -118,6 +142,7 @@ const CustomerList = (props) => {
         data={customers}
         columns={columns}
         className='bg-white'
+        getCellProps={getCellProps}
         serverSide
         totalPage={(size) => getPaginationItemsNumber(props.totalItems, size)}
         onLoad={handleLoad}

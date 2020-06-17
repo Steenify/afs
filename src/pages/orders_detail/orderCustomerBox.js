@@ -87,6 +87,10 @@ const OrderCustomerBox = ({
               </p>
             )}
 
+            {customer?.note && (
+              <p className='mb-1'>Note: {customer?.note || ''} </p>
+            )}
+
             {customer?.sex && (
               <p className='mb-1'>Gender: {customer?.sex || ''} </p>
             )}
@@ -108,6 +112,26 @@ const OrderCustomerBox = ({
             {contact?.email && <p className='mb-1'>Email: {contact?.email}</p>}
             {contact?.phoneNumber && (
               <p className='mb-1'>Phone: {contact?.phoneNumber}</p>
+            )}
+
+            {contact?.fbChat && (
+              <p className='mb-1'>
+                Facebook Chat:
+                <a target='_blank' rel='noreferrer' href={`${contact?.fbChat}`}>
+                  {contact?.fbChat}
+                </a>
+              </p>
+            )}
+            {contact?.mailChain && (
+              <p className='mb-1'>
+                Mail Chain:
+                <a
+                  target='_blank'
+                  rel='noreferrer'
+                  href={`${contact?.mailChain}`}>
+                  {contact?.fbUrl}
+                </a>
+              </p>
             )}
             {contact?.fbUrl && (
               <p className='mb-1'>

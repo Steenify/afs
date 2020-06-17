@@ -41,6 +41,8 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
   );
 
   const onSubmit = (values) => {
+    console.log('onSubmit -> values', values);
+
     props.actUpdateUser(values).then((res) => {
       const { status, data } = res;
       const { errorKey, message } = data;
@@ -108,6 +110,12 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
         <Field
           className='form-group--inline'
           component={Input}
+          name='phoneNumber'
+          label={'Phone number'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
           name='lastName'
           label={t('baseApp.userManagement.lastName')}
         />
@@ -129,6 +137,63 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
             desc: item.name,
           }))}
         />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='customerExtension.note'
+          label={'Note'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='customerExtension.fbChat'
+          label={'Facebook Chat'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='customerExtension.mailChain'
+          label={'Mail Chain'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='customerExtension.fbUrl'
+          label={'Facebook Url'}
+        />
+
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='customerExtension.igUrl'
+          label={'Instagram Url'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='customerExtension.linkedUrl'
+          label={'LinkedIn Url'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='customerExtension.snapChatUrl'
+          label={'SnapChat Url'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='customerExtension.twitterUrl'
+          label={'Twitter Url'}
+        />
+
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='customerExtension.gen'
+          label={'Gender'}
+        />
+
         <FormGroup className='form-group--inline'>
           <label>{t('baseApp.userManagement.status')}</label>
           <Field

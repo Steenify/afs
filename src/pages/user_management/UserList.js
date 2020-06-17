@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Badge } from 'reactstrap';
 import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ import { actGetUsers, actUpdateUser, actUpdateSortUser } from './actions';
 
 const UserList = (props) => {
   const { t } = useTranslation();
-
+  const history = useHistory();
   const { users = [], userSearchBox = {}, sortColumns } = props;
 
   const columns = [
@@ -29,18 +29,28 @@ const UserList = (props) => {
         return index + 1 + step;
       },
     },
-    { accessor: 'login', Header: t('baseApp.userManagement.login') },
+    { accessor: 'login', Header: 'Login' },
     {
       accessor: 'firstName',
       Header: t('baseApp.userManagement.firstName'),
+      minWidth: 120,
     },
     {
       accessor: 'lastName',
+      minWidth: 120,
       Header: t('baseApp.userManagement.lastName'),
     },
     { accessor: 'email', Header: t('baseApp.userManagement.email') },
     {
+      accessor: 'authorities',
+      Header: 'Roles',
+      Cell: ({ row: { original } }) => {
+        return `${original.authorities.join(',')}`;
+      },
+    },
+    {
       accessor: 'createdDate',
+      minWidth: 150,
       Header: t('baseApp.userManagement.createdDate'),
       Cell: ({ row: { original } }) =>
         original.createdDate &&
@@ -64,19 +74,6 @@ const UserList = (props) => {
           )}
         </button>
       ),
-    },
-    {
-      accessor: 'edit',
-      Header: '',
-      Cell: ({ row: { original } }) => (
-        <Button
-          tag={Link}
-          to={`/user/detail/${original.login}`}
-          color='primary'>
-          {t('entity.action.edit')}
-        </Button>
-      ),
-      width: 68,
     },
   ];
 
@@ -108,6 +105,25 @@ const UserList = (props) => {
     props.actGetUsers(params);
   };
 
+  const goToDetail = (login) => {
+    if (login) {
+      history.push(`/user/detail/${login}`);
+    }
+  };
+
+  const listNoActionHeader = ['Login'];
+
+  const getCellProps = ({ column, row }) => {
+    const { original } = row;
+
+    if (listNoActionHeader.indexOf(column?.Header) !== -1) {
+      return {
+        onClick: () => goToDetail(original?.login),
+      };
+    }
+    return {};
+  };
+
   return (
     <div>
       <UserSearchBox onSearch={handleSearch} style={{ marginTop: 15 }} />
@@ -115,7 +131,9 @@ const UserList = (props) => {
         data={users}
         columns={columns}
         className='bg-white'
+        getCellProps={getCellProps}
         serverSide
+        sortBy={[{ id: 'createdDate', desc: true }]}
         totalPage={(size) => getPaginationItemsNumber(props.totalItems, size)}
         onLoad={handleLoad}
       />
