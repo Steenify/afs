@@ -126,7 +126,6 @@ const CustomerList = (props) => {
 
   const getCellProps = ({ column, row }) => {
     const { original } = row;
-    console.log('getCellProps -> original', original);
     if (listNoActionHeader.indexOf(column?.Header) !== -1) {
       return {
         onClick: () => goToDetail(original?.code),

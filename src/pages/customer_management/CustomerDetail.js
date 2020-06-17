@@ -30,9 +30,7 @@ const CustomerDetail = ({ style, handleSubmit, ...props }) => {
   const { t } = useTranslation();
 
   const onSubmit = (values) => {
-    console.log('onSubmit -> values', values);
     props.actUpdateCustomer(values).then((res) => {
-      console.log('onSubmit -> res', res);
       const { status, data } = res;
       const { errorKey, message } = data;
 
@@ -242,6 +240,7 @@ const mapStateToProps = ({ customer, role }) => {
       lastModifiedDate: customer.detailCustomer.lastModifiedDate,
       permissions: customer.detailCustomer.permissions,
       phoneNumber: customer.detailCustomer.phoneNumber,
+      customerExtension: customer.detailCustomer.customerExtension,
     },
     errorRequest: customer.error.edit,
     ui: customer.ui.edit,
