@@ -167,7 +167,9 @@ const OrderArtWorkBox = ({
                     <input
                       type='text'
                       className='form-control clipboad__input'
-                      value={order?.finalDriveId || ''}
+                      value={`https://drive.google.com/drive/u/0/folders${
+                        order?.finalDriveId || ''
+                      }`}
                       onChange={() => {}}
                       placeholder='Google Link'
                     />

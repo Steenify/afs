@@ -48,6 +48,14 @@
 
 			&.DONE {
 				background: #f9fafb;
+
+				td {
+					color: #767676;
+				}
+
+				.order__link {
+					color: #767676;
+				}
 			}
 		}
 

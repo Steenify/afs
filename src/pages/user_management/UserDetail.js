@@ -126,7 +126,7 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
           options={selectAuthorities.map((item) => ({
             label: item.name,
             value: item.name,
-            desc: item.description,
+            desc: item.name,
           }))}
         />
         <FormGroup className='form-group--inline'>
