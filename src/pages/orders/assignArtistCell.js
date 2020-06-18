@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { isEmpty, filter, lowerCase } from 'lodash';
-
 import Popover from 'react-tiny-popover';
+import { toast } from 'react-toastify';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
 import { PERMITTIONS_CONFIG } from 'config';
 
+import { updateOrderItemsAcion, assignOrdersArtistAction } from './actions';
+
 const AssignArtistCell = ({
-  row: { index, original },
-  column: { id },
-  updateCell,
+  assignedTo,
   artists,
   accountInfo,
+  id,
+  updateOrderItems,
+  assignOrdersArtist,
 }) => {
-  const { assignedTo } = original;
-
   const [search, setSearch] = useState('');
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
@@ -27,7 +28,16 @@ const AssignArtistCell = ({
 
   const onSave = (value) => {
     toggle();
-    updateCell(index, id, value, original);
+    updateOrderItems({
+      id: id,
+      field: 'assignedTo',
+      value: value,
+    });
+
+    const payload = { id: id, to: value.login };
+    assignOrdersArtist(payload, () => {
+      toast.success('Assigned order!');
+    });
   };
 
   let filteredArtist = artists;
@@ -148,11 +158,21 @@ const AssignArtistCell = ({
   );
 };
 
-const mapStateToProps = ({ order, auth }) => ({
-  artists: order.artists,
-  accountInfo: auth.data.accountInfo,
-});
+const mapStateToProps = ({ order, auth }, ownProps) => {
+  const { original } = ownProps.row;
+  const { items } = order.list;
+  const item = items[original] || {};
+  return {
+    id: item?.id || 0,
+    assignedTo: item?.assignedTo || {},
+    accountInfo: auth.data.accountInfo,
+    artists: order.artists,
+  };
+};
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateOrderItems: updateOrderItemsAcion,
+  assignOrdersArtist: assignOrdersArtistAction,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignArtistCell);

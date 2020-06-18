@@ -25,24 +25,24 @@ class ImageLoadAble extends Component {
 
   componentDidMount() {
     const { url } = this.props;
-    const onError = () => {
-      this.setState({
-        isLoading: false,
-      });
-    };
-    const onSuccess = () => {
-      this.setState({
-        isLoadAble: true,
-        isLoading: false,
-      });
-    };
-
     checkImageLoadable({
       url,
-      onError,
-      onSuccess,
+      onError: this.onError,
+      onSuccess: this.onSuccess,
     });
   }
+  onError = () => {
+    this.setState({
+      isLoading: false,
+    });
+  };
+
+  onSuccess = () => {
+    this.setState({
+      isLoadAble: true,
+      isLoading: false,
+    });
+  };
 
   render() {
     const { url, className, type = '' } = this.props;

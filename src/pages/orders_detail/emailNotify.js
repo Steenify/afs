@@ -148,9 +148,9 @@ const EmaiNotify = (props) => {
                       'searchreplace visualblocks code',
                       'insertdatetime media table paste wordcount',
                     ],
-                    toolbar: `undo redo | formatselect | bold italic |
+                    toolbar: `undo redo | formatselect | link | bold italic |
               alignleft aligncenter alignright | code | \
-              bullist numlist outdent indent | help`,
+              bullist numlist outdent indent`,
                   }}
                   onChange={handleUpdateEmail}
                 />

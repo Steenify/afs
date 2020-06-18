@@ -12,17 +12,23 @@ import { PERMITTIONS_CONFIG } from 'config';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
+import { updateOrdersBudgetAction, updateOrderItemsAcion } from './actions';
+
 const OrderBudgetCell = ({
-  row: { index, original },
-  column: { id },
-  updateCell,
+  budget,
   accountInfo,
+  id,
+  updateOrdersBudget,
+  updateOrderItems,
 }) => {
-  const { budget } = original;
   const [value, setValue] = useState(budget || '');
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
+
+  useEffect(() => {
+    setValue(budget || '');
+  }, [budget]);
 
   const onChange = (data) => {
     setValue(data.value);
@@ -39,20 +45,29 @@ const OrderBudgetCell = ({
       toast.warn('Please update new Budget');
       return;
     }
-    updateCell(index, id, value, original);
     toggle();
-  };
 
-  useEffect(() => {
-    setValue(budget || '');
-  }, [budget]);
+    updateOrderItems({
+      id: id,
+      field: 'budget',
+      value: value,
+    });
+
+    const payload = {
+      id: id,
+      budget: value,
+    };
+    updateOrdersBudget(payload, id, () => {
+      toast.success('Budget updated!');
+    });
+  };
 
   if (!accountInfo) {
     return '';
   }
 
   if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_BUDGET)) {
-    return <div className=''>{formatMoney(original?.budget)}</div>;
+    return <div className=''>{formatMoney(budget)}</div>;
   }
 
   return (
@@ -105,7 +120,7 @@ const OrderBudgetCell = ({
             <span className='icon d-block mr-1'>
               <Pencil width='14px' height='14px' />
             </span>
-            {formatNumber(original?.budget || 0)}$
+            {formatNumber(budget || 0)}$
           </div>
         </button>
       )}
@@ -113,10 +128,20 @@ const OrderBudgetCell = ({
   );
 };
 
-const mapStateToProps = ({ order, auth }) => ({
-  accountInfo: auth.data.accountInfo,
-});
+const mapStateToProps = ({ order, auth }, ownProps) => {
+  const { original } = ownProps.row;
+  const { items } = order.list;
+  const item = items[original] || {};
+  return {
+    id: item?.id,
+    budget: item?.budget || 0,
+    accountInfo: auth.data.accountInfo,
+  };
+};
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateOrdersBudget: updateOrdersBudgetAction,
+  updateOrderItems: updateOrderItemsAcion,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderBudgetCell);

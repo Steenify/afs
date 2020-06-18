@@ -218,7 +218,7 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
       <ToastContainer
         position='bottom-left'
         autoClose={3000}
-        hideProgressBar={true}
+        hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         rtl={false}

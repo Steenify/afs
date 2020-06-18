@@ -142,9 +142,9 @@ const OrderSumaryBox = ({
                 'searchreplace visualblocks code',
                 'insertdatetime media table paste wordcount',
               ],
-              toolbar: `formatselect | bold italic |
+              toolbar: `formatselect | link | bold italic |
             alignleft aligncenter alignright |
-            bullist numlist outdent indent link`,
+            bullist | numlist | outdent | indent | code`,
             }}
             onChange={handleChangeSumarize}
           />

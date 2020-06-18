@@ -77,7 +77,8 @@
 
 /** Classes for the progress bar **/
 .Toastify__progress-bar {
-	display: none;
+	// display: none;
+	opacity: 0 !important;
 }
 
 .Toastify__progress-bar--animated {

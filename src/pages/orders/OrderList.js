@@ -1,31 +1,17 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import NumberFormat from 'react-number-format';
-import { toast } from 'react-toastify';
 
 import { remove } from 'lodash';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 
 import DataTable from 'components/common/DataTable';
 import InPageLoading from 'components/common/inPageLoading';
 import { PERMITTIONS_CONFIG } from 'config';
 
-import {
-  getPaginationItemsNumber,
-  getSelectedStatus,
-  dateTimeToDeadline,
-  formatNumber,
-} from 'utils';
+import { getPaginationItemsNumber } from 'utils';
 
-import {
-  getOrdersAction,
-  updateOrdersBudgetAction,
-  updateOrderAcion,
-  getArtistsAction,
-  updateOrdersArtistAction,
-  updateOrderPaymentStatusAction,
-} from './actions';
+import { getOrdersAction, updateOrderAcion, getArtistsAction } from './actions';
 
 import orderBudgetCell from './orderBugetCell';
 import AssignArtistCell from './assignArtistCell';
@@ -36,28 +22,19 @@ import OrderPaymentCell from './orderPaymentCell';
 import OrderBulkAction from './orderBulkAction';
 import OrderSelectedCell from './orderSelectedCell';
 import OrderSelectedAll from './orderSelectedAll';
-
-const listNoActionHeader = [
-  'Created Date',
-  'Deadline',
-  'Price',
-  'Status',
-  'Payment',
-];
+import OrderCreatedDateCell from './orderCreateDateCell';
+import OrderDeadlineCell from './orderDeadlineCell';
+import OrderSubTotalCell from './orderSubTotalCell';
+import OrderStatusCell from './orderStatusCell';
 
 const OrderList = (props) => {
-  const { t } = useTranslation();
   const {
     getOrders,
-    orders = [],
-    updateOrderBudget,
     updateOrder,
     getArtists,
     loading,
-    updateOrdersArtist,
-    status,
     accountInfo,
-    updateOrderPaymentStatus,
+    ids,
   } = props;
 
   const history = useHistory();
@@ -70,36 +47,6 @@ const OrderList = (props) => {
       getArtists();
     }
   }, [getArtists, canAssignOrder]);
-
-  const handleUpdate = (index, key, value, original) => {
-    updateOrder({
-      index,
-      key,
-      value,
-    });
-    if (key === 'assignedTo') {
-      const payload = { id: original.id, to: value.login };
-      updateOrdersArtist(payload, () => {
-        toast.success('Assigned order!');
-      });
-    }
-    if (key === 'budget') {
-      const payload = {
-        id: original.id,
-        budget: value,
-      };
-      updateOrderBudget(payload, original.id, () => {
-        toast.success('Budget updated!');
-      });
-    }
-
-    if (key === 'artistPaymentStatus') {
-      const payload = {
-        status: value,
-      };
-      updateOrderPaymentStatus(payload, original.id);
-    }
-  };
 
   let columns = [
     {
@@ -118,15 +65,13 @@ const OrderList = (props) => {
       accessor: 'paidAt',
       Header: 'Created Date',
       minWidth: 130,
-      Cell: ({ row: { original } }) =>
-        (original.paidAt && dateTimeToDeadline(original.paidAt)) || '',
+      Cell: OrderCreatedDateCell,
     },
     {
       accessor: 'deadline',
       minWidth: 100,
       Header: 'Deadline',
-      Cell: ({ row: { original } }) =>
-        (original.deadline && dateTimeToDeadline(original.deadline)) || '',
+      Cell: OrderDeadlineCell,
     },
     {
       accessor: 'customer',
@@ -140,8 +85,7 @@ const OrderList = (props) => {
       Header: 'Price',
       minWidth: 100,
       className: 'text-right',
-      Cell: ({ row: { original } }) =>
-        original?.subtotal ? `${formatNumber(original.subtotal)}$` : '',
+      Cell: OrderSubTotalCell,
     },
     {
       accessor: 'budget',
@@ -156,21 +100,11 @@ const OrderList = (props) => {
       minWidth: 120,
       Cell: AssignArtistCell,
     },
-
     {
       accessor: 'status',
-      minWidth: 170,
+      minWidth: 150,
       Header: 'Status',
-      Cell: ({ row: { original } }) => (
-        <div>
-          <span
-            className={`order__status ${
-              getSelectedStatus(original.status, status).name
-            }`}>
-            {getSelectedStatus(original.status, status).friendlyName}
-          </span>
-        </div>
-      ),
+      Cell: OrderStatusCell,
     },
     {
       accessor: 'artistPaymentStatus',
@@ -210,29 +144,19 @@ const OrderList = (props) => {
     }
   };
 
-  const getCellProps = ({ column, row }) => {
-    const { original } = row;
-    if (listNoActionHeader.indexOf(column?.Header) !== -1) {
-      return {
-        onClick: () => goToDetail(original?.code),
-      };
-    }
-    return {};
-  };
-
-  const getTrProps = (tr, row) => {
-    const { original } = row;
-    const now = new Date().getTime();
-    const deadline = new Date(original.deadline).getTime();
-    const isLated = now > deadline || false;
-    const isNotDone = original.status !== 'DONE';
-    return {
-      ...tr,
-      className: `${isLated && isNotDone ? 'lated' : ''} ${
-        !isNotDone && 'DONE'
-      }`,
-    };
-  };
+  // const getTrProps = (tr, row) => {
+  //   const { original } = row;
+  //   const now = new Date().getTime();
+  //   const deadline = new Date(original.deadline).getTime();
+  //   const isLated = now > deadline || false;
+  //   const isNotDone = original.status !== 'DONE';
+  //   return {
+  //     ...tr,
+  //     className: `${isLated && isNotDone ? 'lated' : ''} ${
+  //       !isNotDone && 'DONE'
+  //     }`,
+  //   };
+  // };
 
   return (
     <div>
@@ -245,16 +169,15 @@ const OrderList = (props) => {
         {isCanPay && <OrderBulkAction updateOrder={updateOrder} />}
 
         <DataTable
-          data={orders}
+          data={ids}
           columns={columns}
-          className='bg-white'
+          className='bg-white order__table'
           serverSide
           totalPage={(size) => getPaginationItemsNumber(props.totalItems, size)}
           onLoad={handleLoad}
-          updateCell={handleUpdate}
+          goToDetail={goToDetail}
           sortBy={[{ id: 'number', desc: true }]}
-          getCellProps={getCellProps}
-          getTrProps={getTrProps}
+          // getTrProps={getTrProps}
           whiteListSort={[
             'customer',
             'assignedTo',
@@ -273,19 +196,14 @@ const OrderList = (props) => {
 
 const mapStateToProps = ({ order, auth }) => ({
   totalItems: order.list.totalItems,
-  orders: order.list.orders,
+  ids: order.list.ids,
   loading: order.ui.list.loading,
-  status: order.status,
   accountInfo: auth.data.accountInfo,
 });
 
 const mapDispatchToProps = {
   getOrders: getOrdersAction,
-  updateOrderBudget: updateOrdersBudgetAction,
-  updateOrder: updateOrderAcion,
   getArtists: getArtistsAction,
-  updateOrdersArtist: updateOrdersArtistAction,
-  updateOrderPaymentStatus: updateOrderPaymentStatusAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderList);

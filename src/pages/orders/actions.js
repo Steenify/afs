@@ -11,14 +11,14 @@ import { getAssignArtistsService } from 'services/artist';
 import { getAllStatusService } from 'services/status';
 
 export const ORDER_ACTIONS = {
-  UPDATE_ORDER_ACTION: 'UPDATE_ORDER_ACTION',
   UPDATE_SELECTED_STATUS_ACTION: 'UPDATE_SELECTED_STATUS_ACTION',
   UPDATE_ALL_SELECTED_ROW_ACTION: 'UPDATE_ALL_SELECTED_ROW_ACTION',
+  UPDATE_ORDER_ITEMS_ACTION: 'UPDATE_ORDER_ITEMS_ACTION',
 };
 
-export const updateOrderAcion = (payload) => (dispatch) => {
+export const updateOrderItemsAcion = (payload) => (dispatch) => {
   dispatch({
-    type: ORDER_ACTIONS.UPDATE_ORDER_ACTION,
+    type: ORDER_ACTIONS.UPDATE_ORDER_ITEMS_ACTION,
     payload,
   });
 };
@@ -154,7 +154,7 @@ export const getArtistsAction = (params = {}) => async (dispatch) => {
 export const UPDATE_ORDER_ARTIST_ACTION = actionCreator(
   'UPDATE_ORDER_ARTIST_ACTION',
 );
-export const updateOrdersArtistAction = (payload, cb) => async (dispatch) => {
+export const assignOrdersArtistAction = (payload, cb) => async (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_ARTIST_ACTION.PENDING,
@@ -165,7 +165,7 @@ export const updateOrdersArtistAction = (payload, cb) => async (dispatch) => {
     cb && cb();
   };
   const onError = (error) => {
-    console.log('updateOrdersArtistAction', error);
+    console.log('assignOrdersArtistAction', error);
     dispatch({
       type: UPDATE_ORDER_ARTIST_ACTION.ERROR,
       payload: error.response,

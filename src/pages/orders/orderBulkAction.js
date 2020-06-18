@@ -1,47 +1,37 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import { forEach, filter, findIndex, isEmpty, lowerCase } from 'lodash';
-// import Popover from 'react-tiny-popover';
+import { forEach, filter } from 'lodash';
 import { statusPayments, PERMITTIONS_CONFIG } from 'config';
-// import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
 import OrderSelectedCell from './orderSelectedAll';
 
 import {
   updateOrderPaymentStatusBulkAction,
   updateAllOrderSelectedAction,
+  updateOrderItemsAcion,
 } from './actions';
 
 const OrderBulkAction = ({
   selected,
   updateOrderPaymentStatusBulk,
-  updateOrder,
   updateAllOrderSelected,
-  orders,
+  updateOrderItems,
 }) => {
-  if (!selected || !selected?.length) {
-    return null;
-  }
-
-  // const [search, setSearch] = useState('');
-  // const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  // const toggle = () => setIsPopoverOpen(!isPopoverOpen);
+  const isHide = !selected || !selected?.length;
 
   const handleChangeStatus = (status) => {
-    const ids = selected.map((item) => item?.original?.id);
     updateOrderPaymentStatusBulk(
       status,
       {
-        id: ids,
+        id: selected,
       },
       () => {
         toast.success('Status Updated');
         forEach(selected, (item) => {
-          const index = findIndex(orders, (o) => o.id === item.id);
-          updateOrder({
-            index: index,
-            key: 'artistPaymentStatus',
+          updateOrderItems({
+            id: item,
+            field: 'artistPaymentStatus',
             value: status,
           });
         });
@@ -51,7 +41,7 @@ const OrderBulkAction = ({
   };
 
   return (
-    <div className='order__bulk'>
+    <div className={`order__bulk ${isHide && 'd-none'}`}>
       <div className='btn-group'>
         <div className='btn btn-group__item'>
           <div className='d-flex align-items-center order__bulk__selected'>
@@ -76,18 +66,18 @@ const OrderBulkAction = ({
 };
 
 const mapStateToProps = ({ order, auth }) => {
-  const { orders } = order.list;
-  const selected = filter(orders, (or) => or.selected);
+  const { items } = order.list;
+  const selected = filter(items, (or) => or.selected).map((or) => or.id);
   return {
     accountInfo: auth.data.accountInfo,
     selected,
-    orders,
   };
 };
 
 const mapDispatchToProps = {
   updateOrderPaymentStatusBulk: updateOrderPaymentStatusBulkAction,
   updateAllOrderSelected: updateAllOrderSelectedAction,
+  updateOrderItems: updateOrderItemsAcion,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderBulkAction);

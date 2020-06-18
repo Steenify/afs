@@ -6,13 +6,13 @@ import { toast } from 'react-toastify';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
-import { getArtistsAction, updateOrdersArtistAction } from '../orders/actions';
+import { getArtistsAction, assignOrdersArtistAction } from '../orders/actions';
 
 const OrderAssignedBox = ({
   order,
   getArtists,
   artists,
-  updateOrdersArtist,
+  assignOrdersArtist,
 }) => {
   const { assignedTo } = order;
 
@@ -43,7 +43,7 @@ const OrderAssignedBox = ({
     if (!isEmpty(artist)) {
       const payload = { id: order.id, to: artist.login };
       setDropdownOpen(false);
-      updateOrdersArtist(payload, () => {
+      assignOrdersArtist(payload, () => {
         toast.success('updated assigned artist!');
       });
     }
@@ -161,7 +161,7 @@ const mapStateToProps = ({ order }) => ({
 
 const mapDispatchToProps = {
   getArtists: getArtistsAction,
-  updateOrdersArtist: updateOrdersArtistAction,
+  assignOrdersArtist: assignOrdersArtistAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderAssignedBox);

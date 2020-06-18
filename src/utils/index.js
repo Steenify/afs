@@ -2,6 +2,7 @@ import moment from 'moment';
 // import numeral from 'numeral';
 import { toast } from 'react-toastify';
 import omit from 'lodash/omit';
+import { reduce, map, isObject, mapValues } from 'lodash';
 
 import { PSDFileType } from 'config';
 import PSDFile from 'assets/img/psd__icon.jpg';
@@ -241,13 +242,17 @@ export const getSelectedStatus = (name, status) => {
   return StatusMap[name] || {};
 };
 
-export const mapDataList = (list = [], name, value) => {
-  return list.map((item) => {
-    return {
-      ...item,
-      [name]: value,
-    };
-  });
+export const mapDataList = (list, name, value) => {
+  if (!isObject(list)) {
+    return map(list, (item) => {
+      return {
+        ...item,
+        [name]: value,
+      };
+    });
+  } else {
+    return mapValues(list, (item) => ({ ...item, [name]: value }));
+  }
 };
 
 export const renderHTML = (text) => {
@@ -328,4 +333,20 @@ export const checkImageLoadable = ({ url, onError, onSuccess }) => {
   img.onabort = onError;
   img.onload = onSuccess;
   img.src = url;
+};
+
+export const mapDataByIds = (list = [], field) => {
+  const res = reduce(
+    list,
+    (total, item) => {
+      total.ids.push(item[field]);
+      total.items[item[field]] = item;
+      return total;
+    },
+    {
+      ids: [],
+      items: {},
+    },
+  );
+  return res;
 };

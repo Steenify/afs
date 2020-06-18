@@ -9,10 +9,9 @@ import { PERMITTIONS_CONFIG } from 'config';
 
 import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 
-const OrderCustomerCell = ({ row: { original }, accountInfo }) => {
+const OrderCustomerCell = ({ customer, accountInfo }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
-  const { customer } = original;
 
   const canViewContactInfo =
     accountInfo?.permissions?.includes(
@@ -91,9 +90,16 @@ const OrderCustomerCell = ({ row: { original }, accountInfo }) => {
   );
 };
 
-const mapStateToProps = ({ order, auth }) => ({
-  accountInfo: auth.data.accountInfo,
-});
+const mapStateToProps = ({ order, auth }, ownProps) => {
+  const { original } = ownProps.row;
+  const { items } = order.list;
+  const item = items[original] || {};
+
+  return {
+    customer: item?.customer || {},
+    accountInfo: auth.data.accountInfo,
+  };
+};
 
 const mapDispatchToProps = {};
 

@@ -12,13 +12,13 @@ import { PERMITTIONS_CONFIG } from 'config';
 import { ReactComponent as Eye } from 'assets/img/eye.svg';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
-const OrderDetailCell = ({ row: { original }, accountInfo }) => {
+const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
   if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_BOOKING)) {
-    return <div className=''>#{original.number}</div>;
+    return <div className=''>#{number}</div>;
   }
 
   return (
@@ -27,9 +27,9 @@ const OrderDetailCell = ({ row: { original }, accountInfo }) => {
         <Button
           tag={Link}
           className='w-100 order__link p-0'
-          to={`/order/${original?.code}`}
+          to={`/order/${code}`}
           color='link'>
-          #{original.number}
+          #{number}
         </Button>
         <Popover
           isOpen={isPopoverOpen}
@@ -45,10 +45,10 @@ const OrderDetailCell = ({ row: { original }, accountInfo }) => {
                 </span>
               </button>
               <div>
-                {original.items.map((item) => {
+                {items.map((item) => {
                   return (
                     <div
-                      key={`order__item__${original.number}__${item.id}`}
+                      key={`order__item__${number}__${item.id}`}
                       className='content'>
                       <strong className='name d-block'>{item.name}</strong>
                       {item.note ? (
@@ -78,7 +78,7 @@ const OrderDetailCell = ({ row: { original }, accountInfo }) => {
           {(ref) => (
             <Button
               color='link'
-              id={`order_detail_cell__${original?.id}`}
+              id={`order_detail_cell__${id}`}
               ref={ref}
               style={{ minWidth: 'auto' }}
               onClick={() => setIsPopoverOpen(!isPopoverOpen)}
@@ -94,10 +94,19 @@ const OrderDetailCell = ({ row: { original }, accountInfo }) => {
   );
 };
 
-const mapStateToProps = ({ order, auth }) => ({
-  artists: order.artists,
-  accountInfo: auth.data.accountInfo,
-});
+const mapStateToProps = ({ order, auth }, ownProps) => {
+  const { original } = ownProps.row;
+  const { items } = order.list;
+  const orderItem = items[original] || {};
+  return {
+    id: orderItem?.id || 0,
+    number: orderItem?.number || 0,
+    code: orderItem?.code || '',
+    items: orderItem?.items || [],
+    artists: order.artists,
+    accountInfo: auth.data.accountInfo,
+  };
+};
 
 const mapDispatchToProps = {};
 

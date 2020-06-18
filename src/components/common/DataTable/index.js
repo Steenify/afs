@@ -31,7 +31,7 @@ const DataTable = (props) => {
     getCellProps = defaultPropGetter,
     onLoad,
     className,
-    updateCell,
+    goToDetail,
   } = props;
 
   const defaultColumn = React.useMemo(
@@ -77,7 +77,7 @@ const DataTable = (props) => {
         : Math.floor(data.length / perPageSize) + 1,
       autoResetSortBy: false,
       // autoResetPage: false,
-      updateCell,
+      goToDetail,
     },
     useFlexLayout,
     useSortBy,
@@ -229,7 +229,7 @@ const DataTable = (props) => {
 
 DataTable.defaultProps = {
   totalPage: 0,
-  updateCell: () => {},
+  goToDetail: () => {},
 };
 
 export default DataTable;

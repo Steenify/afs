@@ -1,5 +1,5 @@
 import update from 'react-addons-update';
-import { mapDataList } from 'utils';
+import { mapDataList, mapDataByIds } from 'utils';
 
 import {
   ORDER_ACTIONS,
@@ -20,11 +20,12 @@ const initialState = {
   },
   list: {
     orders: [],
+    ids: [],
+    items: {},
     totalItems: 0,
   },
   artists: [],
   status: [],
-  detail: {},
   orderStatusCount: {},
 };
 
@@ -41,7 +42,11 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
-    case GET_ORDER_ACTION.SUCCESS:
+    case GET_ORDER_ACTION.SUCCESS: {
+      const { ids, items } = mapDataByIds(
+        mapDataList(payload.data, 'selected', false),
+        'id',
+      );
       return update(state, {
         ui: {
           list: {
@@ -50,9 +55,12 @@ const reducer = (state = initialState, action) => {
         },
         list: {
           orders: { $set: mapDataList(payload.data, 'selected', false) },
+          ids: { $set: ids },
+          items: { $set: items },
           totalItems: { $set: payload.headers['x-total-count'] },
         },
       });
+    }
 
     case GET_ORDER_ACTION.ERROR:
     case UPDATE_ORDER_PAYMENT_STATUS_ACTION.ERROR:
@@ -66,12 +74,13 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
-    case ORDER_ACTIONS.UPDATE_ORDER_ACTION:
+
+    case ORDER_ACTIONS.UPDATE_ORDER_ITEMS_ACTION:
       return update(state, {
         list: {
-          orders: {
-            [payload.index]: {
-              [payload.key]: {
+          items: {
+            [payload.id]: {
+              [payload.field]: {
                 $set: payload.value,
               },
             },
@@ -111,9 +120,9 @@ const reducer = (state = initialState, action) => {
     case ORDER_ACTIONS.UPDATE_ALL_SELECTED_ROW_ACTION:
       return update(state, {
         list: {
-          orders: {
-            $apply: (orders) => {
-              return mapDataList(orders, 'selected', payload);
+          items: {
+            $apply: (items) => {
+              return mapDataList(items, 'selected', payload);
             },
           },
         },
