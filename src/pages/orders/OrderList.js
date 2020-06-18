@@ -114,16 +114,16 @@ const OrderList = (props) => {
     },
   ];
 
-  if (
-    !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO)
-  ) {
-    columns = remove(columns, (col) => col.Header !== 'Customner');
-  }
-  if (
-    !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ORDER_SUBTOTAL)
-  ) {
-    columns = remove(columns, (col) => col.Header !== 'Price');
-  }
+  // if (
+  //   !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO)
+  // ) {
+  //   columns = remove(columns, (col) => col.Header !== 'Customner');
+  // }
+  // if (
+  //   !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ORDER_SUBTOTAL)
+  // ) {
+  //   columns = remove(columns, (col) => col.Header !== 'Price');
+  // }
 
   const isCanPay = accountInfo?.permissions?.includes(
     PERMITTIONS_CONFIG.UPDATE_PAYMENT_STATUS,

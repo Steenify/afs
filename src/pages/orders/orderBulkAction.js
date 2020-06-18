@@ -10,6 +10,7 @@ import {
   updateOrderPaymentStatusBulkAction,
   updateAllOrderSelectedAction,
   updateOrderItemsAcion,
+  updateOrderStatusDoneBulkAction,
 } from './actions';
 
 const OrderBulkAction = ({
@@ -17,8 +18,10 @@ const OrderBulkAction = ({
   updateOrderPaymentStatusBulk,
   updateAllOrderSelected,
   updateOrderItems,
+  updateOrderStatusDoneBulk,
 }) => {
   const isHide = !selected || !selected?.length;
+  console.log('selected', selected);
 
   const handleChangeStatus = (status) => {
     updateOrderPaymentStatusBulk(
@@ -27,12 +30,31 @@ const OrderBulkAction = ({
         id: selected,
       },
       () => {
-        toast.success('Status Updated');
+        toast.success('Payment Status Updated');
         forEach(selected, (item) => {
           updateOrderItems({
             id: item,
             field: 'artistPaymentStatus',
             value: status,
+          });
+        });
+        updateAllOrderSelected(false);
+      },
+    );
+  };
+
+  const handleUpdateOrderStatusDone = () => {
+    updateOrderStatusDoneBulk(
+      {
+        id: selected,
+      },
+      () => {
+        toast.success('Order Status Updated');
+        forEach(selected, (item) => {
+          updateOrderItems({
+            id: item,
+            field: 'status',
+            value: 'DONE',
           });
         });
         updateAllOrderSelected(false);
@@ -60,6 +82,12 @@ const OrderBulkAction = ({
           onClick={() => handleChangeStatus(statusPayments[1])}>
           Unpaid
         </button>
+        <button
+          type='button'
+          className='btn btn-group__item'
+          onClick={handleUpdateOrderStatusDone}>
+          Mark as Done
+        </button>
       </div>
     </div>
   );
@@ -78,6 +106,7 @@ const mapDispatchToProps = {
   updateOrderPaymentStatusBulk: updateOrderPaymentStatusBulkAction,
   updateAllOrderSelected: updateAllOrderSelectedAction,
   updateOrderItems: updateOrderItemsAcion,
+  updateOrderStatusDoneBulk: updateOrderStatusDoneBulkAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderBulkAction);

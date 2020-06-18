@@ -132,8 +132,16 @@ export const updateOrderArtistPaymentBulkService = (status, data) =>
     method: 'PUT',
     data,
   });
+
 export const getOrderCountByStatusService = () =>
   request({
     url: `${ORDERS_API}/count-by-status`,
     method: 'GET',
+  });
+
+export const getOrderBulkMarkAsDoneService = (data) =>
+  request({
+    url: `${ORDERS_API}/bulk/mark-as-done`,
+    method: 'PUT',
+    data,
   });

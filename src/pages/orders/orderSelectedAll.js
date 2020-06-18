@@ -23,8 +23,8 @@ const OrderSelectedAll = ({ selected, updateAllOrderSelected }) => {
 };
 
 const mapStateToProps = ({ order }) => {
-  const { orders } = order.list;
-  const selected = filter(orders, (or) => or.selected);
+  const { items } = order.list;
+  const selected = filter(items, (or) => or.selected).map((or) => or.id);
 
   return {
     selected: selected.length > 0,

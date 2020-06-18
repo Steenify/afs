@@ -6,6 +6,7 @@ import {
   updateOrderArtistPaymentService,
   updateOrderArtistPaymentBulkService,
   getOrderCountByStatusService,
+  getOrderBulkMarkAsDoneService,
 } from 'services/order';
 import { getAssignArtistsService } from 'services/artist';
 import { getAllStatusService } from 'services/status';
@@ -271,6 +272,42 @@ export const updateOrderPaymentStatusBulkAction = (
 
   await actionTryCatchCreator({
     service: updateOrderArtistPaymentBulkService(status, payload),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const UPDATE_ORDER_STATUS_DONE_BULK_ACTION = actionCreator(
+  'UPDATE_ORDER_STATUS_DONE_BULK_ACTION',
+);
+export const updateOrderStatusDoneBulkAction = (payload, cb) => async (
+  dispatch,
+) => {
+  const onPending = () => {
+    dispatch({
+      type: UPDATE_ORDER_STATUS_DONE_BULK_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    if (data) {
+      dispatch({
+        type: UPDATE_ORDER_STATUS_DONE_BULK_ACTION.SUCCESS,
+        payload: data,
+      });
+      cb && cb();
+    }
+  };
+  const onError = (error) => {
+    console.log('updateOrderStatusDoneBulkAction', error);
+    dispatch({
+      type: UPDATE_ORDER_STATUS_DONE_BULK_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  await actionTryCatchCreator({
+    service: getOrderBulkMarkAsDoneService(payload),
     onPending,
     onSuccess,
     onError,

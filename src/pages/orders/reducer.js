@@ -122,7 +122,8 @@ const reducer = (state = initialState, action) => {
         list: {
           items: {
             $apply: (items) => {
-              return mapDataList(items, 'selected', payload);
+              const res = mapDataList(items, 'selected', payload);
+              return res;
             },
           },
         },

@@ -21,16 +21,22 @@ class ImageLoadAble extends Component {
       isLoadAble: false,
       isLoading: true,
     };
+    this.request = null;
   }
 
   componentDidMount() {
     const { url } = this.props;
-    checkImageLoadable({
+    this.request = checkImageLoadable({
       url,
       onError: this.onError,
       onSuccess: this.onSuccess,
     });
   }
+
+  componentWillUnmount() {
+    this.request = null;
+  }
+
   onError = () => {
     this.setState({
       isLoading: false,
