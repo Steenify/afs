@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import { forEach, filter, findIndex } from 'lodash';
-
-import { statusPayments } from 'config';
+import { forEach, filter, findIndex, isEmpty, lowerCase } from 'lodash';
+// import Popover from 'react-tiny-popover';
+import { statusPayments, PERMITTIONS_CONFIG } from 'config';
+// import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
 import OrderSelectedCell from './orderSelectedAll';
 
@@ -22,6 +23,10 @@ const OrderBulkAction = ({
   if (!selected || !selected?.length) {
     return null;
   }
+
+  // const [search, setSearch] = useState('');
+  // const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  // const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
   const handleChangeStatus = (status) => {
     const ids = selected.map((item) => item?.original?.id);

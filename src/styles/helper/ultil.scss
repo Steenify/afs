@@ -171,6 +171,16 @@ $cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy,
 	background: none;
 	border: none;
 	outline: none;
+
+	svg {
+		width: 100%;
+		height: 100%;
+		border-radius: 5px;
+	}
+
+	img {
+		border-radius: 5px;
+	}
 }
 
 .rte {

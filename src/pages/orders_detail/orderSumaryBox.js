@@ -144,7 +144,7 @@ const OrderSumaryBox = ({
               ],
               toolbar: `formatselect | bold italic |
             alignleft aligncenter alignright |
-            bullist numlist outdent indent`,
+            bullist numlist outdent indent link`,
             }}
             onChange={handleChangeSumarize}
           />

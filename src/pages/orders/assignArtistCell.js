@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { DropdownMenu, DropdownToggle, Dropdown } from 'reactstrap';
 import { connect } from 'react-redux';
 import { isEmpty, filter, lowerCase } from 'lodash';
 
@@ -17,8 +16,8 @@ const AssignArtistCell = ({
   accountInfo,
 }) => {
   const { assignedTo } = original;
-  const [search, setSearch] = useState('');
 
+  const [search, setSearch] = useState('');
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
@@ -132,7 +131,7 @@ const AssignArtistCell = ({
           className='order__toggle order__assigned w-100'>
           <div className='d-flex'>
             <span className='name'>
-              {isEmpty(assignedTo)
+              {isEmpty(assignedTo) || assignedTo?.login === 'null'
                 ? '____________'
                 : `${assignedTo?.fullName || ''}` ||
                   `${assignedTo?.firstName || ''} ${

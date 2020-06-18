@@ -79,7 +79,9 @@ const OrderList = (props) => {
     });
     if (key === 'assignedTo') {
       const payload = { id: original.id, to: value.login };
-      updateOrdersArtist(payload);
+      updateOrdersArtist(payload, () => {
+        toast.success('Assigned order!');
+      });
     }
     if (key === 'budget') {
       const payload = {

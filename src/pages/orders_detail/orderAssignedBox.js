@@ -42,9 +42,9 @@ const OrderAssignedBox = ({
 
     if (!isEmpty(artist)) {
       const payload = { id: order.id, to: artist.login };
+      setDropdownOpen(false);
       updateOrdersArtist(payload, () => {
         toast.success('updated assigned artist!');
-        setDropdownOpen(false);
       });
     }
   };
@@ -63,12 +63,14 @@ const OrderAssignedBox = ({
 
   if (search) {
     filteredArtist = filter(artists, (art) => {
-      if (art.fullName) {
-        return (
-          lowerCase(
-            art?.fullName || `${art?.firstName} ${art?.lastName}`,
-          ).indexOf(lowerCase(search)) !== -1
-        );
+      const hasName =
+        lowerCase(
+          art?.fullName || `${art?.firstName || ''} ${art?.lastName || ''}`,
+        ).indexOf(lowerCase(search)) !== -1;
+      const hasNote = lowerCase(art?.note).indexOf(lowerCase(search)) !== -1;
+
+      if (hasName || hasNote) {
+        return true;
       }
       return false;
     });

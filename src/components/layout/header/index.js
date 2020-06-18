@@ -82,7 +82,7 @@ const Header = (props) => {
                 </button>
               </div> */}
 
-              <Notification />
+              {/* <Notification /> */}
               <AccountInfo account={accountInfo} onSignout={props.actSignout} />
             </Nav>
           )}

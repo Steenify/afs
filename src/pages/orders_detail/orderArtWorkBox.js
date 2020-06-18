@@ -167,14 +167,16 @@ const OrderArtWorkBox = ({
                     <input
                       type='text'
                       className='form-control clipboad__input'
-                      value={`https://drive.google.com/drive/u/0/folders${
+                      value={`https://drive.google.com/drive/folders/${
                         order?.finalDriveId || ''
                       }`}
                       onChange={() => {}}
                       placeholder='Google Link'
                     />
                     <CopyToClipboard
-                      text={order.finalDriveId}
+                      text={`https://drive.google.com/drive/folders/${
+                        order?.finalDriveId || ''
+                      }`}
                       onCopy={() => toast.success('Copied')}>
                       <div className='input-group-append clipboad__input'>
                         <span className='input-group-text'>Copy</span>

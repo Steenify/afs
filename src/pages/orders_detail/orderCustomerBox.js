@@ -116,69 +116,69 @@ const OrderCustomerBox = ({
 
             {contact?.fbChat && (
               <p className='mb-1'>
-                Facebook Chat:
+                Facebook Chat: &nbsp;
                 <a target='_blank' rel='noreferrer' href={`${contact?.fbChat}`}>
-                  {contact?.fbChat}
+                  Link
                 </a>
               </p>
             )}
             {contact?.mailChain && (
               <p className='mb-1'>
-                Mail Chain:
+                Mail Chain: &nbsp;
                 <a
                   target='_blank'
                   rel='noreferrer'
                   href={`${contact?.mailChain}`}>
-                  {contact?.fbUrl}
+                  Link
                 </a>
               </p>
             )}
             {contact?.fbUrl && (
               <p className='mb-1'>
-                Facebook:
+                Facebook: &nbsp;
                 <a target='_blank' rel='noreferrer' href={`${contact?.fbUrl}`}>
-                  {contact?.fbUrl}
+                  Link
                 </a>
               </p>
             )}
             {contact?.igUrl && (
               <p className='mb-1'>
-                Instagram:
+                Instagram: &nbsp;
                 <a target='_blank' rel='noreferrer' href={`${contact?.igUrl}`}>
-                  {contact?.igUrl}
+                  Link
                 </a>
               </p>
             )}
             {contact?.snapChatUrl && (
               <p className='mb-1'>
-                SnapChat:
+                SnapChat: &nbsp;
                 <a
                   target='_blank'
                   rel='noreferrer'
                   href={`${contact?.snapChatUrl}`}>
-                  {contact?.snapChatUrl}
+                  Link
                 </a>
               </p>
             )}
             {contact?.linkedUrl && (
               <p className='mb-1'>
-                LinkedIn:
+                LinkedIn: &nbsp;
                 <a
                   target='_blank'
                   rel='noreferrer'
                   href={`${contact?.linkedUrl}`}>
-                  {contact?.linkedUrl}
+                  Link
                 </a>
               </p>
             )}
             {contact?.twitterUrl && (
               <p className='mb-1'>
-                Twitter:
+                Twitter: &nbsp;
                 <a
                   target='_blank'
                   rel='noreferrer'
                   href={`${contact?.twitterUrl}`}>
-                  {contact?.twitterUrl}
+                  Link
                 </a>
               </p>
             )}
