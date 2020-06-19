@@ -29,8 +29,11 @@ const SideBar = (props) => {
 
   const totalOrders = reduce(
     orderStatus,
-    (res, value) => {
-      return (res += value);
+    (res, value, key) => {
+      if (key !== 'DONE') {
+        return (res += value);
+      }
+      return res;
     },
     0,
   );

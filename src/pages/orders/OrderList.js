@@ -2,16 +2,16 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { remove } from 'lodash';
-// import { useTranslation } from 'react-i18next';
-
 import DataTable from 'components/common/DataTable';
-import InPageLoading from 'components/common/inPageLoading';
+import TableLoader from 'components/common/tableLoader';
+
 import { PERMITTIONS_CONFIG } from 'config';
 
 import { getPaginationItemsNumber } from 'utils';
 
-import { getOrdersAction, updateOrderAcion, getArtistsAction } from './actions';
+import { getOrdersAction, getArtistsAction } from './actions';
+
+import { remove } from 'lodash';
 
 import orderBudgetCell from './orderBugetCell';
 import AssignArtistCell from './assignArtistCell';
@@ -114,16 +114,16 @@ const OrderList = (props) => {
     },
   ];
 
-  // if (
-  //   !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO)
-  // ) {
-  //   columns = remove(columns, (col) => col.Header !== 'Customner');
-  // }
-  // if (
-  //   !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ORDER_SUBTOTAL)
-  // ) {
-  //   columns = remove(columns, (col) => col.Header !== 'Price');
-  // }
+  if (
+    !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO)
+  ) {
+    columns = remove(columns, (col) => col.Header !== 'Customner');
+  }
+  if (
+    !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ORDER_SUBTOTAL)
+  ) {
+    columns = remove(columns, (col) => col.Header !== 'Price');
+  }
 
   const isCanPay = accountInfo?.permissions?.includes(
     PERMITTIONS_CONFIG.UPDATE_PAYMENT_STATUS,
@@ -165,7 +165,11 @@ const OrderList = (props) => {
         query={{ sortBy: [{ id: 'number', desc: true }] }}
       />
 
-      <div className='order__wrapper relative'>
+      <div className={`${!loading && 'd-none'}`}>
+        <TableLoader />
+      </div>
+
+      <div className={`order__wrapper relative ${loading && 'd-none'}`}>
         {isCanPay && <OrderBulkAction updateOrder={updateOrder} />}
 
         <DataTable
@@ -177,7 +181,6 @@ const OrderList = (props) => {
           onLoad={handleLoad}
           goToDetail={goToDetail}
           sortBy={[{ id: 'number', desc: true }]}
-          // getTrProps={getTrProps}
           whiteListSort={[
             'customer',
             'assignedTo',
@@ -188,8 +191,6 @@ const OrderList = (props) => {
           ]}
         />
       </div>
-
-      <InPageLoading isLoading={loading} />
     </div>
   );
 };

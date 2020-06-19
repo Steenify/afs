@@ -43,8 +43,11 @@ const OrderFilters = ({ style, status, handleSubmit, onSearch, ...props }) => {
 
   const totalOrders = reduce(
     orderStatusCount,
-    (res, value) => {
-      return (res += value);
+    (res, value, key) => {
+      if (key !== 'DONE') {
+        return (res += value);
+      }
+      return res;
     },
     0,
   );
@@ -69,7 +72,7 @@ const OrderFilters = ({ style, status, handleSubmit, onSearch, ...props }) => {
               selectedStatus === sta.name && 'active'
             }`}>
             {sta.friendlyName}
-            {orderStatusCount[sta.name] && (
+            {orderStatusCount[sta.name] && sta.name !== 'DONE' && (
               <span className='number'>{orderStatusCount[sta.name]}</span>
             )}
           </button>

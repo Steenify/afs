@@ -38,16 +38,20 @@ class ImageLoadAble extends Component {
   }
 
   onError = () => {
-    this.setState({
-      isLoading: false,
-    });
+    if (this) {
+      this.setState({
+        isLoading: false,
+      });
+    }
   };
 
   onSuccess = () => {
-    this.setState({
-      isLoadAble: true,
-      isLoading: false,
-    });
+    if (this) {
+      this.setState({
+        isLoadAble: true,
+        isLoading: false,
+      });
+    }
   };
 
   render() {

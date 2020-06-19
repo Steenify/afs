@@ -45,7 +45,7 @@ export const updateEmailNotifyAction = (payload) => (dispatch) => {
 };
 
 export const GET_ORDER_DETAIL_ACTION = actionCreator('GET_ORDER_DETAIL_ACTION');
-export const getOrderDetailAction = (id) => async (dispatch) => {
+export const getOrderDetailAction = (id) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_ORDER_DETAIL_ACTION.PENDING,
@@ -65,7 +65,7 @@ export const getOrderDetailAction = (id) => async (dispatch) => {
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: getOrderService(id),
     onPending,
     onSuccess,
@@ -76,12 +76,9 @@ export const getOrderDetailAction = (id) => async (dispatch) => {
 export const UPDATE_ORDER_ITEM_SUMARIZE_ACTION = actionCreator(
   'UPDATE_ORDER_ITEM_SUMARIZE_ACTION',
 );
-export const updateOrderItemSumarizeAPIAction = (
-  id,
-  itemId,
-  data,
-  cb,
-) => async (dispatch) => {
+export const updateOrderItemSumarizeAPIAction = (id, itemId, data, cb) => (
+  dispatch,
+) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_ITEM_SUMARIZE_ACTION.PENDING,
@@ -102,7 +99,7 @@ export const updateOrderItemSumarizeAPIAction = (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: updateOrderItemSumarizeService({ id, itemId, data }),
     onPending,
     onSuccess,
@@ -120,7 +117,7 @@ export const updateOrderItemFilesAction = (
   data,
   files,
   cb,
-) => async (dispatch) => {
+) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_ITEM_FILES_ACTION.PENDING,
@@ -145,7 +142,7 @@ export const updateOrderItemFilesAction = (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: updateOrderItemFileService({ id, itemId, data }),
     onPending,
     onSuccess,
@@ -156,7 +153,7 @@ export const updateOrderItemFilesAction = (
 export const GET_ORDER_CUSTOMER_ACTION = actionCreator(
   'GET_ORDER_CUSTOMER_ACTION',
 );
-export const getOrderCustomerAction = (id) => async (dispatch) => {
+export const getOrderCustomerAction = (id) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_ORDER_CUSTOMER_ACTION.PENDING,
@@ -176,7 +173,7 @@ export const getOrderCustomerAction = (id) => async (dispatch) => {
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: getOrderCustomerService(id),
     onPending,
     onSuccess,
@@ -187,10 +184,7 @@ export const getOrderCustomerAction = (id) => async (dispatch) => {
 export const UPDATE_ORDER_STATUS_ACTION = actionCreator(
   'UPDATE_ORDER_STATUS_ACTION',
 );
-export const updateOrderStatusAction = (id, to) => async (
-  dispatch,
-  getState,
-) => {
+export const updateOrderStatusAction = (id, to) => (dispatch, getState) => {
   const { status } = getState().order;
 
   const onPending = () => {
@@ -219,7 +213,7 @@ export const updateOrderStatusAction = (id, to) => async (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: changeOrderStatusService({ id, to }),
     onPending,
     onSuccess,
@@ -230,7 +224,7 @@ export const updateOrderStatusAction = (id, to) => async (
 export const GET_ORDER_WORK_LOG_ACTION = actionCreator(
   'GET_ORDER_WORK_LOG_ACTION',
 );
-export const getOrderWorkLogAction = (id) => async (dispatch) => {
+export const getOrderWorkLogAction = (id) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_ORDER_WORK_LOG_ACTION.PENDING,
@@ -252,7 +246,7 @@ export const getOrderWorkLogAction = (id) => async (dispatch) => {
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: getOrderWorkLogService({ id }),
     onPending,
     onSuccess,
@@ -270,7 +264,7 @@ export const uploadFileWorkLogAction = (
   index,
   files,
   cb,
-) => async (dispatch) => {
+) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPLOAD_FILE_WORK_LOG_ACTION.PENDING,
@@ -295,7 +289,7 @@ export const uploadFileWorkLogAction = (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: uploadOrderWorkLogService({ id, logId, data: payload }),
     onPending,
     onSuccess,
@@ -306,13 +300,9 @@ export const uploadFileWorkLogAction = (
 export const UPLOAD_COMMENT_WORK_LOG_ACTION = actionCreator(
   'UPLOAD_COMMENT_WORK_LOG_ACTION',
 );
-export const uploadCommentWorkLogAction = (
-  id,
-  logId,
-  payload,
-  index,
-  cb,
-) => async (dispatch) => {
+export const uploadCommentWorkLogAction = (id, logId, payload, index, cb) => (
+  dispatch,
+) => {
   const onPending = () => {
     dispatch({
       type: UPLOAD_COMMENT_WORK_LOG_ACTION.PENDING,
@@ -334,7 +324,7 @@ export const uploadCommentWorkLogAction = (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: uploadOrderWorkLogCommentService({ id, logId, data: payload }),
     onPending,
     onSuccess,
@@ -351,7 +341,7 @@ export const deleteCommentWorkLogAction = (
   comId,
   logIndex,
   comIndex,
-) => async (dispatch) => {
+) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: DELETE_COMMENT_WORK_LOG_ACTION.PENDING,
@@ -371,7 +361,7 @@ export const deleteCommentWorkLogAction = (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: deleteOrderWorkLogCommentService({ id, logId, comId }),
     onPending,
     onSuccess,
@@ -390,7 +380,7 @@ export const updateCommentWorkLogAction = (
   logIndex,
   comIndex,
   cb,
-) => async (dispatch) => {
+) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_COMMENT_WORK_LOG_ACTION.PENDING,
@@ -411,7 +401,7 @@ export const updateCommentWorkLogAction = (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: updateOrderWorkLogCommentService({
       id,
       logId,
@@ -427,10 +417,7 @@ export const updateCommentWorkLogAction = (
 export const APPROVED_WORK_LOG_ACTION = actionCreator(
   'APPROVED_WORK_LOG_ACTION',
 );
-export const approvedWorkLogAction = (id, logId) => async (
-  dispatch,
-  getState,
-) => {
+export const approvedWorkLogAction = (id, logId) => (dispatch, getState) => {
   const { workLog } = getState().orderDetail.data;
   const workLogIndex = findIndex(workLog, (log) => log.id === logId);
 
@@ -453,7 +440,7 @@ export const approvedWorkLogAction = (id, logId) => async (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: approvedOrderWorkLogService({ id, logId }),
     onPending,
     onSuccess,
@@ -464,7 +451,7 @@ export const approvedWorkLogAction = (id, logId) => async (
 export const REJECTED_WORK_LOG_ACTION = actionCreator(
   'REJECTED_WORK_LOG_ACTION',
 );
-export const rejectedWorkLogAction = (id, logId, cb) => async (
+export const rejectedWorkLogAction = (id, logId, cb) => (
   dispatch,
   getState,
 ) => {
@@ -491,7 +478,7 @@ export const rejectedWorkLogAction = (id, logId, cb) => async (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: rejectedOrderWorkLogService({ id, logId }),
     onPending,
     onSuccess,
@@ -502,7 +489,7 @@ export const rejectedWorkLogAction = (id, logId, cb) => async (
 export const GET_EMAIL_TEMPLATE_ACTION = actionCreator(
   'GET_EMAIL_TEMPLATE_ACTION',
 );
-export const getEmailTemplateAction = (id, templateId) => async (dispatch) => {
+export const getEmailTemplateAction = (id, templateId) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.PENDING,
@@ -515,14 +502,13 @@ export const getEmailTemplateAction = (id, templateId) => async (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log('getEmailTemplateAction', error);
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.ERROR,
       payload: error.response,
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: getOrderEmailService({ id, templateId }),
     onPending,
     onSuccess,
@@ -533,7 +519,7 @@ export const getEmailTemplateAction = (id, templateId) => async (dispatch) => {
 export const SENT_EMAIL_NOTIFY_ACTION = actionCreator(
   'SENT_EMAIL_NOTIFY_ACTION',
 );
-export const sendEmailNotifyAction = () => async (dispatch, getState) => {
+export const sendEmailNotifyAction = () => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: SENT_EMAIL_NOTIFY_ACTION.PENDING,
@@ -558,7 +544,7 @@ export const sendEmailNotifyAction = () => async (dispatch, getState) => {
   const payload = {
     content: email,
   };
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: sentOrderEmailNotifyService({ id: order.id, data: payload }),
     onPending,
     onSuccess,

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import Button from 'components/common/button';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  faSignOutAlt,
-  faUserAlt,
-  faKey,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import Button from 'components/common/button';
 
 import { WEB_ROUTES } from 'config';
+
+import { ReactComponent as Toggle } from 'assets/img/toggle.svg';
+import { ReactComponent as Profile } from 'assets/img/profile.svg';
+import { ReactComponent as Logout } from 'assets/img/logout.svg';
+import { ReactComponent as Lock } from 'assets/img/lock.svg';
 
 import './style.scss';
 
@@ -31,8 +31,8 @@ const AccountInfo = (props) => {
       isOpen={dropdownOpen}
       toggle={toggle}
       className={`account-info mx-2 ${className || ''}`}>
-      <DropdownToggle>
-        <div className='d-flex align-items-center'>
+      <DropdownToggle className='account-info__toggle'>
+        <div className='account-info__title d-flex align-items-center'>
           <div className='avatar'>
             {imageUrl ? (
               <img src={imageUrl} alt={`${firstName}${lastName}`} />
@@ -49,23 +49,38 @@ const AccountInfo = (props) => {
             </p>
             <p className='email'>{email}</p>
           </div>
+          <div className='icon'>
+            <Toggle />
+          </div>
         </div>
       </DropdownToggle>
       <DropdownMenu>
-        <Button className='link d-block w-100 text-left'>
-          <FontAwesomeIcon className='mr-1' icon={faUserAlt} />
-          Profile
+        <Button
+          color='link'
+          className='account-info__link d-block w-100 text-left'>
+          <span className='icon'>
+            <Profile />
+          </span>
+          <span className='text'>Profile</span>
         </Button>
         <Button
-          className='link d-block w-100 text-left'
+          color='link'
+          className='account-info__link d-block w-100 text-left'
           tag={Link}
           to='/change-password'>
-          <FontAwesomeIcon className='mr-1' icon={faKey} />
-          Change Pasword
+          <span className='icon'>
+            <Lock />
+          </span>
+          <span className='text'>Change Pasword</span>
         </Button>
-        <Button className='link d-block w-100 text-left' onClick={handleLogout}>
-          <FontAwesomeIcon className='mr-1' icon={faSignOutAlt} />
-          Signout
+        <Button
+          color='link'
+          className='account-info__link d-block w-100 text-left'
+          onClick={handleLogout}>
+          <span className='icon'>
+            <Logout />
+          </span>
+          <span className='text'>Signout</span>
         </Button>
       </DropdownMenu>
     </ButtonDropdown>

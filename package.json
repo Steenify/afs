@@ -26,6 +26,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
+    "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
     "path": "^0.12.7",
     "pretty-quick": "^2.0.1",

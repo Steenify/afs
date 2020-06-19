@@ -13,10 +13,7 @@ import Breadcrumb from 'components/common/breadcrumb';
 import PageTitle from 'components/common/PageTitle';
 import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { actChangePassword } from './actions';
-import { getErrorMessage } from 'utils';
 
 const ChangePassword = ({ style, handleSubmit, ...props }) => {
   const { t } = useTranslation();

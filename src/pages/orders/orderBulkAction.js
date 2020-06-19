@@ -21,7 +21,6 @@ const OrderBulkAction = ({
   updateOrderStatusDoneBulk,
 }) => {
   const isHide = !selected || !selected?.length;
-  console.log('selected', selected);
 
   const handleChangeStatus = (status) => {
     updateOrderPaymentStatusBulk(

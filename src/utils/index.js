@@ -82,12 +82,12 @@ export const actionTryCatchCreator = async ({
       const messages = error?.name || error?.response?.data?.title || '';
 
       toast.error(
-        `Error: ${messages} \n ${
+        `${messages} \n ${
           error?.response?.data?.detail || error?.response?.data?.message || ''
         }`,
       );
     } else {
-      toast.error('Error:' + error);
+      toast.error(error);
     }
   }
 };
