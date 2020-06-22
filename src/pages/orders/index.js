@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Layout from 'components/common/Layout';
-import Breadcrumb from 'components/common/breadcrumb';
+// import Breadcrumb from 'components/common/breadcrumb';
 import PageTitle from 'components/common/PageTitle';
 import OrderList from './OrderList';
 
@@ -14,16 +14,11 @@ const Orders = () => {
   const { t } = useTranslation();
 
   return (
-    <Layout documentTitle={t(WEB_ROUTES.ORDERS.title)} container fluid>
-      <Breadcrumb
-        data={[
-          {
-            title: t('baseApp.orderManagement.home.title'),
-            active: false,
-            path: WEB_ROUTES.ORDERS.path,
-          },
-        ]}
-      />
+    <Layout
+      className='order__container'
+      documentTitle={t(WEB_ROUTES.ORDERS.title)}
+      container
+      fluid>
       <PageTitle title={t(WEB_ROUTES.ORDERS.title)} className='mb-0 mr-3' />
       <OrderList />
     </Layout>

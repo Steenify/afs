@@ -36,25 +36,25 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
     <div className='order_detail'>
       <div className='order_detail__header'>
         <div className='row no-gutters align-items-center'>
-          <div className='col-md-7'>
-            <div className='d-flex align-items-center flex-wrap'>
-              <span className='number'>#{order?.number}</span>
-              <span className='status'>
+          <div className='col-lg-6 col-xl-7'>
+            <div className='info__left'>
+              <div className='number'>#{order?.number}</div>
+              <div className='status'>
                 <span
                   className={`order__status ${
                     getSelectedStatus(order.status, status).name
                   }`}>
                   {getSelectedStatus(order.status, status).friendlyName}
                 </span>
-              </span>
-              <span className='deadline'>
+              </div>
+              <div className='deadline'>
                 <strong>Deadline: </strong>
                 {dateTimeStringFromDate(order.deadline)}
-              </span>
+              </div>
             </div>
           </div>
-          <div className='col-md-5 text-right'>
-            <div className='d-flex justify-content-end align-items-end'>
+          <div className='col-lg-6 col-xl-5 text-right'>
+            <div className='info__right'>
               {canEditAssign && <OrderAssignedBox order={order} />}
               <OrderBudget order={order} />
             </div>

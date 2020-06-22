@@ -51,7 +51,6 @@ const DataTable = (props) => {
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    selectedFlatRows,
     // Paging
     page,
     pageCount,

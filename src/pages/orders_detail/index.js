@@ -29,9 +29,10 @@ const OrderDetail = ({ getOrderDetail, getOrderStatus }) => {
       <Breadcrumb
         data={[
           {
-            title: WEB_ROUTES.ORDERS_DETAIL.title,
+            title: WEB_ROUTES.ORDERS.title,
             active: false,
-            path: WEB_ROUTES.ORDERS_DETAIL.path,
+            path: WEB_ROUTES.ORDERS.path,
+            isBack: true,
           },
         ]}
       />

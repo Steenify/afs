@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Badge, Navbar, Nav, Input } from 'reactstrap';
-import i18next from 'i18next';
+import { Navbar, Nav } from 'reactstrap';
+// import i18next from 'i18next';
+import { debounce } from 'lodash';
 
-import Notification from 'components/common/notification';
+import Notification from '../notification';
 import AccountInfo from './AccountInfo';
 
 import './style.scss';
@@ -16,10 +17,10 @@ const Header = (props) => {
 
   const [isShowInfo, setIsShowInfo] = useState(true);
 
-  const changeLanguage = (lang) => {
-    i18next.changeLanguage(lang);
-    props.changeLanguage(lang);
-  };
+  // const changeLanguage = (lang) => {
+  //   i18next.changeLanguage(lang);
+  //   props.changeLanguage(lang);
+  // };
 
   const handleToggle = () => {
     props.toggleMenu(!props.isMenuOpen);
@@ -40,9 +41,9 @@ const Header = (props) => {
   };
 
   useEffect(() => {
-    const listener = () => {
-      toggleMenu(!(window.innerWidth < 660));
-    };
+    const listener = debounce(() => {
+      toggleMenu(!(window.innerWidth < 768));
+    }, 300);
 
     listener();
 
@@ -82,7 +83,7 @@ const Header = (props) => {
                 </button>
               </div> */}
 
-              {/* <Notification /> */}
+              <Notification />
               <AccountInfo account={accountInfo} onSignout={props.actSignout} />
             </Nav>
           )}

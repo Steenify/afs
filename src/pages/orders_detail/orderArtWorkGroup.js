@@ -98,13 +98,8 @@ const OrderArtWorkGroup = ({
         return (
           <OrderRejectModal
             onClose={onClose}
-            onConfirm={(reason) => {
-              if (reason) {
-                const data = {
-                  content: reason,
-                  attachments: [],
-                };
-
+            onConfirm={(data) => {
+              if (data.content) {
                 uploadCommentWorkLog(
                   order.id,
                   LogId,
@@ -127,7 +122,7 @@ const OrderArtWorkGroup = ({
 
   return (
     <div className='order_detail__work_group group'>
-      <div className='group__header'>
+      <div className={`group__header ${group || ''}`}>
         <div className='group__title' onClick={toggle}>
           <div className='state dot'>
             {getSelectedStatus(group, status).friendlyName}

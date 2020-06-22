@@ -33,7 +33,7 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
         </Button>
         <Popover
           isOpen={isPopoverOpen}
-          position={'bottom'}
+          position={'right'}
           padding={10}
           disableReposition
           onClickOutside={toggle}

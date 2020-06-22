@@ -84,7 +84,7 @@ const OrderFilters = ({ style, status, handleSubmit, onSearch, ...props }) => {
         style={{ ...style }}
         onSubmit={handleSubmit(onSubmit)}>
         <Row form className='align-items-end'>
-          <Col md={9}>
+          <Col className='mb-3' md={9}>
             <Field
               className='mb-0 search__box__wrapper'
               component={Input}
@@ -94,7 +94,7 @@ const OrderFilters = ({ style, status, handleSubmit, onSearch, ...props }) => {
             />
           </Col>
 
-          <Col md={3}>
+          <Col className='mb-3' md={3}>
             <div className='d-flex w-100'>
               <Button
                 color='primary'

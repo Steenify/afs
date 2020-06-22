@@ -1,22 +1,44 @@
 @import 'styles/var.scss';
 
 .footer {
-  height: 80px;
-  display: flex;
-  align-items: center;
+	&__main {
+		height: 80px;
+		display: flex;
+		align-items: center;
+	}
 
-  .listlinks {
-    a {
-      color: #6c757d;
-      margin-left: 10px;
+	.listlinks {
+		a {
+			color: #6c757d;
+			margin-left: 10px;
 
-      &:first-child {
-        margin-left: 0;
-      }
+			&:first-child {
+				margin-left: 0;
+			}
 
-      &:hover {
-        color: $main_color;
-      }
-    }
-  }
+			&:hover {
+				color: $main_color;
+			}
+		}
+	}
+
+	&__content {
+		flex-wrap: wrap;
+	}
+
+	@include max-sm() {
+		&__main {
+			height: auto;
+			padding-bottom: 20px;
+		}
+
+		&__copyright {
+			display: none;
+		}
+
+		&__links {
+			width: 100%;
+			text-align: center;
+		}
+	}
 }

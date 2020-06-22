@@ -601,4 +601,16 @@
 			padding-bottom: 10px;
 		}
 	}
+
+	@include max-sm() {
+		&__container {
+			& > .container-fluid {
+				padding: 0;
+			}
+
+			.page__title {
+				padding-left: 15px;
+			}
+		}
+	}
 }

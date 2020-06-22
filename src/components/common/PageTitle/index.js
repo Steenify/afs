@@ -22,7 +22,7 @@ const PageTitle = (props: Props): React.Node => {
   ].join(' ');
 
   return (
-    <div className='d-flex align-items-center'>
+    <div className='d-flex align-items-center page__title'>
       <h3 className={classNames} onClick={onGoBack}>
         {onGoBack && <i className='fas fa-chevron-left mr-2'></i>}
         <span className='font-weight-bold'>{title}</span>

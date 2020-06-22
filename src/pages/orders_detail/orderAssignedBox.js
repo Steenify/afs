@@ -84,7 +84,7 @@ const OrderAssignedBox = ({
         toggle={toggle}>
         <DropdownToggle className='order__toggle budget p-0'>
           <div className='d-flex align-items-end'>
-            <strong className='mr-2'> Assigned:</strong>
+            <strong className='mr-2'> Artist:</strong>
             <span className='name'>
               {isEmpty(assignedTo)
                 ? '_________'

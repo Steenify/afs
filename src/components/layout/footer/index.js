@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Fragment } from 'react';
 import './style.scss';
 
@@ -5,13 +6,13 @@ const Footer = (props) => {
   const { className } = props;
   return (
     <Fragment>
-      <footer className={`footer ${className || ''}`}>
+      <footer className={`footer footer__main ${className || ''}`}>
         <div className='container-fluid'>
-          <div className='d-flex align-items-center justify-content-between'>
-            <p className='text-muted mb-0'>
+          <div className='footer__content d-flex align-items-center justify-content-between'>
+            <p className='footer__copyright text-muted mb-0'>
               2020 – Steenify. All rights reserved.
             </p>
-            <div className='listlinks'>
+            <div className='footer__links listlinks'>
               <a title='Privacy Policy' href='#'>
                 Privacy Policy
               </a>

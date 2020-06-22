@@ -2,11 +2,17 @@ import { request } from 'utils/request';
 
 const NOTIFICATION_API = '/api/notifications';
 
-export const getAllNotifications = (data) =>
+export const getAllNotifications = (params) =>
   request({
     url: NOTIFICATION_API,
     method: 'GET',
-    params: data,
+    params,
+  });
+
+export const getNotificationsCount = () =>
+  request({
+    url: `${NOTIFICATION_API}/count`,
+    method: 'GET',
   });
 
 export const createNotification = (data) =>

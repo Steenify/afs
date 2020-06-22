@@ -5,9 +5,7 @@ import {
   DropdownMenu,
   Badge,
 } from 'reactstrap';
-
-import { faBell } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ReactComponent as Bell } from 'assets/img/bell.svg';
 
 import './style.scss';
 
@@ -24,7 +22,9 @@ const Notification = (props) => {
       className={`notification ${className || ''}`}>
       <DropdownToggle>
         <div className='bell'>
-          <FontAwesomeIcon icon={faBell} />
+          <div className='icon'>
+            <Bell />
+          </div>
           <Badge color='danger'>7</Badge>
         </div>
       </DropdownToggle>
@@ -37,7 +37,9 @@ const Notification = (props) => {
           <div className='noti'>
             <div className='noti__icon'>
               <div className='icon bg-primary'>
-                <FontAwesomeIcon icon={faBell} />
+                <div className='icon'>
+                  <Bell />
+                </div>
               </div>
             </div>
             <div className='noti__content'>

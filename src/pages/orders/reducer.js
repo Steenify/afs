@@ -16,6 +16,8 @@ const initialState = {
     list: {
       loading: false,
       selectedStatus: '',
+      selectedArtist: {},
+      selectedPayment: '',
     },
   },
   list: {

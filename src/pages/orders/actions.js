@@ -68,7 +68,7 @@ export const getOrdersAction = (params) => async (dispatch, getState) => {
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: getAllOrdersService(searchParams),
     onPending,
     onSuccess,
@@ -98,9 +98,7 @@ const buildSearchParam = (input = {}) => {
 export const UPDATE_ORDER_BUDGET_ACTION = actionCreator(
   'UPDATE_ORDER_BUDGET_ACTION',
 );
-export const updateOrdersBudgetAction = (payload, id, cb) => async (
-  dispatch,
-) => {
+export const updateOrdersBudgetAction = (payload, id, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_BUDGET_ACTION.PENDING,
@@ -118,7 +116,7 @@ export const updateOrdersBudgetAction = (payload, id, cb) => async (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: updateOrderBudgetService(payload, id),
     onPending,
     onSuccess,
@@ -127,7 +125,7 @@ export const updateOrdersBudgetAction = (payload, id, cb) => async (
 };
 
 export const GET_ARTISTS_ACTION = actionCreator('GET_ARTISTS_ACTION');
-export const getArtistsAction = (params = {}) => async (dispatch) => {
+export const getArtistsAction = (params = { size: 100 }) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_ARTISTS_ACTION.PENDING,
@@ -144,7 +142,7 @@ export const getArtistsAction = (params = {}) => async (dispatch) => {
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: getAssignArtistsService(params),
     onPending,
     onSuccess,
@@ -155,7 +153,7 @@ export const getArtistsAction = (params = {}) => async (dispatch) => {
 export const UPDATE_ORDER_ARTIST_ACTION = actionCreator(
   'UPDATE_ORDER_ARTIST_ACTION',
 );
-export const assignOrdersArtistAction = (payload, cb) => async (dispatch) => {
+export const assignOrdersArtistAction = (payload, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_ARTIST_ACTION.PENDING,
@@ -173,7 +171,7 @@ export const assignOrdersArtistAction = (payload, cb) => async (dispatch) => {
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: assignOrderService(payload),
     onPending,
     onSuccess,
@@ -182,7 +180,7 @@ export const assignOrdersArtistAction = (payload, cb) => async (dispatch) => {
 };
 
 export const GET_ORDER_STATUS_ACTION = actionCreator('GET_ORDER_STATUS_ACTION');
-export const getOrderStatusAction = (payload) => async (dispatch) => {
+export const getOrderStatusAction = (payload) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_ORDER_STATUS_ACTION.PENDING,
@@ -199,7 +197,7 @@ export const getOrderStatusAction = (payload) => async (dispatch) => {
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: getAllStatusService(payload),
     onPending,
     onSuccess,
@@ -210,9 +208,7 @@ export const getOrderStatusAction = (payload) => async (dispatch) => {
 export const UPDATE_ORDER_PAYMENT_STATUS_ACTION = actionCreator(
   'UPDATE_ORDER_PAYMENT_STATUS_ACTION',
 );
-export const updateOrderPaymentStatusAction = (payload, id) => async (
-  dispatch,
-) => {
+export const updateOrderPaymentStatusAction = (payload, id) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_PAYMENT_STATUS_ACTION.PENDING,
@@ -232,7 +228,7 @@ export const updateOrderPaymentStatusAction = (payload, id) => async (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: updateOrderArtistPaymentService(id, payload),
     onPending,
     onSuccess,
@@ -243,11 +239,9 @@ export const updateOrderPaymentStatusAction = (payload, id) => async (
 export const UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION = actionCreator(
   'UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION',
 );
-export const updateOrderPaymentStatusBulkAction = (
-  status,
-  payload,
-  cb,
-) => async (dispatch) => {
+export const updateOrderPaymentStatusBulkAction = (status, payload, cb) => (
+  dispatch,
+) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.PENDING,
@@ -270,7 +264,7 @@ export const updateOrderPaymentStatusBulkAction = (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: updateOrderArtistPaymentBulkService(status, payload),
     onPending,
     onSuccess,
@@ -281,9 +275,7 @@ export const updateOrderPaymentStatusBulkAction = (
 export const UPDATE_ORDER_STATUS_DONE_BULK_ACTION = actionCreator(
   'UPDATE_ORDER_STATUS_DONE_BULK_ACTION',
 );
-export const updateOrderStatusDoneBulkAction = (payload, cb) => async (
-  dispatch,
-) => {
+export const updateOrderStatusDoneBulkAction = (payload, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_STATUS_DONE_BULK_ACTION.PENDING,
@@ -306,7 +298,7 @@ export const updateOrderStatusDoneBulkAction = (payload, cb) => async (
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: getOrderBulkMarkAsDoneService(payload),
     onPending,
     onSuccess,
@@ -317,7 +309,7 @@ export const updateOrderStatusDoneBulkAction = (payload, cb) => async (
 export const GET_ORDER_COUNT_BY_STATUS_ACTION = actionCreator(
   'GET_ORDER_COUNT_BY_STATUS_ACTION',
 );
-export const getOrderCountByStatusAction = () => async (dispatch) => {
+export const getOrderCountByStatusAction = () => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_ORDER_COUNT_BY_STATUS_ACTION.PENDING,
@@ -337,7 +329,7 @@ export const getOrderCountByStatusAction = () => async (dispatch) => {
     });
   };
 
-  await actionTryCatchCreator({
+  actionTryCatchCreator({
     service: getOrderCountByStatusService(),
     onPending,
     onSuccess,

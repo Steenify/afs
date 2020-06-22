@@ -202,10 +202,8 @@ const OrderArtWorkBox = ({
           </div>
         </div>
 
-        <div className='col-lg-4'>
-          <div className='d-none d-lg-block'>
-            <OrderCustomerBox order={order} customer={order.customer} />
-          </div>
+        <div className='col-lg-4 order_detail__customer_box'>
+          <OrderCustomerBox order={order} customer={order.customer} />
         </div>
       </div>
     </div>

@@ -101,9 +101,9 @@ const OrderBudget = ({ order, accountInfo, updateOrdersBudget }) => {
         <button
           ref={ref}
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          className='order__toggle budget p-0'>
+          className='order__toggle order__budget budget p-0'>
           <div className='d-flex align-items-end'>
-            <strong className='mb-1 mr-2'> Budget:</strong>
+            <strong className='mr-2'> Budget:</strong>
             <span>{formatMoney(order.budget)} </span>
             <span className='icon d-block ml-1'>
               <Pencil width='14px' height='14px' />

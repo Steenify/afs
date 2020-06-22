@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { forEach, filter } from 'lodash';
-import { statusPayments, PERMITTIONS_CONFIG } from 'config';
+import { statusPayments } from 'config';
 
 import OrderSelectedCell from './orderSelectedAll';
 
@@ -37,7 +37,7 @@ const OrderBulkAction = ({
             value: status,
           });
         });
-        updateAllOrderSelected(false);
+        // updateAllOrderSelected(false);
       },
     );
   };
@@ -56,7 +56,7 @@ const OrderBulkAction = ({
             value: 'DONE',
           });
         });
-        updateAllOrderSelected(false);
+        // updateAllOrderSelected(false);
       },
     );
   };
