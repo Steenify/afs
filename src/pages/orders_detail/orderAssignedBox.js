@@ -86,10 +86,12 @@ const OrderAssignedBox = ({
           <div className='d-flex align-items-end'>
             <strong className='mr-2'> Artist:</strong>
             <span className='name'>
-              {isEmpty(assignedTo)
-                ? '_________'
-                : assignedTo?.fullName ||
-                  `${assignedTo?.firstName} ${assignedTo?.lastName}`}
+              {isEmpty(assignedTo) || assignedTo?.login === 'null'
+                ? '____________'
+                : `${assignedTo?.fullName || ''}` ||
+                  `${assignedTo?.firstName || ''} ${
+                    assignedTo?.lastName || ''
+                  }`}
             </span>
             <span className='icon d-block ml-1'>
               <Pencil width='14px' height='14px' />

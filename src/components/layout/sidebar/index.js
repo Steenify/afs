@@ -18,10 +18,12 @@ import { ReactComponent as Settings } from 'assets/img/settings.svg';
 
 import { WEB_ROUTES } from 'config';
 
+import { toggleMenu } from 'store/actions';
+
 const SideBar = (props) => {
   const { t } = useTranslation();
 
-  const { accountInfo, orderStatus } = props;
+  const { accountInfo, orderStatus, toggleMenuAction } = props;
   const { permissions } = accountInfo;
 
   const canSetting =
@@ -37,6 +39,10 @@ const SideBar = (props) => {
     },
     0,
   );
+
+  const handleClickNav = () => {
+    toggleMenuAction(false);
+  };
 
   const menus = [
     {
@@ -125,6 +131,7 @@ const SideBar = (props) => {
                     return (
                       <NavLink
                         exact={true}
+                        onClick={handleClickNav}
                         to={link.path}
                         className={`link ${link.icon ? 'link--icon' : ''}`}
                         key={link.path}>
@@ -166,4 +173,8 @@ const mapStateToProps = ({ auth, global, order }) => {
   };
 };
 
-export default connect(mapStateToProps, {})(SideBar);
+const mapDispatchToProps = {
+  toggleMenuAction: toggleMenu,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

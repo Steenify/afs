@@ -198,7 +198,7 @@ const OrderArtWorkGroup = ({
                         <Button
                           color='primary'
                           onClick={handleNotifyEmail}
-                          className='cta cta2 mb-3'
+                          className='cta cta2 mb-3 order_detail__notify'
                           type='button'>
                           Notify Customer
                         </Button>

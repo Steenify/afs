@@ -339,6 +339,8 @@
 				border: 1px solid #eceff3;
 				padding: 8px 18px;
 				border-radius: 5px;
+				display: inline-flex;
+				white-space: nowrap;
 
 				.number {
 					height: 20px;
@@ -599,6 +601,17 @@
 		.order__deadline {
 			padding-top: 10px;
 			padding-bottom: 10px;
+		}
+	}
+
+	@include max-md() {
+		&__filter {
+			.list_status {
+				display: flex;
+				margin-bottom: 15px;
+				padding-bottom: 0;
+				overflow: auto;
+			}
 		}
 	}
 

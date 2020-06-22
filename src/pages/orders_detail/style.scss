@@ -691,6 +691,10 @@
 		}
 	}
 
+	&__notify {
+		background: #ffc923 !important;
+	}
+
 	@include max-lg() {
 		&__customer_box {
 			order: -1;
@@ -737,6 +741,14 @@
 		&__artwork {
 			.box__icon {
 				left: -53px;
+			}
+		}
+	}
+
+	@media (max-width: 400px) {
+		&__ctas {
+			.cta2 {
+				min-width: 120px;
 			}
 		}
 	}
