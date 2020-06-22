@@ -97,20 +97,17 @@ const OrderBudget = ({ order, accountInfo, updateOrdersBudget }) => {
           </form>
         </div>
       )}>
-      {(ref) => (
-        <button
-          ref={ref}
-          onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          className='order__toggle order__budget budget p-0'>
-          <div className='d-flex align-items-end'>
-            <strong className='mr-2'> Budget:</strong>
-            <span>{formatMoney(order.budget)} </span>
-            <span className='icon d-block ml-1'>
-              <Pencil width='14px' height='14px' />
-            </span>
-          </div>
-        </button>
-      )}
+      <button
+        onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+        className='order__toggle order__budget budget p-0'>
+        <div className='d-flex align-items-end'>
+          <strong className='mr-2'> Budget:</strong>
+          <span>{formatMoney(order.budget)} </span>
+          <span className='icon d-block ml-1'>
+            <Pencil width='14px' height='14px' />
+          </span>
+        </div>
+      </button>
     </Popover>
   );
 };

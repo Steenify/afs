@@ -133,27 +133,22 @@ const AssignArtistCell = ({
           </div>
         </div>
       )}>
-      {(ref) => (
-        <button
-          ref={ref}
-          type='button'
-          onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          className='order__toggle order__assigned w-100'>
-          <div className='d-flex'>
-            <span className='name'>
-              {isEmpty(assignedTo) || assignedTo?.login === 'null'
-                ? '____________'
-                : `${assignedTo?.fullName || ''}` ||
-                  `${assignedTo?.firstName || ''} ${
-                    assignedTo?.lastName || ''
-                  }`}
-            </span>
-            <span className='icon d-block ml-1'>
-              <Pencil width='14px' height='14px' />
-            </span>
-          </div>
-        </button>
-      )}
+      <button
+        type='button'
+        onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+        className='order__toggle order__assigned w-100'>
+        <div className='d-flex'>
+          <span className='name'>
+            {isEmpty(assignedTo) || assignedTo?.login === 'null'
+              ? '____________'
+              : `${assignedTo?.fullName || ''}` ||
+                `${assignedTo?.firstName || ''} ${assignedTo?.lastName || ''}`}
+          </span>
+          <span className='icon d-block ml-1'>
+            <Pencil width='14px' height='14px' />
+          </span>
+        </div>
+      </button>
     </Popover>
   );
 };

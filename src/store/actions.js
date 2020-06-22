@@ -1,5 +1,6 @@
-import { actionCreator } from 'utils';
+import { actionCreator, actionTryCatchCreator } from 'utils';
 import { authenticateTokenService } from 'services';
+// import { authenticateTokenService } from 'services';
 
 export const GLOBAL_ACTIONS = {
   UPDATE_USER_INFO: 'UPDATE_USER_INFO',
@@ -61,3 +62,34 @@ export const toggleMenu = (payload) => (dispatch) => {
     payload,
   });
 };
+
+// export const GET_NOTI_COUNT = actionCreator('GET_NOTI_COUNT');
+// export const getNotiCountAction = () => async (dispatch) => {
+//   const onPending = () => {
+//     dispatch({
+//       type: GET_NOTI_COUNT.PENDING,
+//     });
+//   };
+//   const onSuccess = (data) => {
+//     if (data) {
+//       dispatch({
+//         type: GET_NOTI_COUNT.SUCCESS,
+//         payload: data,
+//       });
+//     }
+//   };
+//   const onError = (error) => {
+//     console.log('updateOrderPaymentStatusBulkAction', error);
+//     dispatch({
+//       type: GET_NOTI_COUNT.ERROR,
+//       payload: error.response,
+//     });
+//   };
+
+//   actionTryCatchCreator({
+//     service: updateOrderArtistPaymentBulkService(status, payload),
+//     onPending,
+//     onSuccess,
+//     onError,
+//   });
+// };

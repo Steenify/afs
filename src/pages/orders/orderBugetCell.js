@@ -111,19 +111,16 @@ const OrderBudgetCell = ({
           </form>
         </div>
       )}>
-      {(ref) => (
-        <button
-          ref={ref}
-          onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          className='order__toggle order__user text-left w-100'>
-          <div className='d-flex justify-content-end'>
-            <span className='icon d-block mr-1'>
-              <Pencil width='14px' height='14px' />
-            </span>
-            {formatNumber(budget || 0)}$
-          </div>
-        </button>
-      )}
+      <button
+        onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+        className='order__toggle order__user text-left w-100'>
+        <div className='d-flex justify-content-end'>
+          <span className='icon d-block mr-1'>
+            <Pencil width='14px' height='14px' />
+          </span>
+          {formatNumber(budget || 0)}$
+        </div>
+      </button>
     </Popover>
   );
 };

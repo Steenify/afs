@@ -1,34 +1,46 @@
-import { actionCreator } from 'utils';
+import { actionCreator, actionTryCatchCreator } from 'utils';
 import {
   getAllNotifications,
   createNotification,
   deleteNotification,
   publishNotification,
+  getNotificationsCount,
 } from 'services/notification.service';
 
 export const GET_NOTIFICATIONS = actionCreator('GET_NOTIFICATIONS');
 export const actGetNotifications = (data) => async (dispatch) => {
-  try {
+  const params = {
+    page: (data && data.page) || 0,
+    sort: (data && data.sort) || 'asc',
+  };
+
+  const onPending = () => {
     dispatch({
       type: GET_NOTIFICATIONS.PENDING,
     });
-
-    const params = {
-      page: (data && data.page) || 0,
-      sort: (data && data.sort) || 'asc',
-    };
-
-    const res = await getAllNotifications(params);
-    dispatch({
-      type: GET_NOTIFICATIONS.SUCCESS,
-      payload: res,
-    });
-  } catch (e) {
+  };
+  const onSuccess = (data) => {
+    if (data) {
+      dispatch({
+        type: GET_NOTIFICATIONS.SUCCESS,
+        payload: data,
+      });
+    }
+  };
+  const onError = (error) => {
+    console.log('actGetNotifications', error);
     dispatch({
       type: GET_NOTIFICATIONS.ERROR,
-      payload: e.response,
+      payload: error.response,
     });
-  }
+  };
+
+  actionTryCatchCreator({
+    service: getAllNotifications(params),
+    onPending,
+    onSuccess,
+    onError,
+  });
 };
 
 export const CREATE_NOTIFICATION = actionCreator('CREATE_NOTIFICATION');
@@ -101,4 +113,35 @@ export const actPublishNotification = (data) => async (dispatch) => {
 
     return e.response;
   }
+};
+
+export const GET_NOTIFICATIONS_COUNT = actionCreator('GET_NOTIFICATIONS_COUNT');
+export const getNotificationsCountAction = (data) => async (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: GET_NOTIFICATIONS_COUNT.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    if (data) {
+      dispatch({
+        type: GET_NOTIFICATIONS_COUNT.SUCCESS,
+        payload: data,
+      });
+    }
+  };
+  const onError = (error) => {
+    console.log('getNotificationsCountAction', error);
+    dispatch({
+      type: GET_NOTIFICATIONS_COUNT.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: getNotificationsCount(),
+    onPending,
+    onSuccess,
+    onError,
+  });
 };

@@ -34,3 +34,9 @@ export const publishNotification = (data) =>
     method: 'POST',
     data,
   });
+
+export const getNotificationDetail = (id) =>
+  request({
+    url: NOTIFICATION_API + `/${id}`,
+    method: 'GET',
+  });

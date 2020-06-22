@@ -45,7 +45,7 @@ const WEB_ROUTES = {
     permission: 'VIEW_CUSTOMER_GROUP_DETAIL',
   },
   NOTIFICATION_LIST: {
-    path: '/notification',
+    path: '/notifications',
     title: 'baseApp.sidebar.notification',
     permission: '',
   },

@@ -73,19 +73,16 @@ const OrderCustomerCell = ({ customer, accountInfo }) => {
           </div>
         </div>
       )}>
-      {(ref) => (
-        <button
-          ref={ref}
-          onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-          className='order__toggle order__user text-left w-100 d-flex align-items-center'>
-          <span className='dispaly_name'>
-            {`${customer?.firstName || ''} ${customer?.lastName || ''}`}
-          </span>
-          <span className='icon mb-1 ml-2'>
-            <Cavet />
-          </span>
-        </button>
-      )}
+      <button
+        onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+        className='order__toggle order__user text-left w-100 d-flex align-items-center'>
+        <span className='dispaly_name'>
+          {`${customer?.firstName || ''} ${customer?.lastName || ''}`}
+        </span>
+        <span className='icon mb-1 ml-2'>
+          <Cavet />
+        </span>
+      </button>
     </Popover>
   );
 };

@@ -22,7 +22,7 @@ import PermissionDetails from 'pages/role_management/PermissionDetails';
 import CustomerManagement from 'pages/customer_management';
 import CustomerDetail from 'pages/customer_management/CustomerDetail';
 import CustomerGroupDetail from 'pages/customer_management/CustomerGroupDetail';
-import NotificationManagement from 'pages/notification_management';
+import Notifications from 'pages/notifications';
 import SystemPropertiesManagement from 'pages/system_property_management';
 import SystemPropertyDetail from 'pages/system_property_management/SystemPropertyDetail';
 
@@ -136,7 +136,7 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
           <Route
             exact
             path={WEB_ROUTES.NOTIFICATION_LIST.path}
-            component={NotificationManagement}
+            component={Notifications}
             isPrivate={true}
             role={WEB_ROUTES.NOTIFICATION_LIST.permission}
           />

@@ -6,7 +6,7 @@ import user from 'pages/user_management/reducer';
 import auth from 'pages/auth/reducer';
 import role from 'pages/role_management/reducer';
 import customer from 'pages/customer_management/reducer';
-import notification from 'pages/notification_management/reducer';
+import notification from 'pages/notifications/reducer';
 import systemProperty from 'pages/system_property_management/reducer';
 import order from 'pages/orders/reducer';
 import orderDetail from 'pages/orders_detail/reducer';
