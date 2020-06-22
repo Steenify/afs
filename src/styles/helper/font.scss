@@ -1,61 +1,62 @@
 @font-face {
-  font-family: $font;
-  src: url('../assets/font/SFProText-Regular.ttf') format('TrueType');
-  font-weight: 500;
-  font-style: normal;
+	font-family: $font;
+	src: url('../../assets/font/SFProText-Regular.ttf') format('TrueType');
+	font-weight: 500;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: $font;
-  src: url('../assets/font/SFProDisplay-Regular.eot');
-  src: url('../assets/font/SFProDisplay-Regular.eot?#iefix')
-      format('embedded-opentype'),
-    url('../assets/font/SFProDisplay-Regular.svg#SFProDisplay-Regular')
-      format('svg'),
-    url('../assets/font/SFProDisplay-Regular.ttf') format('truetype'),
-    url('../assets/font/SFProDisplay-Regular.woff') format('woff'),
-    url('../assets/font/SFProDisplay-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
+	font-family: $font;
+	src: url('../../assets/font/SFProDisplay-Regular.eot');
+	src: url('../../assets/font/SFProDisplay-Regular.eot?#iefix')
+			format('embedded-opentype'),
+		url('../../assets/font/SFProDisplay-Regular.svg#SFProDisplay-Regular')
+			format('svg'),
+		url('../../assets/font/SFProDisplay-Regular.ttf') format('truetype'),
+		url('../../assets/font/SFProDisplay-Regular.woff') format('woff'),
+		url('../../assets/font/SFProDisplay-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: $font;
-  src: url('../assets/font/SFProDisplay-Medium.eot');
-  src: url('../assets/font/SFProDisplay-Medium.eot?#iefix')
-      format('embedded-opentype'),
-    url('../assets/font/SFProDisplay-Medium.svg#SFProDisplay-Medium')
-      format('svg'),
-    url('../assets/font/SFProDisplay-Medium.ttf') format('truetype'),
-    url('../assets/font/SFProDisplay-Medium.woff') format('woff'),
-    url('../assets/font/SFProDisplay-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
+	font-family: $font;
+	src: url('../../assets/font/SFProDisplay-Medium.eot');
+	src: url('../../assets/font/SFProDisplay-Medium.eot?#iefix')
+			format('embedded-opentype'),
+		url('../../assets/font/SFProDisplay-Medium.svg#SFProDisplay-Medium')
+			format('svg'),
+		url('../../assets/font/SFProDisplay-Medium.ttf') format('truetype'),
+		url('../../assets/font/SFProDisplay-Medium.woff') format('woff'),
+		url('../../assets/font/SFProDisplay-Medium.woff2') format('woff2');
+	font-weight: 500;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: $font;
-  src: url('../assets/font/SFProDisplay-Semibold.eot');
-  src: url('../assets/font/SFProDisplay-Semibold.eot?#iefix')
-      format('embedded-opentype'),
-    url('../assets/font/SFProDisplay-Semibold.svg#SFProDisplay-Semibold')
-      format('svg'),
-    url('../assets/font/SFProDisplay-Semibold.ttf') format('truetype'),
-    url('../assets/font/SFProDisplay-Semibold.woff') format('woff'),
-    url('../assets/font/SFProDisplay-Semibold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
+	font-family: $font;
+	src: url('../../assets/font/SFProDisplay-Semibold.eot');
+	src: url('../../assets/font/SFProDisplay-Semibold.eot?#iefix')
+			format('embedded-opentype'),
+		url('../../assets/font/SFProDisplay-Semibold.svg#SFProDisplay-Semibold')
+			format('svg'),
+		url('../../assets/font/SFProDisplay-Semibold.ttf') format('truetype'),
+		url('../../assets/font/SFProDisplay-Semibold.woff') format('woff'),
+		url('../../assets/font/SFProDisplay-Semibold.woff2') format('woff2');
+	font-weight: 600;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: $font;
-  src: url('../assets/font/SFProDisplay-Bold.eot');
-  src: url('../assets/font/SFProDisplay-Bold.eot?#iefix')
-      format('embedded-opentype'),
-    url('../assets/font/SFProDisplay-Bold.svg#SFProDisplay-Bold') format('svg'),
-    url('../assets/font/SFProDisplay-Bold.ttf') format('truetype'),
-    url('../assets/font/SFProDisplay-Bold.woff') format('woff'),
-    url('../assets/font/SFProDisplay-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
+	font-family: $font;
+	src: url('../../assets/font/SFProDisplay-Bold.eot');
+	src: url('../../assets/font/SFProDisplay-Bold.eot?#iefix')
+			format('embedded-opentype'),
+		url('../../assets/font/SFProDisplay-Bold.svg#SFProDisplay-Bold')
+			format('svg'),
+		url('../../assets/font/SFProDisplay-Bold.ttf') format('truetype'),
+		url('../../assets/font/SFProDisplay-Bold.woff') format('woff'),
+		url('../../assets/font/SFProDisplay-Bold.woff2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
 }
