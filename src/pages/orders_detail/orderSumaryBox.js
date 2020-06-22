@@ -134,13 +134,12 @@ const OrderSumaryBox = ({
             apiKey='8yd4ibfq5z8v9bj8ddn2hezmxgm68ijow36krpjasr0ucty8'
             initialValue={item.summarize || ''}
             init={{
+              apiKey: '8yd4ibfq5z8v9bj8ddn2hezmxgm68ijow36krpjasr0ucty8',
               height: 300,
               menubar: false,
               plugins: [
-                'advlist autolink lists link image',
-                'charmap print preview anchor help',
-                'searchreplace visualblocks code',
-                'insertdatetime media table paste wordcount',
+                'advlist autolink lists link',
+                'visualblocks code paste',
               ],
               toolbar: `formatselect | link | bold italic |
             alignleft aligncenter alignright |

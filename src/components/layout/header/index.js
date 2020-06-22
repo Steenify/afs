@@ -24,7 +24,7 @@ const Header = (props) => {
 
   const handleToggle = () => {
     props.toggleMenu(!props.isMenuOpen);
-    if (window.innerWidth >= 660) {
+    if (window.innerWidth >= 768) {
       setIsShowInfo(true);
       return;
     }
@@ -79,7 +79,7 @@ const Header = (props) => {
                 </button>
               </div> */}
 
-              <Notification />
+              {/* <Notification /> */}
               <AccountInfo account={accountInfo} onSignout={props.actSignout} />
             </Nav>
           )}

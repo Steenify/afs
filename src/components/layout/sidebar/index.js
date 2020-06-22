@@ -41,7 +41,7 @@ const SideBar = (props) => {
   );
 
   const handleClickNav = () => {
-    toggleMenuAction(false);
+    toggleMenuAction(!(window.innerWidth < 768));
   };
 
   const menus = [

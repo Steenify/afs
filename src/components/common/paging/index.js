@@ -79,7 +79,7 @@ class Paging extends React.Component {
   };
   render() {
     const { activePage, items } = this.props;
-    if (!(items > 0)) {
+    if (!(items > 1)) {
       return null;
     }
 
