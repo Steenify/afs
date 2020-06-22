@@ -15,7 +15,7 @@ import { changeLanguage, toggleMenu } from 'store/actions';
 const Header = (props) => {
   const { className, accountInfo, lang, toggleMenu } = props;
 
-  const [isShowInfo, setIsShowInfo] = useState(true);
+  const [isShowInfo, setIsShowInfo] = useState(false);
 
   // const changeLanguage = (lang) => {
   //   i18next.changeLanguage(lang);
@@ -24,19 +24,15 @@ const Header = (props) => {
 
   const handleToggle = () => {
     props.toggleMenu(!props.isMenuOpen);
-
     if (window.innerWidth >= 660) {
       setIsShowInfo(true);
-
       return;
     }
 
     if (!props.isMenuOpen) {
       setIsShowInfo(false);
-
       return;
     }
-
     setIsShowInfo(true);
   };
 

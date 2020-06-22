@@ -36,7 +36,7 @@ const reducer = (state = initialState, action) => {
   switch (type) {
     case GET_ORDER_ACTION.PENDING:
     case UPDATE_ORDER_PAYMENT_STATUS_ACTION.PENDING:
-    case UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.PENDING:
+      // case UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.PENDING:
       return update(state, {
         ui: {
           list: {

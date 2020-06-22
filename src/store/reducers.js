@@ -18,7 +18,7 @@ const initialState = {
     loading: false,
     isAuthenticated: false,
     redirectLink: '',
-    isMenuOpen: true,
+    isMenuOpen: false,
   },
   data: {
     user: {},

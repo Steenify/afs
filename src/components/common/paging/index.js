@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
-export default class Paging extends React.Component {
+import { ReactComponent as ArrowLeft } from 'assets/img/arrowleft.svg';
+
+import './style.scss';
+
+class Paging extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +26,12 @@ export default class Paging extends React.Component {
   nextPage = () => {
     this.setState({ currentPage: this.state.currentPage + 1 });
     this.props.onSelect(this.state.currentPage + 1);
+  };
+
+  handleChangePageMobile = (e) => {
+    const { value } = e.target;
+    this.setState({ currentPage: value });
+    this.props.onSelect(value);
   };
 
   itemsToDisplay = (activePage) => {
@@ -56,19 +66,28 @@ export default class Paging extends React.Component {
     return items;
   };
 
-  displayPaginationItem = (i) => (
-    <PaginationItem key={i}>
-      <PaginationLink onClick={() => this.updateActivePage(i + 1)}>
-        {i + 1}
-      </PaginationLink>
-    </PaginationItem>
-  );
+  displayPaginationItem = (i) => {
+    const { activePage } = this.props;
 
+    return (
+      <PaginationItem className={`${activePage === i + 1 && 'active'}`} key={i}>
+        <PaginationLink onClick={() => this.updateActivePage(i + 1)}>
+          {i + 1}
+        </PaginationLink>
+      </PaginationItem>
+    );
+  };
   render() {
     const { activePage, items } = this.props;
+    if (!(items > 0)) {
+      return null;
+    }
+
+    const listItems = [...Array(items).keys()];
+
     return (
-      <div>
-        {items > 0 && (
+      <div className='paging__table'>
+        <div className='paging__desktop'>
           <Pagination>
             <PaginationItem {...(activePage === 1 && { disabled: true })}>
               <PaginationLink onClick={() => this.updateActivePage(1)}>
@@ -96,8 +115,47 @@ export default class Paging extends React.Component {
               </PaginationLink>
             </PaginationItem>
           </Pagination>
-        )}
+        </div>
+
+        <div className='paging__mobile'>
+          <div className='paging__wrapper'>
+            <button
+              className='navi prev'
+              {...(activePage === 1 && { disabled: true })}
+              onClick={this.previousPage}>
+              <span className='sr-only'>PREV</span>
+              <span className='icon'>
+                <ArrowLeft />
+              </span>
+            </button>
+            <select
+              value={activePage}
+              onChange={this.handleChangePageMobile}
+              className='form-control select'>
+              {listItems.map((item) => (
+                <option key={`option__page__${item}`} value={item + 1}>
+                  {item + 1}
+                </option>
+              ))}
+            </select>
+            <button
+              className='navi next'
+              {...(activePage === items && { disabled: true })}
+              onClick={this.nextPage}>
+              <span className='sr-only'>NEXT</span>
+              <span className='icon'>
+                <ArrowLeft />
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 }
+
+Paging.defaultProps = {
+  maxButtons: 8,
+};
+
+export default Paging;

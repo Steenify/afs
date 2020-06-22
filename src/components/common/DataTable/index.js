@@ -11,7 +11,7 @@ import { ReactComponent as SortIcon } from 'assets/img/sort.svg';
 
 import './style.scss';
 
-const sizePerPage = [100, 30, 40];
+const sizePerPage = [50, 30, 40];
 
 const WHITE_LIST_HEADER_SORT = ['action', 'edit', 'selection'];
 
@@ -42,7 +42,7 @@ const DataTable = (props) => {
     [],
   );
 
-  const size = first(sizePerPage) || 100;
+  const size = first(sizePerPage) || 50;
 
   const [perPageSize, setPerPageSize] = React.useState(size);
 
