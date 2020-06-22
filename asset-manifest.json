@@ -1,20 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.6e9053c0.chunk.css",
-    "main.js": "/static/js/main.fcb1b85f.chunk.js",
-    "main.js.map": "/static/js/main.fcb1b85f.chunk.js.map",
-    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
-    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+    "main.css": "/static/css/main.22b5e4fe.chunk.css",
+    "main.js": "/static/js/main.680f55a9.chunk.js",
+    "main.js.map": "/static/js/main.680f55a9.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.40957abb.js",
+    "runtime-main.js.map": "/static/js/runtime-main.40957abb.js.map",
     "static/css/2.e23a1293.chunk.css": "/static/css/2.e23a1293.chunk.css",
-    "static/js/2.7a77367b.chunk.js": "/static/js/2.7a77367b.chunk.js",
-    "static/js/2.7a77367b.chunk.js.map": "/static/js/2.7a77367b.chunk.js.map",
+    "static/js/2.e8c2645c.chunk.js": "/static/js/2.e8c2645c.chunk.js",
+    "static/js/2.e8c2645c.chunk.js.map": "/static/js/2.e8c2645c.chunk.js.map",
     "../public/locales/en.json": "/../public/locales/en.json",
     "../public/locales/vi.json": "/../public/locales/vi.json",
     "index.html": "/index.html",
-    "precache-manifest.179260659b23949a864182288cd30b51.js": "/precache-manifest.179260659b23949a864182288cd30b51.js",
+    "precache-manifest.85ef16af85e9d515aee7842019be6324.js": "/precache-manifest.85ef16af85e9d515aee7842019be6324.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.e23a1293.chunk.css.map": "/static/css/2.e23a1293.chunk.css.map",
-    "static/css/main.6e9053c0.chunk.css.map": "/static/css/main.6e9053c0.chunk.css.map",
+    "static/css/main.22b5e4fe.chunk.css.map": "/static/css/main.22b5e4fe.chunk.css.map",
+    "static/js/2.e8c2645c.chunk.js.LICENSE.txt": "/static/js/2.e8c2645c.chunk.js.LICENSE.txt",
     "static/media/404.3586cb9c.svg": "/static/media/404.3586cb9c.svg",
     "static/media/Artist.7a557750.svg": "/static/media/Artist.7a557750.svg",
     "static/media/Mensenger.4bb61e44.svg": "/static/media/Mensenger.4bb61e44.svg",
@@ -44,5 +45,12 @@
     "static/media/toggle.6713f731.svg": "/static/media/toggle.6713f731.svg",
     "static/media/upload.9710f588.svg": "/static/media/upload.9710f588.svg",
     "static/media/user.3396c3aa.svg": "/static/media/user.3396c3aa.svg"
-  }
+  },
+  "entrypoints": [
+    "static/js/runtime-main.40957abb.js",
+    "static/css/2.e23a1293.chunk.css",
+    "static/js/2.e8c2645c.chunk.js",
+    "static/css/main.22b5e4fe.chunk.css",
+    "static/js/main.680f55a9.chunk.js"
+  ]
 }
