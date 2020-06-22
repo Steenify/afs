@@ -11,7 +11,7 @@ import { ReactComponent as SortIcon } from 'assets/img/sort.svg';
 
 import './style.scss';
 
-const sizePerPage = [50, 30, 40];
+const sizePerPage = [100, 30, 40];
 
 const WHITE_LIST_HEADER_SORT = ['action', 'edit', 'selection'];
 

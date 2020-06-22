@@ -15,7 +15,7 @@ import { changeLanguage, toggleMenu } from 'store/actions';
 const Header = (props) => {
   const { className, accountInfo, lang, toggleMenu } = props;
 
-  const [isShowInfo, setIsShowInfo] = useState(false);
+  const [isShowInfo, setIsShowInfo] = useState(true);
 
   // const changeLanguage = (lang) => {
   //   i18next.changeLanguage(lang);
