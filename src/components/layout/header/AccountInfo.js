@@ -49,7 +49,7 @@ const AccountInfo = (props) => {
             </p>
             <p className='email'>{email}</p>
           </div>
-          <div className='icon d-sm-block d-none'>
+          <div className='icon d-sm-flex d-none'>
             <Toggle />
           </div>
         </div>

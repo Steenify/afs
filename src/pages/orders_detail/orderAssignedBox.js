@@ -1,33 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Spinner, DropdownMenu, DropdownToggle, Dropdown } from 'reactstrap';
-import { isEmpty, filter, lowerCase } from 'lodash';
+import { Spinner } from 'reactstrap';
+import { isEmpty } from 'lodash';
 import { toast } from 'react-toastify';
+
+import Popover from 'react-tiny-popover';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
 import { getArtistsAction, assignOrdersArtistAction } from '../orders/actions';
 
-const OrderAssignedBox = ({
-  order,
-  getArtists,
-  artists,
-  assignOrdersArtist,
-}) => {
+import ListArtists from '../orders/listArtistAssign';
+
+const OrderAssignedBox = ({ order, getArtists, assignOrdersArtist }) => {
   const { assignedTo } = order;
 
   useEffect(() => {
     getArtists();
   }, [getArtists]);
 
-  const [search, setSearch] = useState('');
-
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const toggle = () => setDropdownOpen((prevState) => !prevState);
-
-  const onChangeSearch = (e) => {
-    setSearch(e.target.value);
-  };
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
   const onSave = (artist) => {
     if ((assignedTo || {})['login'] === artist?.login) {
@@ -42,7 +35,7 @@ const OrderAssignedBox = ({
 
     if (!isEmpty(artist)) {
       const payload = { id: order.id, to: artist.login };
-      setDropdownOpen(false);
+      setIsPopoverOpen(false);
       assignOrdersArtist(payload, () => {
         toast.success('updated assigned artist!');
       });
@@ -50,39 +43,22 @@ const OrderAssignedBox = ({
   };
 
   if (isEmpty(order)) {
-    return (
-      <div
-        style={{ minHeight: '100px' }}
-        className='order_detail__customer box d-flex align-items-center justify-content-center'>
-        <Spinner />
-      </div>
-    );
-  }
-
-  let filteredArtist = artists;
-
-  if (search) {
-    filteredArtist = filter(artists, (art) => {
-      const hasName =
-        lowerCase(
-          art?.fullName || `${art?.firstName || ''} ${art?.lastName || ''}`,
-        ).indexOf(lowerCase(search)) !== -1;
-      const hasNote = lowerCase(art?.note).indexOf(lowerCase(search)) !== -1;
-
-      if (hasName || hasNote) {
-        return true;
-      }
-      return false;
-    });
+    return null;
   }
 
   return (
     <div className='order_detail__assigned mr-3'>
-      <Dropdown
-        className='assign__artist'
-        isOpen={dropdownOpen}
-        toggle={toggle}>
-        <DropdownToggle className='order__toggle budget p-0'>
+      <Popover
+        isOpen={isPopoverOpen}
+        position={'bottom'}
+        padding={10}
+        disableReposition
+        onClickOutside={toggle}
+        content={() => <ListArtists onSave={onSave} assignedTo={assignedTo} />}>
+        <button
+          type='button'
+          onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+          className='order__toggle order__assigned assign__artist budget p-0'>
           <div className='d-flex align-items-end'>
             <strong className='mr-2'> Artist:</strong>
             <span className='name'>
@@ -97,62 +73,8 @@ const OrderAssignedBox = ({
               <Pencil width='14px' height='14px' />
             </span>
           </div>
-        </DropdownToggle>
-        <DropdownMenu className='order__dropdowns'>
-          <div className='order__artist'>
-            <div className='search mb-3'>
-              <input
-                type='text'
-                placeholder='Artist Name'
-                value={search}
-                onChange={onChangeSearch}
-                className='form-control search__input'
-              />
-            </div>
-
-            <div className='list mb-3'>
-              <button
-                onClick={() => onSave({ login: 'null' })}
-                key={`list__artist__login`}
-                className={`artist__select`}>
-                <strong className='name'>___Select___</strong>
-                <div className='status d-block'></div>
-              </button>
-              {filteredArtist.map((art) => (
-                <button
-                  onClick={() => onSave(art)}
-                  key={`list__artist__${art.login}`}
-                  className={`artist__select ${
-                    art.login === assignedTo?.login ? 'active' : ''
-                  }`}>
-                  <div className='avt'>
-                    <img
-                      src={`https://ui-avatars.com/api/?name=${
-                        art?.fullName || ''
-                      }${art?.firstName || ''}${art?.lastName || ''}`}
-                      alt='comments__author'
-                    />
-                  </div>
-
-                  <div className='info'>
-                    <strong className='name'>
-                      {art?.fullName || `${art?.firstName} ${art?.lastName}`}
-                    </strong>
-                    <div className='status'>
-                      {art.note && (
-                        <div className='note text-break'>{`${art.note}`}</div>
-                      )}
-                      <div className='currProgress'>
-                        Sketching: {art.currSketch}, Coloring: {art.currColor}
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </DropdownMenu>
-      </Dropdown>
+        </button>
+      </Popover>
     </div>
   );
 };

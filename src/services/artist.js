@@ -1,7 +1,7 @@
 import { request } from 'utils/request';
 
 const ARTIST_API = '/api/artists';
-const ARTIST_API_ASSIGN = '/api/assign-artists';
+const ARTIST_API_ASSIGN = '/api/artists-to-assign';
 
 export const getAssignArtistsService = (params) =>
   request({

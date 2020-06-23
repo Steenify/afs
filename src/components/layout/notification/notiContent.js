@@ -48,13 +48,13 @@ class NotiContent extends Component {
     });
   };
 
-  handleCliclNoti = (noti) => {
+  handleClick = (noti) => {
     const { history } = this.props;
 
     const onPending = () => {};
     const onSuccess = () => {};
     const onError = (error) => {
-      console.log('handleCliclNoti', JSON.stringify(error));
+      console.log('handleClick', JSON.stringify(error));
     };
 
     actionTryCatchCreator({
@@ -86,7 +86,7 @@ class NotiContent extends Component {
           ) : (
             notis.map((noti) => (
               <div
-                onClick={() => this.handleCliclNoti(noti)}
+                onClick={() => this.handleClick(noti)}
                 key={`list_noti__header__${noti.id}`}
                 className='noti__item'>
                 <div className='noti__icon'>

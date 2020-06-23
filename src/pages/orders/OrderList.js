@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import { PERMITTIONS_CONFIG } from 'config';
 
 import { getPaginationItemsNumber } from 'utils';
 
-import { getOrdersAction, getArtistsAction } from './actions';
+import { getOrdersAction } from './actions';
 
 import { remove } from 'lodash';
 
@@ -28,25 +28,9 @@ import OrderSubTotalCell from './orderSubTotalCell';
 import OrderStatusCell from './orderStatusCell';
 
 const OrderList = (props) => {
-  const {
-    getOrders,
-    updateOrder,
-    getArtists,
-    loading,
-    accountInfo,
-    ids,
-  } = props;
+  const { getOrders, updateOrder, loading, accountInfo, ids } = props;
 
   const history = useHistory();
-
-  const canAssignOrder = accountInfo?.permissions?.includes(
-    PERMITTIONS_CONFIG.ASSIGN_BOOKING,
-  );
-  useEffect(() => {
-    if (canAssignOrder) {
-      getArtists();
-    }
-  }, [getArtists, canAssignOrder]);
 
   let columns = [
     {
@@ -204,7 +188,6 @@ const mapStateToProps = ({ order, auth }) => ({
 
 const mapDispatchToProps = {
   getOrders: getOrdersAction,
-  getArtists: getArtistsAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderList);
