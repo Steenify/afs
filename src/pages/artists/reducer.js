@@ -11,6 +11,9 @@ const initialState = {
     artists: [],
     totalItems: 0,
   },
+  error: {
+    detail: {},
+  },
   artist: {},
 };
 
@@ -59,6 +62,10 @@ const reducer = (state = initialState, action) => {
           loadingDetail: { $set: false },
         },
         artist: { $set: payload.data },
+      });
+    case ARTISTS_ACTIONS.UPDATE_ARTIST_DETAIL:
+      return update(state, {
+        artist: { $merge: payload },
       });
     default:
       return state;

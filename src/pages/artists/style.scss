@@ -19,4 +19,21 @@
 		color: $black;
 		margin-bottom: 20px;
 	}
+
+	&__box {
+		.info {
+			&__item {
+				margin-bottom: 10px;
+			}
+
+			&__title {
+				font-weight: 600;
+				font-size: 20px;
+				line-height: 24px;
+				color: $black;
+				margin-bottom: 10px;
+				text-transform: uppercase;
+			}
+		}
+	}
 }

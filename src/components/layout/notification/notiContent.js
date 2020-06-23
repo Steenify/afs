@@ -51,7 +51,6 @@ class NotiContent extends Component {
 
   handleClick = (noti) => {
     const { history } = this.props;
-
     const onPending = () => {};
     const onSuccess = () => {};
     const onError = (error) => {
@@ -72,7 +71,6 @@ class NotiContent extends Component {
 
   handleRenderContent = () => {
     const { notis } = this.state;
-
     if (!notis.length) {
       return (
         <div className='noti__empty'>

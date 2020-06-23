@@ -31,7 +31,7 @@ import Orders from 'pages/orders';
 import OrderDetail from 'pages/orders_detail';
 import Settings from 'pages/settings';
 import Artists from 'pages/artists';
-import ArtistDetail from 'pages/artists/artistDetail';
+import ArtistDetail from 'pages/artists/artistDetailFrom';
 import CS from 'pages/customer_service';
 import CSDetail from 'pages/customer_service/customerServiceDetail';
 
