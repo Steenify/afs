@@ -8,6 +8,7 @@ import { isEmpty } from 'lodash';
 import { getOrderCountByStatusAction } from 'pages/orders/actions';
 
 import Route from 'components/common/Route';
+import FirerBaseApp from 'components/common/firebaseapp';
 
 import NotFound from 'pages/404';
 // import Home from 'pages/home';
@@ -226,6 +227,8 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
         draggable
         pauseOnHover={false}
       />
+
+      <FirerBaseApp />
 
       {isArtist && isLogged && (
         <CustomerChat pageId='101946964870983' appId='3004831752934299' />
