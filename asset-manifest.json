@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.e8903d1f.chunk.css",
-    "main.js": "/static/js/main.75a18e1e.chunk.js",
-    "main.js.map": "/static/js/main.75a18e1e.chunk.js.map",
+    "main.css": "/static/css/main.8de15096.chunk.css",
+    "main.js": "/static/js/main.23a0179e.chunk.js",
+    "main.js.map": "/static/js/main.23a0179e.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.40957abb.js",
     "runtime-main.js.map": "/static/js/runtime-main.40957abb.js.map",
     "static/css/2.e23a1293.chunk.css": "/static/css/2.e23a1293.chunk.css",
@@ -11,10 +11,10 @@
     "../public/locales/en.json": "/../public/locales/en.json",
     "../public/locales/vi.json": "/../public/locales/vi.json",
     "index.html": "/index.html",
-    "precache-manifest.b0c21f48c01e0f5db6a203d3d6f7fce9.js": "/precache-manifest.b0c21f48c01e0f5db6a203d3d6f7fce9.js",
+    "precache-manifest.dda18b470da42034f888afc3fb5f6b99.js": "/precache-manifest.dda18b470da42034f888afc3fb5f6b99.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.e23a1293.chunk.css.map": "/static/css/2.e23a1293.chunk.css.map",
-    "static/css/main.e8903d1f.chunk.css.map": "/static/css/main.e8903d1f.chunk.css.map",
+    "static/css/main.8de15096.chunk.css.map": "/static/css/main.8de15096.chunk.css.map",
     "static/js/2.0bc158e6.chunk.js.LICENSE.txt": "/static/js/2.0bc158e6.chunk.js.LICENSE.txt",
     "static/media/404.3586cb9c.svg": "/static/media/404.3586cb9c.svg",
     "static/media/Artist.7a557750.svg": "/static/media/Artist.7a557750.svg",
@@ -32,6 +32,7 @@
     "static/media/logo.23480b51.svg": "/static/media/logo.23480b51.svg",
     "static/media/logout.5da737d7.svg": "/static/media/logout.5da737d7.svg",
     "static/media/message.4c5f321a.svg": "/static/media/message.4c5f321a.svg",
+    "static/media/no__notification.d4d9ab28.svg": "/static/media/no__notification.d4d9ab28.svg",
     "static/media/pencil.423e1d7c.svg": "/static/media/pencil.423e1d7c.svg",
     "static/media/pencil_line.3f255868.svg": "/static/media/pencil_line.3f255868.svg",
     "static/media/pos.ac372d71.svg": "/static/media/pos.ac372d71.svg",
@@ -50,7 +51,7 @@
     "static/js/runtime-main.40957abb.js",
     "static/css/2.e23a1293.chunk.css",
     "static/js/2.0bc158e6.chunk.js",
-    "static/css/main.e8903d1f.chunk.css",
-    "static/js/main.75a18e1e.chunk.js"
+    "static/css/main.8de15096.chunk.css",
+    "static/js/main.23a0179e.chunk.js"
   ]
 }
