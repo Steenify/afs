@@ -31,6 +31,9 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
   const canEditAssign =
     accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) ||
     false;
+  const canGetArtists =
+    accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) ||
+    false;
 
   return (
     <div className='order_detail'>
@@ -55,7 +58,9 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
           </div>
           <div className='col-lg-6 col-xl-5 text-right'>
             <div className='info__right'>
-              {canEditAssign && <OrderAssignedBox order={order} />}
+              {canEditAssign && canGetArtists && (
+                <OrderAssignedBox order={order} />
+              )}
               <OrderBudget order={order} />
             </div>
           </div>

@@ -14,6 +14,7 @@
     "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
+    "firebase": "^7.15.4",
     "gh-pages": "^3.0.0",
     "google-map-react": "^1.1.7",
     "husky": "^4.2.5",
@@ -99,14 +100,14 @@
     "cpx": "^1.5.0",
     "customize-cra": "^0.9.1",
     "del-cli": "^3.0.0",
-    "flow-bin": "^0.123.0",
-    "merge-jsons-webpack-plugin": "^1.0.21",
-    "prettier": "^2.0.5",
-    "react-app-rewired": "^2.1.6",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.0"
+    "eslint-plugin-react": "^7.20.0",
+    "flow-bin": "^0.123.0",
+    "merge-jsons-webpack-plugin": "^1.0.21",
+    "prettier": "^2.0.5",
+    "react-app-rewired": "^2.1.6"
   },
   "engines": {
     "node": ">= 8.x",

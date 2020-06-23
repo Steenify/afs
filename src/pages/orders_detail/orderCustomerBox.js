@@ -117,7 +117,10 @@ const OrderCustomerBox = ({
             {contact?.fbChat && (
               <p className='mb-1'>
                 Facebook Chat: &nbsp;
-                <a target='_blank' rel='noreferrer' href={`${contact?.fbChat}`}>
+                <a
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  href={`${contact?.fbChat}`}>
                   Link
                 </a>
               </p>
@@ -127,7 +130,7 @@ const OrderCustomerBox = ({
                 Mail Chain: &nbsp;
                 <a
                   target='_blank'
-                  rel='noreferrer'
+                  rel='noopener noreferrer'
                   href={`${contact?.mailChain}`}>
                   Link
                 </a>
@@ -136,7 +139,10 @@ const OrderCustomerBox = ({
             {contact?.fbUrl && (
               <p className='mb-1'>
                 Facebook: &nbsp;
-                <a target='_blank' rel='noreferrer' href={`${contact?.fbUrl}`}>
+                <a
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  href={`${contact?.fbUrl}`}>
                   Link
                 </a>
               </p>
@@ -144,7 +150,10 @@ const OrderCustomerBox = ({
             {contact?.igUrl && (
               <p className='mb-1'>
                 Instagram: &nbsp;
-                <a target='_blank' rel='noreferrer' href={`${contact?.igUrl}`}>
+                <a
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  href={`${contact?.igUrl}`}>
                   Link
                 </a>
               </p>
@@ -154,7 +163,7 @@ const OrderCustomerBox = ({
                 SnapChat: &nbsp;
                 <a
                   target='_blank'
-                  rel='noreferrer'
+                  rel='noopener noreferrer'
                   href={`${contact?.snapChatUrl}`}>
                   Link
                 </a>
@@ -165,7 +174,7 @@ const OrderCustomerBox = ({
                 LinkedIn: &nbsp;
                 <a
                   target='_blank'
-                  rel='noreferrer'
+                  rel='noopener noreferrer'
                   href={`${contact?.linkedUrl}`}>
                   Link
                 </a>
@@ -176,7 +185,7 @@ const OrderCustomerBox = ({
                 Twitter: &nbsp;
                 <a
                   target='_blank'
-                  rel='noreferrer'
+                  rel='noopener noreferrer'
                   href={`${contact?.twitterUrl}`}>
                   Link
                 </a>

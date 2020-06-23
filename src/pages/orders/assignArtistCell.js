@@ -39,8 +39,11 @@ const AssignArtistCell = ({
   const canAssignOrder = accountInfo?.permissions?.includes(
     PERMITTIONS_CONFIG.ASSIGN_BOOKING,
   );
+  const canGetArtists = accountInfo?.permissions?.includes(
+    PERMITTIONS_CONFIG.VIEW_ARTIST_LIST,
+  );
 
-  if (!canAssignOrder) {
+  if (!canAssignOrder || !canGetArtists) {
     return (
       <div className='order__assigned'>
         <span className='name'>
@@ -58,7 +61,6 @@ const AssignArtistCell = ({
       isOpen={isPopoverOpen}
       position={'bottom'}
       padding={10}
-      disableReposition
       onClickOutside={toggle}
       content={() => <ListArtists onSave={onSave} assignedTo={assignedTo} />}>
       <button

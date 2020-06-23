@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Spinner } from 'reactstrap';
 import { isEmpty } from 'lodash';
 import { toast } from 'react-toastify';
 
@@ -52,7 +51,6 @@ const OrderAssignedBox = ({ order, getArtists, assignOrdersArtist }) => {
         isOpen={isPopoverOpen}
         position={'bottom'}
         padding={10}
-        disableReposition
         onClickOutside={toggle}
         content={() => <ListArtists onSave={onSave} assignedTo={assignedTo} />}>
         <button

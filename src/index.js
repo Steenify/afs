@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Spinner } from 'reactstrap';
 
-import { buildType } from './config';
+// import { buildType } from './config';
 
 // third partys
 import './vendor';
