@@ -37,9 +37,11 @@ const Notification = (props) => {
         <div className='icon'>
           <Bell />
         </div>
-        <Badge className='number' color='danger'>
-          {count || 0}
-        </Badge>
+        {count && (
+          <Badge className='number' color='danger'>
+            {count || 0}
+          </Badge>
+        )}
       </button>
     </Popover>
   );

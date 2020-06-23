@@ -98,4 +98,28 @@
 			color: $main_color;
 		}
 	}
+
+	&__empty {
+		height: 150px;
+		min-width: 300px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.content {
+			text-align: center;
+		}
+
+		.icon {
+			margin-bottom: 20px;
+		}
+
+		.title {
+			font-weight: normal;
+			font-size: 18px;
+			line-height: 21px;
+			text-align: center;
+			color: #637381;
+		}
+	}
 }
