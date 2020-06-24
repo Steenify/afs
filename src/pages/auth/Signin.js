@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Form, Spinner, Alert } from 'reactstrap';
@@ -8,7 +8,7 @@ import Checkbox from 'components/common/checkbox';
 import Button from 'components/common/button';
 
 import { required, minValue } from 'utils/validation';
-import { Messaging } from 'vendor/firebase';
+import { appToken } from 'vendor/firebase';
 
 import { ReactComponent as Logo } from 'assets/img/logo.svg';
 
@@ -19,22 +19,6 @@ import { actSignin } from './actions';
 const minValue4 = minValue(4);
 
 const Signin = ({ style, handleSubmit, ...props }) => {
-  const [appToken, setAppToken] = useState('');
-
-  useEffect(() => {
-    Messaging.requestPermission()
-      .then(() => {
-        return Messaging.getToken();
-      })
-      .then((token) => {
-        console.log('token', token);
-        setAppToken(token);
-      })
-      .catch((err) => {
-        console.log('requestPermission fail', JSON.stringify(err));
-      });
-  }, []);
-
   const onSubmit = (values) => {
     const payload = {
       ...values,

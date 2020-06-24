@@ -2,6 +2,7 @@ import { request } from 'utils/request';
 
 const AUTH_API = '/api/authenticate';
 const ACCOUNT_API = '/api/account';
+const LOGOUT_API = '/api/logout';
 
 export const signin = (data) =>
   request({
@@ -20,4 +21,11 @@ export const changePassword = (data) =>
     url: ACCOUNT_API + '/change-password',
     method: 'POST',
     data: data,
+  });
+
+export const logoutService = (data) =>
+  request({
+    url: LOGOUT_API,
+    method: 'POST',
+    data,
   });

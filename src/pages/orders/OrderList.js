@@ -23,9 +23,10 @@ import OrderBulkAction from './orderBulkAction';
 import OrderSelectedCell from './orderSelectedCell';
 import OrderSelectedAll from './orderSelectedAll';
 import OrderCreatedDateCell from './orderCreateDateCell';
-import OrderDeadlineCell from './orderDeadlineCell';
+// import OrderDeadlineCell from './orderDeadlineCell';
 import OrderSubTotalCell from './orderSubTotalCell';
 import OrderStatusCell from './orderStatusCell';
+import OrderLastUpdateDateCell from './orderLastUpdateCell';
 
 const OrderList = (props) => {
   const { getOrders, updateOrder, loading, accountInfo, ids } = props;
@@ -51,11 +52,18 @@ const OrderList = (props) => {
       minWidth: 130,
       Cell: OrderCreatedDateCell,
     },
+    // {
+    //   accessor: 'deadline',
+    //   minWidth: 100,
+    //   Header: 'Deadline',
+    //   Cell: OrderDeadlineCell,
+    // },
     {
-      accessor: 'deadline',
+      accessor: 'lastModifiedDate',
       minWidth: 100,
-      Header: 'Deadline',
-      Cell: OrderDeadlineCell,
+      maxWidth: 130,
+      Header: 'Last Update',
+      Cell: OrderLastUpdateDateCell,
     },
     {
       accessor: 'customer',

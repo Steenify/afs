@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import omit from 'lodash/omit';
 import { reduce, map, isObject, mapValues } from 'lodash';
 
-import { PSDFileType } from 'config';
 import PSDFile from 'assets/img/psd__icon.jpg';
 
 export const storeData = (key, value) => {
@@ -59,7 +58,9 @@ export const actionTryCatchCreator = async ({
       if (onSuccess) onSuccess(data, headers, status);
     } else {
       throw String(
-        `HTTP request with code ${status} \n ${data.detail || data.message}`,
+        `HTTP request with code ${status} \n ${
+          data.detail || data.message || ''
+        }`,
       );
     }
   } catch (error) {
@@ -212,13 +213,16 @@ export const getOrderOption = (name) => {
 
 export const getListImageUrl = (list = []) => {
   return list.map((item) => {
-    if (item.fileType === PSDFileType) {
+    if (item.fileName && item.fileName.indexOf('.psd') !== -1) {
       return {
         download: PSDFile,
         fullscreen: PSDFile,
         regular: PSDFile,
         thumbnail: PSDFile,
-        type: item.fileType,
+        type: item?.fileType,
+        fileName: item?.fileName,
+        id: item?.id,
+        fileId: item?.fileId,
       };
     }
     if (item.thumbnailLink && item.fileId) {
@@ -227,7 +231,10 @@ export const getListImageUrl = (list = []) => {
         fullscreen: item.url,
         regular: item.url,
         thumbnail: `https://drive.google.com/thumbnail?sz=w100&id=${item.fileId}`,
-        type: item.fileType,
+        type: item?.fileType,
+        fileName: item?.fileName,
+        id: item?.id,
+        fileId: item?.fileId,
       };
     }
     return item.url;

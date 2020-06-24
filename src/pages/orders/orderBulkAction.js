@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { forEach, filter } from 'lodash';
 import { statusPayments } from 'config';
 
 import OrderSelectedCell from './orderSelectedAll';
+import OrderPayoutModal from './orderPayoutModal';
 
 import {
   updateOrderPaymentStatusBulkAction,
@@ -21,6 +22,10 @@ const OrderBulkAction = ({
   updateOrderStatusDoneBulk,
 }) => {
   const isHide = !selected || !selected?.length;
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
 
   const handleChangeStatus = (status) => {
     updateOrderPaymentStatusBulk(
@@ -87,7 +92,12 @@ const OrderBulkAction = ({
           onClick={handleUpdateOrderStatusDone}>
           Mark as Done
         </button>
+        {/* <button type='button' className='btn btn-group__item' onClick={toggle}>
+          Open payout modal
+        </button> */}
       </div>
+
+      <OrderPayoutModal isOpen={isOpen} toggle={toggle} />
     </div>
   );
 };

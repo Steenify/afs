@@ -1,5 +1,10 @@
-import { actionCreator } from 'utils';
-import { signin, getAccount, changePassword } from 'services/auth.service';
+import { actionCreator, actionTryCatchCreator } from 'utils';
+import {
+  signin,
+  getAccount,
+  changePassword,
+  logoutService,
+} from 'services/auth.service';
 
 export const SIGNIN = actionCreator('SIGNIN');
 export const actSignin = (params) => async (dispatch) => {
@@ -46,13 +51,6 @@ export const actGetAccount = () => async (dispatch) => {
   }
 };
 
-export const SIGNOUT = actionCreator('SIGNOUT');
-export const actSignout = () => async (dispatch) => {
-  dispatch({
-    type: SIGNOUT.SUCCESS,
-  });
-};
-
 export const CHANGE_PASSWORD = actionCreator('CHANGE_PASSWORD');
 export const actChangePassword = (data) => async (dispatch) => {
   try {
@@ -75,4 +73,41 @@ export const actChangePassword = (data) => async (dispatch) => {
 
     return e.response;
   }
+};
+
+export const SIGNOUT = actionCreator('SIGNOUT');
+export const actSignout = () => async (dispatch) => {
+  dispatch({
+    type: SIGNOUT.SUCCESS,
+  });
+};
+
+export const LOGOUT_ACTION = actionCreator('LOGOUT_ACTION');
+export const logOutAction = (payload, cb) => async (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: LOGOUT_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    cb && cb();
+    dispatch({
+      type: LOGOUT_ACTION.SUCCESS,
+      payload: data,
+    });
+  };
+  const onError = (error) => {
+    console.log('logOutAction', error);
+    dispatch({
+      type: LOGOUT_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: logoutService(payload),
+    onPending,
+    onSuccess,
+    onError,
+  });
 };

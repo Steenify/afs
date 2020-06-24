@@ -15,16 +15,28 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-export const Messaging = firebase.messaging();
+const isSupportedMessage = firebase.messaging.isSupported();
 
-Messaging.requestPermission()
-  .then(() => {
-    return Messaging.getToken();
-  })
-  .then((token) => {
-    console.log('token', token);
-  })
-  .catch((err) => {
-    console.log('requestPermission fail', JSON.stringify(err));
-  });
+let Messaging = null;
+
+let appToken = '';
+
+if (isSupportedMessage) {
+  Messaging = firebase.messaging();
+
+  Messaging.requestPermission()
+    .then(() => {
+      return Messaging.getToken();
+    })
+    .then((token) => {
+      appToken = token;
+      console.log('token', token);
+    })
+    .catch((err) => {
+      console.log('requestPermission fail', err, JSON.stringify(err));
+    });
+}
+
 export const MyFirebase = firebase;
+
+export { isSupportedMessage, Messaging, appToken };

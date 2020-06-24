@@ -2,15 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Spinner, Alert } from 'reactstrap';
 import { groupBy, sortBy, map, isEmpty, reduce } from 'lodash';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { toast } from 'react-toastify';
-
-import ImageGallery from 'components/common/imageGallery';
-
-import { getListImageUrl } from 'utils';
 
 import OrderArtWorkGroup from './orderArtWorkGroup';
 import OrderCustomerBox from './orderCustomerBox';
+import OrderArtDelivery from './orderArtDelivery';
 import { getOrderWorkLogAction } from './actions';
 
 const OrderArtWorkBox = ({
@@ -159,44 +154,11 @@ const OrderArtWorkBox = ({
               )}
 
               {EXPORT_FILE.length > 0 && (
-                <div className='deli__body'>
-                  <div className='box__header mb-2'>
-                    <div className='box__title'>Links</div>
-                  </div>
-                  <div className='input-group clipboad mb-3'>
-                    <input
-                      type='text'
-                      className='form-control clipboad__input'
-                      value={`https://drive.google.com/drive/folders/${
-                        order?.finalDriveId || ''
-                      }`}
-                      onChange={() => {}}
-                      placeholder='Google Link'
-                    />
-                    <CopyToClipboard
-                      text={`https://drive.google.com/drive/folders/${
-                        order?.finalDriveId || ''
-                      }`}
-                      onCopy={() => toast.success('Copied')}>
-                      <div className='input-group-append clipboad__input'>
-                        <span className='input-group-text'>Copy</span>
-                      </div>
-                    </CopyToClipboard>
-                  </div>
-
-                  <div className='box__device'></div>
-                  <div className='box__header mb-2'>
-                    <div className='box__title'>Photos</div>
-                  </div>
-
-                  <div className='deli__photos'>
-                    <ImageGallery
-                      images={getListImageUrl(allExportImage)}
-                      alt={'Order Delivery'}
-                      caption={'Order Delivery'}
-                    />
-                  </div>
-                </div>
+                <OrderArtDelivery
+                  works={worklogGroup.EXPORT_FILE}
+                  order={order}
+                  images={allExportImage}
+                />
               )}
             </div>
           </div>

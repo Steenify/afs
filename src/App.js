@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, Flip } from 'react-toastify';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 
@@ -31,7 +31,7 @@ import Orders from 'pages/orders';
 import OrderDetail from 'pages/orders_detail';
 import Settings from 'pages/settings';
 import Artists from 'pages/artists';
-import ArtistDetail from 'pages/artists/artistDetailFrom';
+import ArtistDetail from 'pages/artists/artistDetailForm';
 import CS from 'pages/customer_service';
 import CSDetail from 'pages/customer_service/customerServiceDetail';
 
@@ -218,6 +218,7 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
 
       <ToastContainer
         position='bottom-left'
+        transition={Flip}
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}

@@ -145,3 +145,15 @@ export const getOrderBulkMarkAsDoneService = (data) =>
     method: 'PUT',
     data,
   });
+
+export const deleteFileDeliveryService = (orderid, fileId) =>
+  request({
+    url: `${ORDERS_API}/${orderid}/deliveries/attachments/${fileId}`,
+    method: 'DELETE',
+  });
+
+export const deleteFileSumaryService = (orderid, itemId, fileId) =>
+  request({
+    url: `${ORDERS_API}/${orderid}/items/${itemId}/attachments/${fileId}`,
+    method: 'DELETE',
+  });

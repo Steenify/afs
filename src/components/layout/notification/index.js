@@ -37,7 +37,7 @@ const Notification = (props) => {
         <div className='icon'>
           <Bell />
         </div>
-        {count && (
+        {count > 0 && (
           <Badge className='number' color='danger'>
             {count || 0}
           </Badge>

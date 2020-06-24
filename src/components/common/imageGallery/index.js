@@ -4,6 +4,8 @@ import { isObject } from 'lodash';
 
 import ImageLoadAble from '../imageLoadAble';
 
+import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
+
 import './style.scss';
 
 class ImageGallery extends Component {
@@ -21,10 +23,10 @@ class ImageGallery extends Component {
 
   render() {
     const { modalIsOpen, currentIndex } = this.state;
-    const { images, alt, title } = this.props;
+    const { images, alt, title, canDelete, onDelete } = this.props;
 
     const list = images.map((source) => ({
-      caption: title,
+      caption: source?.fileName || title,
       alt: alt,
       source,
     }));
@@ -33,21 +35,35 @@ class ImageGallery extends Component {
       <>
         {list &&
           list.map((img, index) => (
-            <button
-              className='images_gallerry__item'
+            <div
+              className='images_gallerry__item d-inline-block'
               key={`images_gallerry__item__${index.toString()}`}
-              type='button'
-              data={index}
-              onClick={() => this.toggleModal(index)}>
-              {isObject(img.source) ? (
-                <ImageLoadAble
-                  type={img.source.type}
-                  url={img.source.thumbnail}
-                />
-              ) : (
-                <ImageLoadAble url={img.source} />
+              type='button'>
+              {canDelete && (
+                <button
+                  onClick={() => onDelete(img, index)}
+                  className='images_gallerry__delete'
+                  type='button'>
+                  <span className='icon'>
+                    <CloseIcon />
+                  </span>
+                </button>
               )}
-            </button>
+
+              <div
+                className='images_gallerry__img'
+                onClick={() => this.toggleModal(index)}>
+                {isObject(img.source) ? (
+                  <ImageLoadAble
+                    type={img.source.type}
+                    url={img.source.thumbnail}
+                    fileName={img.source.fileName}
+                  />
+                ) : (
+                  <ImageLoadAble url={img.source} />
+                )}
+              </div>
+            </div>
           ))}
         <ModalGateway>
           {modalIsOpen ? (
@@ -85,6 +101,8 @@ ImageGallery.defaultProps = {
   className: '',
   alt: '',
   caption: '',
+  canDelete: false,
+  onDelete: () => {},
 };
 
 export default ImageGallery;

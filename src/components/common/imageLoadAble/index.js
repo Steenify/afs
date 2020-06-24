@@ -35,27 +35,25 @@ class ImageLoadAble extends Component {
 
   componentWillUnmount() {
     this.request = null;
+    this.onSuccess = () => {};
+    this.onError = () => {};
   }
 
   onError = () => {
-    if (this) {
-      this.setState({
-        isLoading: false,
-      });
-    }
+    this.setState({
+      isLoading: false,
+    });
   };
 
   onSuccess = () => {
-    if (this) {
-      this.setState({
-        isLoadAble: true,
-        isLoading: false,
-      });
-    }
+    this.setState({
+      isLoadAble: true,
+      isLoading: false,
+    });
   };
 
   render() {
-    const { url, className, type = '' } = this.props;
+    const { url, className, type = '', fileName = '' } = this.props;
     const { isLoadAble, isLoading } = this.state;
 
     const isImage = (type || '').indexOf('image/') !== -1;

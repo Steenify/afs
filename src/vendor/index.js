@@ -1,6 +1,6 @@
 import './bootstrap';
 import './i18n';
-import './firebase';
+// import './firebase';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-phone-number-input/style.css';

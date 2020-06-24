@@ -3,24 +3,45 @@ import { connect } from 'react-redux';
 import { Navbar, Nav } from 'reactstrap';
 // import i18next from 'i18next';
 import { debounce } from 'lodash';
+import { useHistory } from 'react-router-dom';
+
+import { appToken } from 'vendor/firebase';
+
+import { WEB_ROUTES } from 'config';
 
 import Notification from '../notification';
 import AccountInfo from './AccountInfo';
 
 import './style.scss';
 
-import { actSignout } from 'pages/auth/actions';
+import { logOutAction } from 'pages/auth/actions';
 import { changeLanguage, toggleMenu } from 'store/actions';
 
 const Header = (props) => {
-  const { className, accountInfo, lang, toggleMenu } = props;
+  const { className, accountInfo, lang, toggleMenu, logOutAction } = props;
 
   const [isShowInfo, setIsShowInfo] = useState(true);
+
+  const history = useHistory();
 
   // const changeLanguage = (lang) => {
   //   i18next.changeLanguage(lang);
   //   props.changeLanguage(lang);
   // };
+
+  useEffect(() => {
+    const listener = debounce(() => {
+      toggleMenu(!(window.innerWidth < 768));
+    }, 300);
+
+    listener();
+
+    window.addEventListener('resize', listener);
+
+    return () => {
+      window.removeEventListener('resize', listener);
+    };
+  }, [toggleMenu]);
 
   const handleToggle = () => {
     props.toggleMenu(!props.isMenuOpen);
@@ -36,19 +57,16 @@ const Header = (props) => {
     setIsShowInfo(true);
   };
 
-  useEffect(() => {
-    const listener = debounce(() => {
-      toggleMenu(!(window.innerWidth < 768));
-    }, 300);
-
-    listener();
-
-    window.addEventListener('resize', listener);
-
-    return () => {
-      window.removeEventListener('resize', listener);
-    };
-  }, [toggleMenu]);
+  const handleSignOut = () => {
+    logOutAction(
+      {
+        appToken,
+      },
+      () => {
+        history.push(WEB_ROUTES.SIGN_IN.path);
+      },
+    );
+  };
 
   return (
     <header className={`header__main ${className || ''}`}>
@@ -80,7 +98,7 @@ const Header = (props) => {
               </div> */}
 
               <Notification />
-              <AccountInfo account={accountInfo} onSignout={props.actSignout} />
+              <AccountInfo account={accountInfo} onSignout={handleSignOut} />
             </Nav>
           )}
         </Navbar>
@@ -96,7 +114,7 @@ const mapStateToProps = ({ auth, global }) => ({
 });
 
 const mapDispatchToProps = {
-  actSignout,
+  logOutAction,
   changeLanguage,
   toggleMenu,
 };

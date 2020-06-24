@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import { filter } from 'lodash';
+import { filter, findIndex } from 'lodash';
 import { Editor } from '@tinymce/tinymce-react';
 import { toast } from 'react-toastify';
 
@@ -14,6 +14,7 @@ import {
   updateOrderItemSumarizeAction,
   updateOrderItemSumarizeAPIAction,
   updateOrderItemFilesAction,
+  deleteFileSummaryAction,
 } from './actions';
 
 const OrderSumaryBox = ({
@@ -24,6 +25,7 @@ const OrderSumaryBox = ({
   updateOrderItemSumarizeAPI,
   updateOrderItemFiles,
   accountInfo,
+  deleteFileSummary,
 }) => {
   const canEditSumary =
     accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_SUMMARY) ||
@@ -95,6 +97,24 @@ const OrderSumaryBox = ({
     });
   };
 
+  const handleDeleteFile = (file) => {
+    const fileIndex = findIndex(
+      item.photos,
+      (pho) => pho?.id === file?.source?.id,
+    );
+
+    deleteFileSummary(
+      order.id,
+      item.id,
+      file?.source?.id,
+      index,
+      fileIndex,
+      () => {
+        toast.success('File deleteted!');
+      },
+    );
+  };
+
   const morePhotos = filter(item.photos, (p) => !p.external);
 
   return (
@@ -158,6 +178,8 @@ const OrderSumaryBox = ({
               images={getListImageUrl(morePhotos)}
               alt={item.name}
               caption={item.name}
+              canDelete={canEditSumary && isEdit}
+              onDelete={handleDeleteFile}
             />
           </>
         ) : null}
@@ -178,6 +200,7 @@ const mapDispatchToProps = {
   updateOrderItemSumarize: updateOrderItemSumarizeAction,
   updateOrderItemSumarizeAPI: updateOrderItemSumarizeAPIAction,
   updateOrderItemFiles: updateOrderItemFilesAction,
+  deleteFileSummary: deleteFileSummaryAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderSumaryBox);

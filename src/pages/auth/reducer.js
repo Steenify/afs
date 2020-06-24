@@ -1,7 +1,13 @@
 import update from 'react-addons-update';
 import { storeData } from 'utils';
 
-import { SIGNIN, GET_ACCOUNT, SIGNOUT, CHANGE_PASSWORD } from './actions';
+import {
+  SIGNIN,
+  GET_ACCOUNT,
+  SIGNOUT,
+  CHANGE_PASSWORD,
+  LOGOUT_ACTION,
+} from './actions';
 
 const initialState = {
   ui: {
@@ -87,6 +93,7 @@ const reducer = (state = initialState, action) => {
         },
       });
 
+    case LOGOUT_ACTION.SUCCESS:
     case SIGNOUT.SUCCESS:
       storeData('token', '');
       return update(state, {

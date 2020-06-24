@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Button from 'components/common/button';
-
-import { WEB_ROUTES } from 'config';
 
 import { ReactComponent as Toggle } from 'assets/img/toggle.svg';
 import { ReactComponent as Profile } from 'assets/img/profile.svg';
@@ -17,14 +15,8 @@ const AccountInfo = (props) => {
   const { className, account, onSignout } = props;
   const { imageUrl, firstName, lastName, email } = account;
   const [dropdownOpen, setOpen] = useState(false);
-  const history = useHistory();
 
   const toggle = () => setOpen(!dropdownOpen);
-
-  const handleLogout = () => {
-    history.push(WEB_ROUTES.SIGN_IN.path);
-    onSignout();
-  };
 
   return (
     <ButtonDropdown
@@ -76,7 +68,7 @@ const AccountInfo = (props) => {
         <Button
           color='link'
           className='account-info__link d-block w-100 text-left'
-          onClick={handleLogout}>
+          onClick={onSignout}>
           <span className='icon'>
             <Logout />
           </span>

@@ -17,6 +17,8 @@ import {
   rejectedOrderWorkLogService,
   getOrderEmailService,
   sentOrderEmailNotifyService,
+  deleteFileDeliveryService,
+  deleteFileSumaryService,
 } from 'services/order';
 
 export const ORDER_DETAIL_ACTIONS = {
@@ -546,6 +548,91 @@ export const sendEmailNotifyAction = () => (dispatch, getState) => {
   };
   actionTryCatchCreator({
     service: sentOrderEmailNotifyService({ id: order.id, data: payload }),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const DELETE_FILE_DELIVERY_ACTION = actionCreator(
+  'DELETE_FILE_DELIVERY_ACTION',
+);
+export const deleteFileDeliveryAction = (
+  id,
+  fileId,
+  logIndex,
+  fileIndex,
+  cb,
+) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: DELETE_FILE_DELIVERY_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    if (data) {
+      cb && cb();
+      dispatch({
+        type: DELETE_FILE_DELIVERY_ACTION.SUCCESS,
+        payload: { logIndex, fileIndex },
+      });
+    } else {
+      toast.error('Can not delete file, Please try again later!');
+    }
+  };
+  const onError = (error) => {
+    console.log('deleteFileDeliveryAction', error);
+    dispatch({
+      type: DELETE_FILE_DELIVERY_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: deleteFileDeliveryService(id, fileId),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const DELETE_FILE_SUMMARY_ACTION = actionCreator(
+  'DELETE_FILE_SUMMARY_ACTION',
+);
+export const deleteFileSummaryAction = (
+  id,
+  itemId,
+  fileId,
+  itemIndex,
+  fileIndex,
+  cb,
+) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: DELETE_FILE_SUMMARY_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    if (data) {
+      cb && cb();
+      dispatch({
+        type: DELETE_FILE_SUMMARY_ACTION.SUCCESS,
+        payload: { itemIndex, fileIndex },
+      });
+    } else {
+      toast.error('Can not delete file, Please try again later!');
+    }
+  };
+  const onError = (error) => {
+    console.log('deleteFileSummaryAction', error);
+    dispatch({
+      type: DELETE_FILE_SUMMARY_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: deleteFileSumaryService(id, itemId, fileId),
     onPending,
     onSuccess,
     onError,

@@ -19,20 +19,24 @@ firebase.initializeApp(firebaseConfig);
 
 var messaging = firebase.messaging();
 
-messaging.setBackgroundMessageHandler(function (payload) {
-  console.log(
-    '[firebase-messaging-sw.js] Received background message ',
-    payload,
-  );
-  // Customize notification here
-  const notificationTitle = 'Background Message Title';
-  const notificationOptions = {
-    body: 'Background Message body.',
-    icon: '/favicon-32x32.png',
-  };
+var isSupportedMessage = firebase.messaging.isSupported();
 
-  return self.registration.showNotification(
-    notificationTitle,
-    notificationOptions,
-  );
-});
+if (isSupportedMessage) {
+  messaging.setBackgroundMessageHandler(function (payload) {
+    console.log(
+      '[firebase-messaging-sw.js] Received background message ',
+      payload,
+    );
+    // Customize notification here
+    const notificationTitle = 'Background Message Title';
+    const notificationOptions = {
+      body: 'Background Message body.',
+      icon: '/favicon-32x32.png',
+    };
+
+    return self.registration.showNotification(
+      notificationTitle,
+      notificationOptions,
+    );
+  });
+}

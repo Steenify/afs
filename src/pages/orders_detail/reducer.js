@@ -15,6 +15,8 @@ import {
   UPLOAD_COMMENT_WORK_LOG_ACTION,
   DELETE_COMMENT_WORK_LOG_ACTION,
   UPDATE_COMMENT_WORK_LOG_ACTION,
+  DELETE_FILE_DELIVERY_ACTION,
+  DELETE_FILE_SUMMARY_ACTION,
 } from './actions';
 
 import {
@@ -365,6 +367,35 @@ const reducer = (state = initialState, action) => {
           loadingEmail: { $set: false },
         },
       });
+
+    case DELETE_FILE_DELIVERY_ACTION.SUCCESS: {
+      return update(state, {
+        data: {
+          workLog: {
+            [payload.logIndex]: {
+              attachments: {
+                $splice: [[payload.fileIndex, 1]],
+              },
+            },
+          },
+        },
+      });
+    }
+    case DELETE_FILE_SUMMARY_ACTION.SUCCESS: {
+      return update(state, {
+        data: {
+          order: {
+            items: {
+              [payload.itemIndex]: {
+                photos: {
+                  $splice: [[payload.fileIndex, 1]],
+                },
+              },
+            },
+          },
+        },
+      });
+    }
 
     default:
       return state;
