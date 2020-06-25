@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { ReactComponent as FileIcon } from 'assets/img/file_Icon.svg';
 
 import General from 'assets/img/general__image.jpg';
 
 import PSDFile from 'assets/img/psd__icon.jpg';
 
-const PSDFileType = 'image/vnd.adobe.photoshop';
+// const PSDFileType = 'image/vnd.adobe.photoshop';
 
 class ImageFile extends Component {
   constructor(props) {
@@ -19,11 +18,11 @@ class ImageFile extends Component {
 
   componentDidMount() {
     const { file } = this.props;
+    console.log('ImageFile -> componentDidMount -> file', file);
     if (!file) {
       return;
     }
-    const isPSD = file?.type === PSDFileType;
-
+    const isPSD = (file?.name || '').indexOf('.psd') !== -1;
     const isImage = file?.type.indexOf('image/') !== -1;
 
     if (!isPSD && isImage) {

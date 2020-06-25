@@ -222,19 +222,17 @@ export const getListImageUrl = (list = []) => {
         type: item?.fileType,
         fileName: item?.fileName,
         id: item?.id,
-        fileId: item?.fileId,
       };
     }
-    if (item.thumbnailLink && item.fileId) {
+    if (item.thumbnailLink) {
       return {
-        download: item.url,
-        fullscreen: item.url,
-        regular: item.url,
-        thumbnail: `https://drive.google.com/thumbnail?sz=w100&id=${item.fileId}`,
+        download: item?.url,
+        fullscreen: item?.url,
+        regular: item?.url,
+        thumbnail: item?.thumbnailLink,
         type: item?.fileType,
         fileName: item?.fileName,
         id: item?.id,
-        fileId: item?.fileId,
       };
     }
     return item.url;

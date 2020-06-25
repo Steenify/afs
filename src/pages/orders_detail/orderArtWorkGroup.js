@@ -98,6 +98,7 @@ const OrderArtWorkGroup = ({
         return (
           <OrderRejectModal
             onClose={onClose}
+            orderNumber={order.number}
             onConfirm={(data) => {
               if (data.content) {
                 uploadCommentWorkLog(

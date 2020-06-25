@@ -84,7 +84,7 @@ const OrderWorkLogItem = ({
       const data = {
         attachments: files.map((file) => ({
           id: file.id,
-          fileId: file?.fileId,
+
           thumbnailLink: file?.thumbnailLink,
           url: file?.url,
           external: file?.external,
@@ -122,7 +122,6 @@ const OrderWorkLogItem = ({
         content: text,
         attachments: files.map((file) => ({
           id: file.id,
-          fileId: file?.fileId,
           thumbnailLink: file?.thumbnailLink,
           url: file?.url,
           external: file?.external,
@@ -258,6 +257,7 @@ const OrderWorkLogItem = ({
                   className='upload'
                   ref={dropbox}
                   finalDriveId={isExported ? order.finalDriveId : ''}
+                  orderNumber={order.number}
                   id={`work_log__${work.status}__${work.id}`}
                 />
                 {isWorking && (

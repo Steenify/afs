@@ -55,7 +55,6 @@ const OrderArtDelivery = ({
       const data = {
         attachments: files.map((file) => ({
           id: file.id,
-          fileId: file?.fileId,
           thumbnailLink: file?.thumbnailLink,
           url: file?.url,
           external: file?.external,
@@ -131,6 +130,7 @@ const OrderArtDelivery = ({
             className='upload'
             ref={dropbox}
             finalDriveId={order.finalDriveId}
+            orderNumber={order.number}
             id={`work_log__delivery__update`}
           />
           <div className='order_detail__ctas text-right'>
@@ -148,8 +148,9 @@ const OrderArtDelivery = ({
   );
 };
 
-const mapStateToProps = ({ orderDetail }) => ({
+const mapStateToProps = ({ orderDetail, auth }) => ({
   workLog: orderDetail.data.workLog,
+  accountInfo: auth.data.accountInfo,
 });
 
 const mapDispatchToProps = {

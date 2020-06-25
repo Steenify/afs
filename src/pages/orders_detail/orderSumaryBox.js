@@ -185,7 +185,7 @@ const OrderSumaryBox = ({
         ) : null}
 
         <div className={`photos__upload ${!isEdit && 'd-none'}`}>
-          <Dropbox ref={dropbox} id={item.id} />
+          <Dropbox ref={dropbox} id={item.id} orderNumber={order.number} />
         </div>
       </div>
     </div>

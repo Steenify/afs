@@ -5,7 +5,7 @@ import Dropbox from 'components/common/dropbox';
 
 import { ReactComponent as Close } from 'assets/img/close.svg';
 
-const OrderRejectModal = ({ onClose, onConfirm }) => {
+const OrderRejectModal = ({ onClose, onConfirm, orderNumber }) => {
   const [value, setValue] = useState('');
   const dropbox = useRef(null);
   const onChange = (e) => {
@@ -33,7 +33,6 @@ const OrderRejectModal = ({ onClose, onConfirm }) => {
         content: value,
         attachments: files.map((file) => ({
           id: file.id,
-          fileId: file?.fileId,
           thumbnailLink: file?.thumbnailLink,
           url: file?.url,
           external: file?.external,
@@ -75,6 +74,7 @@ const OrderRejectModal = ({ onClose, onConfirm }) => {
             <Dropbox
               className='upload'
               ref={dropbox}
+              orderNumber={orderNumber}
               id={`Reject__modal__upload`}
             />
           </p>
