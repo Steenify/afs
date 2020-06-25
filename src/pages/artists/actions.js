@@ -1,6 +1,10 @@
 import { actionCreator, actionTryCatchCreator } from 'utils';
 
-import { getAllArtistsService, getArtistService } from 'services/artist';
+import {
+  getAllArtistsService,
+  getArtistService,
+  updateArtistService,
+} from 'services/artist';
 
 export const ARTISTS_ACTIONS = {
   UPDATE_ARTIST_DETAIL: 'UPDATE_ARTIST_DETAIL',
@@ -65,6 +69,39 @@ export const getArtistAction = (login) => (dispatch) => {
 
   actionTryCatchCreator({
     service: getArtistService(login),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const UPDATE_ARTISTS_API_ACTION = actionCreator(
+  'UPDATE_ARTISTS_API_ACTION',
+);
+export const updateArtistDetailApiAction = (payload, cb) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: UPDATE_ARTISTS_API_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: UPDATE_ARTISTS_API_ACTION.SUCCESS,
+      payload: { data },
+    });
+
+    cb && cb();
+  };
+  const onError = (error) => {
+    console.log('updateArtistDetailApiAction -> error', error);
+    dispatch({
+      type: UPDATE_ARTISTS_API_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: updateArtistService(payload),
     onPending,
     onSuccess,
     onError,

@@ -25,7 +25,7 @@ export const getArtistService = (login) =>
 
 export const updateArtistService = (data) =>
   request({
-    url: `${ARTIST_API}/budget`,
+    url: `${ARTIST_API}`,
     method: 'PUT',
-    data: data,
+    data,
   });

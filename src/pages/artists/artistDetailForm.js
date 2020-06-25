@@ -3,24 +3,24 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { Form, Spinner, Alert, Badge, FormGroup } from 'reactstrap';
+import { Form, Spinner } from 'reactstrap';
+import { toast } from 'react-toastify';
 
 import Input from 'components/common/input';
 import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
-import Checkbox from 'components/common/checkbox';
+// import Checkbox from 'components/common/checkbox';
 import Button from 'components/common/button';
 import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
-import { getArtistAction } from './actions';
+import { getArtistAction, updateArtistDetailApiAction } from './actions';
 
 import { WEB_ROUTES } from 'config';
 
 const ArtistDetail = ({ style, handleSubmit, ...props }) => {
   const { login } = useParams();
-  const { ui, errorRequest, getArtist } = props;
+  const { ui, getArtist, updateArtistDetailApi } = props;
 
   useEffect(() => {
     getArtist(login);
@@ -29,31 +29,24 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
   const { t } = useTranslation();
 
   const onSubmit = (values) => {
-    props.actUpdateCustomer(values).then((res) => {
-      const { status, data } = res;
-      const { errorKey, message } = data;
+    console.log('onSubmit -> values', values);
 
-      if (status === 200) {
-        const successMessage =
-          t('baseApp.customerManagement.updated') + ' ' + data.login;
+    const payload = {
+      artistExtension: {
+        fbUrl: values?.fbUrl,
+        igUrl: values?.igUrl,
+        note: values?.note,
+      },
+      login: values?.login,
+      email: values?.email,
+      firstName: values?.firstName,
+      lastName: values?.lastName,
+      phoneNumber: values?.phoneNumber,
+      id: values?.id,
+    };
 
-        toast.dark(successMessage);
-      } else {
-        let errorMessage = '';
-        if (errorKey) {
-          const key = 'error.' + errorKey;
-          errorMessage = t(key);
-        } else {
-          if (status) {
-            const key = 'error.http.' + status;
-            errorMessage = t(key);
-          } else {
-            errorMessage = message;
-          }
-        }
-
-        toast.error(errorMessage || message);
-      }
+    updateArtistDetailApi(payload, () => {
+      toast.dark('Artist Updated!');
     });
   };
 
@@ -77,9 +70,6 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
         className='mb-0 mr-3'></PageTitle>
 
       <Form style={{ marginTop: 27 }} onSubmit={handleSubmit(onSubmit)}>
-        {errorRequest && errorRequest.message && (
-          <Alert color='danger'>{errorRequest.message}</Alert>
-        )}
         <Field
           className='form-group--inline'
           component={Input}
@@ -116,78 +106,24 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
         <Field
           className='form-group--inline'
           component={Input}
-          name='customerExtension.note'
+          name='note'
           label={'Note'}
         />
+
         <Field
           className='form-group--inline'
           component={Input}
-          name='customerExtension.fbChat'
-          label={'Facebook Chat'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.mailChain'
-          label={'Mail Chain'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.fbUrl'
+          name='fbUrl'
           label={'Facebook Url'}
         />
 
         <Field
           className='form-group--inline'
           component={Input}
-          name='customerExtension.igUrl'
+          name='igUrl'
           label={'Instagram Url'}
         />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.linkedUrl'
-          label={'LinkedIn Url'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.snapChatUrl'
-          label={'SnapChat Url'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.twitterUrl'
-          label={'Twitter Url'}
-        />
 
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.gen'
-          label={'Gender'}
-        />
-
-        <FormGroup className='form-group--inline'>
-          <label>Status</label>
-          <Field
-            className='form-check--hide-input'
-            component={Checkbox}
-            name='activated'
-            labelActive={
-              <Badge color='success' pill>
-                {t('baseApp.customerManagement.activated')}
-              </Badge>
-            }
-            labelUnActive={
-              <Badge color='danger' pill>
-                {t('baseApp.customerManagement.deactivated')}
-              </Badge>
-            }
-          />
-        </FormGroup>
         <div className='d-flex'>
           <Button
             tag={Link}
@@ -220,7 +156,7 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
               justifyContent: 'center',
             }}>
             &nbsp; {t('entity.action.save')} &nbsp;
-            {ui && ui.loading && <Spinner size='sm' color='light' />}
+            {ui && ui.loadingDetail && <Spinner size='sm' color='light' />}
           </Button>
         </div>
       </Form>
@@ -228,35 +164,23 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
   );
 };
 
-const mapStateToProps = ({ customer, role, artists }) => {
+const mapStateToProps = ({ role, artists }) => {
   return {
-    initialValues: {
-      login: artists.artist.login,
-      firstName: artists.artist.firstName,
-      lastName: artists.artist.lastName,
-      id: artists.artist.id,
-      activated: artists.artist.activated,
-      authorities: artists.artist.authorities,
-      createdBy: artists.artist.createdBy,
-      createdDate: artists.artist.createdDate,
-      email: artists.artist.email,
-      imageUrl: artists.artist.imageUrl,
-      langKey: artists.artist.langKey,
-      lastModifiedBy: artists.artist.lastModifiedBy,
-      lastModifiedDate: artists.artist.lastModifiedDate,
-      permissions: artists.artist.permissions,
-      phoneNumber: artists.artist.phoneNumber,
-      customerExtension: artists.artist.customerExtension,
-    },
-    errorRequest: customer.error.edit,
-    ui: customer.ui.edit,
+    initialValues: artists.artist,
+    ui: artists.ui,
     authorities: role.data.authorities,
   };
 };
 
-export default connect(mapStateToProps, {
+const mapDispatchToProps = {
   getArtist: getArtistAction,
-})(
+  updateArtistDetailApi: updateArtistDetailApiAction,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(
   reduxForm({
     form: 'artistUpdate',
     enableReinitialize: true,

@@ -3,6 +3,7 @@ import {
   ARTISTS_ACTIONS,
   GET_ARTISTS_LIST_ACTION,
   GET_ARTISTS_ACTION,
+  UPDATE_ARTISTS_API_ACTION,
 } from './actions';
 
 const initialState = {
@@ -45,18 +46,21 @@ const reducer = (state = initialState, action) => {
 
     // Detail Reducer
     case GET_ARTISTS_ACTION.PENDING:
+    case UPDATE_ARTISTS_API_ACTION.PENDING:
       return update(state, {
         ui: {
           loadingDetail: { $set: true },
         },
       });
     case GET_ARTISTS_ACTION.ERROR:
+    case UPDATE_ARTISTS_API_ACTION.ERROR:
       return update(state, {
         ui: {
           loadingDetail: { $set: false },
         },
       });
     case GET_ARTISTS_ACTION.SUCCESS:
+    case UPDATE_ARTISTS_API_ACTION.SUCCESS:
       return update(state, {
         ui: {
           loadingDetail: { $set: false },
