@@ -38,7 +38,7 @@ const NotificationCreate = ({ style, handleSubmit, ...props }) => {
         const successMessage =
           t('baseApp.notification.created') + data.description;
 
-        toast.success(successMessage);
+        toast.dark(successMessage);
 
         props.actGetNotifications();
       } else {

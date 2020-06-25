@@ -311,14 +311,14 @@ const OrderWorkLogItem = ({
                   <div className='left'>
                     <div className='avt'>
                       <img
-                        src={`https://ui-avatars.com/api/?name=${com.createdBy}`}
+                        src={`https://ui-avatars.com/api/?name=${com?.user?.fullName}`}
                         alt='comments__author'
                       />
                     </div>
                   </div>
                   <div className='comments__wrapper'>
                     <div className='comments__box'>
-                      <span className='name'>{com.createdBy}</span>
+                      <span className='name'>{com?.user?.fullName}</span>
                       <span className='comments__mess'>
                         <P
                           text={com.content}

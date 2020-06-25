@@ -110,7 +110,7 @@ const EmaiNotify = (props) => {
                   />
                   <CopyToClipboard
                     text={customer?.contact?.email || ''}
-                    onCopy={() => toast.success('Copied')}>
+                    onCopy={() => toast.dark('Copied')}>
                     <div className='input-group-append clipboad__input'>
                       <span className='input-group-text'>Copy</span>
                     </div>
@@ -129,7 +129,7 @@ const EmaiNotify = (props) => {
                   />
                   <CopyToClipboard
                     text={emailTitle || ''}
-                    onCopy={() => toast.success('Copied')}>
+                    onCopy={() => toast.dark('Copied')}>
                     <div className='input-group-append clipboad__input'>
                       <span className='input-group-text'>Copy</span>
                     </div>

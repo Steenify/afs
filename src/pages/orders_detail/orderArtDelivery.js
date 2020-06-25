@@ -82,7 +82,7 @@ const OrderArtDelivery = ({
       workLogIndex,
       fileIndex,
       () => {
-        toast.success('File deleteted!');
+        toast.dark('File deleteted!');
       },
     );
   };
@@ -106,7 +106,7 @@ const OrderArtDelivery = ({
           text={`https://drive.google.com/drive/folders/${
             order?.finalDriveId || ''
           }`}
-          onCopy={() => toast.success('Copied')}>
+          onCopy={() => toast.dark('Copied')}>
           <div className='input-group-append clipboad__input'>
             <span className='input-group-text'>Copy</span>
           </div>

@@ -56,7 +56,7 @@ const RoleCreate = ({ style, handleSubmit, ...props }) => {
 
         const successMessage = t('baseApp.authority.created') + data.name;
 
-        toast.success(successMessage);
+        toast.dark(successMessage);
 
         // Get new list of auhority
         props.actGetAuthorities({});

@@ -36,7 +36,7 @@ const PermissionCreate = ({ style, handleSubmit, ...props }) => {
 
         const successMessage = t('baseApp.permission.created') + data.name;
 
-        toast.success(successMessage);
+        toast.dark(successMessage);
 
         props.actGetAllPermissions();
       } else {

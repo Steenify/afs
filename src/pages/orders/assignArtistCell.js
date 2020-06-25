@@ -32,7 +32,7 @@ const AssignArtistCell = ({
 
     const payload = { id: id, to: value.login };
     assignOrdersArtist(payload, () => {
-      toast.success('Assigned order!');
+      toast.dark('Assigned order!');
     });
   };
 

@@ -37,7 +37,7 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
         const successMessage =
           t('baseApp.customerManagement.updated') + ' ' + data.login;
 
-        toast.success(successMessage);
+        toast.dark(successMessage);
       } else {
         let errorMessage = '';
         if (errorKey) {

@@ -24,7 +24,7 @@ const ChangePassword = ({ style, handleSubmit, ...props }) => {
       const { errorKey, message, title } = data;
 
       if (status === 200) {
-        toast.success('Success Notification !');
+        toast.dark('Success Notification !');
 
         props.reset();
       } else {

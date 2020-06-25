@@ -121,7 +121,7 @@ const NotificationPublish = ({ style, handleSubmit, ...props }) => {
       if (status === 204) {
         const successMessage = t('baseApp.notification.published') + data.login;
 
-        toast.success(successMessage);
+        toast.dark(successMessage);
 
         props.actGetNotifications();
       } else {

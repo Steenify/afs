@@ -36,7 +36,7 @@ const OrderAssignedBox = ({ order, getArtists, assignOrdersArtist }) => {
       const payload = { id: order.id, to: artist.login };
       setIsPopoverOpen(false);
       assignOrdersArtist(payload, () => {
-        toast.success('updated assigned artist!');
+        toast.dark('updated assigned artist!');
       });
     }
   };

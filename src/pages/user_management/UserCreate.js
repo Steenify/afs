@@ -53,7 +53,7 @@ const UserCreate = ({ style, handleSubmit, ...props }) => {
         setModal(false);
         const successMessage = t('baseApp.userManagement.created') + data.login;
 
-        toast.success(successMessage);
+        toast.dark(successMessage);
 
         // Get new list of user
         props.actGetUsers();

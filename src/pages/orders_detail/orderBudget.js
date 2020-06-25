@@ -40,7 +40,7 @@ const OrderBudget = ({ order, accountInfo, updateOrdersBudget }) => {
       budget: value,
     };
     updateOrdersBudget(payload, order.id, () => {
-      toast.success('updated order budget!');
+      toast.dark('updated order budget!');
     });
     toggle();
   };

@@ -110,7 +110,7 @@ const OrderSumaryBox = ({
       index,
       fileIndex,
       () => {
-        toast.success('File deleteted!');
+        toast.dark('File deleteted!');
       },
     );
   };

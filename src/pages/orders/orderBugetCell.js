@@ -58,7 +58,7 @@ const OrderBudgetCell = ({
       budget: value,
     };
     updateOrdersBudget(payload, id, () => {
-      toast.success('Budget updated!');
+      toast.dark('Budget updated!');
     });
   };
 

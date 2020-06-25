@@ -37,7 +37,7 @@ const SystemPropertyDetail = ({ style, handleSubmit, ...props }) => {
         const successMessage =
           t('baseApp.systemProperties.updated') + data.name;
 
-        toast.success(successMessage);
+        toast.dark(successMessage);
       } else {
         let errorMessage = '';
         if (errorKey) {

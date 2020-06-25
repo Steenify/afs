@@ -56,7 +56,7 @@ const CustomerCreate = ({ style, handleSubmit, ...props }) => {
         const successMessage =
           t('baseApp.customerManagement.created') + data.login;
 
-        toast.success(successMessage);
+        toast.dark(successMessage);
 
         props.actGetCustomers({
           name: '',

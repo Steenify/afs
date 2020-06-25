@@ -50,7 +50,7 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
       if (status === 200) {
         const successMessage = t('baseApp.userManagement.updated') + data.login;
 
-        toast.success(successMessage);
+        toast.dark(successMessage);
       } else {
         let errorMessage = '';
         if (errorKey) {

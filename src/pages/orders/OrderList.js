@@ -60,8 +60,7 @@ const OrderList = (props) => {
     // },
     {
       accessor: 'lastModifiedDate',
-      minWidth: 100,
-      maxWidth: 130,
+      minWidth: 130,
       Header: 'Last Update',
       Cell: OrderLastUpdateDateCell,
     },

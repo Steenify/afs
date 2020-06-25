@@ -34,7 +34,7 @@ const OrderBulkAction = ({
         id: selected,
       },
       () => {
-        toast.success('Payment Status Updated');
+        toast.dark('Payment Status Updated');
         forEach(selected, (item) => {
           updateOrderItems({
             id: item,
@@ -53,7 +53,7 @@ const OrderBulkAction = ({
         id: selected,
       },
       () => {
-        toast.success('Order Status Updated');
+        toast.dark('Order Status Updated');
         forEach(selected, (item) => {
           updateOrderItems({
             id: item,

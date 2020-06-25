@@ -49,7 +49,7 @@ const CustomerGroupCreate = ({ style, handleSubmit, ...props }) => {
 
         const successMessage = t('baseApp.customerGroup.created') + data.name;
 
-        toast.success(successMessage);
+        toast.dark(successMessage);
 
         props.actGetCustomerGroups();
       } else {

@@ -216,6 +216,8 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
         </Switch>
       </Router>
 
+      <FirerBaseApp />
+
       <ToastContainer
         position='bottom-left'
         transition={Flip}
@@ -228,8 +230,6 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
         draggable
         pauseOnHover={false}
       />
-
-      <FirerBaseApp />
 
       {isArtist && isLogged && (
         <CustomerChat pageId='101946964870983' appId='3004831752934299' />

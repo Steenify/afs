@@ -531,7 +531,7 @@ export const sendEmailNotifyAction = () => (dispatch, getState) => {
     dispatch({
       type: SENT_EMAIL_NOTIFY_ACTION.SUCCESS,
     });
-    toast.success('Notified Customer!');
+    toast.dark('Notified Customer!');
   };
   const onError = (error) => {
     console.log('sendEmailNotifyAction', error);
