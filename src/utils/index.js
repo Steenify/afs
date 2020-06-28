@@ -235,7 +235,16 @@ export const getListImageUrl = (list = []) => {
         id: item?.id,
       };
     }
-    return item.url;
+
+    return {
+      download: item?.url,
+      fullscreen: item?.url,
+      regular: item?.url,
+      thumbnail: item?.url,
+      type: item?.fileType,
+      fileName: item?.fileName,
+      id: item?.id,
+    };
   });
 };
 

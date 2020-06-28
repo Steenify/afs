@@ -56,6 +56,7 @@ const MsgFCM = ({ payload }) => {
 //         'https://cdn.shopify.com/s/files/1/0281/7035/4736/t/11/assets/favicon.ico?v=18057392847654471452',
 //     },
 //   };
+
 class FirerBaseApp extends Component {
   componentDidMount() {
     const { getNotificationsCount } = this.props;
@@ -65,10 +66,16 @@ class FirerBaseApp extends Component {
           'FirerBaseApp -> componentDidMount -> payload',
           JSON.stringify(payload),
         );
-        getNotificationsCount();
+
         const type = payload?.data?.type;
+        const action = payload?.data?.action;
         if (type === 'NOTIFICATION') {
+          getNotificationsCount();
           toast(<MsgFCM payload={payload} />);
+        }
+
+        if (action === 'SUMMARIZATION_UPDATE') {
+          console.log('payload', payload);
         }
       });
     }

@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { forEach, filter } from 'lodash';
+import { confirmAlert } from 'react-confirm-alert';
+
 import { statusPayments } from 'config';
+
+import { ReactComponent as Close } from 'assets/img/close.svg';
 
 import OrderSelectedCell from './orderSelectedAll';
 import OrderPayoutModal from './orderPayoutModal';
@@ -66,6 +70,46 @@ const OrderBulkAction = ({
     );
   };
 
+  const handleConfirmChangeStatus = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='comfirm_cus'>
+            <div className='comfirm_cus__header'>
+              <div className='comfirm_cus__titl'>Change Status</div>
+              <button
+                type='button'
+                onClick={onClose}
+                className='comfirm_cus__close'>
+                <div className='icon'>
+                  <Close />
+                </div>
+              </button>
+            </div>
+            <div className='comfirm_cus__body'>
+              <p>Are you sure you want to change status this orders?</p>
+            </div>
+            <div className='comfirm_cus__footer text-right'>
+              <button
+                className='comfirm_cus__cancel comfirm_cus__control'
+                onClick={onClose}>
+                Cancel
+              </button>
+              <button
+                className='comfirm_cus__accept comfirm_cus__control'
+                onClick={() => {
+                  handleUpdateOrderStatusDone();
+                  onClose();
+                }}>
+                Accept
+              </button>
+            </div>
+          </div>
+        );
+      },
+    });
+  };
+
   return (
     <div className={`order__bulk ${isHide && 'd-none'}`}>
       <div className='btn-group'>
@@ -89,12 +133,12 @@ const OrderBulkAction = ({
         <button
           type='button'
           className='btn btn-group__item'
-          onClick={handleUpdateOrderStatusDone}>
+          onClick={handleConfirmChangeStatus}>
           Mark as Done
         </button>
-        {/* <button type='button' className='btn btn-group__item' onClick={toggle}>
+        <button type='button' className='btn btn-group__item' onClick={toggle}>
           Open payout modal
-        </button> */}
+        </button>
       </div>
 
       <OrderPayoutModal isOpen={isOpen} toggle={toggle} />
