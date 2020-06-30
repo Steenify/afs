@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Form, Spinner } from 'reactstrap';
+import { Form, Spinner, FormGroup, Badge } from 'reactstrap';
 import { toast } from 'react-toastify';
 
 import Input from 'components/common/input';
 import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
-// import Checkbox from 'components/common/checkbox';
+import Checkbox from 'components/common/checkbox';
 import Button from 'components/common/button';
 import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
@@ -43,6 +43,7 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
       lastName: values?.lastName,
       phoneNumber: values?.phoneNumber,
       id: values?.id,
+      activated: values?.activated,
     };
 
     updateArtistDetailApi(payload, () => {
@@ -127,6 +128,25 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
           name='igUrl'
           label={'Instagram Url'}
         />
+
+        <FormGroup className='form-group--inline'>
+          <label>Status</label>
+          <Field
+            className='form-check--hide-input'
+            component={Checkbox}
+            name='activated'
+            labelActive={
+              <Badge color='success' pill>
+                {t('baseApp.customerManagement.activated')}
+              </Badge>
+            }
+            labelUnActive={
+              <Badge color='danger' pill>
+                {t('baseApp.customerManagement.deactivated')}
+              </Badge>
+            }
+          />
+        </FormGroup>
 
         <div className='d-flex'>
           <Button

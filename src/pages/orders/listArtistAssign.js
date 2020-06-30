@@ -100,37 +100,51 @@ class ListArtists extends Component {
                   </strong>
                   <div className='status'></div>
                 </button>
-                {artists.map((art) => (
-                  <button
-                    onClick={() => onSave(art)}
-                    key={`list__artist__${art.login}`}
-                    className={`artist__select ${
-                      art.login === assignedTo?.login ? 'active' : ''
-                    }`}>
-                    <div className='avt'>
-                      <img
-                        src={`https://ui-avatars.com/api/?name=${
-                          art?.fullName || ''
-                        }${art?.firstName || ''}${art?.lastName || ''}`}
-                        alt='comments__author'
-                      />
-                    </div>
+                {artists.map((art) => {
+                  const doing =
+                    (art?.numNewOrder || 0) +
+                    (art?.numSketch || 0) +
+                    (art?.numSketchEdit || 0) +
+                    (art?.numColorEdit || 0) +
+                    (art?.numColor || 0);
 
-                    <div className='info'>
-                      <strong className='name'>
-                        {art?.fullName || `${art?.firstName} ${art?.lastName}`}
-                      </strong>
-                      <div className='status'>
-                        {art.note && (
-                          <div className='note text-break'>{`${art.note}`}</div>
-                        )}
-                        <div className='currProgress'>
-                          Sketching: {art.currSketch}, Coloring: {art.currColor}
+                  const reviewing =
+                    (art?.numSketchReview || 0) +
+                    (art?.numColorReview || 0) +
+                    (art?.numExportFile || 0);
+                  return (
+                    <button
+                      onClick={() => onSave(art)}
+                      key={`list__artist__${art.login}`}
+                      className={`artist__select ${
+                        art.login === assignedTo?.login ? 'active' : ''
+                      }`}>
+                      <div className='avt'>
+                        <img
+                          src={`https://ui-avatars.com/api/?name=${
+                            art?.fullName || ''
+                          }${art?.firstName || ''}${art?.lastName || ''}`}
+                          alt='comments__author'
+                        />
+                      </div>
+
+                      <div className='info'>
+                        <strong className='name'>
+                          {art?.fullName ||
+                            `${art?.firstName} ${art?.lastName}`}
+                        </strong>
+                        <div className='status'>
+                          {art.note && (
+                            <div className='note text-break'>{`${art.note}`}</div>
+                          )}
+                          <div className='currProgress'>
+                            Doing: {doing}, Reviewing: {reviewing}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>

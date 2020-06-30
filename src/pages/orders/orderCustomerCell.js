@@ -65,7 +65,7 @@ const OrderCustomerCell = ({ customer, accountInfo }) => {
               <Button
                 tag={Link}
                 className='w-100 action'
-                to={`/user/detail/${customer?.login}`}
+                to={`/customer/detail/${customer?.login}`}
                 color='normal'>
                 View customer
               </Button>
