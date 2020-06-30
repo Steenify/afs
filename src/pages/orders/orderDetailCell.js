@@ -27,6 +27,7 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
         <Button
           tag={Link}
           className='w-100 order__link p-0'
+          style={{ minWidth: 'auto' }}
           to={`/order/${code}`}
           color='link'>
           #{number}
@@ -75,19 +76,16 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
               </div>
             </div>
           )}>
-          {(ref) => (
-            <Button
-              color='link'
-              id={`order_detail_cell__${id}`}
-              ref={ref}
-              style={{ minWidth: 'auto' }}
-              onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-              className='order__toggle order__toggle__nocavet'>
-              <span className='icon' style={{ opacity: 1 }}>
-                <Eye />
-              </span>
-            </Button>
-          )}
+          <Button
+            color='link'
+            id={`order_detail_cell__${id}`}
+            style={{ minWidth: 'auto' }}
+            onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+            className='order__toggle order__toggle__nocavet'>
+            <span className='icon' style={{ opacity: 1 }}>
+              <Eye />
+            </span>
+          </Button>
         </Popover>
       </div>
     </div>

@@ -6,7 +6,7 @@ const TableRowOrder = ({ columns, item, cellProps, getRowProps, data }) => {
     <tr key={`table__body__item__${item}`} {...getRowProps(data)}>
       {columns.map((column) => {
         const { Cell } = column;
-        const style = Object.assign(column.style || {}, {
+        const style = Object.assign({}, column.style || {}, {
           minWidth: column.minWidth || 0,
         });
         return (

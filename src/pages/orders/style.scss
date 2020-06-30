@@ -436,14 +436,24 @@
 		.table td {
 			padding-top: 0;
 			padding-bottom: 0;
+			// padding-left: 8px;
+			// padding-right: 8px;
 		}
+		// .table th {
+		// 	padding-left: 8px;
+		// 	padding-right: 8px;
+		// }
 
 		.order__user,
 		.order__assigned,
 		.order__subtotal,
-		.order__deadline {
+		.order__deadline,
+		.order__created_date {
 			padding-top: 10px;
 			padding-bottom: 10px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 	}
 
@@ -758,6 +768,122 @@
 	&__popover {
 		background: $white;
 		padding: 10px;
+	}
+
+	&__groups {
+		background: #f5f6f8;
+		margin-bottom: 15px;
+		position: relative;
+		.group {
+			&__title {
+				padding: 8px 20px;
+				font-size: 15px;
+				line-height: 22px;
+				letter-spacing: 0.5px;
+				color: #141414;
+				border-bottom: 1px solid #e2e5ed;
+			}
+
+			&__item {
+				background: $white;
+				border-bottom: 1px solid #e2e5ed;
+				padding: 10px 20px;
+				display: flex;
+				justify-content: space-between;
+
+				.left {
+					.top {
+						display: flex;
+						align-items: center;
+						margin-bottom: 5px;
+						flex-wrap: wrap;
+					}
+				}
+
+				.name {
+					font-weight: 500;
+					font-size: 15px;
+					line-height: 18px;
+					letter-spacing: 0.5px;
+					color: #141414;
+					margin-right: 10px;
+					margin-bottom: 5px;
+					&::after {
+						padding-left: 10px;
+						content: '•';
+					}
+				}
+
+				.time {
+					font-size: 15px;
+					line-height: 18px;
+					letter-spacing: 0.5px;
+					color: #767676;
+					margin-bottom: 5px;
+				}
+
+				.number {
+					font-weight: 600;
+					font-size: 18px;
+					line-height: 21px;
+					letter-spacing: 0.6px;
+					color: $black;
+					margin-bottom: 5px;
+				}
+
+				.status {
+					margin-bottom: 5px;
+					.order__status {
+						margin-right: 10px;
+						margin-bottom: 5px;
+					}
+				}
+
+				.item {
+					font-size: 15px;
+					line-height: 18px;
+					letter-spacing: 0.5px;
+					color: #767676;
+				}
+
+				.right {
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+				}
+
+				.budget {
+					font-weight: 500;
+					font-size: 17px;
+					line-height: 20px;
+					letter-spacing: 0.566667px;
+					color: #141414;
+					white-space: nowrap;
+					margin-bottom: 5px;
+				}
+
+				.total {
+					font-size: 16px;
+					line-height: 19px;
+					letter-spacing: 0.533333px;
+					color: #767676;
+				}
+
+				.assign {
+					font-size: 15px;
+					line-height: 18px;
+					letter-spacing: 0.28125px;
+					color: #141414;
+
+					span {
+						font-size: 15px;
+						line-height: 18px;
+						letter-spacing: 0.5px;
+						color: #337fd7;
+					}
+				}
+			}
+		}
 	}
 
 	@include max-md() {

@@ -7,7 +7,7 @@ const TableHeader = (props) => {
       <tr>
         {props.columns.map((column) => {
           const { Header } = column;
-          const style = Object.assign(column.style || {}, {
+          const style = Object.assign({}, column.style || {}, {
             minWidth: column.minWidth || 0,
           });
 

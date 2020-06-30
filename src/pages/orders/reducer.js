@@ -1,5 +1,5 @@
 import update from 'react-addons-update';
-import { mapDataList, mapDataByIds, isMobile } from 'utils';
+import { mapDataList, mapDataByIds, mapDataByDate, isMobile } from 'utils';
 
 import {
   ORDER_ACTIONS,
@@ -20,7 +20,7 @@ const initialState = {
   filter: {
     page: 0,
     size: 100,
-    sizeMobile: 50,
+    sizeMobile: 100,
     sort: [{ id: 'number', desc: true }],
     text: '',
     assignee: '',
@@ -30,6 +30,7 @@ const initialState = {
     orders: [],
     ids: [],
     items: {},
+    itemGroups: [],
     totalItems: 0,
     totalPage: 0,
   },
@@ -57,6 +58,8 @@ const reducer = (state = initialState, action) => {
         'id',
       );
 
+      const itemGroups = mapDataByDate(payload.data, 'paidAt');
+
       const totalItems = parseInt(payload.headers['x-total-count'], 10);
       const { size, sizeMobile } = state.filter;
       const currSize = isMobile() ? sizeMobile : size;
@@ -72,6 +75,7 @@ const reducer = (state = initialState, action) => {
           orders: { $set: mapDataList(payload.data, 'selected', false) },
           ids: { $set: ids },
           items: { $set: items },
+          itemGroups: { $set: itemGroups },
           totalItems: { $set: payload.headers['x-total-count'] },
           totalPage: { $set: totalPage },
         },

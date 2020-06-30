@@ -18,7 +18,6 @@ class ImageFile extends Component {
 
   componentDidMount() {
     const { file } = this.props;
-    console.log('ImageFile -> componentDidMount -> file', file);
     if (!file) {
       return;
     }

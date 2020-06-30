@@ -5,7 +5,7 @@ const TableRow = ({ columns, item, cellProps, getRowProps }) => {
     <tr key={`table__body__item__${item}`} {...getRowProps(item)}>
       {columns.map((column) => {
         const { Cell } = column;
-        const style = Object.assign(column.style || {}, {
+        const style = Object.assign({}, column.style || {}, {
           minWidth: column.minWidth || 0,
         });
         return (

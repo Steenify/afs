@@ -1,8 +1,7 @@
 import moment from 'moment';
 // import numeral from 'numeral';
 import { toast } from 'react-toastify';
-import omit from 'lodash/omit';
-import { reduce, map, isObject, mapValues } from 'lodash';
+import { reduce, map, isObject, mapValues, omit } from 'lodash';
 
 import PSDFile from 'assets/img/psd__icon.jpg';
 
@@ -363,6 +362,38 @@ export const mapDataByIds = (list = [], field) => {
     },
   );
   return res;
+};
+
+export const mapDataByDate = (list = [], field) => {
+  const res = reduce(
+    list,
+    (groups, item) => {
+      const date = item[field].split('T')[0];
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(item.id);
+      return groups;
+    },
+    {},
+  );
+
+  const groupArrays = Object.keys(res).map((date) => {
+    return {
+      date,
+      items: res[date],
+    };
+  });
+
+  groupArrays.sort(function (a, b) {
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  return groupArrays;
+};
+
+export const prettyDate = (string) => {
+  return moment(string).fromNow();
 };
 
 export const truncates = (string, maxLength = 50) => {

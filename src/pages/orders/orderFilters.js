@@ -31,6 +31,7 @@ class OrderFilters extends Component {
     updateOrderFilters({
       selectedStatus: status,
       page: 0,
+      text: '',
     });
     getOrders({});
   };
