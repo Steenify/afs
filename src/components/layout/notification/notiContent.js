@@ -50,7 +50,7 @@ class NotiContent extends Component {
   };
 
   handleClick = (noti) => {
-    const { history } = this.props;
+    const { history, onClose } = this.props;
     const onPending = () => {};
     const onSuccess = () => {};
     const onError = (error) => {
@@ -63,7 +63,7 @@ class NotiContent extends Component {
       onSuccess,
       onError,
     });
-
+    onClose();
     if (noti?.additionalData?.code) {
       history.push(`/order/${noti?.additionalData?.code}`);
     }

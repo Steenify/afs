@@ -7,6 +7,8 @@ import { useHistory } from 'react-router-dom';
 
 import { appToken } from 'vendor/firebase';
 
+import { isMobile } from 'utils';
+
 import { WEB_ROUTES } from 'config';
 
 import Notification from '../notification';
@@ -31,8 +33,8 @@ const Header = (props) => {
 
   useEffect(() => {
     const listener = debounce(() => {
-      toggleMenu(!(window.innerWidth < 768));
-    }, 300);
+      toggleMenu(!isMobile());
+    }, 500);
 
     listener();
 
@@ -45,7 +47,7 @@ const Header = (props) => {
 
   const handleToggle = () => {
     props.toggleMenu(!props.isMenuOpen);
-    if (window.innerWidth >= 768) {
+    if (!isMobile()) {
       setIsShowInfo(true);
       return;
     }

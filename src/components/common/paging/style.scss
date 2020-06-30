@@ -58,7 +58,6 @@
 
 	&__wrapper {
 		display: flex;
-
 		align-items: center;
 
 		.navi {
@@ -79,6 +78,7 @@
 			height: 40px;
 			border-radius: 0;
 			text-align: center;
+			appearance: none;
 		}
 
 		.prev {

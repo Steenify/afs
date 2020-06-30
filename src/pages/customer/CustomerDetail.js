@@ -19,7 +19,7 @@ import { actGetCustomer, actUpdateCustomer } from './actions';
 
 import { WEB_ROUTES } from 'config';
 
-const CustomerDetail = ({ style, handleSubmit, ...props }) => {
+const CustomerDetail = ({ style, handleSubmit, history, ...props }) => {
   let { login } = useParams();
 
   useEffect(() => {
@@ -56,6 +56,10 @@ const CustomerDetail = ({ style, handleSubmit, ...props }) => {
         toast.error(errorMessage || message);
       }
     });
+  };
+
+  const handleBack = () => {
+    history.goBack();
   };
 
   return (
@@ -184,9 +188,7 @@ const CustomerDetail = ({ style, handleSubmit, ...props }) => {
         </FormGroup>
         <div className='d-flex'>
           <Button
-            tag={Link}
-            to='/customer'
-            replace
+            onClick={handleBack}
             style={{
               height: 38,
               display: 'inline-flex',

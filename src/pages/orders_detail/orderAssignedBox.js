@@ -7,16 +7,19 @@ import Popover from 'react-tiny-popover';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
-import { getArtistsAction, assignOrdersArtistAction } from '../orders/actions';
+import {
+  getArtistsAssignAction,
+  assignOrdersArtistAction,
+} from '../orders/actions';
 
 import ListArtists from '../orders/listArtistAssign';
 
-const OrderAssignedBox = ({ order, getArtists, assignOrdersArtist }) => {
+const OrderAssignedBox = ({ order, getArtistsAssign, assignOrdersArtist }) => {
   const { assignedTo } = order;
 
   useEffect(() => {
-    getArtists();
-  }, [getArtists]);
+    getArtistsAssign();
+  }, [getArtistsAssign]);
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
@@ -82,7 +85,7 @@ const mapStateToProps = ({ order }) => ({
 });
 
 const mapDispatchToProps = {
-  getArtists: getArtistsAction,
+  getArtistsAssign: getArtistsAssignAction,
   assignOrdersArtist: assignOrdersArtistAction,
 };
 

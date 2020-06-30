@@ -95,9 +95,9 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
 };
 
 const mapStateToProps = ({ order, auth }, ownProps) => {
-  const { original } = ownProps.row;
+  const { data } = ownProps;
   const { items } = order.list;
-  const orderItem = items[original] || {};
+  const orderItem = items[data] || {};
   return {
     id: orderItem?.id || 0,
     number: orderItem?.number || 0,

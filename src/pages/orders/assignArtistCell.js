@@ -84,9 +84,9 @@ const AssignArtistCell = ({
 };
 
 const mapStateToProps = ({ order, auth }, ownProps) => {
-  const { original } = ownProps.row;
+  const { data } = ownProps;
   const { items } = order.list;
-  const item = items[original] || {};
+  const item = items[data] || {};
   return {
     id: item?.id || 0,
     assignedTo: item?.assignedTo || {},

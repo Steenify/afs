@@ -1,40 +1,31 @@
-import React, { Component } from 'react';
-import _ from 'lodash';
+import React from 'react';
+import TableRow from './tableRow';
+import TableRowOrder from './tableRowOrder';
 
-class TableBody extends Component {
-  renderCell = (item, column) => {
-    if (column.content) return column.content(item);
+const RowMap = {
+  TableRow: TableRow,
+  TableRowOrder: TableRowOrder,
+};
 
-    return _.get(item, column.key);
-  };
+const TableBody = ({ data, columns, cellProps, getRowProps, rowName }) => {
+  const Row = RowMap[rowName];
+  return (
+    <tbody>
+      {data.map((item) => (
+        <Row
+          key={`table__body__${item}`}
+          columns={columns}
+          cellProps={cellProps}
+          getRowProps={getRowProps}
+          item={item}
+        />
+      ))}
+    </tbody>
+  );
+};
 
-  render() {
-    const { data, columns } = this.props;
-
-    if (data.length === 0) {
-      return (
-        <tbody>
-          <tr>
-            <td colSpan={columns.length}>Not found.</td>
-          </tr>
-        </tbody>
-      );
-    }
-
-    return (
-      <tbody>
-        {data.map((item) => (
-          <tr key={item.id}>
-            {columns.map((column) => (
-              <td key={item.id + column.key}>
-                {this.renderCell(item, column)}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    );
-  }
-}
+TableBody.defaultProps = {
+  rowName: 'TableRow',
+};
 
 export default TableBody;

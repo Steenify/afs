@@ -5,21 +5,32 @@ import Popover from 'react-tiny-popover';
 
 import { ReactComponent as Bell } from 'assets/img/bell.svg';
 
-import { getNotificationsCountAction } from 'pages/notifications/actions';
+import {
+  getNotificationsCountAction,
+  readAllNotificationAction,
+} from 'pages/notifications/actions';
 
 import NotiContent from './notiContent';
 
 import './style.scss';
 
 const Notification = (props) => {
-  const { className, count, getNotificationsCount } = props;
+  const {
+    className,
+    count,
+    getNotificationsCount,
+    readAllNotification,
+  } = props;
 
   useEffect(() => {
     getNotificationsCount();
   }, [getNotificationsCount]);
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const toggle = () => setIsPopoverOpen(!isPopoverOpen);
+  const toggle = () => {
+    readAllNotification();
+    setIsPopoverOpen(!isPopoverOpen);
+  };
 
   return (
     <Popover
@@ -27,10 +38,10 @@ const Notification = (props) => {
       position={['bottom']}
       padding={10}
       onClickOutside={toggle}
-      content={() => <NotiContent />}>
+      content={() => <NotiContent onClose={toggle} />}>
       <button
         type='button'
-        onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+        onClick={toggle}
         className={`noti__toggle ${isPopoverOpen && 'active'} ${
           className || ''
         }`}>
@@ -53,6 +64,7 @@ const mapStateToProps = ({ notification }) => ({
 
 const mapDispatchToProps = {
   getNotificationsCount: getNotificationsCountAction,
+  readAllNotification: readAllNotificationAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notification);

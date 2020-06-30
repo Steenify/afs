@@ -20,7 +20,7 @@ import { WEB_ROUTES } from 'config';
 
 const ArtistDetail = ({ style, handleSubmit, ...props }) => {
   const { login } = useParams();
-  const { ui, getArtist, updateArtistDetailApi } = props;
+  const { ui, getArtist, updateArtistDetailApi, history } = props;
 
   useEffect(() => {
     getArtist(login);
@@ -48,6 +48,10 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
     updateArtistDetailApi(payload, () => {
       toast.dark('Artist Updated!');
     });
+  };
+
+  const handleBack = () => {
+    history.goBack();
   };
 
   return (
@@ -126,9 +130,7 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
 
         <div className='d-flex'>
           <Button
-            tag={Link}
-            to='/customer'
-            replace
+            onClick={handleBack}
             style={{
               height: 38,
               display: 'inline-flex',

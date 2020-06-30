@@ -751,6 +751,15 @@
 		}
 	}
 
+	@include max-sm() {
+		&__artwork {
+			.work__last_update {
+				display: block;
+				margin-left: 0;
+			}
+		}
+	}
+
 	@media (max-width: 400px) {
 		&__ctas {
 			.cta2 {

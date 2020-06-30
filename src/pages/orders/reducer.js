@@ -1,10 +1,10 @@
 import update from 'react-addons-update';
-import { mapDataList, mapDataByIds } from 'utils';
+import { mapDataList, mapDataByIds, isMobile } from 'utils';
 
 import {
   ORDER_ACTIONS,
   GET_ORDER_ACTION,
-  GET_ARTISTS_ACTION,
+  GET_ARTISTS_ASSIGN_ACTION,
   GET_ORDER_STATUS_ACTION,
   UPDATE_ORDER_PAYMENT_STATUS_ACTION,
   UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION,
@@ -15,16 +15,23 @@ const initialState = {
   ui: {
     list: {
       loading: false,
-      selectedStatus: '',
-      selectedArtist: {},
-      selectedPayment: '',
     },
+  },
+  filter: {
+    page: 0,
+    size: 100,
+    sizeMobile: 50,
+    sort: [{ id: 'number', desc: true }],
+    text: '',
+    assignee: '',
+    selectedStatus: '',
   },
   list: {
     orders: [],
     ids: [],
     items: {},
     totalItems: 0,
+    totalPage: 0,
   },
   artists: [],
   status: [],
@@ -49,6 +56,12 @@ const reducer = (state = initialState, action) => {
         mapDataList(payload.data, 'selected', false),
         'id',
       );
+
+      const totalItems = parseInt(payload.headers['x-total-count'], 10);
+      const { size, sizeMobile } = state.filter;
+      const currSize = isMobile() ? sizeMobile : size;
+      const totalPage = Math.ceil(totalItems / currSize);
+
       return update(state, {
         ui: {
           list: {
@@ -60,6 +73,7 @@ const reducer = (state = initialState, action) => {
           ids: { $set: ids },
           items: { $set: items },
           totalItems: { $set: payload.headers['x-total-count'] },
+          totalPage: { $set: totalPage },
         },
       });
     }
@@ -89,17 +103,15 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
-    case ORDER_ACTIONS.UPDATE_SELECTED_STATUS_ACTION:
+
+    case ORDER_ACTIONS.UPDATE_ORDER_FILTER:
       return update(state, {
-        ui: {
-          list: {
-            selectedStatus: {
-              $set: payload,
-            },
-          },
+        filter: {
+          $merge: payload,
         },
       });
-    case GET_ARTISTS_ACTION.SUCCESS:
+
+    case GET_ARTISTS_ASSIGN_ACTION.SUCCESS:
       return update(state, {
         artists: {
           $set: payload,

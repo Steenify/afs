@@ -40,3 +40,9 @@ export const getNotificationDetail = (id) =>
     url: NOTIFICATION_API + `/${id}`,
     method: 'GET',
   });
+
+export const readAllNotification = () =>
+  request({
+    url: NOTIFICATION_API + '/read-all',
+    method: 'POST',
+  });

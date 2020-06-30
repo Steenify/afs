@@ -20,7 +20,6 @@ const OrderPayoutModal = ({
   const dropbox = useRef(null);
 
   const [extra, setExtra] = useState(0);
-  console.log('extra', extra);
 
   const onChangeExtra = (data) => {
     setExtra(data.value);

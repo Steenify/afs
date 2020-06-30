@@ -59,6 +59,7 @@ class DropBox extends Component {
             name: blob.name,
             id: '',
             uui: getUniqueID(),
+            percent: 0,
           });
         }
       }
@@ -95,6 +96,7 @@ class DropBox extends Component {
           name: fi.name,
           id: '',
           uui: getUniqueID(),
+          percent: 0,
         };
       });
       this.handleFiles(newFiles);
@@ -111,6 +113,7 @@ class DropBox extends Component {
         id: '',
         name: fi.name,
         uui: getUniqueID(),
+        percent: 0,
       };
     });
     this.handleFiles(newFiles);
@@ -180,11 +183,25 @@ class DropBox extends Component {
       }
     };
     const onError = (error) => {
-      console.log('handleUploadFile onError -> error', error);
+      console.log('handleUploadFile onError -> error', JSON.stringify(error));
+    };
+
+    const onUploadProgress = (progressEvent) => {
+      const percentCompleted = Math.round(
+        (progressEvent.loaded * 100) / progressEvent.total,
+      );
+
+      const { fileList } = this.state;
+      const fileIndex = findIndex(fileList, (item) => item.uui === uui);
+      if (fileIndex !== -1) {
+        const newList = [...fileList];
+        newList[fileIndex].percent = percentCompleted;
+        this.setState({ fileList: newList });
+      }
     };
 
     actionTryCatchCreator({
-      service: uploadService(data),
+      service: uploadService({ data, onUploadProgress }),
       onPending,
       onSuccess,
       onError,
@@ -207,7 +224,7 @@ class DropBox extends Component {
                       item.file.name
                     }__${index.toString()}`}>
                     {!item.isUploaded && (
-                      <Loading className='file-item__loading' />
+                      <div className='file-item__loading'>{item.percent} %</div>
                     )}
                     <ImageFile className='file-item__img' file={item.file} />
                     <button

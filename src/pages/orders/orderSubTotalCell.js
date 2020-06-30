@@ -12,9 +12,9 @@ const OrderSubTotalCell = ({ subtotal, goToDetail, code }) => {
 };
 
 const mapStateToProps = ({ order }, ownProps) => {
-  const { original } = ownProps.row;
+  const { data } = ownProps;
   const { items } = order.list;
-  const item = items[original] || {};
+  const item = items[data] || {};
   return {
     code: item?.code,
     subtotal: item?.subtotal || 0,

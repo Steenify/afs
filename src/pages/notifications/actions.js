@@ -5,6 +5,7 @@ import {
   deleteNotification,
   publishNotification,
   getNotificationsCount,
+  readAllNotification,
 } from 'services/notification.service';
 
 export const GET_NOTIFICATIONS = actionCreator('GET_NOTIFICATIONS');
@@ -140,6 +141,37 @@ export const getNotificationsCountAction = (data) => async (dispatch) => {
 
   actionTryCatchCreator({
     service: getNotificationsCount(),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const READ_ALL_NOTIFICATIONS = actionCreator('READ_ALL_NOTIFICATIONS');
+export const readAllNotificationAction = () => async (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: READ_ALL_NOTIFICATIONS.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    if (data) {
+      dispatch({
+        type: READ_ALL_NOTIFICATIONS.SUCCESS,
+        payload: data,
+      });
+    }
+  };
+  const onError = (error) => {
+    console.log('getNotificationsCountAction', error);
+    dispatch({
+      type: READ_ALL_NOTIFICATIONS.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: readAllNotification(),
     onPending,
     onSuccess,
     onError,

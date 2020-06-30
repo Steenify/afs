@@ -137,3 +137,10 @@ body {
 .bg-light {
 	background-color: $white !important;
 }
+
+@include max-md() {
+	input,
+	select {
+		font-size: 18px !important;
+	}
+}

@@ -20,6 +20,8 @@ import { WEB_ROUTES } from 'config';
 
 import { toggleMenu } from 'store/actions';
 
+import { isMobile } from 'utils';
+
 const SideBar = (props) => {
   const { t } = useTranslation();
 
@@ -41,7 +43,7 @@ const SideBar = (props) => {
   );
 
   const handleClickNav = () => {
-    toggleMenuAction(!(window.innerWidth < 768));
+    toggleMenuAction(!isMobile());
   };
 
   const menus = [

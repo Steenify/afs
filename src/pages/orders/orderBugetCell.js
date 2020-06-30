@@ -126,9 +126,9 @@ const OrderBudgetCell = ({
 };
 
 const mapStateToProps = ({ order, auth }, ownProps) => {
-  const { original } = ownProps.row;
+  const { data } = ownProps;
   const { items } = order.list;
-  const item = items[original] || {};
+  const item = items[data] || {};
   return {
     id: item?.id,
     budget: item?.budget || 0,

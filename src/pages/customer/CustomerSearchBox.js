@@ -9,7 +9,7 @@ import { Col, Row } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 
 import { actGetCustomers } from './actions';
-import { actGetCustomerGroups } from 'pages/customer_management/actions';
+import { actGetCustomerGroups } from 'pages/customer/actions';
 
 const CustomerSearchBox = ({ style, handleSubmit, onSearch, ...props }) => {
   useEffect(() => {

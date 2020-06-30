@@ -1,4 +1,4 @@
-import { actionCreator, actionTryCatchCreator } from 'utils';
+import { actionCreator, actionTryCatchCreator, isMobile } from 'utils';
 import {
   getAllOrdersService,
   updateOrderBudgetService,
@@ -15,11 +15,19 @@ export const ORDER_ACTIONS = {
   UPDATE_SELECTED_STATUS_ACTION: 'UPDATE_SELECTED_STATUS_ACTION',
   UPDATE_ALL_SELECTED_ROW_ACTION: 'UPDATE_ALL_SELECTED_ROW_ACTION',
   UPDATE_ORDER_ITEMS_ACTION: 'UPDATE_ORDER_ITEMS_ACTION',
+  UPDATE_ORDER_FILTER: 'UPDATE_ORDER_FILTER',
 };
 
 export const updateOrderItemsAcion = (payload) => (dispatch) => {
   dispatch({
     type: ORDER_ACTIONS.UPDATE_ORDER_ITEMS_ACTION,
+    payload,
+  });
+};
+
+export const updateOrderFiltersAcion = (payload) => (dispatch) => {
+  dispatch({
+    type: ORDER_ACTIONS.UPDATE_ORDER_FILTER,
     payload,
   });
 };
@@ -30,26 +38,19 @@ export const updateAllOrderSelectedAction = (payload) => (dispatch) => {
     payload,
   });
 };
-export const updateSelectedStatusAction = (payload) => (dispatch, getState) => {
-  dispatch({
-    type: ORDER_ACTIONS.UPDATE_SELECTED_STATUS_ACTION,
-    payload,
-  });
-
-  getOrdersAction({ sort: [{ id: 'number', desc: true }] })(dispatch, getState);
-};
 
 export const GET_ORDER_ACTION = actionCreator('GET_ORDER_ACTION');
-export const getOrdersAction = (params) => async (dispatch, getState) => {
+export const getOrdersAction = (params) => (dispatch, getState) => {
   const state = getState();
-  const { form = {}, order } = state;
-  const { ordersFilter = {} } = form;
-  const { values } = ordersFilter;
+  const { filter } = state.order;
+
+  const currSize = isMobile() ? filter.sizeMobile : filter.size;
 
   const searchParams = buildSearchParam({
-    ...values,
+    ...filter,
     ...params,
-    status: order.ui.list.selectedStatus,
+    status: filter.selectedStatus,
+    size: currSize,
   });
 
   const onPending = () => {
@@ -80,6 +81,9 @@ const buildSearchParam = (input = {}) => {
   var params = new URLSearchParams();
   if (input.status) {
     params.append('status', input.status || '');
+  }
+  if (input.assignee && input.assignee !== 'null') {
+    params.append('assignee', input.assignee || '');
   }
   params.append('text', input.text || '');
   params.append('page', input.page || 0);
@@ -124,20 +128,24 @@ export const updateOrdersBudgetAction = (payload, id, cb) => (dispatch) => {
   });
 };
 
-export const GET_ARTISTS_ACTION = actionCreator('GET_ARTISTS_ACTION');
-export const getArtistsAction = (params = { size: 100 }) => (dispatch) => {
+export const GET_ARTISTS_ASSIGN_ACTION = actionCreator(
+  'GET_ARTISTS_ASSIGN_ACTION',
+);
+export const getArtistsAssignAction = (params = { size: 100 }) => (
+  dispatch,
+) => {
   const onPending = () => {
     dispatch({
-      type: GET_ARTISTS_ACTION.PENDING,
+      type: GET_ARTISTS_ASSIGN_ACTION.PENDING,
     });
   };
   const onSuccess = (data, headers) => {
-    dispatch({ type: GET_ARTISTS_ACTION.SUCCESS, payload: data });
+    dispatch({ type: GET_ARTISTS_ASSIGN_ACTION.SUCCESS, payload: data });
   };
   const onError = (error) => {
-    console.log('GET_ARTISTS_ACTION -> error', error);
+    console.log('GET_ARTISTS_ASSIGN_ACTION -> error', error);
     dispatch({
-      type: GET_ARTISTS_ACTION.ERROR,
+      type: GET_ARTISTS_ASSIGN_ACTION.ERROR,
       payload: error.response,
     });
   };

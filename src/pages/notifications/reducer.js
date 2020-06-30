@@ -1,5 +1,9 @@
 import update from 'react-addons-update';
-import { GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT } from './actions';
+import {
+  GET_NOTIFICATIONS,
+  GET_NOTIFICATIONS_COUNT,
+  READ_ALL_NOTIFICATIONS,
+} from './actions';
 
 const initialState = {
   ui: {
@@ -67,6 +71,15 @@ const reducer = (state = initialState, action) => {
         ui: {
           count: {
             $set: payload?.count || 0,
+          },
+        },
+      });
+
+    case READ_ALL_NOTIFICATIONS.SUCCESS:
+      return update(state, {
+        ui: {
+          count: {
+            $set: 0,
           },
         },
       });

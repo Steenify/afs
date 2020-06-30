@@ -1,22 +1,7 @@
-/* @flow */
 import axios from 'axios';
 import { grantType, HostAPI } from 'config';
 
-export type RequestType = {
-  host?: string,
-
-  url?: string,
-
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS',
-
-  params?: Object,
-
-  data?: Object,
-
-  headers?: Object,
-
-  token?: string,
-};
+import { getData } from 'utils';
 
 export const request = async ({
   host = '',
@@ -25,8 +10,11 @@ export const request = async ({
   params = {},
   data = {},
   headers = {},
-  token = localStorage.getItem('token'),
-}: RequestType) => {
+  token = '',
+  onUploadProgress,
+}) => {
+  const _token = token || getData('token');
+  const uploadProgress = onUploadProgress || (() => {});
   const res = await axios({
     url: `${host || HostAPI}${url}`,
     method,
@@ -34,15 +22,16 @@ export const request = async ({
     params,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `${grantType} ${token}`,
+      Authorization: `${grantType} ${_token}`,
       ...headers,
     },
+    onUploadProgress: uploadProgress,
   });
   return res;
 };
 
-export const fakeRequest = (response: any) =>
-  new Promise<any>((resolve) => {
+export const fakeRequest = (response) =>
+  new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         status: 200,

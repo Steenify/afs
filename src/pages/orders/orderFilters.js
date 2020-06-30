@@ -1,146 +1,137 @@
-import React, { useEffect } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
-import Input from 'components/common/input';
-import Button from 'components/common/button';
-// import { Select } from 'components/common/select';
-import { reduce } from 'lodash';
+import { reduce, debounce } from 'lodash';
 
-import { ReactComponent as SearchIcon } from 'assets/img/search.svg';
-import { Col, Row } from 'reactstrap';
+import { PERMITTIONS_CONFIG } from 'config';
 
-import { useTranslation } from 'react-i18next';
+import {
+  getOrderStatusAction,
+  updateOrderFiltersAcion,
+  getOrdersAction,
+  getArtistsAssignAction,
+} from './actions';
 
-import { getOrderStatusAction, updateSelectedStatusAction } from './actions';
+import OrderFilterAssignee from './orderFilterAssignee';
 
-const OrderFilters = ({ style, status, handleSubmit, onSearch, ...props }) => {
-  const {
-    getOrderStatus,
-    updateSelectedStatus,
-    selectedStatus,
-    orderStatusCount,
-  } = props;
+class OrderFilters extends Component {
+  constructor() {
+    super();
+    this.handleSearchTextAPI = debounce(this.handleSearchTextAPI, 1000);
+  }
 
-  useEffect(() => {
+  componentDidMount() {
+    const { getOrderStatus } = this.props;
     getOrderStatus();
-  }, [getOrderStatus]);
+  }
 
-  const onSubmit = (values) => {
-    onSearch(values);
-  };
-
-  const clearForm = () => {
-    props.reset();
-    onSearch({ sortBy: [{ id: 'number', desc: true }] });
-  };
-
-  const { t } = useTranslation();
-
-  const handleChangeStatus = (event) => {
+  handleChangeStatus = (event) => {
+    const { getOrders, updateOrderFilters } = this.props;
     const { target } = event;
-    updateSelectedStatus(target.getAttribute('data'));
+    const status = target.getAttribute('data');
+    updateOrderFilters({
+      selectedStatus: status,
+      page: 0,
+    });
+    getOrders({});
   };
 
-  const totalOrders = reduce(
-    orderStatusCount,
-    (res, value, key) => {
-      if (key !== 'DONE') {
-        return (res += value);
-      }
-      return res;
-    },
-    0,
-  );
+  handleChangeText = (e) => {
+    const { updateOrderFilters } = this.props;
+    const { value } = e.target;
+    updateOrderFilters({
+      text: value,
+      page: 0,
+    });
 
-  return (
-    <div className='order__filter'>
-      <div className='list_status'>
-        <button
-          data=''
-          onClick={handleChangeStatus}
-          key={`list__status_option__all`}
-          className={`status ${!selectedStatus && 'active'}`}>
-          All
-          <span className='number'>{totalOrders || 0}</span>
-        </button>
-        {status.map((sta) => (
+    this.handleSearchTextAPI();
+  };
+
+  handleSearchTextAPI = () => {
+    const { getOrders } = this.props;
+    getOrders({});
+  };
+
+  render() {
+    const {
+      status,
+      selectedStatus,
+      orderStatusCount,
+      text,
+      accountInfo,
+    } = this.props;
+
+    const totalOrders = reduce(
+      orderStatusCount,
+      (res, value, key) => {
+        if (key !== 'DONE') {
+          return (res += value);
+        }
+        return res;
+      },
+      0,
+    );
+
+    const canAssign = accountInfo?.permissions?.includes(
+      PERMITTIONS_CONFIG.ASSIGN_BOOKING,
+    );
+
+    return (
+      <div className='order__filter'>
+        <div className='list_status'>
           <button
-            data={sta.name}
-            onClick={handleChangeStatus}
-            key={`list__status_option__${sta.name}`}
-            className={`status  ${sta.name} ${
-              selectedStatus === sta.name && 'active'
-            }`}>
-            {sta.friendlyName}
-            {orderStatusCount[sta.name] && sta.name !== 'DONE' && (
-              <span className='number'>{orderStatusCount[sta.name]}</span>
-            )}
+            data=''
+            onClick={this.handleChangeStatus}
+            key={`list__status_option__all`}
+            className={`status ${!selectedStatus && 'active'}`}>
+            All
+            <span className='number'>{totalOrders || 0}</span>
           </button>
-        ))}
-      </div>
-
-      <form
-        className='search-advance'
-        style={{ ...style }}
-        onSubmit={handleSubmit(onSubmit)}>
-        <Row form className='align-items-end'>
-          <Col className='mb-3' lg={9}>
-            <Field
-              className='mb-0 search__box__wrapper'
-              component={Input}
-              name='text'
-              label=''
-              placeholder={`Customer Name`}
+          {status.map((sta) => (
+            <button
+              data={sta.name}
+              onClick={this.handleChangeStatus}
+              key={`list__status_option__${sta.name}`}
+              className={`status  ${sta.name} ${
+                selectedStatus === sta.name && 'active'
+              }`}>
+              {sta.friendlyName}
+              {orderStatusCount[sta.name] && sta.name !== 'DONE' && (
+                <span className='number'>{orderStatusCount[sta.name]}</span>
+              )}
+            </button>
+          ))}
+        </div>
+        <div className='filter__main'>
+          <div className='filter__text'>
+            <input
+              type='text'
+              value={text}
+              className='search__box form-control'
+              onChange={this.handleChangeText}
             />
-          </Col>
+          </div>
+          {canAssign && <OrderFilterAssignee />}
+        </div>
+      </div>
+    );
+  }
+}
 
-          <Col className='mb-3' lg={3}>
-            <div className='d-flex w-100'>
-              <Button
-                color='primary'
-                style={{
-                  height: 38,
-                  paddingLeft: 23,
-                  paddingRight: 23,
-                  marginRight: 11,
-                }}>
-                <SearchIcon className='btn-icon' />
-                {t('entity.action.search')}
-              </Button>
-              <Button
-                onClick={() => clearForm()}
-                style={{ height: 38, paddingLeft: 23, paddingRight: 23 }}>
-                {t('entity.action.clear')}
-              </Button>
-            </div>
-          </Col>
-        </Row>
-      </form>
-    </div>
-  );
-};
-
-const mapStateToProps = ({ order }, { query = {} }) => {
+const mapStateToProps = ({ order, auth }) => {
   return {
-    initialValues: {
-      ...query,
-    },
+    text: order.filter.text,
     status: order.status,
-    selectedStatus: order.ui.list.selectedStatus,
+    selectedStatus: order.filter.selectedStatus,
     orderStatusCount: order.orderStatusCount,
+    accountInfo: auth.data.accountInfo,
   };
 };
 
 const mapDispatchToProps = {
   getOrderStatus: getOrderStatusAction,
-  updateSelectedStatus: updateSelectedStatusAction,
+  updateOrderFilters: updateOrderFiltersAcion,
+  getOrders: getOrdersAction,
+  getArtistsAssign: getArtistsAssignAction,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(
-  reduxForm({
-    form: 'ordersFilter',
-  })(OrderFilters),
-);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderFilters);

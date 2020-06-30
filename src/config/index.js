@@ -1,5 +1,6 @@
 // export const HostAPI = 'http://3.0.40.66:8080';
-export const HostAPI = process.env.REACT_APP_API || 'https://ots.steenify.com';
+
+export const HostAPI = process.env.REACT_APP_HOST || 'https://ots.steenify.com';
 
 export const grantType = process.env.REACT_APP_GRANTTYPE || 'Bearer';
 export const buildType = process.env.REACT_APP_BUILD || 'DEV';

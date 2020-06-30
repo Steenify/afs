@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { Spinner } from 'reactstrap';
 
-import DataTable from 'components/common/DataTable';
-import TableLoader from 'components/common/tableLoader';
+// import DataTable from 'components/common/DataTable';
+import TableBody from 'components/common/tableBody';
+import TableHeader from 'components/common/tableHeader';
 
 import { PERMITTIONS_CONFIG } from 'config';
 
-import { getPaginationItemsNumber } from 'utils';
-
-import { getOrdersAction } from './actions';
+import { getOrdersAction, updateOrderFiltersAcion } from './actions';
 
 import { remove } from 'lodash';
 
@@ -27,164 +27,163 @@ import OrderCreatedDateCell from './orderCreateDateCell';
 import OrderSubTotalCell from './orderSubTotalCell';
 import OrderStatusCell from './orderStatusCell';
 import OrderLastUpdateDateCell from './orderLastUpdateCell';
+import OrderPaging from './orderPaging';
 
-const OrderList = (props) => {
-  const { getOrders, updateOrder, loading, accountInfo, ids } = props;
+let columnsOrder = [
+  {
+    accessor: 'selected',
+    Header: OrderSelectedAll,
+    minWidth: 40,
+    Cell: OrderSelectedCell,
+  },
+  {
+    accessor: 'number',
+    Header: 'Number',
+    minWidth: 100,
+    Cell: OrderDetailCell,
+  },
+  {
+    accessor: 'paidAt',
+    Header: 'Created Date',
+    minWidth: 130,
+    Cell: OrderCreatedDateCell,
+  },
+  // {
+  //   accessor: 'deadline',
+  //   minWidth: 100,
+  //   Header: 'Deadline',
+  //   Cell: OrderDeadlineCell,
+  // },
+  {
+    accessor: 'lastModifiedDate',
+    minWidth: 130,
+    Header: 'Last Update',
+    Cell: OrderLastUpdateDateCell,
+  },
+  {
+    accessor: 'customer',
+    Header: 'Customner',
+    minWidth: 80,
+    Cell: OrderCustomerCell,
+  },
 
-  const history = useHistory();
+  {
+    accessor: 'subtotal',
+    Header: 'Price',
+    minWidth: 100,
+    className: 'text-right',
+    Cell: OrderSubTotalCell,
+  },
+  {
+    accessor: 'budget',
+    Header: 'Budget',
+    className: 'text-right',
+    minWidth: 100,
+    Cell: orderBudgetCell,
+  },
+  {
+    accessor: 'assignedTo',
+    Header: 'Assigned To',
+    minWidth: 120,
+    Cell: AssignArtistCell,
+  },
+  {
+    accessor: 'status',
+    minWidth: 150,
+    Header: 'Status',
+    Cell: OrderStatusCell,
+  },
+  {
+    accessor: 'artistPaymentStatus',
+    Header: 'Payment',
+    minWidth: 100,
+    Cell: OrderPaymentCell,
+  },
+];
 
-  let columns = [
-    {
-      accessor: 'selected',
-      Header: OrderSelectedAll,
-      minWidth: 40,
-      Cell: OrderSelectedCell,
-    },
-    {
-      accessor: 'number',
-      Header: 'Number',
-      minWidth: 100,
-      Cell: OrderDetailCell,
-    },
-    {
-      accessor: 'paidAt',
-      Header: 'Created Date',
-      minWidth: 130,
-      Cell: OrderCreatedDateCell,
-    },
-    // {
-    //   accessor: 'deadline',
-    //   minWidth: 100,
-    //   Header: 'Deadline',
-    //   Cell: OrderDeadlineCell,
-    // },
-    {
-      accessor: 'lastModifiedDate',
-      minWidth: 130,
-      Header: 'Last Update',
-      Cell: OrderLastUpdateDateCell,
-    },
-    {
-      accessor: 'customer',
-      Header: 'Customner',
-      minWidth: 80,
-      Cell: OrderCustomerCell,
-    },
+class OrderList extends Component {
+  componentDidMount() {
+    const { getOrders } = this.props;
 
-    {
-      accessor: 'subtotal',
-      Header: 'Price',
-      minWidth: 100,
-      className: 'text-right',
-      Cell: OrderSubTotalCell,
-    },
-    {
-      accessor: 'budget',
-      Header: 'Budget',
-      className: 'text-right',
-      minWidth: 100,
-      Cell: orderBudgetCell,
-    },
-    {
-      accessor: 'assignedTo',
-      Header: 'Assigned To',
-      minWidth: 120,
-      Cell: AssignArtistCell,
-    },
-    {
-      accessor: 'status',
-      minWidth: 150,
-      Header: 'Status',
-      Cell: OrderStatusCell,
-    },
-    {
-      accessor: 'artistPaymentStatus',
-      Header: 'Payment',
-      minWidth: 100,
-      Cell: OrderPaymentCell,
-    },
-  ];
-
-  if (
-    !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO)
-  ) {
-    columns = remove(columns, (col) => col.Header !== 'Customner');
-  }
-  if (
-    !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ORDER_SUBTOTAL)
-  ) {
-    columns = remove(columns, (col) => col.Header !== 'Price');
+    setTimeout(() => {
+      getOrders({});
+    }, 1000);
   }
 
-  const isCanPay = accountInfo?.permissions?.includes(
-    PERMITTIONS_CONFIG.UPDATE_PAYMENT_STATUS,
-  );
-
-  const handleLoad = ({ page, size, sortBy }) => {
-    const params = {
-      page,
-      size,
-      sort: sortBy,
+  getRowProps = (row) => {
+    const now = new Date().getTime();
+    const deadline = new Date(row.deadline).getTime();
+    const isLated = now > deadline || false;
+    const isNotDone = row.status !== 'DONE';
+    return {
+      className: `${isLated && isNotDone ? 'lated' : ''} ${
+        !isNotDone && 'DONE'
+      }`,
     };
-    getOrders(params);
   };
 
-  const goToDetail = (code) => {
+  goToDetail = (code) => {
+    const { history } = this.props;
     if (code) {
       history.push(`/order/${code}`);
     }
   };
 
-  // const getTrProps = (tr, row) => {
-  //   const { original } = row;
-  //   const now = new Date().getTime();
-  //   const deadline = new Date(original.deadline).getTime();
-  //   const isLated = now > deadline || false;
-  //   const isNotDone = original.status !== 'DONE';
-  //   return {
-  //     ...tr,
-  //     className: `${isLated && isNotDone ? 'lated' : ''} ${
-  //       !isNotDone && 'DONE'
-  //     }`,
-  //   };
-  // };
+  gotoPage = (page) => {
+    const { updateOrderFilters, getOrders } = this.props;
+    updateOrderFilters({ page: page - 1 });
+    getOrders({});
+  };
 
-  return (
-    <div>
-      <OrderFilters
-        onSearch={handleLoad}
-        query={{ sortBy: [{ id: 'number', desc: true }] }}
-      />
+  render() {
+    const { loading, accountInfo, ids } = this.props;
 
-      <div className={`${!loading && 'd-none'}`}>
-        <TableLoader />
+    if (
+      !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO)
+    ) {
+      columnsOrder = remove(columnsOrder, (col) => col.Header !== 'Customner');
+    }
+    if (
+      !accountInfo?.permissions?.includes(
+        PERMITTIONS_CONFIG.VIEW_ORDER_SUBTOTAL,
+      )
+    ) {
+      columnsOrder = remove(columnsOrder, (col) => col.Header !== 'Price');
+    }
+
+    const isCanPay = accountInfo?.permissions?.includes(
+      PERMITTIONS_CONFIG.UPDATE_PAYMENT_STATUS,
+    );
+
+    return (
+      <div>
+        <OrderFilters />
+
+        <div className={`order__wrapper relative`}>
+          <div className={`order__loading ${!loading && 'd-none'}`}>
+            <Spinner /> <span className='text'>Loading</span>
+          </div>
+          {isCanPay && <OrderBulkAction />}
+
+          <div className='table-responsive bg-light steenify-table bg-white order__table'>
+            <table className='table'>
+              <TableHeader columns={columnsOrder} />
+              <TableBody
+                cellProps={{ goToDetail: this.goToDetail }}
+                getRowProps={this.getRowProps}
+                data={ids}
+                columns={columnsOrder}
+                rowName='TableRowOrder'
+              />
+            </table>
+          </div>
+
+          <OrderPaging gotoPage={this.gotoPage} />
+        </div>
       </div>
-
-      <div className={`order__wrapper relative ${loading && 'd-none'}`}>
-        {isCanPay && <OrderBulkAction updateOrder={updateOrder} />}
-
-        <DataTable
-          data={ids}
-          columns={columns}
-          className='bg-white order__table'
-          serverSide
-          totalPage={(size) => getPaginationItemsNumber(props.totalItems, size)}
-          onLoad={handleLoad}
-          goToDetail={goToDetail}
-          sortBy={[{ id: 'number', desc: true }]}
-          whiteListSort={[
-            'customer',
-            'assignedTo',
-            'budget',
-            'status',
-            'artistPaymentStatus',
-            'selected',
-          ]}
-        />
-      </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 const mapStateToProps = ({ order, auth }) => ({
   totalItems: order.list.totalItems,
@@ -195,6 +194,10 @@ const mapStateToProps = ({ order, auth }) => ({
 
 const mapDispatchToProps = {
   getOrders: getOrdersAction,
+  updateOrderFilters: updateOrderFiltersAcion,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(OrderList));
