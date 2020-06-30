@@ -78,7 +78,7 @@ class OrderFilters extends Component {
 
     return (
       <div className='order__filter'>
-        <div className='list_status'>
+        <div className='list_status d-none d-sm-block'>
           <button
             data=''
             onClick={this.handleChangeStatus}
@@ -107,6 +107,7 @@ class OrderFilters extends Component {
             <input
               type='text'
               value={text}
+              placeholder='Search orders'
               className='search__box form-control'
               onChange={this.handleChangeText}
             />

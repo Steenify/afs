@@ -34,15 +34,15 @@ const Header = (props) => {
   useEffect(() => {
     const listener = debounce(() => {
       toggleMenu(!isMobile());
-    }, 500);
+    }, 1000);
 
     listener();
 
-    window.addEventListener('resize', listener);
+    // window.addEventListener('resize', listener);
 
-    return () => {
-      window.removeEventListener('resize', listener);
-    };
+    // return () => {
+    //   window.removeEventListener('resize', listener);
+    // };
   }, [toggleMenu]);
 
   const handleToggle = () => {

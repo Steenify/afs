@@ -1,17 +1,6 @@
-/* @flow */
-import * as React from 'react';
+import React from 'react';
 
-type Props = {
-  title?: string,
-
-  children?: React.Node,
-
-  onGoBack?: () => void,
-
-  className?: string,
-};
-
-const PageTitle = (props: Props): React.Node => {
+const PageTitle = (props) => {
   const { title, children, className, onGoBack } = props;
 
   const classNames = [

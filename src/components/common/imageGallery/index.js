@@ -37,8 +37,7 @@ class ImageGallery extends Component {
           list.map((img, index) => (
             <div
               className='images_gallerry__item d-inline-block'
-              key={`images_gallerry__item__${index.toString()}`}
-              type='button'>
+              key={`images_gallerry__item__${index.toString()}`}>
               {canDelete && (
                 <button
                   onClick={() => onDelete(img, index)}
