@@ -53,7 +53,7 @@ class ImageLoadAble extends Component {
   };
 
   render() {
-    const { url, className, type = '', fileName = '' } = this.props;
+    const { url, className, type = '' } = this.props;
     const { isLoadAble, isLoading } = this.state;
 
     const isImage = (type || '').indexOf('image/') !== -1;

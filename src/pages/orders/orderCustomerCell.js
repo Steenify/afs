@@ -32,6 +32,7 @@ const OrderCustomerCell = ({ customer, accountInfo }) => {
     <Popover
       isOpen={isPopoverOpen}
       position={'bottom'}
+      transitionDuration={0.000001}
       padding={10}
       disableReposition
       onClickOutside={toggle}

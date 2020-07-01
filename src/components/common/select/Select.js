@@ -3,8 +3,6 @@ import Select from 'react-select';
 import { FormGroup } from 'reactstrap';
 import './style.scss';
 
-const ErrorSpan = () => <span></span>;
-
 export const ReactSelect = Select;
 
 export const CustomStyles = {

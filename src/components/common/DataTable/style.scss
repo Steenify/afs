@@ -53,8 +53,13 @@
 					color: #767676;
 				}
 
-				.order__link {
-					color: #767676;
+				.order__link,
+				.dispaly_name,
+				.order__toggle {
+					color: #767676 !important;
+				}
+				.cus-checkbox {
+					border-color: #767676;
 				}
 			}
 		}

@@ -34,6 +34,7 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
         </Button>
         <Popover
           isOpen={isPopoverOpen}
+          transitionDuration={0.000001}
           position={'right'}
           padding={10}
           disableReposition

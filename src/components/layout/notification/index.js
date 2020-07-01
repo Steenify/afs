@@ -35,6 +35,7 @@ const Notification = (props) => {
   return (
     <Popover
       isOpen={isPopoverOpen}
+      transitionDuration={0.000001}
       position={['bottom']}
       padding={10}
       onClickOutside={toggle}

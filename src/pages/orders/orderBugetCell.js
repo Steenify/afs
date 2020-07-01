@@ -73,6 +73,7 @@ const OrderBudgetCell = ({
   return (
     <Popover
       isOpen={isPopoverOpen}
+      transitionDuration={0.000001}
       position={'bottom'}
       padding={10}
       disableReposition

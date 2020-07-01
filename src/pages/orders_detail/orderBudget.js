@@ -61,6 +61,7 @@ const OrderBudget = ({ order, accountInfo, updateOrdersBudget }) => {
     <Popover
       isOpen={isPopoverOpen}
       position={'bottom'}
+      transitionDuration={0.000001}
       padding={10}
       onClickOutside={toggle}
       content={() => (

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { Desktop, Mobile } from 'components/responsive';
+// import { Desktop, Mobile } from 'components/responsive';
 
 import { getOrdersAction, updateOrderFiltersAcion } from './actions';
 
