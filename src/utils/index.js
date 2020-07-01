@@ -2,6 +2,7 @@ import moment from 'moment';
 // import numeral from 'numeral';
 import { toast } from 'react-toastify';
 import { reduce, map, isObject, mapValues, omit } from 'lodash';
+import * as Sentry from '@sentry/react';
 
 import PSDFile from 'assets/img/psd__icon.jpg';
 
@@ -89,6 +90,12 @@ export const actionTryCatchCreator = async ({
     } else {
       toast.error(error);
     }
+
+    const token = getData('token') || '';
+    Sentry.configureScope((scope) =>
+      scope.setUser({ token }).setLevel('API ERROR'),
+    );
+    Sentry.captureException(error);
   }
 };
 

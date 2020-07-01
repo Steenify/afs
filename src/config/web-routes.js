@@ -100,6 +100,17 @@ const WEB_ROUTES = {
     title: 'Settings',
     permission: 'ACCESS_SETTING',
   },
+
+  POLICY: {
+    path: '/privacy-policy',
+    title: 'privacy-policy',
+    permission: '',
+  },
+  TERMS: {
+    path: '/terms-conditions',
+    title: 'Terms & Conditions',
+    permission: '',
+  },
 };
 
 export default WEB_ROUTES;

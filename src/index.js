@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Spinner } from 'reactstrap';
+import * as Sentry from '@sentry/react';
 
 // import { buildType } from './config';
 
@@ -15,6 +16,11 @@ import * as serviceWorker from './vendor/serviceWorker';
 
 import Store from './store';
 import App from './App';
+
+Sentry.init({
+  dsn:
+    'https://597f3416b2734db5b3963e3a99dad0c9@o414568.ingest.sentry.io/5304252',
+});
 
 ReactDOM.render(
   <Provider store={Store}>

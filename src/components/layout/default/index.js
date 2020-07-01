@@ -5,17 +5,28 @@ import Footer from 'components/layout/footer';
 import Header from 'components/layout/header';
 import SideBar from 'components/layout/sidebar';
 
+import SentryErrorBoundary from 'components/SentryErrorBoundary';
+
 import './style.scss';
 
 const DefaultLayout = (props) => {
   const { children, isMenuOpen } = props;
   return (
     <React.Fragment>
-      <SideBar />
+      <SentryErrorBoundary>
+        <SideBar />
+      </SentryErrorBoundary>
       <div className={`app-body ${isMenuOpen ? 'open' : ''}`}>
-        <Header />
-        <div className='app-main py-5'>{children}</div>
-        <Footer />
+        <SentryErrorBoundary>
+          <Header />
+        </SentryErrorBoundary>
+
+        <div className='app-main py-5'>
+          <SentryErrorBoundary>{children}</SentryErrorBoundary>
+        </div>
+        <SentryErrorBoundary>
+          <Footer />
+        </SentryErrorBoundary>
       </div>
     </React.Fragment>
   );

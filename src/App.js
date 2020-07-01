@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route as PublicRoute,
+} from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ToastContainer, Flip } from 'react-toastify';
 import { connect } from 'react-redux';
@@ -34,6 +38,8 @@ import Artists from 'pages/artists';
 import ArtistDetail from 'pages/artists/artistDetailForm';
 import CS from 'pages/customer_service';
 import CSDetail from 'pages/customer_service/customerServiceDetail';
+import PrivacyPolicy from 'pages/PrivacyPolicy';
+import TermsAndConditions from 'pages/TermsAndConditions';
 
 import head from 'utils/head';
 
@@ -211,6 +217,13 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
             isPrivate={true}
             role={WEB_ROUTES.CS_DETAIL.permission}
           />
+
+          <PublicRoute exact path={WEB_ROUTES.POLICY.path}>
+            <PrivacyPolicy />
+          </PublicRoute>
+          <PublicRoute exact path={WEB_ROUTES.TERMS.path}>
+            <TermsAndConditions />
+          </PublicRoute>
 
           <Route component={NotFound} />
         </Switch>

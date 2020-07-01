@@ -1,5 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+
+import { WEB_ROUTES } from 'config';
+
 import './style.scss';
 
 const Footer = (props) => {
@@ -13,12 +17,12 @@ const Footer = (props) => {
               2020 – Steenify. All rights reserved.
             </p>
             <div className='footer__links listlinks'>
-              <a title='Privacy Policy' href='#'>
+              <Link title='Privacy Policy' to={WEB_ROUTES.POLICY.path}>
                 Privacy Policy
-              </a>
-              <a title='Privacy Policy' href='#'>
+              </Link>
+              <Link title='Privacy Policy' to={WEB_ROUTES.TERMS.path}>
                 Terms &amp; Conditions
-              </a>
+              </Link>
             </div>
           </div>
         </div>
