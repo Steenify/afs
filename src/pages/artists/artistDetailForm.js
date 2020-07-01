@@ -29,8 +29,6 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
   const { t } = useTranslation();
 
   const onSubmit = (values) => {
-    console.log('onSubmit -> values', values);
-
     const payload = {
       artistExtension: {
         fbUrl: values?.fbUrl,

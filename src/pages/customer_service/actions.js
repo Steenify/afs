@@ -12,7 +12,6 @@ export const getArtistsListAction = (params = {}) => async (dispatch) => {
     });
   };
   const onSuccess = (data, headers) => {
-    console.log('onSuccess -> data', data);
     dispatch({
       type: GET_ARTISTS_LIST_ACTION.SUCCESS,
       payload: { data, headers },

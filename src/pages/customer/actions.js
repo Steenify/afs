@@ -204,7 +204,6 @@ export const actUpdateCustomer = (params) => async (dispatch) => {
     });
 
     const res = await updateCustomer(params);
-    console.log('actUpdateCustomer -> params', params);
     dispatch({
       type: UPDATE_CUSTOMER.SUCCESS,
       payload: res,

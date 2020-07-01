@@ -30,7 +30,6 @@ if (isSupportedMessage) {
     })
     .then((token) => {
       appToken = token;
-      console.log('token', token);
     })
     .catch((err) => {
       console.log('requestPermission fail', err, JSON.stringify(err));
