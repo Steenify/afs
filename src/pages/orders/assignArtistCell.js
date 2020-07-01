@@ -18,6 +18,7 @@ const AssignArtistCell = ({
   id,
   updateOrderItems,
   assignOrdersArtist,
+  number,
 }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
@@ -31,8 +32,9 @@ const AssignArtistCell = ({
     });
 
     const payload = { id: id, to: value.login };
+    const name = value.login !== 'null' ? value.firstName : '_______';
     assignOrdersArtist(payload, () => {
-      toast.dark('Assigned order!');
+      toast.dark(`Order [#${number}] is assigned to [${name}]`);
     });
   };
 
@@ -89,6 +91,7 @@ const mapStateToProps = ({ order, auth }, ownProps) => {
   const { items } = order.list;
   const item = items[data] || {};
   return {
+    number: item?.number || '',
     id: item?.id || 0,
     assignedTo: item?.assignedTo || {},
     accountInfo: auth.data.accountInfo,

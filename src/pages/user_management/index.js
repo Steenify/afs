@@ -21,7 +21,7 @@ const UserManagement = () => {
           {
             title: t('baseApp.userManagement.home.title'),
             active: false,
-            path: '/user',
+            path: WEB_ROUTES.USER_LIST.path,
           },
         ]}
       />

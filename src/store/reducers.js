@@ -1,7 +1,7 @@
 import update from 'react-addons-update';
 import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
-import home from 'pages/home/reducer';
+// import home from 'pages/home/reducer';
 import user from 'pages/user_management/reducer';
 import auth from 'pages/auth/reducer';
 import role from 'pages/role_management/reducer';
@@ -81,7 +81,7 @@ const global = (state = initialState, action) => {
 export default combineReducers({
   form,
   global,
-  home,
+  // home,
   user,
   auth,
   role,

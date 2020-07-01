@@ -1,4 +1,5 @@
 import React from 'react';
+import { ReactComponent as ArrowLeft } from 'assets/img/chevonRight.svg';
 
 const PageTitle = (props) => {
   const { title, children, className, onGoBack } = props;
@@ -13,7 +14,11 @@ const PageTitle = (props) => {
   return (
     <div className='d-flex align-items-center page__title'>
       <h3 className={classNames} onClick={onGoBack}>
-        {onGoBack && <i className='fas fa-chevron-left mr-2'></i>}
+        {onGoBack && (
+          <span className='icon mr-2'>
+            <ArrowLeft />
+          </span>
+        )}
         <span className='font-weight-bold'>{title}</span>
       </h3>
 

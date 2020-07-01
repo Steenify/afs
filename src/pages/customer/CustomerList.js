@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { Badge } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
-import _ from 'lodash';
 
 import Button from 'components/common/button';
 import DataTable from 'components/common/DataTable';
@@ -114,7 +113,7 @@ const CustomerList = (props) => {
     props.actGetCustomers(params);
   };
 
-  const { customers = [], ui, error } = props;
+  const { customers = [] } = props;
 
   const goToDetail = (login) => {
     if (login) {

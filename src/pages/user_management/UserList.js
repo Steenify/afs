@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Badge } from 'reactstrap';
-import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
-import Button from 'components/common/button';
 import DataTable from 'components/common/DataTable';
 import UserSearchBox from './UserSearchBox';
 import moment from 'moment';

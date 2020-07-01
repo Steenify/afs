@@ -111,6 +111,17 @@ const WEB_ROUTES = {
     title: 'Terms & Conditions',
     permission: '',
   },
+
+  PAYOUTS: {
+    path: '/payouts',
+    title: 'Payouts',
+    permission: '',
+  },
+  PAYOUTS_DETAIL: {
+    path: '/payout/:id',
+    title: 'Payout Details',
+    permission: '',
+  },
 };
 
 export default WEB_ROUTES;

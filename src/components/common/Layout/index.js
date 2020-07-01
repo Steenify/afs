@@ -1,27 +1,10 @@
-/* @flow */
-import * as React from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import Button from 'reactstrap/es/Button';
 
 import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
-type Props = {
-  documentTitle?: string,
-
-  children?: any,
-
-  className?: string,
-
-  container?: boolean,
-
-  fluid?: boolean,
-
-  onGoBack?: () => void,
-
-  bottomView?: React.Node | (() => React.Node),
-};
-
-const Layout = (props: Props): React.Node => {
+const Layout = (props) => {
   const {
     documentTitle,
     children,

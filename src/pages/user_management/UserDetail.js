@@ -41,8 +41,6 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
   );
 
   const onSubmit = (values) => {
-    console.log('onSubmit -> values', values);
-
     props.actUpdateUser(values).then((res) => {
       const { status, data } = res;
       const { errorKey, message } = data;

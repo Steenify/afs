@@ -20,6 +20,7 @@ const OrderBudgetCell = ({
   id,
   updateOrdersBudget,
   updateOrderItems,
+  number,
 }) => {
   const [value, setValue] = useState(budget || '');
 
@@ -58,7 +59,11 @@ const OrderBudgetCell = ({
       budget: value,
     };
     updateOrdersBudget(payload, id, () => {
-      toast.dark('Budget updated!');
+      toast.dark(
+        `Order [#${number}]'s budget is changed to ${formatNumber(
+          value || 0,
+        )}$`,
+      );
     });
   };
 
@@ -131,6 +136,7 @@ const mapStateToProps = ({ order, auth }, ownProps) => {
   const { items } = order.list;
   const item = items[data] || {};
   return {
+    number: item?.number || '',
     id: item?.id,
     budget: item?.budget || 0,
     accountInfo: auth.data.accountInfo,

@@ -22,16 +22,19 @@ const SettingsPage = (props) => {
   const SettingsList = [
     {
       ...WEB_ROUTES.USER_ROLE,
+      title: t(WEB_ROUTES.USER_ROLE.title),
       icon: <Settings />,
       des: 'View and update user role',
     },
     {
       ...WEB_ROUTES.USER_PERMISSION,
+      title: t(WEB_ROUTES.USER_PERMISSION.title),
       icon: <Settings />,
       des: 'View and update user permission',
     },
     {
       ...WEB_ROUTES.SYSTEM_PROPERTY_LIST,
+      title: t(WEB_ROUTES.SYSTEM_PROPERTY_LIST.title),
       icon: <Settings />,
       des: 'View and update system property',
     },
@@ -46,6 +49,12 @@ const SettingsPage = (props) => {
       icon: <CustomerIcon />,
       des: 'Manage Customer',
     },
+    {
+      ...WEB_ROUTES.PAYOUTS,
+      title: t(WEB_ROUTES.PAYOUTS.title),
+      icon: <CustomerIcon />,
+      des: 'Payouts',
+    },
   ];
 
   const handleNavigate = (item) => {
@@ -53,16 +62,6 @@ const SettingsPage = (props) => {
   };
   return (
     <Layout documentTitle={WEB_ROUTES.SETTINGS.title} container fluid>
-      <Breadcrumb
-        data={[
-          {
-            title: WEB_ROUTES.SETTINGS.title,
-            active: false,
-            path: WEB_ROUTES.SETTINGS.path,
-          },
-        ]}
-      />
-
       <div className='settings__page'>
         <PageTitle title={WEB_ROUTES.SETTINGS.title} className='mb-0 mr-3' />
         <div className='settings__content box'>
@@ -84,7 +83,7 @@ const SettingsPage = (props) => {
                         {set.icon ? set.icon : <Settings />}
                       </div>
                       <div className='content'>
-                        <div className='title'>{t(set.title)}</div>
+                        <div className='title'>{set.title}</div>
                         <div className='description'>{set.des}</div>
                       </div>
                     </div>

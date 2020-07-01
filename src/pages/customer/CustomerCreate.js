@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { toast } from 'react-toastify';
 import { parsePhoneNumber } from 'react-phone-number-input';
 import { useTranslation } from 'react-i18next';
-import { getErrorMessage } from 'utils';
 
 import {
   Modal,
@@ -17,12 +16,11 @@ import {
 import Input from 'components/common/input';
 import Button from 'components/common/button';
 import PhoneInput from 'components/common/phoneInput';
-import Checkbox from 'components/common/checkbox';
 
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
 import { actCreateCustomer, actGetCustomers } from './actions';
-import { required, minValue, email } from 'utils/validation';
+import { required, email } from 'utils/validation';
 
 const CustomerCreate = ({ style, handleSubmit, ...props }) => {
   const { className, errorRequest, reset } = props;

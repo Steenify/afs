@@ -13,6 +13,7 @@ import Breadcrumb from 'components/common/breadcrumb';
 import PageTitle from 'components/common/PageTitle';
 import Checkbox from 'components/common/checkbox';
 import Button from 'components/common/button';
+import { Select } from 'components/common/select';
 import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
 import { actGetCustomer, actUpdateCustomer } from './actions';
@@ -162,10 +163,15 @@ const CustomerDetail = ({ style, handleSubmit, history, ...props }) => {
         />
 
         <Field
-          className='form-group--inline'
-          component={Input}
+          className='form-group--inline form-group--role'
+          component={Select}
           name='customerExtension.gen'
           label={'Gender'}
+          options={[
+            { label: 'SELECT', value: '', desc: '' },
+            { label: 'MALE', value: 'MALE', desc: '' },
+            { label: 'FEMALE', value: 'FEMALE', desc: '' },
+          ]}
         />
 
         <FormGroup className='form-group--inline'>
