@@ -28,7 +28,7 @@ const Notification = (props) => {
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => {
-    // readAllNotification();
+    readAllNotification();
     setIsPopoverOpen(!isPopoverOpen);
   };
 

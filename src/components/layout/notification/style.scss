@@ -59,10 +59,15 @@
 		display: flex;
 		padding: 10px 15px;
 		cursor: pointer;
-
+		border-radius: 4px;
+		margin-bottom: 5px;
 		&:hover {
 			background: #f2f4f5;
 			border-radius: 5px;
+		}
+
+		&.RECEIVED {
+			background: #f2f4f5;
 		}
 	}
 

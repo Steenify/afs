@@ -86,7 +86,7 @@ class NotiContent extends Component {
       <div
         onClick={() => this.handleClick(noti)}
         key={`list_noti__header__${noti.id}`}
-        className='noti__item'>
+        className={`noti__item ${noti.status}`}>
         <div className='noti__icon'>
           <div className='icon'>
             <Logo />
