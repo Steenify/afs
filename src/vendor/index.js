@@ -1,5 +1,6 @@
 import './bootstrap';
 import './i18n';
+import './react-dates';
 // import './firebase';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

@@ -6,7 +6,7 @@ import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 
 import ListArtists from 'components/layout/ListArtistAssign';
 
-import { updateOrderFiltersAcion, getOrdersAction } from './actions';
+import {} from './actions';
 
 const OrderFilterAssignee = ({ assignee, updateOrderFilters, getOrders }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -43,19 +43,14 @@ const OrderFilterAssignee = ({ assignee, updateOrderFilters, getOrders }) => {
 };
 
 const mapStateToProps = ({ order, auth }) => {
-  const { artists } = order;
   const { assignee } = order.filter;
   return {
     assignee,
     accountInfo: auth.data.accountInfo,
-    artists,
   };
 };
 
-const mapDispatchToProps = {
-  updateOrderFilters: updateOrderFiltersAcion,
-  getOrders: getOrdersAction,
-};
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,

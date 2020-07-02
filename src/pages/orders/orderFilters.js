@@ -8,7 +8,6 @@ import {
   getOrderStatusAction,
   updateOrderFiltersAcion,
   getOrdersAction,
-  getArtistsAssignAction,
 } from './actions';
 
 import OrderFilterAssignee from './orderFilterAssignee';
@@ -133,7 +132,6 @@ const mapDispatchToProps = {
   getOrderStatus: getOrderStatusAction,
   updateOrderFilters: updateOrderFiltersAcion,
   getOrders: getOrdersAction,
-  getArtistsAssign: getArtistsAssignAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderFilters);

@@ -12,7 +12,7 @@ import {
   assignOrdersArtistAction,
 } from '../orders/actions';
 
-import ListArtists from '../orders/listArtistAssign';
+import ListArtists from 'components/layout/ListArtistAssign';
 
 const OrderAssignedBox = ({ order, getArtistsAssign, assignOrdersArtist }) => {
   const { assignedTo } = order;

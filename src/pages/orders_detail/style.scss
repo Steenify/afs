@@ -710,6 +710,7 @@
 	@include max-md() {
 		&__box,
 		&__work_items,
+		&__delivery,
 		&__customer {
 			margin-left: -15px;
 			margin-right: -15px;

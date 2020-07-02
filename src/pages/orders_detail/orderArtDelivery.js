@@ -8,10 +8,14 @@ import ImageGallery from 'components/common/imageGallery';
 import Dropbox from 'components/common/dropbox';
 import Button from 'components/common/button';
 
-import { getListImageUrl } from 'utils';
+import { getListImageUrl, getSelectedStatus } from 'utils';
 import { PERMITTIONS_CONFIG } from 'config';
 
-import { uploadFileWorkLogAction, deleteFileDeliveryAction } from './actions';
+import {
+  uploadFileWorkLogAction,
+  deleteFileDeliveryAction,
+  getEmailTemplateAction,
+} from './actions';
 
 const OrderArtDelivery = ({
   order,
@@ -21,6 +25,8 @@ const OrderArtDelivery = ({
   uploadFileWorkLog,
   deleteFileDelivery,
   accountInfo,
+  status,
+  getEmailTemplate,
 }) => {
   const dropbox = useRef(null);
 
@@ -30,6 +36,11 @@ const OrderArtDelivery = ({
   const canModifyDelivery =
     accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_DELIVERY) ||
     false;
+
+  const canNotifyCustomer =
+    accountInfo?.permissions?.includes(
+      PERMITTIONS_CONFIG.NOTIFY_BOOKING_TO_CUSTOMER,
+    ) || false;
 
   const handleUploadSketch = () => {
     if (dropbox.current) {
@@ -86,6 +97,15 @@ const OrderArtDelivery = ({
     );
   };
 
+  const handleNotifyEmail = () => {
+    const currentStatus = getSelectedStatus('SEND_FILE', status);
+    if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
+      getEmailTemplate(order.id, currentStatus.emailTemplates[0].id);
+    } else {
+      toast.warn('No Email template found!');
+    }
+  };
+
   return (
     <div className='deli__body'>
       <div className='box__header mb-2'>
@@ -133,7 +153,19 @@ const OrderArtDelivery = ({
             orderNumber={order.number}
             id={`work_log__delivery__update`}
           />
-          <div className='order_detail__ctas text-right'>
+          <div className='order_detail__ctas d-flex flex-wrap justify-content-between text-right'>
+            <div>
+              {canNotifyCustomer && (
+                <Button
+                  color='primary'
+                  onClick={handleNotifyEmail}
+                  className='cta cta2 mb-3 order_detail__notify'
+                  type='button'>
+                  Notify Customer
+                </Button>
+              )}
+            </div>
+
             <Button
               onClick={handleUploadSketch}
               color='primary'
@@ -148,14 +180,16 @@ const OrderArtDelivery = ({
   );
 };
 
-const mapStateToProps = ({ orderDetail, auth }) => ({
+const mapStateToProps = ({ orderDetail, auth, order }) => ({
   workLog: orderDetail.data.workLog,
   accountInfo: auth.data.accountInfo,
+  status: order.status,
 });
 
 const mapDispatchToProps = {
   uploadFileWorkLog: uploadFileWorkLogAction,
   deleteFileDelivery: deleteFileDeliveryAction,
+  getEmailTemplate: getEmailTemplateAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderArtDelivery);

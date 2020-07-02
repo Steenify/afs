@@ -10,7 +10,7 @@ import { PERMITTIONS_CONFIG } from 'config';
 
 import { updateOrderItemsAcion, assignOrdersArtistAction } from './actions';
 
-import ListArtists from './listArtistAssign';
+import ListArtists from 'components/layout/ListArtistAssign';
 
 const AssignArtistCell = ({
   assignedTo,
