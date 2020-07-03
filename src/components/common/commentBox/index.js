@@ -40,18 +40,20 @@ class CommentBox extends Component {
     if (items && items.length) {
       let itemsList = [];
       for (let index in items) {
-        var item = items[index];
+        const item = items[index];
         if (item.kind === 'file') {
-          var blob = item.getAsFile();
-          itemsList.push({
-            file: blob,
-            isUploaded: false,
-            isUploading: false,
-            name: blob.name,
-            id: '',
-            uui: getUniqueID(),
-            percent: 0,
-          });
+          if ((item.type || '').indexOf('image') !== -1) {
+            const blob = item.getAsFile();
+            itemsList.push({
+              file: blob,
+              isUploaded: false,
+              isUploading: false,
+              name: blob.name,
+              id: '',
+              uui: getUniqueID(),
+              percent: 0,
+            });
+          }
         }
       }
       if (itemsList.length) {
