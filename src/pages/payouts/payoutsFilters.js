@@ -7,6 +7,7 @@ import { PERMITTIONS_CONFIG } from 'config';
 import {} from './actions';
 
 import OrderFilterAssignee from './payoutsFiltersAssignee';
+import OrderFilterDate from './payoutsFiltersDate';
 
 class PayoutFilters extends Component {
   constructor() {
@@ -50,6 +51,7 @@ class PayoutFilters extends Component {
             />
           </div>
           {canAssign && <OrderFilterAssignee />}
+          <OrderFilterDate />
         </div>
       </div>
     );

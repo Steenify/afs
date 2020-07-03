@@ -18,7 +18,10 @@ export const getArtistsListAction = (params = {}) => async (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log('GET_ARTISTS_LIST_ACTION -> error', error);
+    console.log(
+      'GET_ARTISTS_LIST_ACTION => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_ARTISTS_LIST_ACTION.ERROR,
       payload: error.response,

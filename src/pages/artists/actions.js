@@ -31,6 +31,10 @@ export const getArtistsListAction = (params = {}) => async (dispatch) => {
     });
   };
   const onError = (error) => {
+    console.log(
+      'getArtistsListAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_ARTISTS_LIST_ACTION.ERROR,
       payload: error.response,
@@ -59,6 +63,7 @@ export const getArtistAction = (login) => (dispatch) => {
     });
   };
   const onError = (error) => {
+    console.log('getArtistAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_ARTISTS_ACTION.ERROR,
       payload: error.response,
@@ -91,7 +96,10 @@ export const updateArtistDetailApiAction = (payload, cb) => (dispatch) => {
     cb && cb();
   };
   const onError = (error) => {
-    console.log('updateArtistDetailApiAction -> error', error);
+    console.log(
+      'updateArtistDetailApiAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPDATE_ARTISTS_API_ACTION.ERROR,
       payload: error.response,

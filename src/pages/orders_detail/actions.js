@@ -60,7 +60,10 @@ export const getOrderDetailAction = (id) => (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log('getOrderDetailAction -> error', error);
+    console.log(
+      'getOrderDetailAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_ORDER_DETAIL_ACTION.ERROR,
       payload: error.response,
@@ -94,7 +97,10 @@ export const updateOrderItemSumarizeAPIAction = (id, itemId, data, cb) => (
     cb && cb(data);
   };
   const onError = (error) => {
-    console.log('updateOrderItemSumarizeAPIAction -> error', error);
+    console.log(
+      'updateOrderItemSumarizeAPIAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPDATE_ORDER_ITEM_SUMARIZE_ACTION.ERROR,
       payload: error.response,
@@ -137,7 +143,10 @@ export const updateOrderItemFilesAction = (
     }
   };
   const onError = (error) => {
-    console.log('updateOrderItemSumarizeAPIAction -> error', error);
+    console.log(
+      'updateOrderItemSumarizeAPIAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPDATE_ORDER_ITEM_FILES_ACTION.ERROR,
       payload: error.response,
@@ -168,7 +177,10 @@ export const getOrderCustomerAction = (id) => (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log('getOrderCustomerAction -> error', error);
+    console.log(
+      'getOrderCustomerAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_ORDER_CUSTOMER_ACTION.ERROR,
       payload: error.response,
@@ -208,7 +220,10 @@ export const updateOrderStatusAction = (id, to) => (dispatch, getState) => {
   };
 
   const onError = (error) => {
-    console.log('updateOrderStatusAction -> error', error);
+    console.log(
+      'updateOrderStatusAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPDATE_ORDER_STATUS_ACTION.ERROR,
       payload: error.response,
@@ -241,7 +256,10 @@ export const getOrderWorkLogAction = (id) => (dispatch) => {
   };
 
   const onError = (error) => {
-    console.log('updateOrderWorkLoadAction -> error', error);
+    console.log(
+      'updateOrderWorkLoadAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_ORDER_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -284,7 +302,10 @@ export const uploadFileWorkLogAction = (
     }
   };
   const onError = (error) => {
-    console.log('uploadFileWorkLogAction', error);
+    console.log(
+      'uploadFileWorkLogAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPLOAD_FILE_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -319,7 +340,10 @@ export const uploadCommentWorkLogAction = (id, logId, payload, index, cb) => (
     cb && cb();
   };
   const onError = (error) => {
-    console.log('uploadCommentWorkLogAction', error);
+    console.log(
+      'uploadCommentWorkLogAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPLOAD_COMMENT_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -356,7 +380,10 @@ export const deleteCommentWorkLogAction = (
     });
   };
   const onError = (error) => {
-    console.log('deleteCommentWorkLogAction', error);
+    console.log(
+      'deleteCommentWorkLogAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: DELETE_COMMENT_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -396,7 +423,10 @@ export const updateCommentWorkLogAction = (
     cb && cb();
   };
   const onError = (error) => {
-    console.log('deleteCommentWorkLogAction', error);
+    console.log(
+      'updateCommentWorkLogAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPDATE_COMMENT_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -435,7 +465,10 @@ export const approvedWorkLogAction = (id, logId) => (dispatch, getState) => {
     });
   };
   const onError = (error) => {
-    console.log('uploadCommentWorkLogAction', error);
+    console.log(
+      'approvedWorkLogAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: APPROVED_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -473,7 +506,10 @@ export const rejectedWorkLogAction = (id, logId, cb) => (
     });
   };
   const onError = (error) => {
-    console.log('uploadCommentWorkLogAction', error);
+    console.log(
+      'rejectedWorkLogAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: REJECTED_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -504,6 +540,10 @@ export const getEmailTemplateAction = (id, templateId) => (dispatch) => {
     });
   };
   const onError = (error) => {
+    console.log(
+      'getEmailTemplateAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.ERROR,
       payload: error.response,
@@ -534,7 +574,10 @@ export const sendEmailNotifyAction = () => (dispatch, getState) => {
     toast.dark('Notified Customer!');
   };
   const onError = (error) => {
-    console.log('sendEmailNotifyAction', error);
+    console.log(
+      'sendEmailNotifyAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: SENT_EMAIL_NOTIFY_ACTION.ERROR,
       payload: error.response,
@@ -581,7 +624,10 @@ export const deleteFileDeliveryAction = (
     }
   };
   const onError = (error) => {
-    console.log('deleteFileDeliveryAction', error);
+    console.log(
+      'deleteFileDeliveryAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: DELETE_FILE_DELIVERY_ACTION.ERROR,
       payload: error.response,
@@ -624,7 +670,10 @@ export const deleteFileSummaryAction = (
     }
   };
   const onError = (error) => {
-    console.log('deleteFileSummaryAction', error);
+    console.log(
+      'deleteFileSummaryAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: DELETE_FILE_SUMMARY_ACTION.ERROR,
       payload: error.response,

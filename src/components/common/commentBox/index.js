@@ -8,7 +8,7 @@ import { ReactComponent as Close } from 'assets/img/close.svg';
 import { ReactComponent as Send } from 'assets/img/send.svg';
 import { ReactComponent as UploadPhoto } from 'assets/img/loadPhoto.svg';
 
-import { uploadService } from 'services/attachment';
+import { uploadService, deleteFileService } from 'services/attachment';
 import { actionTryCatchCreator, getUniqueID } from 'utils';
 
 import ImageFile from '../imageFile';
@@ -50,6 +50,7 @@ class CommentBox extends Component {
             name: blob.name,
             id: '',
             uui: getUniqueID(),
+            percent: 0,
           });
         }
       }
@@ -69,6 +70,7 @@ class CommentBox extends Component {
         id: '',
         name: fi.name,
         uui: getUniqueID(),
+        percent: 0,
       };
     });
     this.handleFiles(newFiles);
@@ -100,6 +102,7 @@ class CommentBox extends Component {
   };
 
   onDeleteFile = (index) => {
+    this.handleDeleteFile(index);
     const { fileList } = this.state;
     const temp = [...fileList];
     temp.splice(index, 1);
@@ -137,15 +140,47 @@ class CommentBox extends Component {
       }
     };
     const onError = (error) => {
-      console.log('handleUploadFile onError -> error', error);
+      console.log('handleUploadFile onError -> error', JSON.stringify(error));
+    };
+
+    const onUploadProgress = (progressEvent) => {
+      const percentCompleted = Math.round(
+        (progressEvent.loaded * 100) / progressEvent.total,
+      );
+      const { fileList } = this.state;
+      const fileIndex = findIndex(fileList, (item) => item.uui === uui);
+      if (fileIndex !== -1) {
+        const newList = [...fileList];
+        newList[fileIndex].percent = percentCompleted;
+        this.setState({ fileList: newList });
+      }
     };
 
     actionTryCatchCreator({
-      service: uploadService(data),
+      service: uploadService({ data, onUploadProgress }),
       onPending,
       onSuccess,
       onError,
     });
+  };
+
+  handleDeleteFile = (index) => {
+    const { fileList } = this.state;
+
+    const item = fileList[index] || {};
+    if (item?.id) {
+      const onPending = () => {};
+      const onSuccess = () => {};
+      const onError = (error) => {
+        console.log('handleDeleteFile onError -> error', JSON.stringify(error));
+      };
+      actionTryCatchCreator({
+        service: deleteFileService(item?.id),
+        onPending,
+        onSuccess,
+        onError,
+      });
+    }
   };
 
   handleChangeText = (e) => {
@@ -179,7 +214,7 @@ class CommentBox extends Component {
                       item.file.name
                     }__${index.toString()}`}>
                     {!item.isUploaded && (
-                      <Loading className='file-item__loading' />
+                      <div className='file-item__loading'>{item.percent} %</div>
                     )}
                     <ImageFile className='file-item__img' file={item.file} />
                     <button

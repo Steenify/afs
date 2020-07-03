@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { findIndex } from 'lodash';
 
-import Loading from 'components/common/Loading';
-
 import { ReactComponent as Upload } from 'assets/img/upload.svg';
 import { ReactComponent as Close } from 'assets/img/close.svg';
 
-import { uploadService } from 'services/attachment';
+import { uploadService, deleteFileService } from 'services/attachment';
 import { actionTryCatchCreator, getUniqueID } from 'utils';
 
 import ImageFile from '../imageFile';
@@ -139,6 +137,7 @@ class DropBox extends Component {
   };
 
   onDeleteFile = (index) => {
+    this.handleDeleteFile(index);
     const { fileList } = this.state;
     const temp = [...fileList];
     temp.splice(index, 1);
@@ -206,6 +205,25 @@ class DropBox extends Component {
       onSuccess,
       onError,
     });
+  };
+
+  handleDeleteFile = (index) => {
+    const { fileList } = this.state;
+
+    const item = fileList[index] || {};
+    if (item?.id) {
+      const onPending = () => {};
+      const onSuccess = () => {};
+      const onError = (error) => {
+        console.log('handleDeleteFile onError -> error', JSON.stringify(error));
+      };
+      actionTryCatchCreator({
+        service: deleteFileService(item?.id),
+        onPending,
+        onSuccess,
+        onError,
+      });
+    }
   };
 
   render() {

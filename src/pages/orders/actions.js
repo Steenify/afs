@@ -62,7 +62,7 @@ export const getOrdersAction = (params) => (dispatch, getState) => {
     dispatch({ type: GET_ORDER_ACTION.SUCCESS, payload: { data, headers } });
   };
   const onError = (error) => {
-    console.log('getOrdersAction -> error', error);
+    console.log('getOrdersAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_ORDER_ACTION.ERROR,
       payload: error.response,
@@ -113,7 +113,10 @@ export const updateOrdersBudgetAction = (payload, id, cb) => (dispatch) => {
     cb && cb();
   };
   const onError = (error) => {
-    console.log('updateOrdersAction', error);
+    console.log(
+      'updateOrdersAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPDATE_ORDER_BUDGET_ACTION.ERROR,
       payload: error.response,
@@ -143,7 +146,10 @@ export const getArtistsAssignAction = (params = { size: 100 }) => (
     dispatch({ type: GET_ARTISTS_ASSIGN_ACTION.SUCCESS, payload: data });
   };
   const onError = (error) => {
-    console.log('GET_ARTISTS_ASSIGN_ACTION -> error', error);
+    console.log(
+      'GET_ARTISTS_ASSIGN_ACTION => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_ARTISTS_ASSIGN_ACTION.ERROR,
       payload: error.response,
@@ -172,7 +178,10 @@ export const assignOrdersArtistAction = (payload, cb) => (dispatch) => {
     cb && cb();
   };
   const onError = (error) => {
-    console.log('assignOrdersArtistAction', error);
+    console.log(
+      'assignOrdersArtistAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPDATE_ORDER_ARTIST_ACTION.ERROR,
       payload: error.response,
@@ -198,7 +207,10 @@ export const getOrderStatusAction = (payload) => (dispatch) => {
     dispatch({ type: GET_ORDER_STATUS_ACTION.SUCCESS, payload: data });
   };
   const onError = (error) => {
-    console.log('getOrderStatusAction', error);
+    console.log(
+      'getOrderStatusAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_ORDER_STATUS_ACTION.ERROR,
       payload: error.response,
@@ -229,7 +241,10 @@ export const updateOrderPaymentStatusAction = (payload, id) => (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log('getOrderStatusAction', error);
+    console.log(
+      'updateOrderPaymentStatusAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPDATE_ORDER_PAYMENT_STATUS_ACTION.ERROR,
       payload: error.response,
@@ -265,7 +280,10 @@ export const updateOrderPaymentStatusBulkAction = (status, payload, cb) => (
     }
   };
   const onError = (error) => {
-    console.log('updateOrderPaymentStatusBulkAction', error);
+    console.log(
+      'updateOrderPaymentStatusBulkAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.ERROR,
       payload: error.response,
@@ -299,7 +317,10 @@ export const updateOrderStatusDoneBulkAction = (payload, cb) => (dispatch) => {
     }
   };
   const onError = (error) => {
-    console.log('updateOrderStatusDoneBulkAction', error);
+    console.log(
+      'updateOrderStatusDoneBulkAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: UPDATE_ORDER_STATUS_DONE_BULK_ACTION.ERROR,
       payload: error.response,
@@ -330,7 +351,10 @@ export const getOrderCountByStatusAction = () => (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log('getOrderStatusAction', error);
+    console.log(
+      'getOrderCountByStatusAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_ORDER_COUNT_BY_STATUS_ACTION.ERROR,
       payload: error.response,

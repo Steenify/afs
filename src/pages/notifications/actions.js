@@ -29,7 +29,10 @@ export const actGetNotifications = (data) => async (dispatch) => {
     }
   };
   const onError = (error) => {
-    console.log('actGetNotifications', error);
+    console.log(
+      'actGetNotifications => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_NOTIFICATIONS.ERROR,
       payload: error.response,
@@ -132,7 +135,10 @@ export const getNotificationsCountAction = (data) => async (dispatch) => {
     }
   };
   const onError = (error) => {
-    console.log('getNotificationsCountAction', error);
+    console.log(
+      'getNotificationsCountAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: GET_NOTIFICATIONS_COUNT.ERROR,
       payload: error.response,
@@ -163,7 +169,10 @@ export const readAllNotificationAction = () => async (dispatch) => {
     }
   };
   const onError = (error) => {
-    console.log('getNotificationsCountAction', error);
+    console.log(
+      'getNotificationsCountAction => onError -> error',
+      JSON.stringify(error),
+    );
     dispatch({
       type: READ_ALL_NOTIFICATIONS.ERROR,
       payload: error.response,
