@@ -11,6 +11,8 @@ import systemProperty from 'pages/system_property_management/reducer';
 import order from 'pages/orders/reducer';
 import orderDetail from 'pages/orders_detail/reducer';
 import artists from 'pages/artists/reducer';
+import payouts from 'pages/payouts/reducer';
+
 import { GLOBAL_ACTIONS, AUTHENTICATE_TOKEN } from './actions';
 
 const initialState = {
@@ -91,4 +93,5 @@ export default combineReducers({
   order,
   orderDetail,
   artists,
+  payouts,
 });

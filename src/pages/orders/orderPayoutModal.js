@@ -1,13 +1,25 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
-import { filter, isObject, unionBy, reduce, map } from 'lodash';
+import {
+  filter,
+  isObject,
+  unionBy,
+  reduce,
+  map,
+  forEach,
+  isEmpty,
+} from 'lodash';
 import NumberFormat from 'react-number-format';
+import { toast } from 'react-toastify';
 
 import PageModal from 'components/common/pageModal';
 import Dropbox from 'components/common/dropbox';
 import Button from 'components/common/button';
 
 import { getOrderItem, getOrderOption, formatMoney } from 'utils';
+import { statusPayments } from 'config';
+
+import { createOrderPayoutsBulkAction, updateOrderItemsAcion } from './actions';
 
 const OrderPayoutModal = ({
   isOpen,
@@ -16,7 +28,12 @@ const OrderPayoutModal = ({
   orders,
   totalBudget,
   defaultNote,
+  createOrderPayoutsBulk,
+  artist,
+  updateOrderItems,
 }) => {
+  const hasArtist = !isEmpty(artist);
+
   const dropbox = useRef(null);
 
   const [extra, setExtra] = useState(0);
@@ -33,14 +50,83 @@ const OrderPayoutModal = ({
   };
 
   const noteWithExtra = `${defaultNote} ${
-    extra > 0 ? ' + ' + formatMoney(extra) : ''
+    extra > 0 ? ' + ' + formatMoney(extra) + ' extra' : ''
   }  ${note ? ', ' + note : ''}`;
+
+  const handleSubmit = () => {
+    if (dropbox.current) {
+      const files = dropbox.current.getFiles();
+
+      let isDoneUpload = true;
+
+      files.forEach((file) => {
+        if (!file.isUploaded || !file.id) {
+          isDoneUpload = false;
+        }
+      });
+
+      if (!isDoneUpload) {
+        toast.warn('Files is uploading!');
+        return;
+      }
+
+      const attachments = files.map((file) => ({
+        id: file.id,
+        thumbnailLink: file?.thumbnailLink,
+        url: file?.url,
+        external: file?.external,
+      }));
+
+      const items = map(orders, (or) => ({
+        bookingNumber: or.number,
+        paid: or?.budget,
+        payoutItemType: 'BOOKING_PAYMENT',
+      }));
+
+      if ((parseInt(extra, 10) || 0) > 0) {
+        items.push({
+          paid: parseInt(extra, 10),
+          payoutItemType: 'EXTRA_PAYMENT',
+        });
+      }
+
+      const payload = {
+        artist,
+        attachments,
+        items,
+        note: noteWithExtra,
+        totalPaid: totalBudget + (parseInt(extra, 10) || 0),
+      };
+
+      createOrderPayoutsBulk(payload, () => {
+        const messge = orders.map((or) => or?.number).join(', ');
+        toast.dark(`Updated status payment of ${messge}`);
+
+        forEach(orders, (item) => {
+          updateOrderItems({
+            id: item.id,
+            field: 'artistPaymentStatus',
+            value: statusPayments[0],
+          });
+        });
+        forEach(orders, (item) => {
+          updateOrderItems({
+            id: item.id,
+            field: 'selected',
+            value: false,
+          });
+        });
+
+        toggle();
+      });
+    }
+  };
 
   return (
     <PageModal
       isOpen={isOpen}
       toggle={toggle}
-      title='Payouts'
+      title={`Payouts ${artist?.firstName || ''} ${artist?.lastName || ''}`}
       className={`order__payout ${className}`}>
       <div className='payout__list'>
         {orders.map((order) => {
@@ -117,6 +203,7 @@ const OrderPayoutModal = ({
           <div className='right'>
             <Dropbox
               className='upload'
+              orderNumber={`payout-${artist?.id}`}
               ref={dropbox}
               id={`order__payout__log`}
             />
@@ -135,6 +222,8 @@ const OrderPayoutModal = ({
           </div>
           <div className='right'>
             <Button
+              onClick={handleSubmit}
+              disabled={!hasArtist}
               color='primary'
               className='payout__submit payout__action'
               type='button'>
@@ -156,10 +245,12 @@ const mapStateToProps = ({ order, auth }) => {
   const artistSelected = unionBy(selectedOrder, 'assignedTo');
   const artist = artistSelected[0]?.assignedTo || {};
 
-  const orderTopay = filter(
-    selectedOrder,
-    (o) => o?.assignedTo?.login === artist?.login,
-  );
+  const orderTopay = filter(selectedOrder, (o) => {
+    const isSameArtist = o?.assignedTo?.login === artist?.login;
+    const isNotPayYet = o?.artistPaymentStatus !== statusPayments[0];
+
+    return isSameArtist && isNotPayYet;
+  });
 
   const totalBudget = reduce(
     orderTopay,
@@ -173,7 +264,7 @@ const mapStateToProps = ({ order, auth }) => {
     return `#${order.number}(${formatMoney(order.budget)})`;
   });
 
-  const defaultNote = `Payment for: ${notes.join(' + ')}`;
+  const defaultNote = `Payment for orders: ${notes.join(' + ')}`;
 
   return {
     accountInfo: auth.data.accountInfo,
@@ -184,6 +275,9 @@ const mapStateToProps = ({ order, auth }) => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  createOrderPayoutsBulk: createOrderPayoutsBulkAction,
+  updateOrderItems: updateOrderItemsAcion,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderPayoutModal);

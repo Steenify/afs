@@ -11,7 +11,7 @@ import { WEB_ROUTES } from 'config';
 const Payouts = () => {
   return (
     <Layout documentTitle={WEB_ROUTES.PAYOUTS.title} container fluid>
-      <PageTitle title={WEB_ROUTES.PAYOUTS.title} className='mb-0 mr-3' />
+      <PageTitle title={WEB_ROUTES.PAYOUTS.title} className='mb-4 mr-3' />
       <PayoutList />
     </Layout>
   );

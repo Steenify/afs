@@ -15,7 +15,7 @@ const UserManagement = () => {
   const { t } = useTranslation();
 
   return (
-    <Layout documentTitle={t(WEB_ROUTES.USER_LIST.title)} container fluid>
+    <Layout documentTitle={WEB_ROUTES.USER_LIST.title} container fluid>
       <Breadcrumb
         data={[
           {
@@ -25,7 +25,7 @@ const UserManagement = () => {
           },
         ]}
       />
-      <PageTitle title={t(WEB_ROUTES.USER_LIST.title)} className='mb-0 mr-3'>
+      <PageTitle title={WEB_ROUTES.USER_LIST.title} className='mb-0 mr-3'>
         <UserCreate />
       </PageTitle>
       <UserList />

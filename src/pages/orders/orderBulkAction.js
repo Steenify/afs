@@ -119,7 +119,7 @@ const OrderBulkAction = ({
             <span className='number'>{selected?.length} selected</span>
           </div>
         </div>
-        <button
+        {/* <button
           className='btn btn-group__item'
           onClick={() => handleChangeStatus(statusPayments[0])}>
           Paid
@@ -129,7 +129,7 @@ const OrderBulkAction = ({
           className='btn btn-group__item'
           onClick={() => handleChangeStatus(statusPayments[1])}>
           Unpaid
-        </button>
+        </button> */}
         <button
           type='button'
           className='btn btn-group__item'

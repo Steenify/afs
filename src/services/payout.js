@@ -8,3 +8,10 @@ export const getPayoutsService = (params) =>
     method: 'GET',
     params,
   });
+
+export const createPayoutService = (data) =>
+  request({
+    url: PAYOUT_API,
+    method: 'POST',
+    data,
+  });

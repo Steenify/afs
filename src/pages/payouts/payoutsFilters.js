@@ -4,10 +4,10 @@ import { debounce } from 'lodash';
 
 import { PERMITTIONS_CONFIG } from 'config';
 
-import {} from './actions';
+import { updatePayoutFilterAction, getPayoutListAction } from './actions';
 
 import OrderFilterAssignee from './payoutsFiltersAssignee';
-import OrderFilterDate from './payoutsFiltersDate';
+// import OrderFilterDate from './payoutsFiltersDate';
 
 class PayoutFilters extends Component {
   constructor() {
@@ -16,9 +16,9 @@ class PayoutFilters extends Component {
   }
 
   handleChangeText = (e) => {
-    const { updateOrderFilters } = this.props;
+    const { updatePayoutFilter } = this.props;
     const { value } = e.target;
-    updateOrderFilters({
+    updatePayoutFilter({
       text: value,
       page: 0,
     });
@@ -27,8 +27,8 @@ class PayoutFilters extends Component {
   };
 
   handleSearchTextAPI = () => {
-    const { getOrders } = this.props;
-    getOrders({});
+    const { getPayoutList } = this.props;
+    getPayoutList({});
   };
 
   render() {
@@ -51,20 +51,23 @@ class PayoutFilters extends Component {
             />
           </div>
           {canAssign && <OrderFilterAssignee />}
-          <OrderFilterDate />
+          {/* <OrderFilterDate /> */}
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ order, auth }) => {
+const mapStateToProps = ({ payouts, auth }) => {
   return {
-    text: order.filter.text,
+    text: payouts.filter.text,
     accountInfo: auth.data.accountInfo,
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updatePayoutFilter: updatePayoutFilterAction,
+  getPayoutList: getPayoutListAction,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(PayoutFilters);

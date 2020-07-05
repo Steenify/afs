@@ -23,7 +23,7 @@ class ImageGallery extends Component {
 
   render() {
     const { modalIsOpen, currentIndex } = this.state;
-    const { images, alt, title, canDelete, onDelete } = this.props;
+    const { images, alt, title, canDelete, onDelete, renderItem } = this.props;
 
     const list = images.map((source) => ({
       caption: source?.fileName || title,
@@ -34,36 +34,47 @@ class ImageGallery extends Component {
     return (
       <>
         {list &&
-          list.map((img, index) => (
-            <div
-              className='images_gallerry__item d-inline-block'
-              key={`images_gallerry__item__${index.toString()}`}>
-              {canDelete && (
-                <button
-                  onClick={() => onDelete(img, index)}
-                  className='images_gallerry__delete'
-                  type='button'>
-                  <span className='icon'>
-                    <CloseIcon />
-                  </span>
-                </button>
-              )}
+          list.map((img, index) => {
+            if (renderItem) {
+              return renderItem({
+                key: `images_gallerry__item__${index.toString()}`,
+                item: img,
+                onClick: () => this.toggleModal(index),
+              });
+            }
 
+            return (
               <div
-                className='images_gallerry__img'
-                onClick={() => this.toggleModal(index)}>
-                {isObject(img.source) ? (
-                  <ImageLoadAble
-                    type={img.source.type}
-                    url={img.source.thumbnail}
-                    fileName={img.source.fileName}
-                  />
-                ) : (
-                  <ImageLoadAble url={img.source} />
+                className='images_gallerry__item d-inline-block'
+                key={`images_gallerry__item__${index.toString()}`}>
+                {canDelete && (
+                  <button
+                    onClick={() => onDelete(img, index)}
+                    className='images_gallerry__delete'
+                    type='button'>
+                    <span className='icon'>
+                      <CloseIcon />
+                    </span>
+                  </button>
                 )}
+
+                <div
+                  className='images_gallerry__img'
+                  onClick={() => this.toggleModal(index)}>
+                  {isObject(img.source) ? (
+                    <ImageLoadAble
+                      type={img.source.type}
+                      url={img.source.thumbnail}
+                      fileName={img.source.fileName}
+                    />
+                  ) : (
+                    <ImageLoadAble url={img.source} />
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+
         <ModalGateway>
           {modalIsOpen ? (
             <Modal onClose={() => this.toggleModal(0)}>
@@ -102,6 +113,7 @@ ImageGallery.defaultProps = {
   caption: '',
   canDelete: false,
   onDelete: () => {},
+  renderItem: null,
 };
 
 export default ImageGallery;

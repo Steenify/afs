@@ -69,7 +69,7 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
   };
 
   return (
-    <Layout documentTitle={t(WEB_ROUTES.USER_LIST.title)} container fluid>
+    <Layout documentTitle={WEB_ROUTES.USER_LIST.title} container fluid>
       <Breadcrumb
         data={[
           {

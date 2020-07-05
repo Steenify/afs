@@ -254,7 +254,7 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
       />
 
       {isArtist && isLogged && (
-        <CustomerChat pageId='101946964870983' appId='3004831752934299' />
+        <CustomerChat pageId='101946964870983' appId='1171193606568391' />
       )}
     </>
   );

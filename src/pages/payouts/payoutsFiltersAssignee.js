@@ -6,18 +6,23 @@ import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 
 import ListArtists from 'components/layout/ListArtistAssign';
 
-import {} from './actions';
+import { getPayoutListAction, updatePayoutFilterAction } from './actions';
 
-const OrderFilterAssignee = ({ assignee, updateOrderFilters, getOrders }) => {
+const OrderFilterAssignee = ({
+  assignee,
+  updatePayoutFilter,
+  getPayoutList,
+}) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
   const onSave = (value) => {
     toggle();
-    updateOrderFilters({
+    updatePayoutFilter({
       assignee: value?.login || '',
     });
-    getOrders({});
+
+    getPayoutList({});
   };
 
   return (
@@ -34,7 +39,7 @@ const OrderFilterAssignee = ({ assignee, updateOrderFilters, getOrders }) => {
         <span className='dispaly_name'>
           {assignee && assignee !== 'null' ? assignee : 'Artist'}
         </span>
-        <span className='icon mb-1 ml-2'>
+        <span className='icon mb-2 ml-2'>
           <Cavet />
         </span>
       </button>
@@ -42,15 +47,18 @@ const OrderFilterAssignee = ({ assignee, updateOrderFilters, getOrders }) => {
   );
 };
 
-const mapStateToProps = ({ order, auth }) => {
-  const { assignee } = order.filter;
+const mapStateToProps = ({ payouts, auth }) => {
+  const { assignee } = payouts.filter;
   return {
     assignee,
     accountInfo: auth.data.accountInfo,
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getPayoutList: getPayoutListAction,
+  updatePayoutFilter: updatePayoutFilterAction,
+};
 
 export default connect(
   mapStateToProps,

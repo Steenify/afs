@@ -10,6 +10,7 @@ import {
 } from 'services/order';
 import { getAssignArtistsService } from 'services/artist';
 import { getAllStatusService } from 'services/status';
+import { createPayoutService } from 'services/payout';
 
 export const ORDER_ACTIONS = {
   UPDATE_SELECTED_STATUS_ACTION: 'UPDATE_SELECTED_STATUS_ACTION',
@@ -259,45 +260,6 @@ export const updateOrderPaymentStatusAction = (payload, id) => (dispatch) => {
   });
 };
 
-export const UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION = actionCreator(
-  'UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION',
-);
-export const updateOrderPaymentStatusBulkAction = (status, payload, cb) => (
-  dispatch,
-) => {
-  const onPending = () => {
-    dispatch({
-      type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.PENDING,
-    });
-  };
-  const onSuccess = (data) => {
-    if (data) {
-      dispatch({
-        type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.SUCCESS,
-        payload: data,
-      });
-      cb && cb();
-    }
-  };
-  const onError = (error) => {
-    console.log(
-      'updateOrderPaymentStatusBulkAction => onError -> error',
-      JSON.stringify(error),
-    );
-    dispatch({
-      type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.ERROR,
-      payload: error.response,
-    });
-  };
-
-  actionTryCatchCreator({
-    service: updateOrderArtistPaymentBulkService(status, payload),
-    onPending,
-    onSuccess,
-    onError,
-  });
-};
-
 export const UPDATE_ORDER_STATUS_DONE_BULK_ACTION = actionCreator(
   'UPDATE_ORDER_STATUS_DONE_BULK_ACTION',
 );
@@ -363,6 +325,80 @@ export const getOrderCountByStatusAction = () => (dispatch) => {
 
   actionTryCatchCreator({
     service: getOrderCountByStatusService(),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION = actionCreator(
+  'UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION',
+);
+export const updateOrderPaymentStatusBulkAction = (status, payload, cb) => (
+  dispatch,
+) => {
+  const onPending = () => {
+    dispatch({
+      type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    if (data) {
+      dispatch({
+        type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.SUCCESS,
+        payload: data,
+      });
+      cb && cb();
+    }
+  };
+  const onError = (error) => {
+    console.log(
+      'updateOrderPaymentStatusBulkAction => onError -> error',
+      JSON.stringify(error),
+    );
+    dispatch({
+      type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: updateOrderArtistPaymentBulkService(status, payload),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const UPDATE_ORDER_PAYOUTS_BULK_ACTION = actionCreator(
+  'UPDATE_ORDER_PAYOUTS_BULK_ACTION',
+);
+export const createOrderPayoutsBulkAction = (payload, cb) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: UPDATE_ORDER_PAYOUTS_BULK_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    cb && cb();
+    dispatch({
+      type: UPDATE_ORDER_PAYOUTS_BULK_ACTION.SUCCESS,
+      payload: data,
+    });
+  };
+  const onError = (error) => {
+    console.log(
+      'createOrderPayoutsBulkAction => onError -> error',
+      JSON.stringify(error),
+    );
+    dispatch({
+      type: UPDATE_ORDER_PAYOUTS_BULK_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: createPayoutService(payload),
     onPending,
     onSuccess,
     onError,

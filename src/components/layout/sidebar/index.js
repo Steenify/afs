@@ -54,7 +54,7 @@ const SideBar = (props) => {
           ...WEB_ROUTES.ORDERS,
           title: (
             <div className='order'>
-              <span className='name'>{t(WEB_ROUTES.ORDERS.title)}</span>{' '}
+              <span className='name'>{WEB_ROUTES.ORDERS.title}</span>{' '}
               <span className='number'>{totalOrders}</span>
             </div>
           ),
@@ -63,7 +63,7 @@ const SideBar = (props) => {
 
         {
           ...WEB_ROUTES.USER_LIST,
-          title: t(WEB_ROUTES.USER_LIST.title),
+          title: WEB_ROUTES.USER_LIST.title,
           icon: <UserIcon />,
         },
         // {

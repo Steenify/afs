@@ -4,4 +4,108 @@
 	&__page {
 		font-size: $font_size;
 	}
+
+	&__count {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 20px;
+
+		.left,
+		.right {
+			display: flex;
+			align-items: flex-end;
+		}
+
+		.left {
+			.number {
+				margin-right: 20px;
+			}
+		}
+
+		.right {
+			justify-content: flex-end;
+		}
+
+		.name {
+			font-weight: 500;
+			font-size: 15px;
+			line-height: 22px;
+			letter-spacing: 0.5px;
+			color: #637381;
+			margin-right: 10px;
+		}
+
+		.number {
+			font-weight: 600;
+			font-size: 18px;
+			line-height: 22px;
+			letter-spacing: 0.6px;
+			color: #337fd7;
+		}
+	}
+
+	&__filters {
+		.filter {
+			&__main {
+				display: flex;
+			}
+
+			&__text {
+				flex: 1;
+				.search__box {
+					border-top-right-radius: 0;
+					border-bottom-right-radius: 0;
+				}
+			}
+
+			&__toggle {
+				background: linear-gradient(180deg, $white 0%, #f3f4f6 99.88%);
+				border: 1px solid #e2e5ed;
+				box-sizing: border-box;
+				box-shadow: 0px 1px 0px rgba(170, 170, 170, 0.1);
+				padding: 0 20px;
+				border-top-right-radius: 4px;
+				border-bottom-right-radius: 4px;
+				display: flex;
+				align-items: center;
+			}
+		}
+	}
+
+	&__link {
+		font-size: 15px;
+		line-height: 18px;
+		letter-spacing: 0.5px;
+		color: #337fd7;
+	}
+
+	&__artist {
+		.payouts__link {
+			font-size: 15px !important;
+			letter-spacing: 0.5px;
+			color: #337fd7 !important;
+		}
+	}
+
+	&__list {
+		position: relative;
+	}
+
+	&__loading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		background: $white;
+		padding: 5px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 50px;
+		z-index: 12;
+		.text {
+			display: inline-block;
+			margin-left: 10px;
+		}
+	}
 }

@@ -6,7 +6,7 @@ const WEB_ROUTES = {
   },
   USER_LIST: {
     path: '/user',
-    title: 'baseApp.sidebar.user',
+    title: 'Users',
     permission: 'VIEW_USER_LIST',
   },
   USER_DETAIL: {

@@ -6,9 +6,9 @@ import {
   GET_ORDER_ACTION,
   GET_ARTISTS_ASSIGN_ACTION,
   GET_ORDER_STATUS_ACTION,
-  UPDATE_ORDER_PAYMENT_STATUS_ACTION,
-  UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION,
   GET_ORDER_COUNT_BY_STATUS_ACTION,
+  UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION,
+  UPDATE_ORDER_PAYMENT_STATUS_ACTION,
 } from './actions';
 
 const initialState = {
@@ -21,10 +21,9 @@ const initialState = {
     page: 0,
     size: 100,
     sizeMobile: 100,
-    sort: [{ id: 'number', desc: true }],
+    sort: [{ id: 'id', desc: true }],
     text: '',
     assignee: '',
-    selectedStatus: '',
   },
   list: {
     orders: [],

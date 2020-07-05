@@ -51,7 +51,6 @@ const SettingsPage = (props) => {
     },
     {
       ...WEB_ROUTES.PAYOUTS,
-      title: t(WEB_ROUTES.PAYOUTS.title),
       icon: <CustomerIcon />,
       des: 'Payouts',
     },
