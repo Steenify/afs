@@ -1,7 +1,11 @@
 import update from 'react-addons-update';
 import { mapDataList, mapDataByIds, isMobile } from 'utils';
 
-import { GET_PAYOUTS_LIST_ACTION, PAYOUTS_ACTIONS } from './actions';
+import {
+  GET_PAYOUTS_LIST_ACTION,
+  PAYOUTS_ACTIONS,
+  GET_PAYOUTS_SUMMARY_ACTION,
+} from './actions';
 
 const initialState = {
   ui: { loading: false },
@@ -12,6 +16,12 @@ const initialState = {
     itemGroups: [],
     totalItems: 0,
     totalPage: 0,
+  },
+  summary: {
+    bookingUnPaid: 0,
+    totalBudget: 0,
+    bookingPaid: 0,
+    extraPaid: 0,
   },
   filter: {
     page: 0,
@@ -57,6 +67,12 @@ const reducer = (state = initialState, action) => {
         },
       });
 
+    case GET_PAYOUTS_SUMMARY_ACTION.SUCCESS:
+      return update(state, {
+        summary: {
+          $set: payload.data,
+        },
+      });
     case GET_PAYOUTS_LIST_ACTION.PENDING:
       return update(state, {
         ui: {

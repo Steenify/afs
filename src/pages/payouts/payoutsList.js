@@ -5,12 +5,13 @@ import PayoutsCount from './payoutsCount';
 import PayoutsFilter from './payoutsFilters';
 import PayoutsListTable from './payoutsListTable';
 
-import { getPayoutListAction } from './actions';
+import { getPayoutListAction, getPayoutSummaryAction } from './actions';
 
 class Payouts extends Component {
   componentDidMount() {
-    const { getPayoutList } = this.props;
+    const { getPayoutList, getPayoutSummary } = this.props;
     getPayoutList();
+    getPayoutSummary();
   }
   render() {
     return (
@@ -32,6 +33,7 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   getPayoutList: getPayoutListAction,
+  getPayoutSummary: getPayoutSummaryAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Payouts);

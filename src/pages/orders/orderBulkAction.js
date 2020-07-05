@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { forEach, filter } from 'lodash';
 import { confirmAlert } from 'react-confirm-alert';
 
-import { statusPayments } from 'config';
+import { PERMITTIONS_CONFIG } from 'config';
 
 import { ReactComponent as Close } from 'assets/img/close.svg';
 
@@ -24,6 +24,7 @@ const OrderBulkAction = ({
   updateAllOrderSelected,
   updateOrderItems,
   updateOrderStatusDoneBulk,
+  accountInfo,
 }) => {
   const isHide = !selected || !selected?.length;
 
@@ -31,25 +32,29 @@ const OrderBulkAction = ({
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const handleChangeStatus = (status) => {
-    updateOrderPaymentStatusBulk(
-      status,
-      {
-        id: selected,
-      },
-      () => {
-        toast.dark('Payment Status Updated');
-        forEach(selected, (item) => {
-          updateOrderItems({
-            id: item,
-            field: 'artistPaymentStatus',
-            value: status,
-          });
-        });
-        // updateAllOrderSelected(false);
-      },
-    );
-  };
+  const canPayOut = accountInfo?.permissions?.includes(
+    PERMITTIONS_CONFIG.CREATE_PAYOUT,
+  );
+
+  // const handleChangeStatus = (status) => {
+  //   updateOrderPaymentStatusBulk(
+  //     status,
+  //     {
+  //       id: selected,
+  //     },
+  //     () => {
+  //       toast.dark('Payment Status Updated');
+  //       forEach(selected, (item) => {
+  //         updateOrderItems({
+  //           id: item,
+  //           field: 'artistPaymentStatus',
+  //           value: status,
+  //         });
+  //       });
+  //       // updateAllOrderSelected(false);
+  //     },
+  //   );
+  // };
 
   const handleUpdateOrderStatusDone = () => {
     updateOrderStatusDoneBulk(
@@ -136,9 +141,14 @@ const OrderBulkAction = ({
           onClick={handleConfirmChangeStatus}>
           Mark as Done
         </button>
-        <button type='button' className='btn btn-group__item' onClick={toggle}>
-          Open payout modal
-        </button>
+        {canPayOut && (
+          <button
+            type='button'
+            className='btn btn-group__item'
+            onClick={toggle}>
+            Payout
+          </button>
+        )}
       </div>
 
       <OrderPayoutModal isOpen={isOpen} toggle={toggle} />

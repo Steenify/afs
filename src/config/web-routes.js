@@ -115,12 +115,12 @@ const WEB_ROUTES = {
   PAYOUTS: {
     path: '/payouts',
     title: 'Payouts',
-    permission: '',
+    permission: 'VIEW_PAYOUT_LIST',
   },
   PAYOUTS_DETAIL: {
     path: '/payout/:id',
-    title: 'Payout Details',
-    permission: '',
+    title: 'Transaction details',
+    permission: 'VIEW_PAYOUT_DETAIL',
   },
 };
 

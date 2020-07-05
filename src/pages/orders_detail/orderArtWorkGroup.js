@@ -13,6 +13,7 @@ import {
 } from 'config';
 
 import { ReactComponent as Toggle } from 'assets/img/toggle.svg';
+import { ReactComponent as Close } from 'assets/img/close.svg';
 
 import Button from 'components/common/button';
 
@@ -74,7 +75,43 @@ const OrderArtWorkGroup = ({
     ) || false;
 
   const handleApproveWorkLog = (LogId) => {
-    approvedWorkLog(order.id, LogId);
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='comfirm_cus'>
+            <div className='comfirm_cus__header'>
+              <div className='comfirm_cus__titl'>Change Status</div>
+              <button
+                type='button'
+                onClick={onClose}
+                className='comfirm_cus__close'>
+                <div className='icon'>
+                  <Close />
+                </div>
+              </button>
+            </div>
+            <div className='comfirm_cus__body'>
+              <p>Are you sure you want to change status this orders?</p>
+            </div>
+            <div className='comfirm_cus__footer text-right'>
+              <button
+                className='comfirm_cus__cancel comfirm_cus__control'
+                onClick={onClose}>
+                Cancel
+              </button>
+              <button
+                className='comfirm_cus__accept comfirm_cus__control'
+                onClick={() => {
+                  approvedWorkLog(order.id, LogId);
+                  onClose();
+                }}>
+                Accept
+              </button>
+            </div>
+          </div>
+        );
+      },
+    });
   };
 
   const handleNotifyEmail = () => {

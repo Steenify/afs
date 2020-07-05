@@ -41,6 +41,7 @@ import CSDetail from 'pages/customer_service/customerServiceDetail';
 import PrivacyPolicy from 'pages/PrivacyPolicy';
 import TermsAndConditions from 'pages/TermsAndConditions';
 import Payouts from 'pages/payouts';
+import PayoutsDetail from 'pages/payouts/payoutsDetail';
 
 import head from 'utils/head';
 
@@ -225,6 +226,13 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
             component={Payouts}
             isPrivate={true}
             role={WEB_ROUTES.PAYOUTS.permission}
+          />
+          <Route
+            exact
+            path={WEB_ROUTES.PAYOUTS_DETAIL.path}
+            component={PayoutsDetail}
+            isPrivate={true}
+            role={WEB_ROUTES.PAYOUTS_DETAIL.permission}
           />
 
           <PublicRoute exact path={WEB_ROUTES.POLICY.path}>

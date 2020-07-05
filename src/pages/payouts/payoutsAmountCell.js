@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 import { formatNumber } from 'utils';
 
-const PayoutsAmountCell = ({ totalPaid, goToDetail, code }) => {
+const PayoutsAmountCell = ({ totalPaid, goToDetail, transactionId }) => {
   return (
     <div
-      onClick={() => goToDetail(code)}
+      onClick={() => goToDetail(transactionId)}
       className={`payouts__subtotal`}>{`${formatNumber(totalPaid)}$`}</div>
   );
 };
@@ -16,7 +16,7 @@ const mapStateToProps = ({ payouts }, ownProps) => {
   const { items } = payouts.list;
   const item = items[data] || {};
   return {
-    code: item?.code,
+    transactionId: item?.transactionId,
     totalPaid: item?.totalPaid || 0,
   };
 };

@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import P from 'components/common/parapraph';
 
-const PayoutsNoteCell = ({ note, goToDetail, data }) => {
+const PayoutsNoteCell = ({ note, goToDetail, transactionId }) => {
   return (
-    <div onClick={() => goToDetail(data)} className={`payouts__note`}>
-      <P text={note} className='m-0' id={`comment__item__${data}`} />
+    <div onClick={() => goToDetail(transactionId)} className={`payouts__note`}>
+      <P text={note} className='m-0' id={`comment__item__${transactionId}`} />
     </div>
   );
 };
@@ -17,7 +17,7 @@ const mapStateToProps = ({ payouts }, ownProps) => {
 
   return {
     note: item?.note,
-    code: item?.code,
+    transactionId: item?.transactionId,
   };
 };
 

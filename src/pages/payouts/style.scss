@@ -109,3 +109,21 @@
 		}
 	}
 }
+
+.payouts_detail {
+	&__top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.left {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+		.right {
+			text-align: right;
+		}
+	}
+}

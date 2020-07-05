@@ -1,12 +1,36 @@
 import { actionCreator, actionTryCatchCreator, isMobile } from 'utils';
 
-import { getPayoutsService } from 'services/payout';
+import {
+  getPayoutsService,
+  getPayoutDetailService,
+  getPayoutsSummaryService,
+} from 'services/payout';
 
 export const PAYOUTS_ACTIONS = {
   UPDATE_PAYOUTS_ITEMS_ACTION: 'UPDATE_PAYOUTS_ITEMS_ACTION',
   UPDATE_PAYOUT_ALL_SELECTED_ROW_ACTION:
     'UPDATE_PAYOUT_ALL_SELECTED_ROW_ACTION',
   UPDATE_PAYOUT_FILTERS_ACTION: 'UPDATE_PAYOUT_FILTERS_ACTION',
+};
+
+export const updatePayoutsItemsAction = (payload) => (dispatch) => {
+  dispatch({
+    type: PAYOUTS_ACTIONS.UPDATE_PAYOUTS_ITEMS_ACTION,
+    payload,
+  });
+};
+
+export const updateAllPayoutsSelectedAction = (payload) => (dispatch) => {
+  dispatch({
+    type: PAYOUTS_ACTIONS.UPDATE_PAYOUT_ALL_SELECTED_ROW_ACTION,
+    payload,
+  });
+};
+export const updatePayoutFilterAction = (payload) => (dispatch) => {
+  dispatch({
+    type: PAYOUTS_ACTIONS.UPDATE_PAYOUT_FILTERS_ACTION,
+    payload,
+  });
 };
 
 export const GET_PAYOUTS_LIST_ACTION = actionCreator('GET_PAYOUTS_LIST_ACTION');
@@ -74,22 +98,68 @@ const buildSearchParamPayouts = (input = {}) => {
   return params;
 };
 
-export const updatePayoutsItemsAction = (payload) => (dispatch) => {
-  dispatch({
-    type: PAYOUTS_ACTIONS.UPDATE_PAYOUTS_ITEMS_ACTION,
-    payload,
+export const GET_PAYOUTS_DETAIL_ACTION = actionCreator(
+  'GET_PAYOUTS_DETAIL_ACTION',
+);
+export const getPayoutDetailAction = (id) => async (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: GET_PAYOUTS_DETAIL_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data, headers) => {
+    dispatch({
+      type: GET_PAYOUTS_DETAIL_ACTION.SUCCESS,
+      payload: { data, headers },
+    });
+  };
+  const onError = (error) => {
+    console.log(
+      'getPayoutDetailAction => onError -> error',
+      JSON.stringify(error),
+    );
+    dispatch({
+      type: GET_PAYOUTS_DETAIL_ACTION.ERROR,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: getPayoutDetailService(id),
+    onPending,
+    onSuccess,
+    onError,
   });
 };
 
-export const updateAllPayoutsSelectedAction = (payload) => (dispatch) => {
-  dispatch({
-    type: PAYOUTS_ACTIONS.UPDATE_PAYOUT_ALL_SELECTED_ROW_ACTION,
-    payload,
-  });
-};
-export const updatePayoutFilterAction = (payload) => (dispatch) => {
-  dispatch({
-    type: PAYOUTS_ACTIONS.UPDATE_PAYOUT_FILTERS_ACTION,
-    payload,
+export const GET_PAYOUTS_SUMMARY_ACTION = actionCreator(
+  'GET_PAYOUTS_SUMMARY_ACTION',
+);
+export const getPayoutSummaryAction = () => async (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: GET_PAYOUTS_SUMMARY_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data, headers) => {
+    dispatch({
+      type: GET_PAYOUTS_SUMMARY_ACTION.SUCCESS,
+      payload: { data, headers },
+    });
+  };
+  const onError = (error) => {
+    console.log(
+      'getPayoutDetailAction => onError -> error',
+      JSON.stringify(error),
+    );
+    dispatch({
+      type: GET_PAYOUTS_SUMMARY_ACTION.ERROR,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: getPayoutsSummaryService(),
+    onPending,
+    onSuccess,
+    onError,
   });
 };

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Spinner } from 'reactstrap';
+import { remove } from 'lodash';
 
 import TableBody from 'components/common/tableBody';
 import TableHeader from 'components/common/tableHeader';
@@ -17,15 +18,15 @@ import PayoutsEvidenceCell from './payoutsEvidenceCell';
 import PayoutsArtistCell from './payoutsArtistCell';
 
 class OrderListDesktop extends PureComponent {
-  goToDetail = (code) => {
+  goToDetail = (id) => {
     const { history } = this.props;
-    if (code) {
-      history.push(`/payouts/${code}`);
+    if (id) {
+      history.push(`/payout/${id}`);
     }
   };
 
   render() {
-    const { loading, ids } = this.props;
+    const { loading, ids, accountInfo } = this.props;
 
     let columns = [
       {
@@ -65,6 +66,10 @@ class OrderListDesktop extends PureComponent {
         Header: 'Evidence',
       },
     ];
+
+    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT)) {
+      columns = remove(columns, (col) => col.Header !== 'Artist');
+    }
 
     return (
       <div className={`payouts__list relative`}>

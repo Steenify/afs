@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import { dateTimeToDeadline } from 'utils';
 
-const PayoutsDateCell = ({ createdDate, goToDetail, code }) => {
+const PayoutsDateCell = ({ createdDate, goToDetail, transactionId }) => {
   return (
-    <div onClick={() => goToDetail(code)} className={`payouts__date`}>
+    <div onClick={() => goToDetail(transactionId)} className={`payouts__date`}>
       {dateTimeToDeadline(createdDate)}
     </div>
   );
@@ -18,7 +18,7 @@ const mapStateToProps = ({ payouts }, ownProps) => {
 
   return {
     createdDate: item?.createdDate,
-    code: item?.code,
+    transactionId: item?.transactionId,
   };
 };
 
