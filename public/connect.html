@@ -27,6 +27,8 @@
         padding: 5px 10px;
         cursor: pointer;
         height: 40px;
+        border-radius: 4px;
+        transition: all 0.3s ease-in-out;
       }
       .connect:focus,
       .connect:active,
@@ -34,14 +36,27 @@
         outline: none;
         opacity: 0.8;
       }
+
+      .logo {
+        margin-bottom: 10px;
+      }
+      .logo .img {
+        width: 100px;
+        height: 100px;
+        color: #df5525;
+        margin-bottom: 20px;
+      }
+      .logo .dex {
+        font-size: 18px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="logo">
-        <img src="/logo.svg" alt="AFS" />
+        <img class="img" src="/logo.svg" alt="AFS" />
 
-        <p>
+        <p class="des">
           Connect to AFS fanpage
         </p>
       </div>
