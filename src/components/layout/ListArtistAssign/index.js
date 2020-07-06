@@ -6,6 +6,8 @@ import { getAssignArtistsService } from 'services/artist';
 
 import { actionTryCatchCreator } from 'utils';
 
+import './style.scss';
+
 class ListArtists extends Component {
   constructor() {
     super();
@@ -70,7 +72,7 @@ class ListArtists extends Component {
     const { artists, isLoading, text } = this.state;
     const { onSave, assignedTo } = this.props;
     return (
-      <div className='order__info p-3'>
+      <div className='order__info p-3 list_artist_assign'>
         <div className='order__artist'>
           <div className='search mb-3'>
             <input

@@ -61,7 +61,7 @@ class OrderFilterDate extends PureComponent {
                 {dateStringFromDate(from)} - {dateStringFromDate(to)}
               </span>
             ) : (
-              ' Sort by Date'
+              'Filter by Date'
             )}
           </span>
           <span className='icon mb-2 ml-2'>

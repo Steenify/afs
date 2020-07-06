@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import Layout from 'components/common/Layout';
-import Breadcrumb from 'components/common/breadcrumb';
 import PageTitle from 'components/common/PageTitle';
 
 import { WEB_ROUTES } from 'config';

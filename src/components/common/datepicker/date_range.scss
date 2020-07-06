@@ -21,6 +21,26 @@
 		background-position: right 10px center;
 	}
 
+	.CalendarDay__selected,
+	.CalendarDay__selected:active,
+	.CalendarDay__selected:hover {
+		background: $main_color;
+		border: 1px double $main_color;
+	}
+
+	.DayPickerKeyboardShortcuts_show__bottomRight::before {
+		border-right: 33px solid $main_color;
+	}
+
+	.CalendarDay__selected_span {
+		background: $second_color;
+		border: 1px double $second_color;
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+
 	&__footer {
 		display: flex;
 		justify-content: space-between;

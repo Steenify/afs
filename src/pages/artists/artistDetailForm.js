@@ -24,7 +24,7 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
 
   useEffect(() => {
     getArtist(login);
-  }, []);
+  }, [login, getArtist]);
 
   const { t } = useTranslation();
 

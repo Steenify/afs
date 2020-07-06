@@ -48,7 +48,7 @@ const OrderCustomerCell = ({ customer, accountInfo }) => {
                 <p className='email mb-1'>
                   <a
                     target='_blank'
-                    rel='noreferrer'
+                    rel='noopener noreferrer'
                     href={`mailto:${customer?.email}`}>
                     {customer?.email}
                   </a>

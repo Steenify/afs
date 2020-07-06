@@ -1,5 +1,5 @@
 import React from 'react';
-import { filter, map } from 'lodash';
+import { filter } from 'lodash';
 
 import ImageGallery from 'components/common/imageGallery';
 import P from 'components/common/parapraph';

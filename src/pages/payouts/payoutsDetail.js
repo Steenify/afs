@@ -19,7 +19,7 @@ import { formatMoney, getListImageUrl, dateTimeToDeadline } from 'utils';
 
 const PayoutDetail = (props) => {
   const { id } = useParams();
-  const { history, getPayoutDetail, detail } = props;
+  const { getPayoutDetail, detail } = props;
   console.log('PayoutDetail -> detail', detail);
 
   useEffect(() => {

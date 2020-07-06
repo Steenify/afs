@@ -56,7 +56,6 @@ const NotificationList = (props) => {
         }
         return <NotificationPublish data={original} />;
       },
-      width: 68,
     },
     {
       accessor: 'delete',
@@ -73,7 +72,6 @@ const NotificationList = (props) => {
           </Button>
         );
       },
-      width: 68,
     },
   ];
 

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { findIndex } from 'lodash';
 
-import Loading from 'components/common/Loading';
-
 import { ReactComponent as Close } from 'assets/img/close.svg';
 
 import { ReactComponent as Send } from 'assets/img/send.svg';

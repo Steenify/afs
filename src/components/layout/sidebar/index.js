@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { reduce } from 'lodash';
 
@@ -10,7 +10,7 @@ import './style.scss';
 
 import { ReactComponent as Logo } from 'assets/img/logo.svg';
 import { ReactComponent as UserIcon } from 'assets/img/user.svg';
-import { ReactComponent as Mensenger } from 'assets/img/Mensenger.svg';
+// import { ReactComponent as Mensenger } from 'assets/img/Mensenger.svg';
 import { ReactComponent as POS } from 'assets/img/pos.svg';
 // import { ReactComponent as CustomerIcon } from 'assets/img/customer.svg';
 // import { ReactComponent as Artist } from 'assets/img/Artist.svg';
