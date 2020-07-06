@@ -5,10 +5,11 @@ import {
   GET_PAYOUTS_LIST_ACTION,
   PAYOUTS_ACTIONS,
   GET_PAYOUTS_SUMMARY_ACTION,
+  GET_PAYOUTS_DETAIL_ACTION,
 } from './actions';
 
 const initialState = {
-  ui: { loading: false },
+  ui: { loading: false, loadingDetail: false },
   list: {
     payouts: [],
     ids: [],
@@ -31,6 +32,7 @@ const initialState = {
     text: '',
     assignee: '',
   },
+  detail: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -73,6 +75,7 @@ const reducer = (state = initialState, action) => {
           $set: payload.data,
         },
       });
+
     case GET_PAYOUTS_LIST_ACTION.PENDING:
       return update(state, {
         ui: {
@@ -109,6 +112,28 @@ const reducer = (state = initialState, action) => {
       });
     }
 
+    case GET_PAYOUTS_DETAIL_ACTION.PENDING:
+      return update(state, {
+        ui: {
+          loadingDetail: { $set: true },
+        },
+      });
+    case GET_PAYOUTS_DETAIL_ACTION.ERROR:
+      return update(state, {
+        ui: {
+          loadingDetail: { $set: false },
+        },
+      });
+    case GET_PAYOUTS_DETAIL_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+        detail: {
+          $set: payload.data,
+        },
+      });
+    }
     default:
       return state;
   }

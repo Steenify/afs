@@ -1,30 +1,29 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
 
 import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
 import Button from 'components/common/button';
+
+import ImageGallery from 'components/common/imageGallery';
+
 import { ReactComponent as ArrowLeftIcon } from 'assets/img/chevonRight.svg';
 
 import { getPayoutDetailAction } from './actions';
 
 import { WEB_ROUTES } from 'config';
 
-import { formatMoney } from 'utils';
+import { formatMoney, getListImageUrl, dateTimeToDeadline } from 'utils';
 
 const PayoutDetail = (props) => {
   const { id } = useParams();
-  const { history, getPayoutDetail } = props;
+  const { history, getPayoutDetail, detail } = props;
+  console.log('PayoutDetail -> detail', detail);
 
   useEffect(() => {
     getPayoutDetail(id);
   }, [getPayoutDetail, id]);
-
-  const handleBack = () => {
-    history.goBack();
-  };
 
   return (
     <Layout documentTitle={WEB_ROUTES.PAYOUTS_DETAIL.title} container fluid>
@@ -52,21 +51,29 @@ const PayoutDetail = (props) => {
               <div className='info'>
                 <div className='to'>
                   <strong>Payment sent</strong> to
-                  <span className='payouts__link'> Birdie Sanders</span>
+                  <Link to={`/artists/${detail?.artist?.login}`}>
+                    <span className='payouts__link'>
+                      {` ${detail?.artist?.firstName} ${detail?.artist?.lastName}`}
+                    </span>
+                  </Link>
                 </div>
-                <div className='date'>02 Oct 2020 at 12:47</div>
+                <div className='date'>
+                  {dateTimeToDeadline(detail?.createdDate)}
+                </div>
                 <div className='status'>
                   Payment status: <strong>Complete</strong>
                 </div>
               </div>
 
               <div className='id'>
-                Transaction ID: <span>{id}</span>
+                Transaction ID: <span>{detail?.transactionId}</span>
               </div>
             </div>
             <div className='right'>
               <div className='name'>Amount</div>
-              <div className='number'>{formatMoney(1232)}</div>
+              <div className='number'>
+                {formatMoney(detail?.totalPaid || 0)}
+              </div>
             </div>
           </div>
           <div className='box__device'></div>
@@ -77,45 +84,75 @@ const PayoutDetail = (props) => {
                   <div className='payouts_detail__title'>Your Payment</div>
 
                   <div className='payouts_detail__body'>
-                    <div className='row'>
+                    {(detail?.items || []).map((item) => {
+                      if (item?.payoutItemType === 'EXTRA_PAYMENT') {
+                        return (
+                          <div
+                            key={`payout__detail__item__${item.id}`}
+                            className='row payouts_detail__order'>
+                            <div className='col-6'>
+                              <span className='label'>Extra</span>
+                            </div>
+                            <div className='col-6'>
+                              <strong className='value'>
+                                {formatMoney(item?.paid)}
+                              </strong>
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <div
+                          key={`payout__detail__item__${item.id}`}
+                          className='row payouts_detail__order'>
+                          <div className='col-6 '>
+                            <Link to={`/order/${item?.booking?.code}`}>
+                              <span className='label'>
+                                #{item?.booking?.number}
+                              </span>
+                            </Link>
+                          </div>
+                          <div className='col-6'>
+                            <strong className='value'>
+                              {formatMoney(item?.paid)}
+                            </strong>
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    <div className='payouts_detail__devider'></div>
+                    <div className='row payouts_detail__order'>
                       <div className='col-6'>
-                        <span>#1345</span>
+                        <strong className='value'>Total</strong>
                       </div>
                       <div className='col-6'>
-                        <strong>$45.00</strong>
+                        <strong className='value'>
+                          {formatMoney(detail?.totalPaid)}{' '}
+                        </strong>
                       </div>
                     </div>
 
                     <div className='payouts_detail__devider'></div>
-                    <div className='row'>
+                    <div className='row payouts_detail__order'>
                       <div className='col-6'>
-                        <strong>Total</strong>
+                        <strong className='value'>Payment Sent to</strong>
                       </div>
                       <div className='col-6'>
-                        <strong>$45.00</strong>
-                      </div>
-                    </div>
-
-                    <div className='payouts_detail__devider'></div>
-                    <div className='row'>
-                      <div className='col-6'>
-                        <strong>Payment Sent to</strong>
-                      </div>
-                      <div className='col-6'>
-                        <strong>max_connelly@orville.co.uk</strong>
+                        <strong className='value'>
+                          {detail?.artist?.email}
+                        </strong>
                       </div>
                     </div>
 
                     <div className='payouts_detail__devider'></div>
-                    <div className='row'>
+                    <div className='row payouts_detail__order'>
                       <div className='col-6'>
-                        <strong>Note</strong>
+                        <strong className='value'>Note</strong>
                       </div>
                       <div className='col-6'>
-                        <p>
-                          Paid for the order #1345 (+10$ pose), #1267, #1278,
-                          #1251, #1221
-                        </p>
+                        <p>{detail?.note}</p>
                       </div>
                     </div>
                   </div>
@@ -125,8 +162,15 @@ const PayoutDetail = (props) => {
               <div className='col-md-6'>
                 <div className='payouts_detail__item'>
                   <div className='payouts_detail__title'>Evidence</div>
-
-                  <div className='payouts_detail__body'>a;ld;alsd;</div>
+                  <div className='payouts_detail__body'>
+                    <div className='payouts_detail__photos'>
+                      <ImageGallery
+                        images={getListImageUrl(detail?.attachments || [])}
+                        alt={`payout`}
+                        caption={'payout'}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -137,9 +181,9 @@ const PayoutDetail = (props) => {
   );
 };
 
-const mapStateToProps = () => {
-  return {};
-};
+const mapStateToProps = ({ payouts }) => ({
+  detail: payouts.detail,
+});
 
 const mapDispatchToProps = {
   getPayoutDetail: getPayoutDetailAction,
