@@ -1,0 +1,58 @@
+@import 'styles/var.scss';
+
+.date_range_picker {
+	padding: 10px 20px;
+
+	.DateInput {
+		width: auto;
+	}
+	.DateInput_input {
+		background: $white;
+		border: 1px solid #c0c2c5;
+		box-sizing: border-box;
+		box-shadow: inset 0px 1px 2px rgba(102, 113, 123, 0.21);
+		border-radius: 3px;
+		height: 38px;
+		padding-right: 30px;
+		min-width: 170px;
+		margin-bottom: 10px;
+		font-size: 15px;
+		background: url(../../../assets/img/date_icon.svg) no-repeat;
+		background-position: right 10px center;
+	}
+
+	&__footer {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__control {
+		background: none;
+		border: none;
+		font-weight: 500;
+		font-size: 15px;
+		line-height: 22px;
+		letter-spacing: 0.5px;
+	}
+
+	&__apply {
+		color: #337fd7;
+	}
+
+	@media (min-width: 540px) {
+		.DateRangePickerInput {
+			display: flex;
+			align-items: center;
+		}
+
+		&__icon {
+			height: 1px;
+			width: 8px;
+			display: block;
+			background: #141414;
+			margin-left: 10px;
+			margin-right: 10px;
+			margin-bottom: 10px;
+		}
+	}
+}

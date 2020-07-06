@@ -16,15 +16,9 @@ import PayoutsAmountCell from './payoutsAmountCell';
 import PayoutsNoteCell from './payoutsNoteCell';
 import PayoutsEvidenceCell from './payoutsEvidenceCell';
 import PayoutsArtistCell from './payoutsArtistCell';
+import PayoutsTransactionCell from './payoutsTransactionCell';
 
 class OrderListDesktop extends PureComponent {
-  goToDetail = (id) => {
-    const { history } = this.props;
-    if (id) {
-      history.push(`/payout/${id}`);
-    }
-  };
-
   render() {
     const { loading, ids, accountInfo } = this.props;
 
@@ -36,32 +30,38 @@ class OrderListDesktop extends PureComponent {
         Header: PayoutsSelectedAll,
       },
       {
+        accessor: 'transactionId',
+        minWidth: 200,
+        Cell: PayoutsTransactionCell,
+        Header: 'Transaction',
+      },
+      {
         accessor: 'createdDate',
-        minWidth: 40,
+        minWidth: 100,
         Cell: PayoutsDateCell,
         Header: 'Date',
       },
       {
         accessor: 'artist',
-        minWidth: 40,
+        minWidth: 120,
         Cell: PayoutsArtistCell,
         Header: 'Artist',
       },
       {
         accessor: 'totalPaid',
-        minWidth: 40,
+        minWidth: 80,
         Cell: PayoutsAmountCell,
         Header: 'Amount',
       },
       {
         accessor: 'note',
-        minWidth: 40,
+        minWidth: 350,
         Cell: PayoutsNoteCell,
         Header: 'Note',
       },
       {
         accessor: 'attachments',
-        minWidth: 40,
+        minWidth: 100,
         Cell: PayoutsEvidenceCell,
         Header: 'Evidence',
       },
@@ -79,11 +79,7 @@ class OrderListDesktop extends PureComponent {
         <div className='table-responsive bg-light steenify-table bg-white payout__table'>
           <table className='table'>
             <TableHeader columns={columns} />
-            <TableBody
-              cellProps={{ goToDetail: this.goToDetail }}
-              data={ids}
-              columns={columns}
-            />
+            <TableBody data={ids} columns={columns} />
           </table>
         </div>
       </div>

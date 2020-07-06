@@ -38,8 +38,7 @@ export const getPayoutListAction = (params = {}) => async (
   dispatch,
   getState,
 ) => {
-  const state = getState();
-  const { filter } = state.payouts;
+  const { filter } = getState().payouts;
 
   const currSize = isMobile() ? filter.sizeMobile : filter.size;
 
@@ -83,6 +82,12 @@ const buildSearchParamPayouts = (input = {}) => {
 
   if (input.assignee && input.assignee !== 'null') {
     params.append('assignee', input.assignee || '');
+  }
+  if (input.from) {
+    params.append('from', input.from || '');
+  }
+  if (input.to) {
+    params.append('to', input.to || '');
   }
   params.append('text', input.text || '');
   params.append('page', input.page || 0);
@@ -134,7 +139,14 @@ export const getPayoutDetailAction = (id) => async (dispatch) => {
 export const GET_PAYOUTS_SUMMARY_ACTION = actionCreator(
   'GET_PAYOUTS_SUMMARY_ACTION',
 );
-export const getPayoutSummaryAction = () => async (dispatch) => {
+export const getPayoutSummaryAction = () => async (dispatch, getState) => {
+  const { filter } = getState().payouts;
+
+  const parrams = {};
+  if (filter.assignee) {
+    parrams.assignee = filter.assignee;
+  }
+
   const onPending = () => {
     dispatch({
       type: GET_PAYOUTS_SUMMARY_ACTION.PENDING,
@@ -157,7 +169,7 @@ export const getPayoutSummaryAction = () => async (dispatch) => {
   };
 
   actionTryCatchCreator({
-    service: getPayoutsSummaryService(),
+    service: getPayoutsSummaryService(parrams),
     onPending,
     onSuccess,
     onError,

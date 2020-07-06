@@ -9,10 +9,11 @@ export const getPayoutsService = (params) =>
     method: 'GET',
     params,
   });
-export const getPayoutsSummaryService = () =>
+export const getPayoutsSummaryService = (params) =>
   request({
     url: PAYOUT_SUMMARIZE_API,
     method: 'GET',
+    params,
   });
 
 export const createPayoutService = (data) =>

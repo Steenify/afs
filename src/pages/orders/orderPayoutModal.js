@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   filter,
@@ -42,16 +42,16 @@ const OrderPayoutModal = ({
     setExtra(data.value);
   };
 
-  const [note, setNote] = useState('');
+  const [note, setNote] = useState(defaultNote);
+
+  useEffect(() => {
+    setNote(defaultNote);
+  }, [defaultNote]);
 
   const handleChangeNote = (e) => {
     const { value } = e.target;
     setNote(value);
   };
-
-  const noteWithExtra = `${defaultNote} ${
-    extra > 0 ? ' + ' + formatMoney(extra) + ' extra' : ''
-  }  ${note ? ', ' + note : ''}`;
 
   const handleSubmit = () => {
     if (dropbox.current) {
@@ -94,14 +94,15 @@ const OrderPayoutModal = ({
         artist,
         attachments,
         items,
-        note: noteWithExtra,
+        note,
         totalPaid: totalBudget + (parseInt(extra, 10) || 0),
       };
 
       createOrderPayoutsBulk(payload, () => {
         const messge = orders.map((or) => or?.number).join(', ');
         toast.dark(`Updated status payment of ${messge}`);
-
+        setNote('');
+        setExtra(0);
         forEach(orders, (item) => {
           updateOrderItems({
             id: item.id,
@@ -184,8 +185,6 @@ const OrderPayoutModal = ({
             <span className='payout__label'>Note</span>
           </div>
           <div className='right'>
-            <p>{noteWithExtra}</p>
-
             <textarea
               rows='3'
               placeholder='extra note'

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PayoutsCount from './payoutsCount';
 import PayoutsFilter from './payoutsFilters';
 import PayoutsListTable from './payoutsListTable';
+import PayoutsPaging from './payoutsPaging';
 
 import { getPayoutListAction, getPayoutSummaryAction } from './actions';
 
@@ -23,6 +24,9 @@ class Payouts extends Component {
 
         <div className='payouts__body'>
           <PayoutsListTable />
+        </div>
+        <div className='payouts__paging'>
+          <PayoutsPaging />
         </div>
       </div>
     );

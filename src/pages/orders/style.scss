@@ -908,4 +908,14 @@
 			}
 		}
 	}
+
+	@media (max-width: 360px) {
+		&__payout {
+			.payout {
+				&__submit {
+					width: 150px;
+				}
+			}
+		}
+	}
 }

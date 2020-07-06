@@ -91,11 +91,15 @@
 
       function onSuccess(response) {
         console.log('onSuccess -> response', response);
-        getInfo();
+
+        if (response.status === 'connected') {
+          const userID = response.authResponse.userID || '';
+          getInfo(userID);
+        }
       }
 
-      function getInfo() {
-        FB.api('/me/accounts', 'GET', {}, console.log);
+      function getInfo(userID) {
+        FB.api(userID + '/accounts', 'GET', {}, console.log);
       }
 
       function login() {

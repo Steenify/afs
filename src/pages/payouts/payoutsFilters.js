@@ -6,8 +6,8 @@ import { PERMITTIONS_CONFIG } from 'config';
 
 import { updatePayoutFilterAction, getPayoutListAction } from './actions';
 
-import OrderFilterAssignee from './payoutsFiltersAssignee';
-// import OrderFilterDate from './payoutsFiltersDate';
+import PayoutsFilterAssignee from './payoutsFiltersAssignee';
+import PayoutsFilterDate from './payoutsFiltersDate';
 
 class PayoutFilters extends Component {
   constructor() {
@@ -50,8 +50,8 @@ class PayoutFilters extends Component {
               onChange={this.handleChangeText}
             />
           </div>
-          {canAssign && <OrderFilterAssignee />}
-          {/* <OrderFilterDate /> */}
+          {canAssign && <PayoutsFilterAssignee />}
+          {canAssign && <PayoutsFilterDate />}
         </div>
       </div>
     );

@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import P from 'components/common/parapraph';
 
-const PayoutsNoteCell = ({ note, goToDetail, transactionId }) => {
+const PayoutsNoteCell = ({ note, transactionId }) => {
   return (
-    <div onClick={() => goToDetail(transactionId)} className={`payouts__note`}>
+    <div className={`payouts__note`}>
       <P text={note} className='m-0' id={`comment__item__${transactionId}`} />
     </div>
   );

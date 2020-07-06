@@ -146,7 +146,7 @@ const OrderBulkAction = ({
             type='button'
             className='btn btn-group__item'
             onClick={toggle}>
-            Payout
+            Paid
           </button>
         )}
       </div>

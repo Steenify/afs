@@ -5,14 +5,15 @@ import { connect } from 'react-redux';
 import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
 import Button from 'components/common/button';
-
 import ImageGallery from 'components/common/imageGallery';
+
+import CanShow from 'components/layout/canshow';
 
 import { ReactComponent as ArrowLeftIcon } from 'assets/img/chevonRight.svg';
 
 import { getPayoutDetailAction } from './actions';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES, PERMITTIONS_CONFIG } from 'config';
 
 import { formatMoney, getListImageUrl, dateTimeToDeadline } from 'utils';
 
@@ -36,27 +37,30 @@ const PayoutDetail = (props) => {
           replace>
           <ArrowLeftIcon />
           &nbsp; &nbsp;
-          <span className='d-none d-md-inline'>{WEB_ROUTES.PAYOUTS.title}</span>
+          <span>{WEB_ROUTES.PAYOUTS.title}</span>
         </Button>
       </div>
 
       <PageTitle
         title={WEB_ROUTES.PAYOUTS_DETAIL.title}
-        className='mb-4 mr-3'></PageTitle>
+        className='mb-4 mr-3 d-none d-md-block'></PageTitle>
 
       <div className='payouts_detail'>
         <div className='payouts_detail__box box'>
           <div className='payouts_detail__top'>
             <div className='left'>
               <div className='info'>
-                <div className='to'>
-                  <strong>Payment sent</strong> to
-                  <Link to={`/artists/${detail?.artist?.login}`}>
-                    <span className='payouts__link'>
-                      {` ${detail?.artist?.firstName} ${detail?.artist?.lastName}`}
-                    </span>
-                  </Link>
-                </div>
+                <CanShow permission={PERMITTIONS_CONFIG.CREATE_PAYOUT}>
+                  <div className='to'>
+                    <strong>Payment sent</strong> to
+                    <Link to={`/artists/${detail?.artist?.login}`}>
+                      <span className='payouts__link'>
+                        {` ${detail?.artist?.firstName} ${detail?.artist?.lastName}`}
+                      </span>
+                    </Link>
+                  </div>
+                </CanShow>
+
                 <div className='date'>
                   {dateTimeToDeadline(detail?.createdDate)}
                 </div>

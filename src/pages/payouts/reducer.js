@@ -1,4 +1,6 @@
 import update from 'react-addons-update';
+import moment from 'moment';
+
 import { mapDataList, mapDataByIds, isMobile } from 'utils';
 
 import {
@@ -31,6 +33,8 @@ const initialState = {
     sort: [{ id: 'id', desc: true }],
     text: '',
     assignee: '',
+    from: null,
+    to: null,
   },
   detail: {},
 };
