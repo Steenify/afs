@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AFS Connect</title>
+
+    <script src="./jquery-3.5.1.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <style>
+      .container {
+        max-width: 500px;
+        margin: 100px auto;
+        text-align: center;
+      }
+
+      .connect {
+        background: #3b5998;
+        border: 1px solid #3b5998;
+        color: #fff;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        cursor: pointer;
+        height: 40px;
+        border-radius: 4px;
+        transition: all 0.3s ease-in-out;
+      }
+      .connect:focus,
+      .connect:active,
+      .connect:hover {
+        outline: none;
+        opacity: 0.8;
+      }
+
+      .logo {
+        margin-bottom: 10px;
+      }
+      .logo .img {
+        width: 100px;
+        height: 100px;
+        color: #df5525;
+        margin-bottom: 20px;
+      }
+      .logo .dex {
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <img class="img" src="/logo.svg" alt="AFS" />
+
+        <p class="des">
+          Connect to AFS fanpage
+        </p>
+      </div>
+      <button class="connect">
+        Connect Facebook
+      </button>
+    </div>
+
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '1171193606568391',
+          cookie: true,
+          xfbml: true,
+          version: 'v7.0',
+        });
+
+        FB.AppEvents.logPageView();
+      };
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'facebook-jssdk');
+
+      function onSuccess(response) {
+        console.log('onSuccess -> response', response);
+
+        if (response.status === 'connected') {
+          const userID = response.authResponse.userID || '';
+          getInfo(userID);
+        }
+      }
+
+      function getInfo(userID) {
+        FB.api(userID + '/accounts', 'GET', {}, console.log);
+      }
+
+      function login() {
+        FB.login(onSuccess, { scope: 'public_profile,email,pages_messaging' });
+      }
+
+      $('.connect').on('click', login);
+    </script>
+  </body>
+</html>
