@@ -21,7 +21,8 @@ class ImageFile extends Component {
     if (!file) {
       return;
     }
-    const isPSD = (file?.name || '').indexOf('.psd') !== -1;
+
+    const isPSD = (file?.name || '').toLowerCase().indexOf('.psd') !== -1;
     const isImage = file?.type.indexOf('image/') !== -1;
 
     if (!isPSD && isImage) {

@@ -12,7 +12,7 @@ import { isEmpty } from 'lodash';
 import { getOrderCountByStatusAction } from 'pages/orders/actions';
 
 import Route from 'components/common/Route';
-import FirerBaseApp from 'components/common/firebaseapp';
+import FirerBaseApp from 'components/layout/firebaseapp';
 
 import NotFound from 'pages/404';
 // import Home from 'pages/home';

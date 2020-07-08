@@ -143,7 +143,7 @@ export const getPayoutSummaryAction = () => async (dispatch, getState) => {
   const { filter } = getState().payouts;
 
   const parrams = {};
-  if (filter.assignee) {
+  if (filter.assignee && filter.assignee !== 'null') {
     parrams.assignee = filter.assignee;
   }
 

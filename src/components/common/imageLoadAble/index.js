@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ContentLoader from 'react-content-loader';
-
+import { includes } from 'lodash';
 import { checkImageLoadable } from 'utils';
 
 import General from 'assets/img/general__image.jpg';
@@ -10,7 +10,13 @@ import PSDFile from 'assets/img/psd__icon.jpg';
 
 import './style.scss';
 
-const PSDFileType = 'image/vnd.adobe.photoshop';
+const PSDFileType = [
+  'image/vnd.adobe.photoshop',
+  'application/x-photoshop',
+  'application/photoshop',
+  'application/psd',
+  'image/psd',
+];
 const PNGFileType = 'image/png';
 const JPGFileType = 'image/jpeg';
 
@@ -53,10 +59,10 @@ class ImageLoadAble extends Component {
   };
 
   render() {
-    const { url, className, type = '' } = this.props;
+    const { url, className, type } = this.props;
     const { isLoadAble, isLoading } = this.state;
 
-    const isImage = (type || '').indexOf('image/') !== -1;
+    const isImage = (type || '').toLowerCase().indexOf('image/') !== -1;
 
     let defaultImage = General;
     if (isImage && type === JPGFileType) {
@@ -66,7 +72,7 @@ class ImageLoadAble extends Component {
       defaultImage = PNGFile;
     }
 
-    if (isImage && type === PSDFileType) {
+    if (includes(PSDFileType, type)) {
       defaultImage = PSDFile;
     }
 
@@ -89,6 +95,7 @@ class ImageLoadAble extends Component {
 ImageLoadAble.defaultProps = {
   file: null,
   className: '',
+  type: '',
 };
 
 export default ImageLoadAble;

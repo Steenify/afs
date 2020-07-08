@@ -278,7 +278,9 @@ class DropBox extends Component {
                 id={`file-upload__${id || ''}`}
                 className='sr-only'
                 disabled={disabled || false}
-                accept={'image/*,image/vnd.adobe.photoshop'}
+                accept={
+                  'image/*,image/vnd.adobe.photoshop,application/x-photoshop,application/photoshop,application/psd,image/psd'
+                }
                 onChange={this.handleChangeFiles}
               />
             </div>

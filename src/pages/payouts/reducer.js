@@ -1,5 +1,4 @@
 import update from 'react-addons-update';
-import moment from 'moment';
 
 import { mapDataList, mapDataByIds, isMobile } from 'utils';
 

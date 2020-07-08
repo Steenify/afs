@@ -93,6 +93,12 @@ export const mapStatusPayment = {
 };
 export const statusPayments = ['PAID', 'UNPAID'];
 
-export const PSDFileType = 'image/vnd.adobe.photoshop';
+export const PSDFileType = [
+  'image/vnd.adobe.photoshop',
+  'application/x-photoshop',
+  'application/photoshop',
+  'application/psd',
+  'image/psd',
+];
 
 export { default as WEB_ROUTES } from './web-routes';

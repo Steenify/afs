@@ -80,6 +80,10 @@
 				line-height: 18px;
 				color: #1c1e21;
 			}
+
+			.form-control {
+				font-size: 14px;
+			}
 		}
 
 		&__footer {
@@ -111,6 +115,14 @@
 			background-color: $main_color;
 			border-color: $main_color;
 			color: $white;
+		}
+
+		@include max-md() {
+			&__body {
+				.form-control {
+					font-size: 18px;
+				}
+			}
 		}
 	}
 }

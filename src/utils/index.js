@@ -219,7 +219,7 @@ export const getOrderOption = (name) => {
 
 export const getListImageUrl = (list = []) => {
   return list.map((item) => {
-    if (item.fileName && item.fileName.indexOf('.psd') !== -1) {
+    if (item.fileName && item.fileName.toLowerCase().indexOf('.psd') !== -1) {
       return {
         download: PSDFile,
         fullscreen: PSDFile,

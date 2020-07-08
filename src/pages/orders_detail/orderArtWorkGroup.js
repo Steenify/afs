@@ -143,11 +143,12 @@ const OrderArtWorkGroup = ({
                   LogId,
                   data,
                   workLogIndex,
-                  // () => {},
+                  () => {
+                    rejectedWorkLog(order.id, LogId, () => {
+                      onClose();
+                    });
+                  },
                 );
-                rejectedWorkLog(order.id, LogId, () => {
-                  onClose();
-                });
               } else {
                 toast.warn('Please input reject reason!');
               }
