@@ -1,4 +1,7 @@
 import update from 'react-addons-update';
+
+import { mapDataList, mapDataByIds, isMobile } from 'utils';
+
 import {
   ARTISTS_ACTIONS,
   GET_ARTISTS_LIST_ACTION,
@@ -10,7 +13,18 @@ const initialState = {
   ui: { loading: false, loadingDetail: false },
   data: {
     artists: [],
+    ids: [],
+    items: {},
+    itemGroups: [],
     totalItems: 0,
+    totalPage: 0,
+  },
+  filter: {
+    page: 0,
+    size: 100,
+    sizeMobile: 100,
+    sort: [{ id: 'id', desc: true }],
+    s: '',
   },
   error: {
     detail: {},
@@ -33,16 +47,29 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
       });
-    case GET_ARTISTS_LIST_ACTION.SUCCESS:
+    case GET_ARTISTS_LIST_ACTION.SUCCESS: {
+      const { ids, items } = mapDataByIds(
+        mapDataList(payload.data, 'selected', false),
+        'id',
+      );
+      const totalItems = parseInt(payload.headers['x-total-count'], 10);
+      const { size, sizeMobile } = state.filter;
+      const currSize = isMobile() ? sizeMobile : size;
+      const totalPage = Math.ceil(totalItems / currSize);
+
       return update(state, {
         ui: {
           loading: { $set: false },
         },
         data: {
           artists: { $set: payload.data },
+          ids: { $set: ids },
+          items: { $set: items },
           totalItems: { $set: payload.headers['x-total-count'] },
+          totalPage: { $set: totalPage },
         },
       });
+    }
 
     // Detail Reducer
     case GET_ARTISTS_ACTION.PENDING:

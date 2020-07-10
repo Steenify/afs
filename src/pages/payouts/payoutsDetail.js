@@ -101,6 +101,10 @@ const PayoutDetail = (props) => {
                               <strong className='value'>
                                 {formatMoney(item?.paid)}
                               </strong>
+
+                              {item?.note && (
+                                <span className='ml-2'>({item?.note})</span>
+                              )}
                             </div>
                           </div>
                         );
@@ -110,7 +114,7 @@ const PayoutDetail = (props) => {
                         <div
                           key={`payout__detail__item__${item.id}`}
                           className='row payouts_detail__order'>
-                          <div className='col-6 '>
+                          <div className='col-6'>
                             <Link to={`/order/${item?.booking?.code}`}>
                               <span className='label'>
                                 #{item?.booking?.number}
@@ -121,6 +125,10 @@ const PayoutDetail = (props) => {
                             <strong className='value'>
                               {formatMoney(item?.paid)}
                             </strong>
+
+                            {item?.note && (
+                              <span className='ml-2'>({item?.note})</span>
+                            )}
                           </div>
                         </div>
                       );

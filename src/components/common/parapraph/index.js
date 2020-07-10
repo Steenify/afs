@@ -3,7 +3,7 @@ import { map } from 'lodash';
 import { renderHTML } from 'utils';
 
 const P = ({ text, id, className }) => {
-  const listP = text.split('\n');
+  const listP = (text || '').split('\n');
   return map(listP, (p, index) => (
     <p
       className={`text-break ${className || ''}`}

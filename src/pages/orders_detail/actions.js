@@ -486,7 +486,7 @@ export const approvedWorkLogAction = (id, logId) => (dispatch, getState) => {
 export const REJECTED_WORK_LOG_ACTION = actionCreator(
   'REJECTED_WORK_LOG_ACTION',
 );
-export const rejectedWorkLogAction = (id, logId, cb) => (
+export const rejectedWorkLogAction = (id, logId, payload, index, cb) => (
   dispatch,
   getState,
 ) => {
@@ -500,6 +500,11 @@ export const rejectedWorkLogAction = (id, logId, cb) => (
   };
   const onSuccess = (data) => {
     cb && cb();
+
+    // dispatch({
+    //   type: UPLOAD_COMMENT_WORK_LOG_ACTION.SUCCESS,
+    //   payload: { data, index },
+    // });
     dispatch({
       type: REJECTED_WORK_LOG_ACTION.SUCCESS,
       payload: { data, index: workLogIndex },
@@ -517,7 +522,7 @@ export const rejectedWorkLogAction = (id, logId, cb) => (
   };
 
   actionTryCatchCreator({
-    service: rejectedOrderWorkLogService({ id, logId }),
+    service: rejectedOrderWorkLogService({ id, logId, data: payload }),
     onPending,
     onSuccess,
     onError,

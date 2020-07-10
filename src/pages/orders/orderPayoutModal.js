@@ -37,6 +37,7 @@ const OrderPayoutModal = ({
   const dropbox = useRef(null);
 
   const [extra, setExtra] = useState(0);
+  const [noteItem, setNoteItem] = useState({});
 
   const onChangeExtra = (data) => {
     setExtra(data.value);
@@ -53,10 +54,16 @@ const OrderPayoutModal = ({
     setNote(value);
   };
 
+  const handleChangeNoteItems = (e) => {
+    const { value } = e.target;
+    const number = e.target.getAttribute('number');
+
+    setNoteItem({ ...noteItem, [number]: value });
+  };
+
   const handleSubmit = () => {
     if (dropbox.current) {
       const files = dropbox.current.getFiles();
-
       let isDoneUpload = true;
 
       files.forEach((file) => {
@@ -73,6 +80,7 @@ const OrderPayoutModal = ({
       const attachments = files.map((file) => ({
         id: file.id,
         thumbnailLink: file?.thumbnailLink,
+        fileType: file?.fileType,
         url: file?.url,
         external: file?.external,
       }));
@@ -81,12 +89,14 @@ const OrderPayoutModal = ({
         bookingNumber: or.number,
         paid: or?.budget,
         payoutItemType: 'BOOKING_PAYMENT',
+        note: noteItem[or?.number] || '',
       }));
 
       if ((parseInt(extra, 10) || 0) > 0) {
         items.push({
           paid: parseInt(extra, 10),
           payoutItemType: 'EXTRA_PAYMENT',
+          note: noteItem['extra'] || '',
         });
       }
 
@@ -103,6 +113,7 @@ const OrderPayoutModal = ({
         toast.dark(`Updated status payment of ${messge}`);
         setNote('');
         setExtra(0);
+        setNoteItem({});
         forEach(orders, (item) => {
           updateOrderItems({
             id: item.id,
@@ -123,6 +134,8 @@ const OrderPayoutModal = ({
     }
   };
 
+  const totalDisplay = totalBudget + (parseInt(extra, 10) || 0);
+
   return (
     <PageModal
       isOpen={isOpen}
@@ -136,18 +149,28 @@ const OrderPayoutModal = ({
             (item) => getOrderItem(item.name) !== 'Faster Processing',
           );
           return (
-            <div
-              key={`order__payout__item__${order.id}`}
-              className='payout__item order'>
-              <div className='left'>
-                <span className='number'>#{order.number}</span>
-                <span className='name'>
-                  {getOrderOption((filteredItems[0] || {})?.name || '')}
-                </span>
+            <div key={`order__payout__item__${order.id}`}>
+              <div className='payout__item order'>
+                <div className='left'>
+                  <span className='number'>#{order.number}</span>
+                  <span className='name'>
+                    {getOrderOption((filteredItems[0] || {})?.name || '')}
+                  </span>
+                </div>
+                <div className='right'>
+                  <strong className='money'>{formatMoney(order.budget)}</strong>
+                </div>
               </div>
-              <div className='right'>
-                <strong className='money'>{formatMoney(order.budget)}</strong>
-              </div>
+              {/* <div className='payout__item__note'>
+                <textarea
+                  rows='2'
+                  placeholder={`#${order.number} note`}
+                  number={order.number}
+                  value={noteItem[order.number] || ''}
+                  onChange={handleChangeNoteItems}
+                  className='form-control payout__note mb-3'
+                />
+              </div> */}
             </div>
           );
         })}
@@ -166,6 +189,14 @@ const OrderPayoutModal = ({
             />
           </div>
         </div>
+        <textarea
+          rows='2'
+          placeholder={`extra paymen note`}
+          number={'extra'}
+          value={noteItem['extra'] || ''}
+          onChange={handleChangeNoteItems}
+          className='form-control payout__note mb-3'
+        />
 
         <div className='payout__divider'></div>
 
@@ -174,7 +205,7 @@ const OrderPayoutModal = ({
             <span className='payout__label'>Total</span>
           </div>
           <div className='right'>
-            <strong className='money'>{formatMoney(totalBudget)}</strong>
+            <strong className='money'>{formatMoney(totalDisplay)}</strong>
           </div>
         </div>
 
@@ -254,7 +285,7 @@ const mapStateToProps = ({ order, auth }) => {
   const totalBudget = reduce(
     orderTopay,
     (total, item) => {
-      return (total += item.budget);
+      return (total += parseInt(item.budget || 0, 10));
     },
     0,
   );

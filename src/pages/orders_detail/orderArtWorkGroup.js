@@ -138,17 +138,19 @@ const OrderArtWorkGroup = ({
             orderNumber={order.number}
             onConfirm={(data) => {
               if (data.content) {
-                uploadCommentWorkLog(
-                  order.id,
-                  LogId,
-                  data,
-                  workLogIndex,
-                  () => {
-                    rejectedWorkLog(order.id, LogId, () => {
-                      onClose();
-                    });
-                  },
-                );
+                rejectedWorkLog(order.id, LogId, data, workLogIndex, () => {
+                  onClose();
+                });
+
+                // uploadCommentWorkLog(
+                //   order.id,
+                //   LogId,
+                //   data,
+                //   workLogIndex,
+                //   () => {
+
+                //   },
+                // );
               } else {
                 toast.warn('Please input reject reason!');
               }

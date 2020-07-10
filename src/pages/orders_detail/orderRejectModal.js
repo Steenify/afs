@@ -70,14 +70,14 @@ const OrderRejectModal = ({ onClose, onConfirm, orderNumber }) => {
             />
           </p>
 
-          <p>
+          <div>
             <Dropbox
               className='upload'
               ref={dropbox}
               orderNumber={orderNumber}
               id={`Reject__modal__upload`}
             />
-          </p>
+          </div>
         </div>
         <div className='comfirm_cus__footer text-right'>
           <button

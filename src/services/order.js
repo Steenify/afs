@@ -80,10 +80,11 @@ export const approvedOrderWorkLogService = ({ id, logId }) =>
     method: 'PUT',
   });
 
-export const rejectedOrderWorkLogService = ({ id, logId }) =>
+export const rejectedOrderWorkLogService = ({ id, logId, data }) =>
   request({
     url: `${ORDERS_API}/${id}/work-logs/${logId}/reject`,
     method: 'PUT',
+    data,
   });
 
 export const getOrderEmailService = ({ id, templateId }) =>

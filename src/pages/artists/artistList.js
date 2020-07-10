@@ -13,7 +13,6 @@ import { getPaginationItemsNumber } from 'utils';
 import { getArtistsListAction } from './actions';
 
 const ArtistList = (props) => {
-  // const { t } = useTranslation();
   const { artists = [], getArtistsList, loading, totalItems } = props;
 
   useEffect(() => {

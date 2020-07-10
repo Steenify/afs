@@ -37,11 +37,11 @@ const SettingsPage = (props) => {
       icon: <Settings />,
       des: 'View and update system property',
     },
-    {
-      ...WEB_ROUTES.ARTISTS,
-      icon: <Artist />,
-      des: 'Manage Artist',
-    },
+    // {
+    //   ...WEB_ROUTES.ARTISTS,
+    //   icon: <Artist />,
+    //   des: 'Manage Artist',
+    // },
     {
       ...WEB_ROUTES.CUSTOMER_LIST,
       title: t(WEB_ROUTES.CUSTOMER_LIST.title),

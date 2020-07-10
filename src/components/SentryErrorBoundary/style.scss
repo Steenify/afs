@@ -1,0 +1,16 @@
+.error_placeholder {
+	height: 300px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	&__icon {
+		margin-bottom: 20px;
+	}
+
+	&__text {
+		font-size: 20px;
+		font-weight: bold;
+	}
+}
