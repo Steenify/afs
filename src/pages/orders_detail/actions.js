@@ -501,10 +501,14 @@ export const rejectedWorkLogAction = (id, logId, payload, index, cb) => (
   const onSuccess = (data) => {
     cb && cb();
 
-    // dispatch({
-    //   type: UPLOAD_COMMENT_WORK_LOG_ACTION.SUCCESS,
-    //   payload: { data, index },
-    // });
+    const comment = data?.comments[0] || {};
+    dispatch({
+      type: UPLOAD_COMMENT_WORK_LOG_ACTION.SUCCESS,
+      payload: { data: comment, index },
+    });
+
+    data.comments = [];
+
     dispatch({
       type: REJECTED_WORK_LOG_ACTION.SUCCESS,
       payload: { data, index: workLogIndex },
