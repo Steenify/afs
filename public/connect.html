@@ -89,17 +89,47 @@
         fjs.parentNode.insertBefore(js, fjs);
       })(document, 'script', 'facebook-jssdk');
 
+      var origin = window.location.origin;
+
+      var mapUrl = {
+        'https://afs-dev.steenify.com': 'https://ots.steenify.com',
+        'https://afs.steenify.com': 'https://apiafs.steenify.com',
+        'http://localhost:3000': 'https://ots.steenify.com',
+        'https://localhost:3000': 'https://ots.steenify.com',
+      };
+
+      var urlAPI = mapUrl[origin] || 'https://ots.steenify.com';
+
+      var totken = localStorage.getItem('token') || '';
+
       function onSuccess(response) {
         console.log('onSuccess -> response', response);
 
         if (response.status === 'connected') {
-          const userID = response.authResponse.userID || '';
+          var userID = response.authResponse.userID || 'me';
           getInfo(userID);
         }
       }
 
       function getInfo(userID) {
-        FB.api(userID + '/accounts', 'GET', {}, console.log);
+        FB.api('/' + userID + '/accounts', 'GET', {}, function (res) {
+          console.log('getInfo -> res', res);
+
+          $.ajax({
+            url: urlAPI + '/api/channels',
+            contentType: 'application/json',
+            method: 'POST',
+            data: JSON.stringify(res),
+            headers: { Authorization: 'Bearer ' + totken },
+            processData: false,
+          })
+            .done(function (data) {
+              console.log('getInfo -> data', data);
+            })
+            .fail(function (jqXHR, textStatus) {
+              console.log('getInfo -> jqXHR, textStatus', jqXHR, textStatus);
+            });
+        });
       }
 
       function login() {

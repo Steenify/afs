@@ -24,7 +24,7 @@ const initialState = {
     size: 100,
     sizeMobile: 100,
     sort: [{ id: 'id', desc: true }],
-    s: '',
+    text: '',
   },
   error: {
     detail: {},
@@ -97,6 +97,10 @@ const reducer = (state = initialState, action) => {
     case ARTISTS_ACTIONS.UPDATE_ARTIST_DETAIL:
       return update(state, {
         artist: { $merge: payload },
+      });
+    case ARTISTS_ACTIONS.UPDATE_ARTIST_FILTERS_ACTION:
+      return update(state, {
+        filter: { $merge: payload },
       });
     default:
       return state;

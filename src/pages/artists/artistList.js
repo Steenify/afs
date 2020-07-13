@@ -1,113 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-// import { useTranslation } from 'react-i18next';
 
-import Button from 'components/common/button';
-
-import DataTable from 'components/common/DataTable';
-import InPageLoading from 'components/common/inPageLoading';
-
-import { getPaginationItemsNumber } from 'utils';
+import ArtistFilters from './artistsFilters';
+import ArtistListTable from './artistsListTable';
+import ArtistsPaging from './artistsPaging';
 
 import { getArtistsListAction } from './actions';
 
-const ArtistList = (props) => {
-  const { artists = [], getArtistsList, loading, totalItems } = props;
-
-  useEffect(() => {
+class ArtistList extends Component {
+  componentDidMount() {
+    const { getArtistsList } = this.props;
     getArtistsList();
-  }, [getArtistsList]);
-
-  let columns = [
-    {
-      accessor: 'fullName',
-      Header: 'Artist Name',
-      minWidth: 100,
-      Cell: ({ row: { original } }) => {
-        return (
-          <Button
-            tag={Link}
-            className='w-100 justify-content-start'
-            to={`/artists/${original?.login}`}
-            color='link'>
-            {original?.fullName ||
-              `${original?.firstName || ''} ${original?.lastName || ''}`}
-          </Button>
-        );
-      },
-    },
-    {
-      accessor: 'email',
-      Header: 'Contact',
-      minWidth: 100,
-      Cell: ({ row: { original } }) => (
-        <div>
-          {original.email && <div>Email: {original.email}</div>}
-          {original.ig && <div>Instagram: {original.ig}</div>}
-          {original.phoneNumber && (
-            <div>
-              Phone: {original.phonePrefix}
-              {original.phoneNumber}
-            </div>
-          )}
+  }
+  render() {
+    return (
+      <div className='artists__page'>
+        <div className='artists__header box'>
+          <ArtistFilters />
         </div>
-      ),
-    },
-    {
-      accessor: 'note',
-      Header: 'Note',
-      minWidth: 150,
-      Cell: ({ row: { original } }) => (
-        <div className=''>{original.note || 'N/A'}</div>
-      ),
-    },
-    {
-      accessor: 'totalInProgress',
-      Header: 'Progress',
-      Cell: ({ row: { original } }) => (
-        <div className=''>{original.totalInProgress} Orders</div>
-      ),
-    },
-    {
-      accessor: 'totalDone',
-      Header: 'Processed',
-      Cell: ({ row: { original } }) => (
-        <div className=''>{original.totalDone} Orders</div>
-      ),
-    },
-  ];
+        <div className='artists__body'>
+          <ArtistListTable />
+        </div>
+        <div className='artists__paging'>
+          <ArtistsPaging />
+        </div>
+      </div>
+    );
+  }
+}
 
-  const handleLoad = ({ page, size, sortBy }) => {
-    const params = {
-      page,
-      size,
-      sort: sortBy,
-    };
-    getArtistsList(params);
-  };
-
-  return (
-    <div>
-      <DataTable
-        data={artists}
-        columns={columns}
-        className='bg-white'
-        whiteListSort={['email', 'note', 'totalInProgress', 'totalDone']}
-        serverSide
-        totalPage={(size) => getPaginationItemsNumber(totalItems, size)}
-        onLoad={handleLoad}
-      />
-      <InPageLoading isLoading={loading} />
-    </div>
-  );
-};
-
-const mapStateToProps = ({ artists, auth }) => ({
-  loading: artists.ui.loading,
-  artists: artists.data.artists,
-  accountInfo: auth.data.accountInfo,
-});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   getArtistsList: getArtistsListAction,
