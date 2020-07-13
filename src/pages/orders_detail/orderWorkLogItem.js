@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Collapse } from 'reactstrap';
-import { findIndex, isEmpty } from 'lodash';
+import { findIndex, isEmpty, groupBy } from 'lodash';
 import { confirmAlert } from 'react-confirm-alert';
 // import { Picker, Emoji } from 'emoji-mart';
 
@@ -59,6 +59,13 @@ const OrderWorkLogItem = ({
   const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
 
   const notUpload = mapStatusCanNotUpload.indexOf(order.status) !== -1;
+
+  const activities = work?.activities || [];
+  const activitiesGroup = groupBy(activities, 'activityType');
+  const Act_UPLOADED = activitiesGroup?.UPLOADED || [];
+  const Act_APPROVED = activitiesGroup?.APPROVED || [];
+  const Act_REJECTED = activitiesGroup?.REJECTED || [];
+  const Act_NOTIFIED_CUSTOMER = activitiesGroup?.NOTIFIED_CUSTOMER || [];
 
   const handleUploadSketch = () => {
     if (dropbox.current) {
@@ -285,91 +292,155 @@ const OrderWorkLogItem = ({
             />
           </div>
         )}
-      </Collapse>
 
-      <div
-        className={`order_detail__comments comments ${
-          !isWorking && !work.comments.length && !isReview ? 'd-none' : ''
-        }`}>
-        <div className='box__header'>
-          <div onClick={toggleCom} className='box__icon com'>
-            <div className='icon'>
-              <Message />
-            </div>
-          </div>
-          <div onClick={toggleCom} className='box__title w-100'>
-            Comment
-          </div>
-        </div>
-        <Collapse isOpen={isOpenCom}>
-          <div className='comments__list'>
-            {work.comments.map((com, index) => (
+        <div
+          className={`order_detail__activites activites ${
+            !Act_UPLOADED.length && 'd-none'
+          }`}>
+          <div className='activites__list'>
+            {Act_UPLOADED.map((act) => (
               <div
-                key={`comment__item__${work.id}__${com.id}`}
-                className='comments__item'>
-                <div className='comments__author'>
-                  <div className='left'>
-                    <div className='avt'>
-                      <img
-                        src={`https://ui-avatars.com/api/?name=${com?.user?.fullName}`}
-                        alt='comments__author'
-                      />
-                    </div>
-                  </div>
-                  <div className='comments__wrapper'>
-                    <div className='comments__box'>
-                      <span className='name'>{com?.user?.fullName}</span>
-                      <span className='comments__mess'>
-                        <P
-                          text={com.content}
-                          id={`comment__item__${work.id}__${com.id}`}
-                        />
-                      </span>
-                    </div>
-
-                    {com?.attachments && com?.attachments.length > 0 && (
-                      <div className='comments__img'>
-                        <ImageGallery
-                          images={getListImageUrl(com?.attachments || [])}
-                          alt={'comment'}
-                          caption={'comment'}
-                        />
-                      </div>
-                    )}
-                    <div className='comments__controls'>
-                      <button
-                        onClick={() => handleCheckEdit(com, index)}
-                        type='button'
-                        className='comments__control'>
-                        Edit
-                      </button>
-                      <span className='dot'> · </span>
-                      <button
-                        type='button'
-                        onClick={() =>
-                          handleConfirmDeleteComment(com.id, index)
-                        }
-                        className='comments__control '>
-                        Delete
-                      </button>
-
-                      <span className='dot'> · </span>
-                      <span className='date'>
-                        {dateTimeFromNow(com.createdDate)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                key={`order__worklog__${work.id}__act_UPLOADED_by_${act.actor}`}
+                className='activites__item UPLOADED'>
+                <strong>{act.actor} upload</strong>
+                <span> {dateTimeFromNow(act.lastActionDate)}</span>
               </div>
             ))}
           </div>
-          {(isWorking || isReview) && (
-            <div>
-              <CommentBox ref={commentBox} onSubmit={handleUploadComment} />
+        </div>
+
+        <div
+          className={`order_detail__comments comments ${
+            !isWorking && !work.comments.length && !isReview ? 'd-none' : ''
+          }`}>
+          <div className='box__header comments__header'>
+            <div onClick={toggleCom} className='box__icon com comments__icon'>
+              <div className='icon'>
+                <Message />
+              </div>
             </div>
-          )}
-        </Collapse>
-      </div>
+            <div
+              onClick={toggleCom}
+              className='box__title w-100 comments__title'>
+              Comment
+            </div>
+          </div>
+          <Collapse isOpen={isOpenCom}>
+            <div className='comments__list'>
+              {work.comments.map((com, index) => (
+                <div
+                  key={`comment__item__${work.id}__${com.id}`}
+                  className='comments__item'>
+                  <div className='comments__author'>
+                    <div className='left'>
+                      <div className='avt'>
+                        <img
+                          src={`https://ui-avatars.com/api/?name=${com?.user?.fullName}`}
+                          alt='comments__author'
+                        />
+                      </div>
+                    </div>
+                    <div className='comments__wrapper'>
+                      <div className='comments__box'>
+                        <span className='name'>{com?.user?.fullName}</span>
+                        <span className='comments__mess'>
+                          <P
+                            text={com.content}
+                            id={`comment__item__${work.id}__${com.id}`}
+                          />
+                        </span>
+                      </div>
+
+                      {com?.attachments && com?.attachments.length > 0 && (
+                        <div className='comments__img'>
+                          <ImageGallery
+                            images={getListImageUrl(com?.attachments || [])}
+                            alt={'comment'}
+                            caption={'comment'}
+                          />
+                        </div>
+                      )}
+                      <div className='comments__controls'>
+                        <button
+                          onClick={() => handleCheckEdit(com, index)}
+                          type='button'
+                          className='comments__control'>
+                          Edit
+                        </button>
+                        <span className='dot'> · </span>
+                        <button
+                          type='button'
+                          onClick={() =>
+                            handleConfirmDeleteComment(com.id, index)
+                          }
+                          className='comments__control '>
+                          Delete
+                        </button>
+
+                        <span className='dot'> · </span>
+                        <span className='date'>
+                          {dateTimeFromNow(com.createdDate)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {(isWorking || isReview) && (
+              <div className='comments__box__wrapper'>
+                <CommentBox ref={commentBox} onSubmit={handleUploadComment} />
+              </div>
+            )}
+          </Collapse>
+        </div>
+
+        <div
+          className={`order_detail__activites activites ${
+            !Act_NOTIFIED_CUSTOMER.length && 'd-none'
+          }`}>
+          <div className='activites__list'>
+            {Act_NOTIFIED_CUSTOMER.map((act) => (
+              <div
+                key={`order__worklog__${work.id}__act_NOTIFIED_CUSTOMER_by_${act.actor}`}
+                className='activites__item NOTIFIED_CUSTOMER'>
+                <strong>{act.actor} notified customer </strong>
+                <span> {dateTimeFromNow(act.lastActionDate)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div
+          className={`order_detail__activites activites ${
+            !Act_REJECTED.length && 'd-none'
+          }`}>
+          <div className='activites__list'>
+            {Act_REJECTED.map((act) => (
+              <div
+                key={`order__worklog__${work.id}__act_REJECTED_by_${act.actor}`}
+                className='activites__item REJECTED'>
+                <strong>{act.actor} rejected</strong>
+                <span> {dateTimeFromNow(act.lastActionDate)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div
+          className={`order_detail__activites activites ${
+            !Act_APPROVED.length && 'd-none'
+          }`}>
+          <div className='activites__list'>
+            {Act_APPROVED.map((act) => (
+              <div
+                key={`order__worklog__${work.id}__act_APPROVED_by_${act.actor}`}
+                className='activites__item APPROVED'>
+                <strong>{act.actor} approved</strong>
+                <span> {dateTimeFromNow(act.lastActionDate)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Collapse>
     </div>
   );
 };
