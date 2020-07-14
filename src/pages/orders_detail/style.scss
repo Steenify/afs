@@ -718,10 +718,7 @@
 				font-size: 14px;
 				line-height: 17px;
 				color: #9ea0a5;
-				padding: 3px 20px;
-				border-radius: 10px;
-				background: #daeeff;
-				display: inline-block;
+
 				strong {
 					font-weight: 500;
 					color: #337fd7;
@@ -732,30 +729,45 @@
 					font-weight: normal;
 				}
 
+				.content {
+					padding: 3px 20px;
+					border-radius: 10px;
+					background: #daeeff;
+					display: inline-block;
+				}
+
 				& + .activites__item {
-					margin-top: 20px;
+					margin-top: 10px;
 				}
 
 				&.UPLOADED {
-					background: #daeeff;
+					.content {
+						background: #daeeff;
+					}
 					strong {
 						color: #337fd7;
 					}
 				}
 				&.APPROVED {
-					background: #c7f8d3;
+					.content {
+						background: #c7f8d3;
+					}
 					strong {
 						color: #00ad0c;
 					}
 				}
 				&.REJECTED {
-					background: #ffe3e3;
+					.content {
+						background: #ffe3e3;
+					}
 					strong {
 						color: #474747;
 					}
 				}
 				&.NOTIFIED_CUSTOMER {
-					background: #fff1c7;
+					.content {
+						background: #fff1c7;
+					}
 					strong {
 						color: #d29e00;
 					}

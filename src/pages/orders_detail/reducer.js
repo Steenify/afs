@@ -39,6 +39,7 @@ const initialState = {
     email: '',
     emailTitle: '',
     selectedEmailTemplate: 0,
+    currentWorkLogIndex: -1,
   },
 };
 
@@ -144,6 +145,9 @@ const reducer = (state = initialState, action) => {
               attachments: {
                 $push: payload.data,
               },
+              activities: {
+                $push: payload.activives,
+              },
             },
           },
         },
@@ -216,6 +220,9 @@ const reducer = (state = initialState, action) => {
               state: {
                 $set: 'APPROVED',
               },
+              activities: {
+                $push: payload.activives,
+              },
             },
             $push: [payload.data],
           },
@@ -237,6 +244,9 @@ const reducer = (state = initialState, action) => {
             [payload.index]: {
               state: {
                 $set: 'REJECTED',
+              },
+              activities: {
+                $push: payload.activives,
               },
             },
             $push: [payload.data],
@@ -260,10 +270,20 @@ const reducer = (state = initialState, action) => {
     }
 
     case SENT_EMAIL_NOTIFY_ACTION.SUCCESS: {
+      const { currentWorkLogIndex } = state.data;
       return update(state, {
         ui: {
           loading: { $set: false },
           isShowEmail: { $set: false },
+        },
+        data: {
+          workLog: {
+            [currentWorkLogIndex]: {
+              activities: {
+                $push: payload.activives,
+              },
+            },
+          },
         },
       });
     }
@@ -353,6 +373,9 @@ const reducer = (state = initialState, action) => {
           },
           selectedEmailTemplate: {
             $set: payload.templateId,
+          },
+          currentWorkLogIndex: {
+            $set: payload.workLogIndex,
           },
         },
       });

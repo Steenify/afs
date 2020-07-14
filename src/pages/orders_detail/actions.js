@@ -284,18 +284,31 @@ export const uploadFileWorkLogAction = (
   index,
   files,
   cb,
-) => (dispatch) => {
+) => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: UPLOAD_FILE_WORK_LOG_ACTION.PENDING,
     });
   };
   const onSuccess = (data) => {
+    const { accountInfo } = getState().auth.data;
+    const actor = `${accountInfo?.firstName || ''} ${
+      accountInfo?.lastName || ''
+    }`;
+
+    const activives = [
+      {
+        activityType: 'UPLOADED',
+        actor,
+        lastActionDate: new Date(),
+      },
+    ];
+
     if (data) {
       cb && cb();
       dispatch({
         type: UPLOAD_FILE_WORK_LOG_ACTION.SUCCESS,
-        payload: { data: files, index },
+        payload: { data: files, index, activives },
       });
     } else {
       toast.error('Can not saved file, Please try again later!');
@@ -459,9 +472,21 @@ export const approvedWorkLogAction = (id, logId) => (dispatch, getState) => {
     });
   };
   const onSuccess = (data) => {
+    const { accountInfo } = getState().auth.data;
+    const actor = `${accountInfo?.firstName || ''} ${
+      accountInfo?.lastName || ''
+    }`;
+
+    const activives = [
+      {
+        activityType: 'APPROVED',
+        actor,
+        lastActionDate: new Date(),
+      },
+    ];
     dispatch({
       type: APPROVED_WORK_LOG_ACTION.SUCCESS,
-      payload: { data, index: workLogIndex },
+      payload: { data, index: workLogIndex, activives },
     });
   };
   const onError = (error) => {
@@ -501,6 +526,19 @@ export const rejectedWorkLogAction = (id, logId, payload, index, cb) => (
   const onSuccess = (data) => {
     cb && cb();
 
+    const { accountInfo } = getState().auth.data;
+    const actor = `${accountInfo?.firstName || ''} ${
+      accountInfo?.lastName || ''
+    }`;
+
+    const activives = [
+      {
+        activityType: 'REJECTED',
+        actor,
+        lastActionDate: new Date(),
+      },
+    ];
+
     const comment = data?.comments[0] || {};
     dispatch({
       type: UPLOAD_COMMENT_WORK_LOG_ACTION.SUCCESS,
@@ -511,7 +549,7 @@ export const rejectedWorkLogAction = (id, logId, payload, index, cb) => (
 
     dispatch({
       type: REJECTED_WORK_LOG_ACTION.SUCCESS,
-      payload: { data, index: workLogIndex },
+      payload: { data, index: workLogIndex, activives },
     });
   };
   const onError = (error) => {
@@ -536,7 +574,9 @@ export const rejectedWorkLogAction = (id, logId, payload, index, cb) => (
 export const GET_EMAIL_TEMPLATE_ACTION = actionCreator(
   'GET_EMAIL_TEMPLATE_ACTION',
 );
-export const getEmailTemplateAction = (id, templateId) => (dispatch) => {
+export const getEmailTemplateAction = (id, templateId, workLogIndex) => (
+  dispatch,
+) => {
   const onPending = () => {
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.PENDING,
@@ -545,7 +585,7 @@ export const getEmailTemplateAction = (id, templateId) => (dispatch) => {
   const onSuccess = (data) => {
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.SUCCESS,
-      payload: { data, templateId },
+      payload: { data, templateId, workLogIndex },
     });
   };
   const onError = (error) => {
@@ -577,8 +617,23 @@ export const sendEmailNotifyAction = () => (dispatch, getState) => {
     });
   };
   const onSuccess = (data) => {
+    const { accountInfo } = getState().auth.data;
+    const actor = `${accountInfo?.firstName || ''} ${
+      accountInfo?.lastName || ''
+    }`;
+
+    const activives = [
+      {
+        activityType: 'NOTIFIED_CUSTOMER',
+        actor,
+        lastActionDate: new Date(),
+      },
+    ];
     dispatch({
       type: SENT_EMAIL_NOTIFY_ACTION.SUCCESS,
+      payload: {
+        activives,
+      },
     });
     toast.dark('Notified Customer!');
   };

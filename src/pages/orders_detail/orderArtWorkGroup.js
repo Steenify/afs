@@ -114,10 +114,14 @@ const OrderArtWorkGroup = ({
     });
   };
 
-  const handleNotifyEmail = () => {
+  const handleNotifyEmail = (workLogIndex) => {
     const currentStatus = getSelectedStatus(order.status, status);
     if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
-      getEmailTemplate(order.id, currentStatus.emailTemplates[0].id);
+      getEmailTemplate(
+        order.id,
+        currentStatus.emailTemplates[0].id,
+        workLogIndex,
+      );
     } else {
       toast.warn('No Email template found!');
     }
@@ -141,16 +145,6 @@ const OrderArtWorkGroup = ({
                 rejectedWorkLog(order.id, LogId, data, workLogIndex, () => {
                   onClose();
                 });
-
-                // uploadCommentWorkLog(
-                //   order.id,
-                //   LogId,
-                //   data,
-                //   workLogIndex,
-                //   () => {
-
-                //   },
-                // );
               } else {
                 toast.warn('Please input reject reason!');
               }
@@ -238,7 +232,7 @@ const OrderArtWorkGroup = ({
                       {canNotifyCustomer && isNotifyStatus && (
                         <Button
                           color='primary'
-                          onClick={handleNotifyEmail}
+                          onClick={() => handleNotifyEmail(workLogIndex)}
                           className='cta cta2 mb-3 order_detail__notify'
                           type='button'>
                           Notify Customer

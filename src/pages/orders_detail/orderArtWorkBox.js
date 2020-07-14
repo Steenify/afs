@@ -155,7 +155,7 @@ const OrderArtWorkBox = ({
 
               {EXPORT_FILE.length > 0 && (
                 <OrderArtDelivery
-                  works={worklogGroup.EXPORT_FILE}
+                  works={[...(worklogGroup.EXPORT_FILE || [])]}
                   order={order}
                   images={allExportImage}
                 />

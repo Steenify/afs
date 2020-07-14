@@ -298,12 +298,16 @@ const OrderWorkLogItem = ({
             !Act_UPLOADED.length && 'd-none'
           }`}>
           <div className='activites__list'>
-            {Act_UPLOADED.map((act) => (
+            {Act_UPLOADED.map((act, index) => (
               <div
-                key={`order__worklog__${work.id}__act_UPLOADED_by_${act.actor}`}
-                className='activites__item UPLOADED'>
-                <strong>{act.actor} upload</strong>
-                <span> {dateTimeFromNow(act.lastActionDate)}</span>
+                className='activites__item UPLOADED'
+                key={`order__worklog__${work.id}__act_UPLOADED_by_${
+                  act.actor
+                }__${index.toString()}`}>
+                <div className='content'>
+                  <strong>{act.actor} upload</strong>
+                  <span> {dateTimeFromNow(act.lastActionDate)}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -400,12 +404,16 @@ const OrderWorkLogItem = ({
             !Act_NOTIFIED_CUSTOMER.length && 'd-none'
           }`}>
           <div className='activites__list'>
-            {Act_NOTIFIED_CUSTOMER.map((act) => (
+            {Act_NOTIFIED_CUSTOMER.map((act, index) => (
               <div
-                key={`order__worklog__${work.id}__act_NOTIFIED_CUSTOMER_by_${act.actor}`}
+                key={`order__worklog__${work.id}__act_NOTIFIED_CUSTOMER_by_${
+                  act.actor
+                }__${index.toString()}`}
                 className='activites__item NOTIFIED_CUSTOMER'>
-                <strong>{act.actor} notified customer </strong>
-                <span> {dateTimeFromNow(act.lastActionDate)}</span>
+                <div className='content'>
+                  <strong>{act.actor} notified the customer </strong>
+                  <span> {dateTimeFromNow(act.lastActionDate)}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -419,8 +427,10 @@ const OrderWorkLogItem = ({
               <div
                 key={`order__worklog__${work.id}__act_REJECTED_by_${act.actor}`}
                 className='activites__item REJECTED'>
-                <strong>{act.actor} rejected</strong>
-                <span> {dateTimeFromNow(act.lastActionDate)}</span>
+                <div className='content'>
+                  <strong>{act.actor} rejected</strong>
+                  <span> {dateTimeFromNow(act.lastActionDate)}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -434,8 +444,10 @@ const OrderWorkLogItem = ({
               <div
                 key={`order__worklog__${work.id}__act_APPROVED_by_${act.actor}`}
                 className='activites__item APPROVED'>
-                <strong>{act.actor} approved</strong>
-                <span> {dateTimeFromNow(act.lastActionDate)}</span>
+                <div className='content'>
+                  <strong>{act.actor} approved</strong>
+                  <span> {dateTimeFromNow(act.lastActionDate)}</span>
+                </div>
               </div>
             ))}
           </div>

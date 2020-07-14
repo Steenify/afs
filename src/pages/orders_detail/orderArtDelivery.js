@@ -74,7 +74,7 @@ const OrderArtDelivery = ({
 
       uploadFileWorkLog(
         order.id,
-        lastExport.id,
+        lastExport?.id,
         data,
         workLogIndex,
         files,
