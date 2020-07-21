@@ -9,18 +9,27 @@ import {
 export const ARTISTS_ACTIONS = {
   UPDATE_ARTIST_DETAIL: 'UPDATE_ARTIST_DETAIL',
   UPDATE_ARTIST_FILTERS_ACTION: 'UPDATE_ARTIST_FILTERS_ACTION',
-};
-
-export const updateArtistDetailAction = (payload) => (dispatch) => {
-  dispatch({
-    type: ARTISTS_ACTIONS.UPDATE_ARTIST_DETAIL,
-    payload,
-  });
+  UPDATE_ARTIST_ITEMS_ACTION: 'UPDATE_ARTIST_ITEMS_ACTION',
+  UPDATE_ALL_ARTIST_ITEMS_ACTION: 'UPDATE_ALL_ARTIST_ITEMS_ACTION',
 };
 
 export const updateArtistFilterAction = (payload) => (dispatch) => {
   dispatch({
     type: ARTISTS_ACTIONS.UPDATE_ARTIST_FILTERS_ACTION,
+    payload,
+  });
+};
+
+export const updateArtistItemsAction = (payload) => (dispatch) => {
+  dispatch({
+    type: ARTISTS_ACTIONS.UPDATE_ARTIST_ITEMS_ACTION,
+    payload,
+  });
+};
+
+export const updateAllArtistSelectedAction = (payload) => (dispatch) => {
+  dispatch({
+    type: ARTISTS_ACTIONS.UPDATE_ALL_ARTIST_ITEMS_ACTION,
     payload,
   });
 };
@@ -148,5 +157,12 @@ export const updateArtistDetailApiAction = (payload, cb) => (dispatch) => {
     onPending,
     onSuccess,
     onError,
+  });
+};
+
+export const updateArtistDetailAction = (payload) => (dispatch) => {
+  dispatch({
+    type: ARTISTS_ACTIONS.UPDATE_ARTIST_DETAIL,
+    payload,
   });
 };

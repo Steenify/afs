@@ -1,10 +1,10 @@
 import { request } from 'utils/request';
 
-const ARTIST_API = '/api/artists';
+const CONTACT_API = '/api/contacts';
 
-export const getAllArtistsService = (params) =>
+export const getAllContactsService = (params) =>
   request({
-    url: ARTIST_API,
+    url: CONTACT_API,
     method: 'GET',
     params,
   });

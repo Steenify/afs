@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const ArtistTotalDoneCell = ({ totalDone }) => {
-  return <div className='artist__totaldones'>{totalDone}</div>;
+  return <div className='artist__totaldones artists__cell'>{totalDone}</div>;
 };
 
 const mapStateToProps = ({ artists }, ownProps) => {

@@ -70,6 +70,35 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
+    case ARTISTS_ACTIONS.UPDATE_ARTIST_FILTERS_ACTION:
+      return update(state, {
+        filter: { $merge: payload },
+      });
+
+    case ARTISTS_ACTIONS.UPDATE_ARTIST_ITEMS_ACTION:
+      return update(state, {
+        data: {
+          items: {
+            [payload.id]: {
+              [payload.field]: {
+                $set: payload.value,
+              },
+            },
+          },
+        },
+      });
+
+    case ARTISTS_ACTIONS.UPDATE_ALL_ARTIST_ITEMS_ACTION:
+      return update(state, {
+        data: {
+          items: {
+            $apply: (items) => {
+              const res = mapDataList(items, 'selected', payload);
+              return res;
+            },
+          },
+        },
+      });
 
     // Detail Reducer
     case GET_ARTISTS_ACTION.PENDING:
@@ -98,10 +127,7 @@ const reducer = (state = initialState, action) => {
       return update(state, {
         artist: { $merge: payload },
       });
-    case ARTISTS_ACTIONS.UPDATE_ARTIST_FILTERS_ACTION:
-      return update(state, {
-        filter: { $merge: payload },
-      });
+
     default:
       return state;
   }

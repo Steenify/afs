@@ -6,9 +6,13 @@ import TableBody from 'components/common/tableBody';
 import TableHeader from 'components/common/tableHeader';
 
 import ArtistFullNameCell from './artistFullNameCell';
-import ArtistContactCell from './artistContactCell';
 import ArtistNoteCell from './artistNoteCell';
-import ArtistTotalProcessCell from './artistTotalProcessCell';
+import ArtistWorkLoadCell from './artistWorkLoadCell';
+
+import ArtistSelectedCell from './artistSelectedCell';
+import ArtistSelectedAll from './artistSelectedAll';
+
+import ArtistUpdateContactCell from './artistUpdateContactCell';
 import ArtistTotalDoneCell from './artistTotalDoneCell';
 
 class ArtistListTable extends PureComponent {
@@ -17,16 +21,29 @@ class ArtistListTable extends PureComponent {
 
     let columns = [
       {
+        accessor: 'selected',
+        Header: ArtistSelectedAll,
+        minWidth: 40,
+        Cell: ArtistSelectedCell,
+      },
+      {
         accessor: 'fullName',
         Header: 'Artist Name',
         minWidth: 100,
         Cell: ArtistFullNameCell,
       },
       {
-        accessor: 'email',
-        Header: 'Contact',
-        minWidth: 100,
-        Cell: ArtistContactCell,
+        accessor: 'workload',
+        Header: 'Work Load',
+        Cell: ArtistWorkLoadCell,
+      },
+      {
+        accessor: 'totalDone',
+        Header: 'Processed',
+        Cell: ArtistTotalDoneCell,
+        style: {
+          textAlign: 'right',
+        },
       },
       {
         accessor: 'note',
@@ -35,14 +52,10 @@ class ArtistListTable extends PureComponent {
         Cell: ArtistNoteCell,
       },
       {
-        accessor: 'totalInProgress',
-        Header: 'Progress',
-        Cell: ArtistTotalProcessCell,
-      },
-      {
-        accessor: 'totalDone',
-        Header: 'Processed',
-        Cell: ArtistTotalDoneCell,
+        accessor: 'uid',
+        Header: 'Contact',
+        minWidth: 100,
+        Cell: ArtistUpdateContactCell,
       },
     ];
 

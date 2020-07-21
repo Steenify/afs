@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const ArtistNoteCell = ({ note }) => {
-  return <div className='artist__note'>{note}</div>;
+  return <div className='artist__note artists__cell'>{note}</div>;
 };
 
 const mapStateToProps = ({ artists }, ownProps) => {

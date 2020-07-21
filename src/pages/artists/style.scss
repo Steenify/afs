@@ -36,4 +36,47 @@
 			}
 		}
 	}
+
+	&__cell {
+		font-size: 16px !important;
+	}
+
+	&__name {
+		white-space: nowrap;
+	}
+
+	&__workload {
+		.workload {
+			&__progress {
+				display: flex;
+			}
+			&__item {
+				background: #eceff3;
+				height: 20px;
+				width: 40px;
+				margin-right: 1px;
+
+				&:first-child {
+					border-top-left-radius: 8px;
+					border-bottom-left-radius: 8px;
+				}
+
+				&:last-child {
+					border-top-right-radius: 8px;
+					border-bottom-right-radius: 8px;
+				}
+
+				&.New {
+					background: #86efa0;
+				}
+
+				&.Doing {
+					background: #f12900;
+				}
+				&.Review {
+					background: #ffc000;
+				}
+			}
+		}
+	}
 }

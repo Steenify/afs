@@ -34,6 +34,10 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
         fbUrl: values?.fbUrl,
         igUrl: values?.igUrl,
         note: values?.note,
+        uid: values?.uid,
+        productQualityScore: values?.productQualityScore,
+        workingSpeedScore: values?.workingSpeedScore,
+        workingAttitudeScore: values?.workingAttitudeScore,
       },
       login: values?.login,
       email: values?.email,
@@ -125,6 +129,30 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
           component={Input}
           name='igUrl'
           label={'Instagram Url'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='uid'
+          label={'Contact UID'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='productQualityScore'
+          label={'Quality Score'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='workingSpeedScore'
+          label={'Speed Score'}
+        />
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='workingAttitudeScore'
+          label={'Attitude Score'}
         />
 
         <FormGroup className='form-group--inline'>

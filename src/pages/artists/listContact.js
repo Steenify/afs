@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Spinner } from 'reactstrap';
 import { debounce } from 'lodash';
 
-import { getAssignArtistsService } from 'services/artist';
+import { getAllContactsService } from 'services/contact';
 
 import { actionTryCatchCreator } from 'utils';
 
@@ -13,15 +13,15 @@ class ListContact extends Component {
     super();
     this.state = {
       isLoading: true,
-      artists: [],
+      contacts: [],
       text: '',
     };
 
-    this.handleGetArtist = debounce(this.handleGetArtist, 500);
+    this.handleGetContact = debounce(this.handleGetContact, 500);
   }
 
   componentDidMount() {
-    this.handleGetArtist();
+    this.handleGetContact();
   }
 
   handleChangeText = (e) => {
@@ -31,15 +31,16 @@ class ListContact extends Component {
         text: value,
       },
       () => {
-        this.handleGetArtist();
+        this.handleGetContact();
       },
     );
   };
 
-  handleGetArtist = () => {
+  handleGetContact = () => {
     const { text } = this.state;
     const params = {
       s: text,
+      channelName: 'TN Art Operation',
     };
 
     const onPending = () => {
@@ -49,19 +50,19 @@ class ListContact extends Component {
     };
     const onSuccess = (data) => {
       this.setState({
-        artists: data,
+        contacts: data,
         isLoading: false,
       });
     };
     const onError = (error) => {
-      console.log('handleGetArtist', JSON.stringify(error));
+      console.log('handleGetContact', JSON.stringify(error));
       this.setState({
         isLoading: false,
       });
     };
 
     actionTryCatchCreator({
-      service: getAssignArtistsService(params),
+      service: getAllContactsService(params),
       onPending,
       onSuccess,
       onError,
@@ -69,8 +70,8 @@ class ListContact extends Component {
   };
 
   render() {
-    const { artists, isLoading, text } = this.state;
-    const { onSave, assignedTo } = this.props;
+    const { contacts, isLoading, text } = this.state;
+    const { onSave, uid } = this.props;
     return (
       <div className='order__info p-3 list_artist_assign'>
         <div className='order__artist'>
@@ -94,55 +95,35 @@ class ListContact extends Component {
             ) : (
               <div>
                 <button
-                  onClick={() => onSave({ login: 'null' })}
+                  onClick={() => onSave({ exId: '' })}
                   key={`list__artist__login`}
                   className={`artist__select `}>
-                  <strong className='name'>
-                    ____________Select____________
-                  </strong>
+                  <strong className='name'>____Select____</strong>
                   <div className='status'></div>
                 </button>
-                {artists.map((art) => {
-                  const doing =
-                    (art?.numNewOrder || 0) +
-                    (art?.numSketch || 0) +
-                    (art?.numSketchEdit || 0) +
-                    (art?.numColorEdit || 0) +
-                    (art?.numColor || 0);
-
-                  const reviewing =
-                    (art?.numSketchReview || 0) +
-                    (art?.numColorReview || 0) +
-                    (art?.numExportFile || 0);
+                {contacts.map((cont) => {
                   return (
                     <button
-                      onClick={() => onSave(art)}
-                      key={`list__artist__${art.login}`}
+                      onClick={() => onSave(cont)}
+                      key={`list__artist__${cont.id}`}
                       className={`artist__select ${
-                        art.login === assignedTo?.login ? 'active' : ''
+                        cont.exId === uid ? 'active' : ''
                       }`}>
                       <div className='avt'>
                         <img
-                          src={`https://ui-avatars.com/api/?name=${
-                            art?.fullName || ''
-                          }${art?.firstName || ''}${art?.lastName || ''}`}
-                          alt='comments__author'
+                          className='w-100 h-100'
+                          style={{ objectFit: 'cover' }}
+                          src={cont.avatarUrl}
+                          alt='contact__author'
                         />
                       </div>
 
                       <div className='info'>
                         <strong className='name'>
-                          {art?.fullName ||
-                            `${art?.firstName} ${art?.lastName}`}
+                          {cont?.fullName ||
+                            `${cont?.firstName} ${cont?.lastName}`}
                         </strong>
-                        <div className='status'>
-                          {art.note && (
-                            <div className='note text-break'>{`${art.note}`}</div>
-                          )}
-                          <div className='currProgress'>
-                            Doing: {doing}, Reviewing: {reviewing}
-                          </div>
-                        </div>
+                        <div className='status'>{cont?.source}</div>
                       </div>
                     </button>
                   );

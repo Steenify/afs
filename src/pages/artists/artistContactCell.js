@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 const ArtistContactCell = ({ email, ig, phoneNumber, phonePrefix }) => {
   return (
-    <div className='artist__contact'>
+    <div className='artists__cell artist__contact'>
       {email && <div>Email: {email}</div>}
       {ig && <div>Instagram: {ig}</div>}
       {phoneNumber && (
