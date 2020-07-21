@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { isEmpty } from 'lodash';
 import Popover from 'react-tiny-popover';
 import { toast } from 'react-toastify';
-
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
-
-import { PERMITTIONS_CONFIG } from 'config';
-
 import {
   updateArtistItemsAction,
   updateArtistDetailApiAction,

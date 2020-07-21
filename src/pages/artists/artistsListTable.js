@@ -14,6 +14,9 @@ import ArtistSelectedAll from './artistSelectedAll';
 
 import ArtistUpdateContactCell from './artistUpdateContactCell';
 import ArtistTotalDoneCell from './artistTotalDoneCell';
+import ArtistWorkingQualityCell from './artistWorkingQualityCell';
+import ArtistWorkingSpeedCell from './artistWorkingSpeedCell';
+import ArtistWorkingAttitudeCell from './artistWorkingAttitudeCell';
 
 class ArtistListTable extends PureComponent {
   render() {
@@ -33,13 +36,30 @@ class ArtistListTable extends PureComponent {
         Cell: ArtistFullNameCell,
       },
       {
+        accessor: 'productQualityScore',
+        Header: 'Quality',
+
+        Cell: ArtistWorkingQualityCell,
+      },
+      {
+        accessor: 'workingSpeedScore',
+        Header: 'Speed',
+        Cell: ArtistWorkingSpeedCell,
+      },
+      {
+        accessor: 'workingAttitudeScore',
+        Header: 'Attitude',
+        Cell: ArtistWorkingAttitudeCell,
+      },
+      {
         accessor: 'workload',
         Header: 'Work Load',
+        minWidth: 150,
         Cell: ArtistWorkLoadCell,
       },
       {
         accessor: 'totalDone',
-        Header: 'Processed',
+        Header: 'Done',
         Cell: ArtistTotalDoneCell,
         style: {
           textAlign: 'right',
