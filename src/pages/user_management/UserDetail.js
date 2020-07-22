@@ -192,6 +192,13 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
           label={'Gender'}
         />
 
+        <Field
+          className='form-group--inline'
+          component={Input}
+          name='rawPassword'
+          label={'Raw Password'}
+        />
+
         <FormGroup className='form-group--inline'>
           <label>{t('baseApp.userManagement.status')}</label>
           <Field

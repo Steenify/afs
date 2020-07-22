@@ -17,6 +17,8 @@ import {
   UPDATE_COMMENT_WORK_LOG_ACTION,
   DELETE_FILE_DELIVERY_ACTION,
   DELETE_FILE_SUMMARY_ACTION,
+  GET_FB_MESSAGE_TEMPLATE_ACTION,
+  SENT_FB_MESSAGES_NOTIFY_ACTION,
 } from './actions';
 
 import {
@@ -40,6 +42,8 @@ const initialState = {
     emailTitle: '',
     selectedEmailTemplate: 0,
     currentWorkLogIndex: -1,
+    fbTemplate: '',
+    fbTemplateAttachments: [],
   },
 };
 
@@ -68,6 +72,14 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
+    case ORDER_DETAIL_ACTIONS.UPDATE_FB_TEMPLATE_NOTIFY:
+      return update(state, {
+        data: {
+          fbTemplate: {
+            $set: payload,
+          },
+        },
+      });
     case ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_NOTIFY:
       return update(state, {
         ui: {
@@ -86,6 +98,7 @@ const reducer = (state = initialState, action) => {
     case APPROVED_WORK_LOG_ACTION.PENDING:
     case REJECTED_WORK_LOG_ACTION.PENDING:
     case SENT_EMAIL_NOTIFY_ACTION.PENDING:
+    case SENT_FB_MESSAGES_NOTIFY_ACTION.PENDING:
       return update(state, {
         ui: {
           loading: { $set: true },
@@ -269,7 +282,8 @@ const reducer = (state = initialState, action) => {
       });
     }
 
-    case SENT_EMAIL_NOTIFY_ACTION.SUCCESS: {
+    case SENT_EMAIL_NOTIFY_ACTION.SUCCESS:
+    case SENT_FB_MESSAGES_NOTIFY_ACTION.SUCCESS: {
       const { currentWorkLogIndex } = state.data;
       return update(state, {
         ui: {
@@ -300,6 +314,7 @@ const reducer = (state = initialState, action) => {
     case APPROVED_WORK_LOG_ACTION.ERROR:
     case REJECTED_WORK_LOG_ACTION.ERROR:
     case SENT_EMAIL_NOTIFY_ACTION.ERROR:
+    case SENT_FB_MESSAGES_NOTIFY_ACTION.ERROR:
       return update(state, {
         ui: {
           loading: { $set: false },
@@ -352,6 +367,7 @@ const reducer = (state = initialState, action) => {
 
     // Get mail
     case GET_EMAIL_TEMPLATE_ACTION.PENDING:
+    case GET_FB_MESSAGE_TEMPLATE_ACTION.PENDING:
       return update(state, {
         ui: {
           isShowEmail: { $set: true },
@@ -380,8 +396,30 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
+    case GET_FB_MESSAGE_TEMPLATE_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          loadingEmail: { $set: false },
+        },
+        data: {
+          fbTemplate: {
+            $set: payload.data.content,
+          },
+          fbTemplateAttachments: {
+            $set: payload.data.attachments,
+          },
+          selectedEmailTemplate: {
+            $set: payload.templateId,
+          },
+          currentWorkLogIndex: {
+            $set: payload.workLogIndex,
+          },
+        },
+      });
+    }
 
     case GET_EMAIL_TEMPLATE_ACTION.ERROR:
+    case GET_FB_MESSAGE_TEMPLATE_ACTION.ERROR:
       return update(state, {
         ui: {
           isShowEmail: { $set: false },

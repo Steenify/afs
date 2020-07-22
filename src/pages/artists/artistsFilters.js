@@ -36,7 +36,7 @@ class ArtistFilters extends Component {
             <input
               type='text'
               value={text}
-              placeholder='Search orders'
+              placeholder='Search Artists'
               className='search__box form-control'
               onChange={this.handleChangeText}
             />

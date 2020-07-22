@@ -32,7 +32,7 @@
 		box-sizing: border-box;
 		box-shadow: 0px 0px 10px rgba(194, 201, 204, 0.5);
 		border-radius: 4px;
-		width: 310px;
+		width: 400px;
 	}
 
 	&__title {
@@ -126,6 +126,12 @@
 			line-height: 21px;
 			text-align: center;
 			color: #637381;
+		}
+	}
+
+	@include max-sm() {
+		&__content {
+			width: 310px;
 		}
 	}
 }
