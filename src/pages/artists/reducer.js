@@ -23,7 +23,7 @@ const initialState = {
     page: 0,
     size: 100,
     sizeMobile: 100,
-    sort: [{ id: 'id', desc: true }],
+    sort: [],
     text: '',
   },
   error: {
