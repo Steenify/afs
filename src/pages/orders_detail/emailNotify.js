@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -13,8 +13,9 @@ import { map } from 'lodash';
 import { toast } from 'react-toastify';
 
 import Button from 'components/common/button';
+import ImageGallery from 'components/common/imageGallery';
 
-import { getSelectedStatus } from 'utils';
+import { getSelectedStatus, getListImageUrl } from 'utils';
 
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
@@ -23,6 +24,9 @@ import {
   updateEmailNotifyAction,
   sendEmailNotifyAction,
   getEmailTemplateAction,
+  updateFbTemplateNotifyAction,
+  getFBMessageTemplateAction,
+  sendFBMessageNotifyAction,
 } from './actions';
 
 const EmaiNotify = (props) => {
@@ -38,8 +42,16 @@ const EmaiNotify = (props) => {
     selectedEmailTemplate,
     getEmailTemplate,
     emailTitle,
+    fbTemplate,
+    fbTemplateAttachments,
     customer,
+    updateFbTemplateNotify,
+    currentWorkLogIndex,
+    getFBMessageTemplate,
+    sendFBMessageNotify,
   } = props;
+
+  const [notifyType, setNotifyType] = useState('email');
 
   const { emailTemplates, name } = getSelectedStatus(order.status, status);
 
@@ -52,9 +64,30 @@ const EmaiNotify = (props) => {
     updateEmailNotify(value);
   };
 
+  const handleUpdateFBTemplate = (e) => {
+    const { value } = e.target;
+    updateFbTemplateNotify(value);
+  };
+
   const handleGetNewTemplate = (templateId) => {
-    if (selectedEmailTemplate !== templateId) {
-      getEmailTemplate(order.id, templateId);
+    getEmailTemplate(order.id, templateId, currentWorkLogIndex);
+    getFBMessageTemplate(order.id, templateId, currentWorkLogIndex);
+  };
+
+  const handleChangeTabType = (e) => {
+    const data = e.target.getAttribute('data');
+    setNotifyType(data || 'email');
+    if (data === 'facebook') {
+      const firstTemplate = (emailTemplates || [])[0] || {};
+      handleGetNewTemplate(firstTemplate?.id);
+    }
+  };
+
+  const handleSentNotify = () => {
+    if (notifyType === '') {
+      sendEmailNotify();
+    } else {
+      sendFBMessageNotify();
     }
   };
 
@@ -69,10 +102,36 @@ const EmaiNotify = (props) => {
         <ModalHeader toggle={toggle}>
           Email Notify
           <button type='button' className='modal-close' onClick={toggle}>
-            <CloseIcon />
+            <CloseIcon width='25px' height='25px' />
           </button>
         </ModalHeader>
         <ModalBody>
+          <div className='template__types'>
+            <div
+              className='btn-group w-100'
+              role='group'
+              aria-label='Notify Type'>
+              <button
+                type='button'
+                className={`btn btn-link template__type ${
+                  notifyType === 'email' && 'active'
+                }`}
+                data='email'
+                onClick={handleChangeTabType}>
+                Email
+              </button>
+              <button
+                type='button'
+                className={`btn btn-link template__type ${
+                  notifyType === 'facebook' && 'active'
+                }`}
+                data='facebook'
+                onClick={handleChangeTabType}>
+                Facebook
+              </button>
+            </div>
+          </div>
+
           <ul className='nav nav-pills template__list'>
             {map(emailTemplates, (template) => (
               <li
@@ -88,7 +147,11 @@ const EmaiNotify = (props) => {
               </li>
             ))}
           </ul>
-          <div className='template__content'>
+
+          <div
+            className={`template__content ${
+              notifyType !== 'email' ? 'd-none' : ''
+            }`}>
             {loadingEmail ? (
               <div
                 style={{ minHeight: '100px' }}
@@ -156,9 +219,42 @@ const EmaiNotify = (props) => {
               </div>
             )}
           </div>
+
+          <div
+            className={`template__content ${
+              notifyType === 'email' ? 'd-none' : ''
+            }`}>
+            {loadingEmail ? (
+              <div
+                style={{ minHeight: '100px' }}
+                className='order_detail__customer box d-flex align-items-center justify-content-center'>
+                <Spinner />
+              </div>
+            ) : (
+              <div className='template__message'>
+                <div className='content mb-3'>
+                  <textarea
+                    className='form-control'
+                    value={fbTemplate || ''}
+                    onChange={handleUpdateFBTemplate}
+                    cols='30'
+                    rows='10'
+                  />
+                </div>
+                <div className='title mb-3'>Attachments</div>
+                <div className='photos'>
+                  <ImageGallery
+                    images={getListImageUrl(fbTemplateAttachments)}
+                    alt={'Order notify attachments'}
+                    caption={'Order notify attachments'}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </ModalBody>
         <ModalFooter>
-          <Button color='primary' type='submit' onClick={sendEmailNotify}>
+          <Button color='primary' type='submit' onClick={handleSentNotify}>
             Send
           </Button>
           <Button color='secondary' onClick={toggle}>
@@ -176,7 +272,10 @@ const mapStateToProps = ({ orderDetail, order }) => ({
   selectedEmailTemplate: orderDetail.data.selectedEmailTemplate,
   email: orderDetail.data.email,
   emailTitle: orderDetail.data.emailTitle,
+  fbTemplate: orderDetail.data.fbTemplate,
+  fbTemplateAttachments: orderDetail.data.fbTemplateAttachments,
   customer: orderDetail.data.customer,
+  currentWorkLogIndex: orderDetail.data.currentWorkLogIndex,
 });
 
 const mapDispatchToProps = {
@@ -184,6 +283,9 @@ const mapDispatchToProps = {
   updateEmailNotify: updateEmailNotifyAction,
   sendEmailNotify: sendEmailNotifyAction,
   getEmailTemplate: getEmailTemplateAction,
+  updateFbTemplateNotify: updateFbTemplateNotifyAction,
+  getFBMessageTemplate: getFBMessageTemplateAction,
+  sendFBMessageNotify: sendFBMessageNotifyAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmaiNotify);

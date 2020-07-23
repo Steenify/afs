@@ -36,7 +36,7 @@ class ArtistFilters extends Component {
             <input
               type='text'
               value={text}
-              placeholder='Search orders'
+              placeholder='Search Artists'
               className='search__box form-control'
               onChange={this.handleChangeText}
             />
@@ -47,10 +47,9 @@ class ArtistFilters extends Component {
   }
 }
 
-const mapStateToProps = ({ artists, auth }) => {
+const mapStateToProps = ({ artists }) => {
   return {
     text: artists.filter.text,
-    accountInfo: auth.data.accountInfo,
   };
 };
 

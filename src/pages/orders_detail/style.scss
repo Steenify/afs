@@ -592,56 +592,109 @@
 	}
 
 	&__email {
-		.template__list {
-			margin-bottom: 20px;
+		.template {
+			&__list {
+				margin-bottom: 20px;
 
-			.nav-link {
-				border: 1px solid $main_color;
-				color: $main_color;
+				.nav-link {
+					border: 1px solid $main_color;
+					color: $main_color;
+					padding: 3px 15px;
+					border-radius: 15px;
+					&:hover,
+					&:active,
+					&.active {
+						background-color: $main_color;
+						color: $white;
+					}
 
+					&.SKETCH {
+						background: #fff3cd;
+						border-color: #fff3cd;
+						color: $black;
+					}
+
+					&.SKETCH_REVIEW {
+						background: #ffebe0;
+						border-color: #ffebe0;
+						color: $black;
+					}
+
+					&.COLOR {
+						background: #f4ebff;
+						border-color: #f4ebff;
+						color: $black;
+					}
+
+					&.COLOR_REVIEW {
+						background: #ffe5f4;
+						border-color: #ffe5f4;
+						color: $black;
+					}
+
+					&.EXPORT_FILE,
+					&.SEND_FILE {
+						background: #ffe8e8;
+						border-color: #ffe8e8;
+						color: $black;
+					}
+
+					&.DONE,
+					&.PAID {
+						background: #ececec;
+						border-color: #ececec;
+						color: $black;
+					}
+				}
+			}
+
+			&__types {
+				margin-bottom: 20px;
+			}
+
+			&__type {
+				border: 1px solid #e7e9ee;
+				color: #5c5c5c;
+				background: #e7e9ee;
+				padding: 8px 15px;
+				font-weight: 500;
+				font-size: 18px;
+				line-height: 21px;
+				text-align: center;
+				width: 100%;
+				max-width: 150px;
+
+				&.active,
 				&:hover,
-				&:active,
-				&.active {
-					background-color: $main_color;
+				&:active {
+					border: 1px solid $main_color;
 					color: $white;
+					background: $main_color;
+					text-decoration: none;
+				}
+			}
+
+			&__message {
+				.title {
+					font-weight: 600;
+					font-size: 18px;
+					line-height: 21px;
+					color: #141414;
 				}
 
-				&.SKETCH {
-					background: #fff3cd;
-					border-color: #fff3cd;
-					color: $black;
-				}
+				.images_gallerry__item {
+					width: 100px;
+					height: 100px;
+					overflow: hidden;
+					border-radius: 8px;
+					margin-right: 10px;
+					margin-bottom: 10px;
 
-				&.SKETCH_REVIEW {
-					background: #ffebe0;
-					border-color: #ffebe0;
-					color: $black;
-				}
-
-				&.COLOR {
-					background: #f4ebff;
-					border-color: #f4ebff;
-					color: $black;
-				}
-
-				&.COLOR_REVIEW {
-					background: #ffe5f4;
-					border-color: #ffe5f4;
-					color: $black;
-				}
-
-				&.EXPORT_FILE,
-				&.SEND_FILE {
-					background: #ffe8e8;
-					border-color: #ffe8e8;
-					color: $black;
-				}
-
-				&.DONE,
-				&.PAID {
-					background: #ececec;
-					border-color: #ececec;
-					color: $black;
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+					}
 				}
 			}
 		}

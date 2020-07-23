@@ -28,4 +28,4 @@ TableBody.defaultProps = {
   rowName: 'TableRow',
 };
 
-export default TableBody;
+export default React.memo(TableBody);

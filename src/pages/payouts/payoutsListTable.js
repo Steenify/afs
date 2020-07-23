@@ -18,54 +18,53 @@ import PayoutsEvidenceCell from './payoutsEvidenceCell';
 import PayoutsArtistCell from './payoutsArtistCell';
 import PayoutsTransactionCell from './payoutsTransactionCell';
 
+let columns = [
+  {
+    accessor: 'selected',
+    minWidth: 40,
+    Cell: PayoutsSelectedCell,
+    Header: PayoutsSelectedAll,
+  },
+  {
+    accessor: 'transactionId',
+    minWidth: 200,
+    Cell: PayoutsTransactionCell,
+    Header: 'Transaction',
+  },
+  {
+    accessor: 'createdDate',
+    minWidth: 100,
+    Cell: PayoutsDateCell,
+    Header: 'Date',
+  },
+  {
+    accessor: 'artist',
+    minWidth: 120,
+    Cell: PayoutsArtistCell,
+    Header: 'Artist',
+  },
+  {
+    accessor: 'totalPaid',
+    minWidth: 80,
+    Cell: PayoutsAmountCell,
+    Header: 'Amount',
+  },
+  {
+    accessor: 'note',
+    minWidth: 350,
+    Cell: PayoutsNoteCell,
+    Header: 'Note',
+  },
+  {
+    accessor: 'attachments',
+    minWidth: 100,
+    Cell: PayoutsEvidenceCell,
+    Header: 'Evidence',
+  },
+];
 class OrderListDesktop extends PureComponent {
   render() {
     const { loading, ids, accountInfo } = this.props;
-
-    let columns = [
-      {
-        accessor: 'selected',
-        minWidth: 40,
-        Cell: PayoutsSelectedCell,
-        Header: PayoutsSelectedAll,
-      },
-      {
-        accessor: 'transactionId',
-        minWidth: 200,
-        Cell: PayoutsTransactionCell,
-        Header: 'Transaction',
-      },
-      {
-        accessor: 'createdDate',
-        minWidth: 100,
-        Cell: PayoutsDateCell,
-        Header: 'Date',
-      },
-      {
-        accessor: 'artist',
-        minWidth: 120,
-        Cell: PayoutsArtistCell,
-        Header: 'Artist',
-      },
-      {
-        accessor: 'totalPaid',
-        minWidth: 80,
-        Cell: PayoutsAmountCell,
-        Header: 'Amount',
-      },
-      {
-        accessor: 'note',
-        minWidth: 350,
-        Cell: PayoutsNoteCell,
-        Header: 'Note',
-      },
-      {
-        accessor: 'attachments',
-        minWidth: 100,
-        Cell: PayoutsEvidenceCell,
-        Header: 'Evidence',
-      },
-    ];
 
     if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT)) {
       columns = remove(columns, (col) => col.Header !== 'Artist');

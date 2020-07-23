@@ -19,12 +19,15 @@ import {
   sentOrderEmailNotifyService,
   deleteFileDeliveryService,
   deleteFileSumaryService,
+  getOrderFBTemplateService,
+  sentOrderFBTemplateNotifyService,
 } from 'services/order';
 
 export const ORDER_DETAIL_ACTIONS = {
   UPDATE_ORDER_ITEM_SUMARIZE: 'UPDATE_ORDER_ITEM_SUMARIZE',
   UPDATE_SHOW_EMAIL_NOTIFY: 'UPDATE_SHOW_EMAIL_NOTIFY',
   UPDATE_EMAIL_NOTIFY: 'UPDATE_EMAIL_NOTIFY',
+  UPDATE_FB_TEMPLATE_NOTIFY: 'UPDATE_FB_TEMPLATE_NOTIFY',
 };
 
 export const updateOrderItemSumarizeAction = (payload) => (dispatch) => {
@@ -42,6 +45,13 @@ export const updateShowEmailNotifyAction = (payload) => (dispatch) => {
 export const updateEmailNotifyAction = (payload) => (dispatch) => {
   dispatch({
     type: ORDER_DETAIL_ACTIONS.UPDATE_EMAIL_NOTIFY,
+    payload,
+  });
+};
+
+export const updateFbTemplateNotifyAction = (payload) => (dispatch) => {
+  dispatch({
+    type: ORDER_DETAIL_ACTIONS.UPDATE_FB_TEMPLATE_NOTIFY,
     payload,
   });
 };
@@ -655,6 +665,96 @@ export const sendEmailNotifyAction = () => (dispatch, getState) => {
   };
   actionTryCatchCreator({
     service: sentOrderEmailNotifyService({ id: order.id, data: payload }),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const GET_FB_MESSAGE_TEMPLATE_ACTION = actionCreator(
+  'GET_FB_MESSAGE_TEMPLATE_ACTION',
+);
+export const getFBMessageTemplateAction = (id, templateId, workLogIndex) => (
+  dispatch,
+) => {
+  const onPending = () => {
+    dispatch({
+      type: GET_FB_MESSAGE_TEMPLATE_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: GET_FB_MESSAGE_TEMPLATE_ACTION.SUCCESS,
+      payload: { data, templateId, workLogIndex },
+    });
+  };
+  const onError = (error) => {
+    console.log(
+      'getFBMessageTemplateAction => onError -> error',
+      JSON.stringify(error),
+    );
+    dispatch({
+      type: GET_FB_MESSAGE_TEMPLATE_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: getOrderFBTemplateService({ id, templateId }),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const SENT_FB_MESSAGES_NOTIFY_ACTION = actionCreator(
+  'SENT_FB_MESSAGES_NOTIFY_ACTION',
+);
+export const sendFBMessageNotifyAction = () => (dispatch, getState) => {
+  const onPending = () => {
+    dispatch({
+      type: SENT_FB_MESSAGES_NOTIFY_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    const { accountInfo } = getState().auth.data;
+    const actor = `${accountInfo?.firstName || ''} ${
+      accountInfo?.lastName || ''
+    }`;
+
+    const activives = [
+      {
+        activityType: 'NOTIFIED_CUSTOMER',
+        actor,
+        lastActionDate: new Date(),
+      },
+    ];
+    dispatch({
+      type: SENT_FB_MESSAGES_NOTIFY_ACTION.SUCCESS,
+      payload: {
+        activives,
+      },
+    });
+    toast.dark('Notified Customer!');
+  };
+  const onError = (error) => {
+    console.log(
+      'sendFBMessageNotifyAction => onError -> error',
+      JSON.stringify(error),
+    );
+    dispatch({
+      type: SENT_FB_MESSAGES_NOTIFY_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  const { data } = getState().orderDetail;
+  const { fbTemplate, order } = data;
+  const payload = {
+    content: fbTemplate,
+  };
+  actionTryCatchCreator({
+    service: sentOrderFBTemplateNotifyService({ id: order.id, data: payload }),
     onPending,
     onSuccess,
     onError,

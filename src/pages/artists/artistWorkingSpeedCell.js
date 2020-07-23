@@ -71,7 +71,7 @@ const ArtistWorkingSpeedCell = ({
           <form action='' onSubmit={onSave}>
             <div className='order__budget'>
               <div className='data'>
-                <strong className='title mr-3'>Score</strong>
+                <strong className='title mr-3'>Speed</strong>
                 <select
                   className='form-control'
                   value={value}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -15,8 +15,6 @@ import { getArtistAction, updateArtistDetailAction } from './actions';
 
 const ArtistDetail = ({ getArtist, artist, updateArtistDetail }) => {
   const { login } = useParams();
-
-  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     getArtist(login);

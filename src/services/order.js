@@ -100,6 +100,19 @@ export const sentOrderEmailNotifyService = ({ id, data }) =>
     data,
   });
 
+export const getOrderFBTemplateService = ({ id, templateId }) =>
+  request({
+    url: `${ORDERS_API}/${id}/message/${templateId}`,
+    method: 'GET',
+  });
+
+export const sentOrderFBTemplateNotifyService = ({ id, data }) =>
+  request({
+    url: `${ORDERS_API}/${id}/message`,
+    method: 'POST',
+    data,
+  });
+
 export const uploadOrderWorkLogCommentService = ({ id, logId, data }) =>
   request({
     url: `${ORDERS_API}/${id}/work-logs/${logId}/comments`,
