@@ -32,15 +32,15 @@ let columns = [
     Cell: ArtistFullNameCell,
   },
   {
+    accessor: 'workingSpeedScore',
+    Header: 'Speed',
+    Cell: ArtistWorkingSpeedCell,
+  },
+  {
     accessor: 'productQualityScore',
     Header: 'Quality',
 
     Cell: ArtistWorkingQualityCell,
-  },
-  {
-    accessor: 'workingSpeedScore',
-    Header: 'Speed',
-    Cell: ArtistWorkingSpeedCell,
   },
   {
     accessor: 'workingAttitudeScore',
