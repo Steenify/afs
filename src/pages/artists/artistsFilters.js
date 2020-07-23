@@ -47,10 +47,9 @@ class ArtistFilters extends Component {
   }
 }
 
-const mapStateToProps = ({ artists, auth }) => {
+const mapStateToProps = ({ artists }) => {
   return {
     text: artists.filter.text,
-    accountInfo: auth.data.accountInfo,
   };
 };
 

@@ -65,7 +65,7 @@ const ArtistUpdateContactCell = ({
   );
 };
 
-const mapStateToProps = ({ artists, auth }, ownProps) => {
+const mapStateToProps = ({ artists }, ownProps) => {
   const { data } = ownProps;
   const { items } = artists.data;
   const item = items[data] || {};
@@ -73,7 +73,6 @@ const mapStateToProps = ({ artists, auth }, ownProps) => {
     id: item?.id || 0,
     uid: item?.uid || 0,
     login: item?.login || '',
-    accountInfo: auth.data.accountInfo,
   };
 };
 
