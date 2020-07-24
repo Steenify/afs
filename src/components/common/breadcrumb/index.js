@@ -1,6 +1,7 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { ReactComponent as ArrowLeft } from 'assets/img/chevonRight.svg';
 
@@ -8,6 +9,7 @@ import './style.scss';
 
 const BreadcrumbMenu = (props) => {
   const history = useHistory();
+  const { t } = useTranslation();
 
   const handleClick = (item) => {
     if (item.isBack) {
@@ -28,7 +30,7 @@ const BreadcrumbMenu = (props) => {
               </span>
             )}
             <span style={{ marginTop: '2px' }} className='text'>
-              {item.title}
+              {t(item.title)}
             </span>
           </BreadcrumbItem>
         ))}
