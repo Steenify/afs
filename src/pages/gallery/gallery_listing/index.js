@@ -47,9 +47,7 @@ const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, d
           <Spinner /> <span className='text'>Loading</span>
         </div>
       </div>
-      <div className='d-flex justify-content-center'>
-        <Paging items={data.totalPage} activePage={filterData.page + 1} onSelect={(p) => updateFilterAction({ page: p - 1 })} />
-      </div>
+
       <Masonry
         className={'gallery__wrapper mt-0'} // default ''
         options={masonryOptions} // default {}
@@ -73,6 +71,9 @@ const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, d
           </div>
         ))}
       </Masonry>
+      <div className='d-flex justify-content-center'>
+        <Paging items={data.totalPage} activePage={filterData.page + 1} onSelect={(p) => updateFilterAction({ page: p - 1 })} />
+      </div>
     </Layout>
   );
 };
