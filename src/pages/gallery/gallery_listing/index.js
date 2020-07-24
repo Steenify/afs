@@ -15,6 +15,7 @@ import Tags from './tags';
 import Filter from './filter';
 import Title from './title';
 import ImageLoadAble from 'components/common/imageLoadAble';
+import { useTranslation } from 'react-i18next';
 
 const masonryOptions = {
   transitionDuration: 1000,
@@ -25,6 +26,7 @@ const imagesLoadedOptions = { background: '.my-bg-image-el' };
 const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, data = initialState.data, getAllTagsAction, getArtworksAction, updateFilterAction }) => {
   const debounceGetArtworks = useCallback(debounce(getArtworksAction, 500), [getArtworksAction]);
   const history = useHistory();
+  const { t } = useTranslation();
 
   useEffect(() => {
     getAllTagsAction();
@@ -36,7 +38,7 @@ const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, d
   }, [debounceGetArtworks, filterData]);
 
   return (
-    <Layout className='order__container' documentTitle={WEB_ROUTES.GALLERY_LISTING.title} container fluid>
+    <Layout className='order__container' documentTitle={t(WEB_ROUTES.GALLERY_LISTING.title)} container fluid>
       <Title onClickUpload={() => {}} />
       <div className='gallery gallery__wrapper'>
         <Filter onChange={updateFilterAction} />
