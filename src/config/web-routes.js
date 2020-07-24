@@ -122,6 +122,12 @@ const WEB_ROUTES = {
     title: 'Transaction details',
     permission: 'VIEW_PAYOUT_DETAIL',
   },
+
+  GALLERY_LISTING: {
+    path: '/gallery',
+    title: 'Gallery', // 'baseApp.sidebar.galleryListing',
+    permission: '',
+  },
 };
 
 export default WEB_ROUTES;

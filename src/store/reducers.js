@@ -5,13 +5,14 @@ import { reducer as form } from 'redux-form';
 import user from 'pages/user_management/reducer';
 import auth from 'pages/auth/reducer';
 import role from 'pages/role_management/reducer';
-import customer from 'pages/customer/reducer';
+import customers from 'pages/customers/reducer';
 import notification from 'pages/notifications/reducer';
 import systemProperty from 'pages/system_property_management/reducer';
 import order from 'pages/orders/reducer';
 import orderDetail from 'pages/orders_detail/reducer';
 import artists from 'pages/artists/reducer';
 import payouts from 'pages/payouts/reducer';
+import gallery from 'pages/gallery/reducer';
 
 import { GLOBAL_ACTIONS, AUTHENTICATE_TOKEN } from './actions';
 
@@ -26,7 +27,7 @@ const initialState = {
     user: {},
     auth: {},
     role: {},
-    customer: {},
+    customers: {},
     notification: {},
     systemProperty: {},
     lang: 'en',
@@ -87,11 +88,12 @@ export default combineReducers({
   user,
   auth,
   role,
-  customer,
+  customers,
   notification,
   systemProperty,
   order,
   orderDetail,
   artists,
   payouts,
+  gallery,
 });
