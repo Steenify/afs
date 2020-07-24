@@ -10,10 +10,7 @@ const TableRowOrder = ({ columns, item, cellProps, getRowProps, data }) => {
           minWidth: column.minWidth || 0,
         });
         return (
-          <td
-            className={`${column.className || ''}`}
-            style={style}
-            key={`table__row__item__${item + column.accessor}`}>
+          <td className={`${column.className || ''}`} style={style} key={`table__row__item__${item + column.accessor}`}>
             <Cell data={item} {...cellProps} />
           </td>
         );
@@ -38,4 +35,4 @@ const mapStateToProps = ({ order }, ownProps) => {
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(TableRowOrder);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(TableRowOrder));

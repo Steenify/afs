@@ -38,13 +38,7 @@ export const actionCreator = (actionName, extraField = []) => {
   return actionType;
 };
 
-export const actionTryCatchCreator = async ({
-  service,
-  onPending,
-  onSuccess,
-  onError,
-  ignoreError,
-}) => {
+export const actionTryCatchCreator = async ({ service, onPending, onSuccess, onError, ignoreError }) => {
   const isIgnoreError = ignoreError || false;
   try {
     if (onPending) onPending();
@@ -57,11 +51,7 @@ export const actionTryCatchCreator = async ({
     if (status === 200) {
       if (onSuccess) onSuccess(data, headers, status);
     } else {
-      throw String(
-        `HTTP request with code ${status} \n ${
-          data.detail || data.message || ''
-        }`,
-      );
+      throw String(`HTTP request with code ${status} \n ${data.detail || data.message || ''}`);
     }
   } catch (error) {
     console.log('error', JSON.stringify(error));
@@ -82,19 +72,13 @@ export const actionTryCatchCreator = async ({
 
       const messages = error?.name || error?.response?.data?.title || '';
 
-      toast.error(
-        `${messages} \n ${
-          error?.response?.data?.detail || error?.response?.data?.message || ''
-        }`,
-      );
+      toast.error(`${messages} \n ${error?.response?.data?.detail || error?.response?.data?.message || ''}`);
     } else {
       toast.error(error);
     }
 
     const token = getData('token') || '';
-    Sentry.configureScope((scope) =>
-      scope.setUser({ token }).setLevel('API ERROR'),
-    );
+    Sentry.configureScope((scope) => scope.setUser({ token }).setLevel('API ERROR'));
     Sentry.captureException(error);
   }
 };
@@ -102,14 +86,11 @@ export const actionTryCatchCreator = async ({
 export const dateFormatString = 'DD/MM/YYYY';
 export const timeFormatString = 'hh:mm';
 
-export const dateStringFromDate = (date) =>
-  moment(date).format(dateFormatString);
+export const dateStringFromDate = (date) => moment(date).format(dateFormatString);
 
-export const timeStringFromDate = (date) =>
-  moment(date).format(timeFormatString);
+export const timeStringFromDate = (date) => moment(date).format(timeFormatString);
 
-export const dateTimeStringFromDate = (date) =>
-  moment(date).format(`${dateFormatString} ${timeFormatString}`);
+export const dateTimeStringFromDate = (date) => moment(date).format(`${dateFormatString} ${timeFormatString}`);
 
 export const dateTimeFromNow = (date) => moment(date).fromNow();
 export const dateTimeToDeadline = (date) => moment().to(date);
@@ -130,13 +111,7 @@ export const chunk = (inputArray = [], perChunk = 1) => {
   return result;
 };
 
-export const getUUID = () =>
-  ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
-    (
-      c ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-    ).toString(16),
-  );
+export const getUUID = () => ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
 
 const getUrlParameter = (name, search) => {
   const url = new URL('http://localhost' + search); // using a dummy url for parsing
@@ -179,10 +154,7 @@ export const getErrorMessage = (status, errorKey, message) => {
 export const buildSearchParam = (input = {}) => {
   var params = new URLSearchParams();
   params.append('page', input.page || 0);
-  params.append(
-    'size',
-    (typeof input.size === 'number' && parseInt(input.size)) || 20,
-  );
+  params.append('size', (typeof input.size === 'number' && parseInt(input.size)) || 20);
 
   if (input.sort && input.sort.length) {
     input.sort.forEach((item) => {
@@ -281,16 +253,10 @@ export const renderHTML = (text) => {
   }
   var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
   return text.replace(urlRegex, function (url) {
-    if (
-      url.indexOf('.jpg') > 0 ||
-      url.indexOf('.png') > 0 ||
-      url.indexOf('.gif') > 0
-    ) {
+    if (url.indexOf('.jpg') > 0 || url.indexOf('.png') > 0 || url.indexOf('.gif') > 0) {
       return '<img alt="TN_ARTST" src="' + url + '">';
     } else {
-      return (
-        '<a target="_blank" rel="noreferrer" href="' + url + '">' + url + '</a>'
-      );
+      return '<a target="_blank" rel="noreferrer" href="' + url + '">' + url + '</a>';
     }
   });
 };
@@ -310,21 +276,14 @@ export const formatMoney = (input) => {
   }).format(isNaN(input) ? 0 : input);
 };
 
-export const formatNumber = (
-  amount,
-  decimalCount = 2,
-  decimal = '.',
-  thousands = ',',
-) => {
+export const formatNumber = (amount, decimalCount = 2, decimal = '.', thousands = ',') => {
   try {
     decimalCount = Math.abs(decimalCount);
     decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
 
     const negativeSign = amount < 0 ? '-' : '';
 
-    let i = parseInt(
-      (amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)),
-    ).toString();
+    let i = parseInt((amount = Math.abs(Number(amount) || 0).toFixed(decimalCount))).toString();
     let j = i.length > 3 ? i.length % 3 : 0;
 
     return (
@@ -411,4 +370,10 @@ export const truncates = (string, maxLength = 50) => {
 
 export const isMobile = () => {
   return window.innerWidth < 780;
+};
+
+export const getTotalPage = (headers = {}, size = 100, sizeMobile = 100) => {
+  const totalItems = parseInt(headers['x-total-count'], 10);
+  const currSize = isMobile() ? sizeMobile : size;
+  return Math.ceil(totalItems / currSize);
 };

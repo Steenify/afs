@@ -2,7 +2,6 @@ import update from 'react-addons-update';
 import { mapDataList, mapDataByIds, isMobile } from 'utils';
 import {
   GET_CUSTOMER_LIST_ACTION,
-  GET_CUSTOMER_DETAIL_ACTION,
   CREATE_CUSTOMER_ACTION,
   UPDATE_CUSTOMER_ACTION,
   UPDATE_CUSTOMER_FILTER_ACTION,
@@ -22,23 +21,21 @@ const initialState = {
   },
   filter: {
     page: 0,
-    size: 10,
-    sizeMobile: 10,
+    size: 100,
+    sizeMobile: 100,
     sort: [],
     name: '',
-    customerGroups: '',
+    customerGroup: '',
     assignee: '',
     from: null,
     to: null,
   },
-  detail: {},
 };
 
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case GET_CUSTOMER_DETAIL_ACTION.PENDING:
     case UPDATE_CUSTOMER_ACTION.PENDING:
     case GET_CUSTOMER_LIST_ACTION.PENDING: {
       return update(state, {
@@ -47,8 +44,6 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
-
-    case GET_CUSTOMER_DETAIL_ACTION.ERROR:
     case UPDATE_CUSTOMER_ACTION.ERROR:
     case GET_CUSTOMER_LIST_ACTION.ERROR: {
       return update(state, {
@@ -78,15 +73,6 @@ const reducer = (state = initialState, action) => {
           totalPage: { $set: totalPage },
         },
       });
-
-    case GET_CUSTOMER_DETAIL_ACTION.SUCCESS:
-      return update(state, {
-        ui: {
-          loading: { $set: false },
-        },
-        detail: { $set: payload },
-      });
-
     case UPDATE_CUSTOMER_ACTION.SUCCESS:
       const newCustomers = [...state.list.customers];
       const index = newCustomers.findIndex((item) => item?.login === payload.login);

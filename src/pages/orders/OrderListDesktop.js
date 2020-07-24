@@ -31,9 +31,7 @@ class OrderListDesktop extends PureComponent {
     const isLated = now > deadline || false;
     const isNotDone = row.status !== 'DONE';
     return {
-      className: `${isLated && isNotDone ? 'lated' : ''} ${
-        !isNotDone && 'DONE'
-      }`,
+      className: `${isLated && isNotDone ? 'lated' : ''} ${!isNotDone && 'DONE'}`,
     };
   };
 
@@ -131,22 +129,14 @@ class OrderListDesktop extends PureComponent {
       },
     ];
 
-    if (
-      !accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO)
-    ) {
+    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO)) {
       columnsOrder = remove(columnsOrder, (col) => col.Header !== 'Customner');
     }
-    if (
-      !accountInfo?.permissions?.includes(
-        PERMITTIONS_CONFIG.VIEW_ORDER_SUBTOTAL,
-      )
-    ) {
+    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ORDER_SUBTOTAL)) {
       columnsOrder = remove(columnsOrder, (col) => col.Header !== 'Price');
     }
 
-    const isCanPay = accountInfo?.permissions?.includes(
-      PERMITTIONS_CONFIG.UPDATE_PAYMENT_STATUS,
-    );
+    const isCanPay = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_PAYMENT_STATUS);
 
     return (
       <div className={`order__wrapper relative`}>
@@ -157,13 +147,7 @@ class OrderListDesktop extends PureComponent {
         <div className='table-responsive bg-light steenify-table bg-white order__table'>
           <table className='table'>
             <TableHeader columns={columnsOrder} />
-            <TableBody
-              cellProps={{ goToDetail: this.goToDetail }}
-              getRowProps={this.getRowProps}
-              data={ids}
-              columns={columnsOrder}
-              rowName='TableRowOrder'
-            />
+            <TableBody cellProps={{ goToDetail: this.goToDetail }} getRowProps={this.getRowProps} data={ids} columns={columnsOrder} rowName='TableRowOrder' />
           </table>
         </div>
       </div>
@@ -179,7 +163,4 @@ const mapStateToProps = ({ order, auth }) => ({
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(OrderListDesktop));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderListDesktop));

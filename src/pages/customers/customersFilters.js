@@ -11,9 +11,9 @@ class CustomersFilters extends Component {
   }
 
   componentDidMount() {
-    const { updateCustomerFilterAction } = this.props;
+    const { updateCustomerFilterAction, name } = this.props;
     updateCustomerFilterAction({
-      name: '',
+      name,
       page: 0,
     });
   }
@@ -24,11 +24,11 @@ class CustomersFilters extends Component {
 
   handleChangeGroup = (e) => {
     const { updateCustomerFilterAction } = this.props;
-    const customerGroups = e.target.getAttribute('data');
+    const customerGroup = e.target.getAttribute('data');
     updateCustomerFilterAction({
       name: '',
       page: 0,
-      customerGroups,
+      customerGroup,
     });
   };
 
@@ -41,24 +41,24 @@ class CustomersFilters extends Component {
   };
 
   render() {
-    const { name } = this.props;
+    const { name, customerGroup } = this.props;
 
     return (
       <div className='customers__filters'>
         <div className='list_status d-none d-sm-block'>
-          <button data='' onClick={this.handleChangeGroup} key={`list__status_option__all`} className={`status active`}>
+          <button data='' onClick={this.handleChangeGroup} key={`list__status_option__all`} className={`status ${customerGroup === '' && 'active'}`}>
             All
           </button>
-          <button data='new' onClick={this.handleChangeGroup} key={`list__status_option__new`} className={`status`}>
+          <button data='NEW' onClick={this.handleChangeGroup} key={`list__status_option__new`} className={`status ${customerGroup === 'NEW' && 'active'}`}>
             New
           </button>
-          <button data='returning' onClick={this.handleChangeGroup} key={`list__status_option__returning`} className={`status`}>
+          <button data='RETURNING' onClick={this.handleChangeGroup} key={`list__status_option__returning`} className={`status ${customerGroup === 'RETURNING' && 'active'}`}>
             Returning
           </button>
         </div>
         <div className='filter__main'>
           <div className='filter__text'>
-            <input type='text' value={name} placeholder='Search customers' className='search__box form-control' onChange={this.handleChangeText} />
+            <input type='text' defaultValue={name} placeholder='Search customers' className='search__box form-control' onChange={this.handleChangeText} />
           </div>
         </div>
       </div>
@@ -69,6 +69,7 @@ class CustomersFilters extends Component {
 const mapStateToProps = ({ customers }) => {
   return {
     name: customers.filter.name,
+    customerGroup: customers.filter.customerGroup,
   };
 };
 

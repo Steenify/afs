@@ -6,6 +6,7 @@ import user from 'pages/user_management/reducer';
 import auth from 'pages/auth/reducer';
 import role from 'pages/role_management/reducer';
 import customers from 'pages/customers/reducer';
+import customerDetail from 'pages/customers_detail/reducer';
 import notification from 'pages/notifications/reducer';
 import systemProperty from 'pages/system_property_management/reducer';
 import order from 'pages/orders/reducer';
@@ -89,6 +90,7 @@ export default combineReducers({
   auth,
   role,
   customers,
+  customerDetail,
   notification,
   systemProperty,
   order,

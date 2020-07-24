@@ -48,7 +48,7 @@ export const getCustomerListAction = (params = {}) => async (dispatch, getState)
 const buildSearchParam = (input = {}) => {
   var params = new URLSearchParams();
   params.append('name', input.name || '');
-  params.append('customerGroups', input.customerGroups || '');
+  params.append('customerGroup', input.customerGroup?.toUpperCase?.() || '');
   params.append('page', input.page || 0);
   params.append('size', (input.size && parseInt(input.size)) || 20);
 
@@ -60,53 +60,6 @@ const buildSearchParam = (input = {}) => {
   }
 
   return params;
-};
-
-export const GET_CUSTOMER_DETAIL_ACTION = actionCreator('GET_CUSTOMER_DETAIL_ACTION');
-export const getCustomerDetailAction = (login, onSuccess, onError) => async (dispatch) => {
-  actionTryCatchCreator({
-    service: getCustomerDetailService(login),
-    onPending: () =>
-      dispatch({
-        type: GET_CUSTOMER_DETAIL_ACTION.PENDING,
-      }),
-    onSuccess: (data) => {
-      dispatch({
-        type: GET_CUSTOMER_DETAIL_ACTION.SUCCESS,
-        payload: data,
-      });
-      if (onSuccess) onSuccess(data);
-    },
-    onError: (error) => {
-      dispatch({
-        type: GET_CUSTOMER_DETAIL_ACTION.ERROR,
-        payload: error.response,
-      });
-      if (onError) onError(error.response);
-    },
-  });
-};
-
-export const UPDATE_CUSTOMER_ACTION = actionCreator('UPDATE_CUSTOMER_ACTION');
-export const updateCustomerAction = (params, onSuccess, onError) => async (dispatch) => {
-  actionTryCatchCreator({
-    service: updateCustomerService(params),
-    onPending: () => dispatch({ type: UPDATE_CUSTOMER_ACTION.PENDING }),
-    onSuccess: (data) => {
-      dispatch({
-        type: UPDATE_CUSTOMER_ACTION.SUCCESS,
-        payload: data,
-      });
-      if (onSuccess) onSuccess(data);
-    },
-    onError: (error) => {
-      dispatch({
-        type: UPDATE_CUSTOMER_ACTION.ERROR,
-        payload: error.response,
-      });
-      if (onError) onError(error.response);
-    },
-  });
 };
 
 export const CREATE_CUSTOMER_ACTION = actionCreator('CREATE_CUSTOMER_ACTION');
@@ -130,4 +83,26 @@ export const createCustomerAction = (params) => async (dispatch) => {
     });
     return e.response;
   }
+};
+
+export const UPDATE_CUSTOMER_ACTION = actionCreator('UPDATE_CUSTOMER_ACTION');
+export const updateCustomerAction = (params, onSuccess, onError) => async (dispatch) => {
+  actionTryCatchCreator({
+    service: updateCustomerService(params),
+    onPending: () => dispatch({ type: UPDATE_CUSTOMER_ACTION.PENDING }),
+    onSuccess: (data) => {
+      dispatch({
+        type: UPDATE_CUSTOMER_ACTION.SUCCESS,
+        payload: data,
+      });
+      if (onSuccess) onSuccess(data);
+    },
+    onError: (error) => {
+      dispatch({
+        type: UPDATE_CUSTOMER_ACTION.ERROR,
+        payload: error.response,
+      });
+      if (onError) onError(error.response);
+    },
+  });
 };
