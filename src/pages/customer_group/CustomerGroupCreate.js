@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  Alert,
-} from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Form, Alert } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
@@ -17,17 +10,13 @@ import Button from 'components/common/button';
 import { Select } from 'components/common/select';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
-import {
-  actCreateCustomerGroup,
-  actGetCustomerGroups,
-  actGetCustomers,
-} from './actions';
+import { actCreateCustomerGroup, actGetCustomerGroups, getCustomerListAction } from '../customers/actions';
 
 import { required } from 'utils/validation';
 
 const CustomerGroupCreate = ({ style, handleSubmit, ...props }) => {
   useEffect(() => {
-    props.actGetCustomers();
+    props.getCustomerListAction();
   }, []);
 
   const { className, errorRequest, reset, customers } = props;
@@ -90,20 +79,8 @@ const CustomerGroupCreate = ({ style, handleSubmit, ...props }) => {
             </button>
           </ModalHeader>
           <ModalBody>
-            <Field
-              className=''
-              component={Input}
-              name='name'
-              label={t('baseApp.customerGroup.name')}
-              validate={[required]}
-            />
-            <Field
-              className='form-group--textarea'
-              type='textarea'
-              component={Input}
-              name='description'
-              label={t('baseApp.customerGroup.description')}
-            />
+            <Field className='' component={Input} name='name' label={t('baseApp.customerGroup.name')} validate={[required]} />
+            <Field className='form-group--textarea' type='textarea' component={Input} name='description' label={t('baseApp.customerGroup.description')} />
             <Field
               className='...'
               component={Select}
@@ -151,7 +128,7 @@ const mapStateToProps = ({ customer }) => {
 export default connect(mapStateToProps, {
   actCreateCustomerGroup,
   actGetCustomerGroups,
-  actGetCustomers,
+  getCustomerListAction,
 })(
   reduxForm({
     form: 'customerGroupCreate',

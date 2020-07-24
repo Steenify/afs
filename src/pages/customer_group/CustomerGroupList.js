@@ -28,10 +28,7 @@ const CustomerList = (props) => {
       accessor: 'edit',
       Header: '',
       Cell: ({ row: { original } }) => (
-        <Button
-          tag={Link}
-          to={`/customer-group/detail/${original.id}`}
-          color='primary'>
+        <Button tag={Link} to={`/customer-group/detail/${original.id}`} color='primary'>
           {t('entity.action.edit')}
         </Button>
       ),
@@ -74,19 +71,12 @@ const CustomerList = (props) => {
   }
 
   if (!_.isEmpty(error) && error.message) {
-    return (
-      <UncontrolledAlert color='danger'>{error.message}</UncontrolledAlert>
-    );
+    return <UncontrolledAlert color='danger'>{error.message}</UncontrolledAlert>;
   }
 
   return (
     <div className='role-list'>
-      <DataTable
-        data={customerGroups}
-        columns={columns}
-        className='bg-white'
-        whiteListSort={['delete']}
-      />
+      <DataTable data={customerGroups} columns={columns} className='bg-white' whiteListSort={['delete']} />
     </div>
   );
 };

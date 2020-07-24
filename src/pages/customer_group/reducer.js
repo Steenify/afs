@@ -1,13 +1,5 @@
 import update from 'react-addons-update';
-import {
-  GET_CUSTOMERGROUPS,
-  GET_CUSTOMERGROUP,
-  CREATE_CUSTOMERGROUP,
-  GET_CUSTOMERS,
-  GET_CUSTOMER_DETAIL,
-  UPDATE_CUSTOMER,
-  UPDATE_SORT_CUSTOMER,
-} from './actions';
+import { GET_CUSTOMERGROUPS, GET_CUSTOMERGROUP, CREATE_CUSTOMERGROUP, GET_CUSTOMER_LIST_ACTION, GET_CUSTOMER_DETAIL_ACTION, UPDATE_CUSTOMER_ACTION } from './actions';
 
 const initialState = {
   ui: {
@@ -127,7 +119,7 @@ const reducer = (state = initialState, action) => {
         },
       });
 
-    case GET_CUSTOMERS.PENDING:
+    case GET_CUSTOMER_LIST_ACTION.PENDING:
       return update(state, {
         ui: {
           list: {
@@ -140,7 +132,7 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
-    case GET_CUSTOMERS.SUCCESS:
+    case GET_CUSTOMER_LIST_ACTION.SUCCESS:
       return update(state, {
         ui: {
           list: {
@@ -151,7 +143,7 @@ const reducer = (state = initialState, action) => {
           customers: { $set: payload.data },
         },
       });
-    case GET_CUSTOMERS.ERROR:
+    case GET_CUSTOMER_LIST_ACTION.ERROR:
       return update(state, {
         ui: {
           list: {
@@ -165,26 +157,24 @@ const reducer = (state = initialState, action) => {
         },
       });
 
-    case GET_CUSTOMER_DETAIL.PENDING:
+    case GET_CUSTOMER_DETAIL_ACTION.PENDING:
       return update(state, {});
-    case GET_CUSTOMER_DETAIL.SUCCESS:
+    case GET_CUSTOMER_DETAIL_ACTION.SUCCESS:
       return update(state, {
         detailCustomer: { $set: payload.data },
       });
-    case GET_CUSTOMER_DETAIL.ERROR:
+    case GET_CUSTOMER_DETAIL_ACTION.ERROR:
       return update(state, {});
 
-    case UPDATE_CUSTOMER.PENDING:
+    case UPDATE_CUSTOMER_ACTION.PENDING:
       return update(state, {
         ui: {
           edit: { loading: { $set: true } },
         },
       });
-    case UPDATE_CUSTOMER.SUCCESS:
+    case UPDATE_CUSTOMER_ACTION.SUCCESS:
       const newCustomers = [...state.data.customers];
-      const index = newCustomers.findIndex(
-        (item) => item.login === payload.data.login,
-      );
+      const index = newCustomers.findIndex((item) => item.login === payload.data.login);
       return update(state, {
         ui: {
           edit: { loading: { $set: false } },
@@ -195,7 +185,7 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
-    case UPDATE_CUSTOMER.ERROR:
+    case UPDATE_CUSTOMER_ACTION.ERROR:
       return update(state, {
         ui: {
           edit: { loading: { $set: false } },
@@ -204,14 +194,6 @@ const reducer = (state = initialState, action) => {
           message: { $set: (payload && payload.statusText) || '' },
         },
       });
-
-    case UPDATE_SORT_CUSTOMER.SUCCESS:
-      return update(state, {
-        data: {
-          sortColumns: { $set: payload },
-        },
-      });
-
     default:
       return state;
   }
