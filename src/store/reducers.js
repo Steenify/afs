@@ -5,7 +5,7 @@ import { reducer as form } from 'redux-form';
 import user from 'pages/user_management/reducer';
 import auth from 'pages/auth/reducer';
 import role from 'pages/role_management/reducer';
-import customer from 'pages/customer/reducer';
+import customers from 'pages/customers/reducer';
 import notification from 'pages/notifications/reducer';
 import systemProperty from 'pages/system_property_management/reducer';
 import order from 'pages/orders/reducer';
@@ -27,7 +27,7 @@ const initialState = {
     user: {},
     auth: {},
     role: {},
-    customer: {},
+    customers: {},
     notification: {},
     systemProperty: {},
     lang: 'en',
@@ -88,7 +88,7 @@ export default combineReducers({
   user,
   auth,
   role,
-  customer,
+  customers,
   notification,
   systemProperty,
   order,

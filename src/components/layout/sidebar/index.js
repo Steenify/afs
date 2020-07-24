@@ -12,7 +12,7 @@ import { ReactComponent as Logo } from 'assets/img/logo.svg';
 import { ReactComponent as UserIcon } from 'assets/img/user.svg';
 // import { ReactComponent as Mensenger } from 'assets/img/Mensenger.svg';
 import { ReactComponent as POS } from 'assets/img/pos.svg';
-// import { ReactComponent as CustomerIcon } from 'assets/img/customer.svg';
+import { ReactComponent as CustomerIcon } from 'assets/img/customer.svg';
 import { ReactComponent as Artist } from 'assets/img/Artist.svg';
 import { ReactComponent as Settings } from 'assets/img/settings.svg';
 import { ReactComponent as Payouts } from 'assets/img/payouts.svg';
@@ -30,8 +30,7 @@ const SideBar = (props) => {
   const { accountInfo, orderStatus, toggleMenuAction } = props;
   const { permissions } = accountInfo;
 
-  const canSetting =
-    permissions?.includes(PERMITTIONS_CONFIG.ACCESS_SETTING) || false;
+  const canSetting = permissions?.includes(PERMITTIONS_CONFIG.ACCESS_SETTING) || false;
 
   const totalOrders = reduce(
     orderStatus,
@@ -56,8 +55,7 @@ const SideBar = (props) => {
           ...WEB_ROUTES.ORDERS,
           title: (
             <div className='order'>
-              <span className='name'>{WEB_ROUTES.ORDERS.title}</span>{' '}
-              <span className='number'>{totalOrders}</span>
+              <span className='name'>{WEB_ROUTES.ORDERS.title}</span> <span className='number'>{totalOrders}</span>
             </div>
           ),
           icon: <POS />,
@@ -78,14 +76,14 @@ const SideBar = (props) => {
           icon: <Artist />,
         },
         {
+          ...WEB_ROUTES.CUSTOMER_LIST,
+          title: t(WEB_ROUTES.CUSTOMER_LIST.title),
+          icon: <CustomerIcon />,
+        },
+        {
           ...WEB_ROUTES.GALLERY_LISTING,
           icon: <Package />,
         },
-        // {
-        //   ...WEB_ROUTES.CUSTOMER_LIST,
-        //   title: t(WEB_ROUTES.CUSTOMER_LIST.title),
-        //   icon: <CustomerIcon />,
-        // },
 
         // {
         //   ...WEB_ROUTES.CUSTOMER_GROUP_LIST,
@@ -116,38 +114,21 @@ const SideBar = (props) => {
 
         {menus.map((item) => (
           <div key={item.group} className='sidebar__group'>
-            {item.group && item.group !== 'Main' && (
-              <div className='sidebar__heading'>{item.group}</div>
-            )}
+            {item.group && item.group !== 'Main' && <div className='sidebar__heading'>{item.group}</div>}
             <ul className='sidebar__links'>
               <li className='item'>
                 {item.links.map((link) => {
                   if (link.isExternal) {
                     return (
-                      <a
-                        key={link.path}
-                        className='link link--icon'
-                        href={link.path}
-                        target='_blank'
-                        rel='noreferrer'>
+                      <a key={link.path} className='link link--icon' href={link.path} target='_blank' rel='noreferrer'>
                         <span className='icon'>{link.icon}</span>
                         <span className='text'>{link.title}</span>
                       </a>
                     );
                   }
-                  if (
-                    !link.permission ||
-                    (link.permission &&
-                      permissions &&
-                      permissions.indexOf(link.permission) !== -1)
-                  ) {
+                  if (!link.permission || (link.permission && permissions && permissions.indexOf(link.permission) !== -1)) {
                     return (
-                      <NavLink
-                        exact={true}
-                        onClick={handleClickNav}
-                        to={link.path}
-                        className={`link ${link.icon ? 'link--icon' : ''}`}
-                        key={link.path}>
+                      <NavLink exact={true} onClick={handleClickNav} to={link.path} className={`link ${link.icon ? 'link--icon' : ''}`} key={link.path}>
                         <span className='icon'>{link.icon}</span>
                         <span className='text'>{link.title}</span>
                       </NavLink>
@@ -162,10 +143,7 @@ const SideBar = (props) => {
 
         {canSetting && (
           <div className='sidebar__settings'>
-            <NavLink
-              exact={true}
-              to={WEB_ROUTES.SETTINGS.path}
-              className='link link--icon'>
+            <NavLink exact={true} to={WEB_ROUTES.SETTINGS.path} className='link link--icon'>
               <span className='icon'>
                 <Settings />
               </span>

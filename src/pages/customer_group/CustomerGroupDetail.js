@@ -17,7 +17,7 @@ import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
 import {
   actGetCustomerGroup,
-  actGetCustomers,
+  // getCustomerListAction,
   actUpdateCustomerGroup,
 } from './actions';
 
@@ -31,7 +31,7 @@ const CustomerGroupDetail = ({ style, handleSubmit, ...props }) => {
   useEffect(() => {
     props.actGetCustomerGroup(id).then(() => {
       // Get list of customer
-      props.actGetCustomers();
+      // props.getCustomerListAction();
     });
   }, []);
 
@@ -74,10 +74,7 @@ const CustomerGroupDetail = ({ style, handleSubmit, ...props }) => {
   };
 
   return (
-    <Layout
-      documentTitle={t(WEB_ROUTES.CUSTOMER_GROUP_DETAIL.title)}
-      container
-      fluid>
+    <Layout documentTitle={t(WEB_ROUTES.CUSTOMER_GROUP_DETAIL.title)} container fluid>
       <Breadcrumb
         data={[
           {
@@ -92,27 +89,12 @@ const CustomerGroupDetail = ({ style, handleSubmit, ...props }) => {
           },
         ]}
       />
-      <PageTitle
-        title={t(WEB_ROUTES.CUSTOMER_GROUP_DETAIL.title)}
-        className='mb-0 mr-3'></PageTitle>
+      <PageTitle title={t(WEB_ROUTES.CUSTOMER_GROUP_DETAIL.title)} className='mb-0 mr-3'></PageTitle>
 
       <Form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: 27 }}>
-        {errorRequest && errorRequest.message && (
-          <Alert color='danger'>{errorRequest.message}</Alert>
-        )}
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='name'
-          label={t('baseApp.customerGroup.name')}
-        />
-        <Field
-          className='form-group--inline form-group--textarea'
-          type='textarea'
-          component={Input}
-          name='description'
-          label={t('baseApp.customerGroup.description')}
-        />
+        {errorRequest && errorRequest.message && <Alert color='danger'>{errorRequest.message}</Alert>}
+        <Field className='form-group--inline' component={Input} name='name' label={t('baseApp.customerGroup.name')} />
+        <Field className='form-group--inline form-group--textarea' type='textarea' component={Input} name='description' label={t('baseApp.customerGroup.description')} />
         <Field
           className='form-group--inline'
           component={Select}
@@ -139,9 +121,7 @@ const CustomerGroupDetail = ({ style, handleSubmit, ...props }) => {
             }}>
             <ArrowLeftIcon />
             &nbsp;
-            <span className='d-none d-md-inline'>
-              {t('entity.action.back')}
-            </span>
+            <span className='d-none d-md-inline'>{t('entity.action.back')}</span>
           </Button>
           &nbsp;
           <Button
@@ -170,9 +150,7 @@ const mapStateToProps = ({ customer }) => {
       id: customer.detailGroup.id,
       name: customer.detailGroup.name,
       description: customer.detailGroup.description,
-      users:
-        customer.detailGroup.users &&
-        customer.detailGroup.users.map((item) => item.id),
+      users: customer.detailGroup.users && customer.detailGroup.users.map((item) => item.id),
     },
     customers: customer.data.customers,
   };
@@ -180,7 +158,7 @@ const mapStateToProps = ({ customer }) => {
 
 export default connect(mapStateToProps, {
   actGetCustomerGroup,
-  actGetCustomers,
+  // getCustomerListAction,
   actUpdateCustomerGroup,
 })(
   reduxForm({

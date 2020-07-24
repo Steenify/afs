@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route as PublicRoute,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route as PublicRoute } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ToastContainer, Flip } from 'react-toastify';
 import { connect } from 'react-redux';
@@ -24,9 +20,9 @@ import RoleManagement from 'pages/role_management';
 import RoleDetails from 'pages/role_management/RoleDetails';
 import PermissionManagement from 'pages/role_management/PermissionManagement';
 import PermissionDetails from 'pages/role_management/PermissionDetails';
-import CustomerManagement from 'pages/customer';
-import CustomerDetail from 'pages/customer/CustomerDetail';
-import CustomerGroupDetail from 'pages/customer/CustomerGroupDetail';
+import CustomerManagement from 'pages/customers';
+import CustomerDetail from 'pages/customers/customersDetail';
+import CustomerGroupDetail from 'pages/customer_group/CustomerGroupDetail';
 import Notifications from 'pages/notifications';
 import SystemPropertiesManagement from 'pages/system_property_management';
 import SystemPropertyDetail from 'pages/system_property_management/SystemPropertyDetail';
@@ -53,8 +49,7 @@ import CustomerChat from 'vendor/facebookChat';
 const App = ({ getOrderCountByStatus, accountInfo }) => {
   const isLogged = !isEmpty(accountInfo);
 
-  const isArtist =
-    accountInfo?.authorities?.includes(mapRoles.ROLE_ARTIST) || false;
+  const isArtist = accountInfo?.authorities?.includes(mapRoles.ROLE_ARTIST) || false;
 
   useEffect(() => {
     if (isLogged) {
@@ -67,68 +62,15 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
       <Router>
         <Switch>
           <Route exact path='/signin' component={Signin} />
-          <Route
-            exact
-            path='/change-password'
-            isPrivate={true}
-            component={ChangePassword}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.USER_LIST.path}
-            component={UserManagement}
-            isPrivate={true}
-            role={WEB_ROUTES.USER_LIST.permission}
-          />
-          <Route
-            exact
-            path='/user/detail/:login'
-            component={UserDetail}
-            isPrivate={true}
-            role={WEB_ROUTES.USER_DETAIL.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.USER_ROLE.path}
-            component={RoleManagement}
-            isPrivate={true}
-            role={WEB_ROUTES.USER_ROLE.permission}
-          />
-          <Route
-            exact
-            path='/user/role/detail/:id'
-            component={RoleDetails}
-            isPrivate={true}
-            role={WEB_ROUTES.USER_ROLE.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.USER_PERMISSION.path}
-            component={PermissionManagement}
-            isPrivate={true}
-            role={WEB_ROUTES.USER_PERMISSION.permission}
-          />
-          <Route
-            exact
-            path='/user/permission/detail/:id'
-            component={PermissionDetails}
-            isPrivate={true}
-            role={WEB_ROUTES.USER_PERMISSION.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.CUSTOMER_LIST.path}
-            component={CustomerManagement}
-            isPrivate={true}
-            role={WEB_ROUTES.CUSTOMER_LIST.permission}
-          />
-          <Route
-            exact
-            path='/customer/detail/:login'
-            component={CustomerDetail}
-            isPrivate={true}
-            role={WEB_ROUTES.CUSTOMER_DETAIL.permission}
-          />
+          <Route exact path='/change-password' isPrivate={true} component={ChangePassword} />
+          <Route exact path={WEB_ROUTES.USER_LIST.path} component={UserManagement} isPrivate={true} role={WEB_ROUTES.USER_LIST.permission} />
+          <Route exact path='/user/detail/:login' component={UserDetail} isPrivate={true} role={WEB_ROUTES.USER_DETAIL.permission} />
+          <Route exact path={WEB_ROUTES.USER_ROLE.path} component={RoleManagement} isPrivate={true} role={WEB_ROUTES.USER_ROLE.permission} />
+          <Route exact path='/user/role/detail/:id' component={RoleDetails} isPrivate={true} role={WEB_ROUTES.USER_ROLE.permission} />
+          <Route exact path={WEB_ROUTES.USER_PERMISSION.path} component={PermissionManagement} isPrivate={true} role={WEB_ROUTES.USER_PERMISSION.permission} />
+          <Route exact path='/user/permission/detail/:id' component={PermissionDetails} isPrivate={true} role={WEB_ROUTES.USER_PERMISSION.permission} />
+          <Route exact path={WEB_ROUTES.CUSTOMER_LIST.path} component={CustomerManagement} isPrivate={true} role={WEB_ROUTES.CUSTOMER_LIST.permission} />
+          <Route exact path='/customer/detail/:login' component={CustomerDetail} isPrivate={true} role={WEB_ROUTES.CUSTOMER_DETAIL.permission} />
           {/* <Route
             exact
             path={WEB_ROUTES.CUSTOMER_GROUP_LIST.path}
@@ -136,34 +78,10 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
             isPrivate={true}
             role={WEB_ROUTES.CUSTOMER_GROUP_LIST.permission}
           /> */}
-          <Route
-            exact
-            path={WEB_ROUTES.CUSTOMER_GROUP_DETAIL.path}
-            component={CustomerGroupDetail}
-            isPrivate={true}
-            role={WEB_ROUTES.CUSTOMER_GROUP_DETAIL.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.NOTIFICATION_LIST.path}
-            component={Notifications}
-            isPrivate={true}
-            role={WEB_ROUTES.NOTIFICATION_LIST.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.SYSTEM_PROPERTY_LIST.path}
-            component={SystemPropertiesManagement}
-            isPrivate={true}
-            role={WEB_ROUTES.SYSTEM_PROPERTY_LIST.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.SYSTEM_PROPERTY_DETAIL.path}
-            component={SystemPropertyDetail}
-            isPrivate={true}
-            role={WEB_ROUTES.SYSTEM_PROPERTY_DETAIL.permission}
-          />
+          <Route exact path={WEB_ROUTES.CUSTOMER_GROUP_DETAIL.path} component={CustomerGroupDetail} isPrivate={true} role={WEB_ROUTES.CUSTOMER_GROUP_DETAIL.permission} />
+          <Route exact path={WEB_ROUTES.NOTIFICATION_LIST.path} component={Notifications} isPrivate={true} role={WEB_ROUTES.NOTIFICATION_LIST.permission} />
+          <Route exact path={WEB_ROUTES.SYSTEM_PROPERTY_LIST.path} component={SystemPropertiesManagement} isPrivate={true} role={WEB_ROUTES.SYSTEM_PROPERTY_LIST.permission} />
+          <Route exact path={WEB_ROUTES.SYSTEM_PROPERTY_DETAIL.path} component={SystemPropertyDetail} isPrivate={true} role={WEB_ROUTES.SYSTEM_PROPERTY_DETAIL.permission} />
           {/* <Route
           exact
           path={WEB_ROUTES.HOME.path}
@@ -172,77 +90,18 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
           isPrivate={true}
         /> */}
 
-          <Route
-            exact
-            isPrivate={true}
-            path={WEB_ROUTES.ORDERS.path}
-            role={WEB_ROUTES.ORDERS.permission}
-            component={Orders}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.ORDERS_DETAIL.path}
-            component={OrderDetail}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.SETTINGS.path}
-            component={Settings}
-            isPrivate={true}
-            role={WEB_ROUTES.SETTINGS.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.ARTISTS.path}
-            component={Artists}
-            isPrivate={true}
-            role={WEB_ROUTES.ARTISTS.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.ARTISTS_DETAIL.path}
-            component={ArtistDetail}
-            isPrivate={true}
-            role={WEB_ROUTES.ARTISTS_DETAIL.permission}
-          />
+          <Route exact isPrivate={true} path={WEB_ROUTES.ORDERS.path} role={WEB_ROUTES.ORDERS.permission} component={Orders} />
+          <Route exact path={WEB_ROUTES.ORDERS_DETAIL.path} component={OrderDetail} />
+          <Route exact path={WEB_ROUTES.SETTINGS.path} component={Settings} isPrivate={true} role={WEB_ROUTES.SETTINGS.permission} />
+          <Route exact path={WEB_ROUTES.ARTISTS.path} component={Artists} isPrivate={true} role={WEB_ROUTES.ARTISTS.permission} />
+          <Route exact path={WEB_ROUTES.ARTISTS_DETAIL.path} component={ArtistDetail} isPrivate={true} role={WEB_ROUTES.ARTISTS_DETAIL.permission} />
 
-          <Route
-            exact
-            path={WEB_ROUTES.CS.path}
-            component={CS}
-            isPrivate={true}
-            role={WEB_ROUTES.CS.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.CS_DETAIL.path}
-            component={CSDetail}
-            isPrivate={true}
-            role={WEB_ROUTES.CS_DETAIL.permission}
-          />
+          <Route exact path={WEB_ROUTES.CS.path} component={CS} isPrivate={true} role={WEB_ROUTES.CS.permission} />
+          <Route exact path={WEB_ROUTES.CS_DETAIL.path} component={CSDetail} isPrivate={true} role={WEB_ROUTES.CS_DETAIL.permission} />
 
-          <Route
-            exact
-            path={WEB_ROUTES.PAYOUTS.path}
-            component={Payouts}
-            isPrivate={true}
-            role={WEB_ROUTES.PAYOUTS.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.PAYOUTS_DETAIL.path}
-            component={PayoutsDetail}
-            isPrivate={true}
-            role={WEB_ROUTES.PAYOUTS_DETAIL.permission}
-          />
-          <Route
-            exact
-            path={WEB_ROUTES.GALLERY_LISTING.path}
-            component={GalleryListing}
-            isPrivate={true}
-            role={WEB_ROUTES.GALLERY_LISTING.permission}
-          />
-
+          <Route exact path={WEB_ROUTES.PAYOUTS.path} component={Payouts} isPrivate={true} role={WEB_ROUTES.PAYOUTS.permission} />
+          <Route exact path={WEB_ROUTES.PAYOUTS_DETAIL.path} component={PayoutsDetail} isPrivate={true} role={WEB_ROUTES.PAYOUTS_DETAIL.permission} />
+          <Route exact path={WEB_ROUTES.GALLERY_LISTING.path} component={GalleryListing} isPrivate={true} role={WEB_ROUTES.GALLERY_LISTING.permission} />
           <PublicRoute exact path={WEB_ROUTES.POLICY.path}>
             <PrivacyPolicy />
           </PublicRoute>
@@ -256,22 +115,9 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
 
       <FirerBaseApp />
 
-      <ToastContainer
-        position='bottom-left'
-        transition={Flip}
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover={false}
-      />
+      <ToastContainer position='bottom-left' transition={Flip} autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover={false} />
 
-      {isArtist && isLogged && (
-        <CustomerChat pageId='101946964870983' appId='1171193606568391' />
-      )}
+      {isArtist && isLogged && <CustomerChat pageId='101946964870983' appId='1171193606568391' />}
     </>
   );
 };
