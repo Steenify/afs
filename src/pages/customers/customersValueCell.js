@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const CustomersValueCell = ({ totalSpent }) => {
-  return <div className='customers__value'>{totalSpent}</div>;
+  return <div className='customers__value'>{totalSpent && `$${totalSpent}`}</div>;
 };
 
 const mapStateToProps = ({ customers }, ownProps) => {
@@ -10,7 +10,7 @@ const mapStateToProps = ({ customers }, ownProps) => {
   const { items } = customers.list;
   const item = items[data] || {};
   return {
-    totalSpent: item?.customerExtension?.totalSpent || '',
+    totalSpent: item?.totalSpent || '',
   };
 };
 

@@ -2,7 +2,7 @@
   "baseApp": {
     "customerManagement": {
       "home": {
-        "title": "Customer",
+        "title": "Customers",
         "createLabel": "Create a new Customer",
         "createOrEditLabel": "Create or edit a Customer",
         "notFound": "No Customers found"
@@ -14,7 +14,8 @@
         "question": "Are you sure you want to delete Customer {{ id }}?"
       },
       "detail": {
-        "title": "Customer"
+        "title": "Customer",
+        "edit": "Edit"
       },
       "login": "Login",
       "firstName": "First name",

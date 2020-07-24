@@ -11,9 +11,9 @@ class CustomersFilters extends Component {
   }
 
   componentDidMount() {
-    const { updateCustomerFilterAction } = this.props;
+    const { updateCustomerFilterAction, name } = this.props;
     updateCustomerFilterAction({
-      name: '',
+      name,
       page: 0,
     });
   }
@@ -58,7 +58,7 @@ class CustomersFilters extends Component {
         </div>
         <div className='filter__main'>
           <div className='filter__text'>
-            <input type='text' value={name} placeholder='Search customers' className='search__box form-control' onChange={this.handleChangeText} />
+            <input type='text' defaultValue={name} placeholder='Search customers' className='search__box form-control' onChange={this.handleChangeText} />
           </div>
         </div>
       </div>

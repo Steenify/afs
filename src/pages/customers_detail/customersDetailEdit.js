@@ -15,7 +15,8 @@ import Button from 'components/common/button';
 import { Select } from 'components/common/select';
 import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
-import { getCustomerDetailAction, updateCustomerAction } from './actions';
+import { getCustomerDetailAction } from './actions';
+import { updateCustomerAction } from 'pages/customers/actions';
 
 import { WEB_ROUTES } from 'config';
 
@@ -63,12 +64,7 @@ const CustomerDetail = ({ style, handleSubmit, history, getCustomerDetailAction,
 
   return (
     <Layout documentTitle={t(WEB_ROUTES.CUSTOMER_DETAIL.title)} container fluid>
-      <Breadcrumb
-        data={[
-          { title: 'Customers', active: false, path: '/customer' },
-          { title: 'Customer Detail', active: true, path: '' },
-        ]}
-      />
+      <Breadcrumb data={[{ title: WEB_ROUTES.CUSTOMER_DETAIL.title, isBack: true }]} />
       <PageTitle title={t('baseApp.customerManagement.detail.title')} className='mb-0 mr-3'></PageTitle>
 
       <Form style={{ marginTop: 27 }} onSubmit={handleSubmit(onSubmit)}>
@@ -156,27 +152,31 @@ const CustomerDetail = ({ style, handleSubmit, history, getCustomerDetailAction,
   );
 };
 
-const mapStateToProps = ({ customers, role }) => {
+const mapStateToProps = ({ customerDetail, role }) => {
+  const {
+    ui,
+    data: { customer },
+  } = customerDetail;
   return {
     initialValues: {
-      login: customers.detail.login,
-      firstName: customers.detail.firstName,
-      lastName: customers.detail.lastName,
-      id: customers.detail.id,
-      activated: customers.detail.activated,
-      authorities: customers.detail.authorities,
-      createdBy: customers.detail.createdBy,
-      createdDate: customers.detail.createdDate,
-      email: customers.detail.email,
-      imageUrl: customers.detail.imageUrl,
-      langKey: customers.detail.langKey,
-      lastModifiedBy: customers.detail.lastModifiedBy,
-      lastModifiedDate: customers.detail.lastModifiedDate,
-      permissions: customers.detail.permissions,
-      phoneNumber: customers.detail.phoneNumber,
-      customerExtension: customers.detail.customerExtension,
+      login: customer.login,
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      id: customer.id,
+      activated: customer.activated,
+      authorities: customer.authorities,
+      createdBy: customer.createdBy,
+      createdDate: customer.createdDate,
+      email: customer.email,
+      imageUrl: customer.imageUrl,
+      langKey: customer.langKey,
+      lastModifiedBy: customer.lastModifiedBy,
+      lastModifiedDate: customer.lastModifiedDate,
+      permissions: customer.permissions,
+      phoneNumber: customer.phoneNumber,
+      customerExtension: customer.customerExtension,
     },
-    ui: customers.ui,
+    ui,
     authorities: role.data.authorities,
   };
 };

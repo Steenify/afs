@@ -26,13 +26,18 @@ const WEB_ROUTES = {
   },
   CUSTOMER_LIST: {
     path: '/customer',
-    title: 'baseApp.sidebar.customer',
+    title: 'baseApp.customerManagement.home.title',
     permission: 'VIEW_CUSTOMER_LIST',
   },
   CUSTOMER_DETAIL: {
     path: '/customer/detail/:login',
-    title: 'baseApp.sidebar.customer',
+    title: 'baseApp.customerManagement.detail.title',
     permission: 'VIEW_CUSTOMER_DETAIL',
+  },
+  CUSTOMER_DETAIL_EDIT: {
+    path: '/customer/detail/:login/edit',
+    title: 'baseApp.customerManagement.detail.title',
+    permission: 'EDIT_CUSTOMER',
   },
   CUSTOMER_GROUP_LIST: {
     path: '/customer-group',
