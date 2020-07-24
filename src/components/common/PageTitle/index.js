@@ -2,17 +2,12 @@ import React from 'react';
 import { ReactComponent as ArrowLeft } from 'assets/img/chevonRight.svg';
 
 const PageTitle = (props) => {
-  const { title, children, className, onGoBack } = props;
+  const { title, children, className, containerClassName, onGoBack } = props;
 
-  const classNames = [
-    'h3',
-    'text-gray-800',
-    onGoBack ? 'cursor-pointer' : '',
-    className ? className : '',
-  ].join(' ');
+  const classNames = ['h3', 'text-gray-800', onGoBack ? 'cursor-pointer' : '', className ? className : ''].join(' ');
 
   return (
-    <div className='d-flex align-items-center page__title'>
+    <div className={`d-flex align-items-center page__title ${containerClassName}`}>
       <h3 className={classNames} onClick={onGoBack}>
         {onGoBack && (
           <span className='icon mr-2'>

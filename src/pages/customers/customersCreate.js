@@ -5,25 +5,18 @@ import { toast } from 'react-toastify';
 import { parsePhoneNumber } from 'react-phone-number-input';
 import { useTranslation } from 'react-i18next';
 
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  Alert,
-} from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Form, Alert } from 'reactstrap';
 import Input from 'components/common/input';
 import Button from 'components/common/button';
 import PhoneInput from 'components/common/phoneInput';
 
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
-import { actCreateCustomer, actGetCustomers } from './actions';
+import { createCustomerAction, getCustomerListAction } from './actions';
 import { required, email } from 'utils/validation';
 
 const CustomerCreate = ({ style, handleSubmit, ...props }) => {
-  const { className, errorRequest, reset } = props;
+  const { className, errorRequest, reset, containerClassName } = props;
   const { t } = useTranslation();
 
   const [modal, setModal] = useState(false);
@@ -36,27 +29,22 @@ const CustomerCreate = ({ style, handleSubmit, ...props }) => {
 
     if (phoneInfo) {
       params['phonePrefix'] = '+' + phoneInfo['countryCallingCode'];
-      params['phoneNumber'] = values['phoneNumber']
-        .replace(params['phonePrefix'], '')
-        .replace(/\s/g, '');
-      params['login'] = values['phoneNumber']
-        .replace(/\+/g, '')
-        .replace(/\s/g, '');
+      params['phoneNumber'] = values['phoneNumber'].replace(params['phonePrefix'], '').replace(/\s/g, '');
+      params['login'] = values['phoneNumber'].replace(/\+/g, '').replace(/\s/g, '');
     }
 
-    props.actCreateCustomer(params).then((res) => {
+    props.createCustomerAction(params).then((res) => {
       const { status, data } = res;
       const { errorKey, message } = data;
 
       if (status === 201) {
         setModal(false);
 
-        const successMessage =
-          t('baseApp.customerManagement.created') + data.login;
+        const successMessage = t('baseApp.customerManagement.created') + data.login;
 
         toast.dark(successMessage);
 
-        props.actGetCustomers({
+        props.getCustomerListAction({
           name: '',
           role: '',
           page: 0,
@@ -86,7 +74,7 @@ const CustomerCreate = ({ style, handleSubmit, ...props }) => {
   };
 
   return (
-    <div>
+    <div className={containerClassName}>
       <Button color='primary' onClick={toggle} className='btn-create'>
         + {t('baseApp.customerManagement.home.createLabel')}
       </Button>
@@ -99,32 +87,10 @@ const CustomerCreate = ({ style, handleSubmit, ...props }) => {
             </button>
           </ModalHeader>
           <ModalBody>
-            <Field
-              className='...'
-              component={Input}
-              name='firstName'
-              label={t('baseApp.customerManagement.firstName')}
-            />
-            <Field
-              className='...'
-              component={Input}
-              name='lastName'
-              label={t('baseApp.customerManagement.lastName')}
-            />
-            <Field
-              className='...'
-              component={Input}
-              name='email'
-              label={t('baseApp.customerManagement.email')}
-              validate={[required, email]}
-            />
-            <Field
-              className='...'
-              component={PhoneInput}
-              name='phoneNumber'
-              label={t('baseApp.customerManagement.phoneNumber')}
-              validate={[required]}
-            />
+            <Field className='...' component={Input} name='firstName' label={t('baseApp.customerManagement.firstName')} />
+            <Field className='...' component={Input} name='lastName' label={t('baseApp.customerManagement.lastName')} />
+            <Field className='...' component={Input} name='email' label={t('baseApp.customerManagement.email')} validate={[required, email]} />
+            <Field className='...' component={PhoneInput} name='phoneNumber' label={t('baseApp.customerManagement.phoneNumber')} validate={[required]} />
           </ModalBody>
           <ModalFooter>
             <Button color='primary' type='submit'>
@@ -133,11 +99,11 @@ const CustomerCreate = ({ style, handleSubmit, ...props }) => {
             <Button color='secondary' onClick={toggle}>
               {t('entity.action.cancel')}
             </Button>
-            {errorRequest && errorRequest.message && (
+            {/* {errorRequest && errorRequest.message && (
               <div className='w-100'>
                 <Alert color='danger'>{errorRequest.message}</Alert>
               </div>
-            )}
+            )} */}
           </ModalFooter>
         </Form>
       </Modal>
@@ -145,7 +111,7 @@ const CustomerCreate = ({ style, handleSubmit, ...props }) => {
   );
 };
 
-const mapStateToProps = ({ role, customer }) => {
+const mapStateToProps = ({ customer }) => {
   return {
     initialValues: {
       activated: true,
@@ -161,13 +127,13 @@ const mapStateToProps = ({ role, customer }) => {
       phoneNumber: '',
       phonePrefix: '',
     },
-    errorRequest: customer.error.create,
+    // errorRequest: customer.error.create,
   };
 };
 
 export default connect(mapStateToProps, {
-  actCreateCustomer,
-  actGetCustomers,
+  createCustomerAction,
+  getCustomerListAction,
 })(
   reduxForm({
     form: 'customerCreate',

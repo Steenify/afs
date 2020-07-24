@@ -13,10 +13,7 @@ const CustomerGroupManagement = () => {
   const { t } = useTranslation();
 
   return (
-    <Layout
-      documentTitle={t(WEB_ROUTES.CUSTOMER_GROUP_LIST.title)}
-      container
-      fluid>
+    <Layout documentTitle={t(WEB_ROUTES.CUSTOMER_GROUP_LIST.title)} container fluid>
       <Breadcrumb
         data={[
           {
@@ -26,9 +23,7 @@ const CustomerGroupManagement = () => {
           },
         ]}
       />
-      <PageTitle
-        title={t(WEB_ROUTES.CUSTOMER_GROUP_LIST.title)}
-        className='mb-0 mr-3'>
+      <PageTitle title={t(WEB_ROUTES.CUSTOMER_GROUP_LIST.title)} className='mb-0 mr-3'>
         <CustomerGroupCreate />
       </PageTitle>
       <CustomerGroupList />

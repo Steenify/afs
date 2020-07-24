@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
-import CustomerList from './CustomerList';
-import CustomerCreate from './CustomerCreate';
+import CustomerList from './customersList';
+import CustomerCreate from './customersCreate';
+
+import './style.scss';
 
 import { WEB_ROUTES } from 'config';
 
@@ -13,10 +15,8 @@ const CustomerManagement = () => {
 
   return (
     <Layout documentTitle={t(WEB_ROUTES.CUSTOMER_LIST.title)} container fluid>
-      <PageTitle
-        title={t(WEB_ROUTES.CUSTOMER_LIST.title)}
-        className='mb-0 mr-3'>
-        <CustomerCreate />
+      <PageTitle title={t(WEB_ROUTES.CUSTOMER_LIST.title)} className='mb-0' containerClassName='mb-3'>
+        <CustomerCreate containerClassName='ml-auto' />
       </PageTitle>
       <CustomerList />
     </Layout>
