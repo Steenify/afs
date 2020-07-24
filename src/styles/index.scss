@@ -68,3 +68,21 @@
 		background-position: left 10px center !important;
 	}
 }
+
+.in-page-loading {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: $white;
+	padding: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 50px;
+	z-index: 12;
+	.text {
+		display: inline-block;
+		margin-left: 10px;
+	}
+}
