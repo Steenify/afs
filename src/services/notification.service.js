@@ -2,14 +2,14 @@ import { request } from 'utils/request';
 
 const NOTIFICATION_API = '/api/notifications';
 
-export const getAllNotifications = (params) =>
+export const getAllNotificationsService = (params) =>
   request({
     url: NOTIFICATION_API,
     method: 'GET',
     params,
   });
 
-export const getNotificationsCount = () =>
+export const getNotificationsCountService = () =>
   request({
     url: `${NOTIFICATION_API}/count`,
     method: 'GET',
@@ -35,13 +35,13 @@ export const publishNotification = (data) =>
     data,
   });
 
-export const getNotificationDetail = (id) =>
+export const getNotificationDetailService = (id) =>
   request({
     url: NOTIFICATION_API + `/${id}`,
     method: 'GET',
   });
 
-export const readAllNotification = () =>
+export const readAllNotificationService = () =>
   request({
     url: NOTIFICATION_API + '/read-all',
     method: 'POST',

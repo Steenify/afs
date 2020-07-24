@@ -1,119 +1,71 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
-import { Badge } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 
-import Button from 'components/common/button';
-import NotificationPublish from './NotificationPublish';
-import DataTable from 'components/common/DataTable';
+import { ReactComponent as NotiEmpty } from 'assets/img/no__notification.svg';
+import { ReactComponent as Logo } from 'assets/img/logo.svg';
 
-import { getPaginationItemsNumber } from 'utils';
+import { truncates, dateTimeFromNow } from 'utils';
 
-import { actGetNotifications, actDeleteNotification } from './actions';
-import { getErrorMessage } from 'utils';
+import { getAllNotificationsAction, getAllNotificationDetailAction } from './actions';
+
+import './style.scss';
+import { useHistory } from 'react-router-dom';
 
 const NotificationList = (props) => {
+  const history = useHistory();
   const { t } = useTranslation();
-
-  const columns = [
-    {
-      accessor: 'title',
-      Header: t('baseApp.notification.title'),
-      width: 'auto',
-    },
-    {
-      accessor: 'description',
-      Header: t('baseApp.notification.description'),
-      width: 'auto',
-    },
-    {
-      accessor: 'status',
-      Header: t('baseApp.notification.status'),
-      Cell: ({ row: { original } }) => {
-        if (original.status === 'PUBLISHED')
-          return (
-            <Badge color='primary' pill>
-              {original.status}
-            </Badge>
-          );
-
-        return (
-          <Badge color='secondary' pill>
-            {original.status}
-          </Badge>
-        );
-      },
-      width: 'auto',
-    },
-    {
-      accessor: 'publish',
-      Header: '',
-      width: 90,
-      Cell: ({ row: { original } }) => {
-        if (original.status === 'PUBLISHED') {
-          return '';
-        }
-        return <NotificationPublish data={original} />;
-      },
-    },
-    {
-      accessor: 'delete',
-      Header: '',
-      width: 90,
-      Cell: ({ row: { original } }) => {
-        if (original.status === 'PUBLISHED') {
-          return '';
-        }
-
-        return (
-          <Button color='danger' onClick={() => handleDelete(original.id)}>
-            {t('entity.action.delete')}
-          </Button>
-        );
-      },
-    },
-  ];
+  const { getAllNotificationsAction, getAllNotificationDetailAction, notifications, ui } = props;
 
   useEffect(() => {
-    props.actGetNotifications();
-  }, []);
+    getAllNotificationsAction();
+  }, [getAllNotificationsAction]);
 
-  const handleLoad = (activePage) => {
-    props.actGetNotifications({
-      page: activePage - 1,
-    });
-  };
-
-  const handleDelete = (id) => {
-    if (id) {
-      props.actDeleteNotification(id).then((res) => {
-        const { status, data } = res;
-        const { errorKey, message } = data;
-
-        if (status === 204) {
-          props.actGetNotifications();
-        } else {
-          const errorMessage = getErrorMessage(status, errorKey, message);
-          toast.error(errorMessage);
-        }
-      });
+  const handleClick = (noti) => {
+    getAllNotificationDetailAction(noti.id);
+    if (noti?.additionalData?.code) {
+      history.push(`/order/${noti?.additionalData?.code}`);
     }
   };
 
-  const { notifications = [], ui, error } = props;
+  const handleRenderContent = () => {
+    if (!notifications.length) {
+      return (
+        <div className='noti__empty'>
+          <div className='content'>
+            <NotiEmpty className='icon' />
+            <h4 className='title'>No notifications received.</h4>
+          </div>
+        </div>
+      );
+    }
 
+    return notifications.map((noti) => (
+      <div onClick={() => handleClick(noti)} key={`list_noti__header__${noti.id}`} className={`noti__item ${noti.status}`}>
+        <div className='noti__icon'>
+          <div className='icon'>
+            <Logo />
+          </div>
+        </div>
+        <div className='noti__info'>
+          <div className='noti__desc'>
+            <strong>{noti.senderName}: </strong>
+            {/* {truncates(noti.content, 120)} */}
+            {noti.content}
+            {noti?.additionalData?.orderNumber && <span> #{noti?.additionalData?.orderNumber}</span>}
+          </div>
+          <div className='noti__date'>{dateTimeFromNow(noti.createdDate)}</div>
+        </div>
+      </div>
+    ));
+  };
   return (
-    <div>
-      <DataTable
-        data={notifications}
-        columns={columns}
-        className='bg-white'
-        serverSide
-        totalPage={(size) => getPaginationItemsNumber(props.totalItems, size)}
-        onLoad={handleLoad}
-        whiteListSort={['publish', 'delete']}
-      />
+    <div className='notifications__page'>
+      <div className='notifications__header'></div>
+      <div className='notifications__body box'>
+        <div>{handleRenderContent()}</div>
+      </div>
+      <div className='notifications__paging'>{/* <CustomersPaging /> */}</div>
     </div>
   );
 };
@@ -122,10 +74,9 @@ const mapStateToProps = ({ notification }) => ({
   notifications: notification.data.notifications,
   totalItems: notification.data.totalItems,
   ui: notification.ui.list,
-  error: notification.error.list,
 });
 
 export default connect(mapStateToProps, {
-  actGetNotifications,
-  actDeleteNotification,
+  getAllNotificationsAction,
+  getAllNotificationDetailAction,
 })(NotificationList);

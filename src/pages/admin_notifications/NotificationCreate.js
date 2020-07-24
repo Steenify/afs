@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  Alert,
-} from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Form, Alert } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
@@ -16,7 +9,7 @@ import Input from 'components/common/input';
 import Button from 'components/common/button';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
-import { actCreateNotification, actGetNotifications } from './actions';
+import { actCreateNotification, getAllNotificationsAction } from './actions';
 import { required } from 'utils/validation';
 
 const NotificationCreate = ({ style, handleSubmit, ...props }) => {
@@ -35,12 +28,11 @@ const NotificationCreate = ({ style, handleSubmit, ...props }) => {
       if (status === 201) {
         setModal(false);
 
-        const successMessage =
-          t('baseApp.notification.created') + data.description;
+        const successMessage = t('baseApp.notification.created') + data.description;
 
         toast.dark(successMessage);
 
-        props.actGetNotifications();
+        props.getAllNotificationsAction();
       } else {
         let errorMessage = '';
         if (errorKey) {
@@ -79,19 +71,8 @@ const NotificationCreate = ({ style, handleSubmit, ...props }) => {
             </button>
           </ModalHeader>
           <ModalBody>
-            <Field
-              component={Input}
-              name='title'
-              label={t('baseApp.notification.title')}
-              validate={[required]}
-            />
-            <Field
-              component={Input}
-              name='description'
-              label={t('baseApp.notification.description')}
-              type='textarea'
-              validate={[required]}
-            />
+            <Field component={Input} name='title' label={t('baseApp.notification.title')} validate={[required]} />
+            <Field component={Input} name='description' label={t('baseApp.notification.description')} type='textarea' validate={[required]} />
           </ModalBody>
           <ModalFooter>
             <Button color='primary' type='submit'>
@@ -125,7 +106,7 @@ const mapStateToProps = ({ notification }) => {
 
 export default connect(mapStateToProps, {
   actCreateNotification,
-  actGetNotifications,
+  getAllNotificationsAction,
 })(
   reduxForm({
     form: 'notificationCreate',

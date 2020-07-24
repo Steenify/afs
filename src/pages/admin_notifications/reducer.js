@@ -18,15 +18,6 @@ const initialState = {
     notifications: [],
     totalItems: 0,
   },
-  filter: {
-    page: 0,
-    size: 20,
-    sizeMobile: 20,
-    sort: [],
-    text: '',
-    from: null,
-    to: null,
-  },
   detail: {},
 };
 

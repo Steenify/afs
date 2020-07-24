@@ -54,6 +54,11 @@ const WEB_ROUTES = {
     title: 'baseApp.sidebar.notification',
     permission: '',
   },
+  ADMIN_NOTIFICATION_LIST: {
+    path: '/admin-notifications',
+    title: 'baseApp.sidebar.notification',
+    permission: '',
+  },
   SYSTEM_PROPERTY_LIST: {
     path: '/system-property',
     title: 'baseApp.sidebar.systemProperty',

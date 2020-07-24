@@ -24,6 +24,7 @@ import CustomerManagement from 'pages/customers';
 import CustomerDetail from 'pages/customers_detail/index';
 import CustomerDetailEdit from 'pages/customers_detail/customersDetailEdit';
 import CustomerGroupDetail from 'pages/customer_group/CustomerGroupDetail';
+import AdminNotifications from 'pages/admin_notifications';
 import Notifications from 'pages/notifications';
 import SystemPropertiesManagement from 'pages/system_property_management';
 import SystemPropertyDetail from 'pages/system_property_management/SystemPropertyDetail';
@@ -82,6 +83,7 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
           /> */}
           <Route exact path={WEB_ROUTES.CUSTOMER_GROUP_DETAIL.path} component={CustomerGroupDetail} isPrivate={true} role={WEB_ROUTES.CUSTOMER_GROUP_DETAIL.permission} />
           <Route exact path={WEB_ROUTES.NOTIFICATION_LIST.path} component={Notifications} isPrivate={true} role={WEB_ROUTES.NOTIFICATION_LIST.permission} />
+          <Route exact path={WEB_ROUTES.ADMIN_NOTIFICATION_LIST.path} component={AdminNotifications} isPrivate={true} role={WEB_ROUTES.ADMIN_NOTIFICATION_LIST.permission} />
           <Route exact path={WEB_ROUTES.SYSTEM_PROPERTY_LIST.path} component={SystemPropertiesManagement} isPrivate={true} role={WEB_ROUTES.SYSTEM_PROPERTY_LIST.permission} />
           <Route exact path={WEB_ROUTES.SYSTEM_PROPERTY_DETAIL.path} component={SystemPropertyDetail} isPrivate={true} role={WEB_ROUTES.SYSTEM_PROPERTY_DETAIL.permission} />
           {/* <Route
