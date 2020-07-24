@@ -70,7 +70,8 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         list: {
-          customers: { $set: mapDataList(payload.data, 'selected', false) },
+          customers: { $set: payload.data },
+          // customers: { $set: mapDataList(payload.data, 'selected', false) },
           ids: { $set: ids },
           items: { $set: items },
           totalItems: { $set: payload.headers['x-total-count'] },
