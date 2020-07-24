@@ -2,11 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const CustomersAddressCell = ({ city, country, province }) => {
-  return (
-    <div className={`customers__address`}>
-      {city} {province && `, ${province}`} {country && `, ${country}`}
-    </div>
-  );
+  return <div className={`customers__address`}>{[city, province, country].filter((item) => item).join(', ')}</div>;
 };
 
 const mapStateToProps = ({ customers }, ownProps) => {
@@ -15,9 +11,9 @@ const mapStateToProps = ({ customers }, ownProps) => {
   const item = items[data] || {};
 
   return {
-    city: item?.customerExtension?.city || '',
-    country: item?.customerExtension?.country || '',
-    province: item?.customerExtension?.province || '',
+    city: item?.city || '',
+    country: item?.country || '',
+    province: item?.province || '',
   };
 };
 

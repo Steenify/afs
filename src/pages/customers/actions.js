@@ -48,7 +48,7 @@ export const getCustomerListAction = (params = {}) => async (dispatch, getState)
 const buildSearchParam = (input = {}) => {
   var params = new URLSearchParams();
   params.append('name', input.name || '');
-  params.append('customerGroups', input.customerGroups || '');
+  params.append('customerGroup', input.customerGroup?.toUpperCase?.() || '');
   params.append('page', input.page || 0);
   params.append('size', (input.size && parseInt(input.size)) || 20);
 
