@@ -12,6 +12,7 @@ import order from 'pages/orders/reducer';
 import orderDetail from 'pages/orders_detail/reducer';
 import artists from 'pages/artists/reducer';
 import payouts from 'pages/payouts/reducer';
+import gallery from 'pages/gallery/reducer';
 
 import { GLOBAL_ACTIONS, AUTHENTICATE_TOKEN } from './actions';
 
@@ -94,4 +95,5 @@ export default combineReducers({
   orderDetail,
   artists,
   payouts,
+  gallery,
 });

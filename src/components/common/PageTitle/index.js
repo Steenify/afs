@@ -12,7 +12,7 @@ const PageTitle = (props) => {
   ].join(' ');
 
   return (
-    <div className='d-flex align-items-center page__title'>
+    <div className='d-flex align-items-center page__title justify-content-between'>
       <h3 className={classNames} onClick={onGoBack}>
         {onGoBack && (
           <span className='icon mr-2'>

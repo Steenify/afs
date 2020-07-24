@@ -12,7 +12,8 @@
       "notification": "Notification",
       "customer": "Customers",
       "customerGroup": "Group List",
-      "systemProperty": "System Property"
+      "systemProperty": "System Property",
+      "galleryListing": "Gallery"
     }
   }
 }

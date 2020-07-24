@@ -16,6 +16,7 @@ import { ReactComponent as POS } from 'assets/img/pos.svg';
 import { ReactComponent as Artist } from 'assets/img/Artist.svg';
 import { ReactComponent as Settings } from 'assets/img/settings.svg';
 import { ReactComponent as Payouts } from 'assets/img/payouts.svg';
+import { ReactComponent as Package } from 'assets/img/gallery.svg';
 
 import { WEB_ROUTES } from 'config';
 
@@ -75,6 +76,10 @@ const SideBar = (props) => {
         {
           ...WEB_ROUTES.ARTISTS,
           icon: <Artist />,
+        },
+        {
+          ...WEB_ROUTES.GALLERY_LISTING,
+          icon: <Package />,
         },
         // {
         //   ...WEB_ROUTES.CUSTOMER_LIST,
