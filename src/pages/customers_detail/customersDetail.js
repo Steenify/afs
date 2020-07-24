@@ -1,0 +1,75 @@
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { isEmpty } from 'lodash';
+
+import InPageLoading from 'components/common/inPageLoading';
+import PageTitle from 'components/common/PageTitle';
+import Button from 'components/common/button';
+
+import CustomerDetailInfo from './customersDetailInfo';
+
+import { getCustomerDetailAction } from './actions';
+import { updateCustomerAction } from 'pages/customers/actions';
+
+import { WEB_ROUTES } from 'config';
+
+const CustomerDetail = (props) => {
+  let { login } = useParams();
+  let history = useHistory();
+  const { t } = useTranslation();
+  const { customer, ui, getCustomerDetailAction } = props;
+
+  useEffect(() => {
+    getCustomerDetailAction(login);
+  }, [getCustomerDetailAction, login]);
+
+  if (isEmpty(customer)) {
+    return <InPageLoading isLoading={ui.loading} />;
+  }
+
+  const goToEdit = () => {
+    const url = WEB_ROUTES.CUSTOMER_DETAIL_EDIT.path.replace(':login', customer.login);
+    history.push(url);
+  };
+
+  return (
+    <div className='customer_detail'>
+      <PageTitle title={`${customer.firstName || ''} ${customer.lastName || ''}`} className='customer_detail__header'>
+        <div className='ml-auto'>
+          <Button color='primary' onClick={goToEdit} className='btn-create'>
+            {t('baseApp.customerManagement.detail.edit')}
+          </Button>
+        </div>
+      </PageTitle>
+      <div className='row'>
+        <div className='col-lg-6'>
+          <div className='customer_detail__wrapper'>
+            <CustomerDetailInfo customer={customer} />
+          </div>
+        </div>
+        <div className='col-lg-6'>
+          <div className='customer_detail__wrapper'></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const mapStateToProps = ({ customerDetail, role }) => {
+  const {
+    ui,
+    data: { customer },
+  } = customerDetail;
+  return {
+    ui,
+    customer,
+    authorities: role.data.authorities,
+  };
+};
+
+export default connect(mapStateToProps, {
+  getCustomerDetailAction,
+  updateCustomerAction,
+})(CustomerDetail);
