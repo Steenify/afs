@@ -84,7 +84,7 @@ const EmaiNotify = (props) => {
   };
 
   const handleSentNotify = () => {
-    if (notifyType === '') {
+    if (notifyType === 'email') {
       sendEmailNotify();
     } else {
       sendFBMessageNotify();
