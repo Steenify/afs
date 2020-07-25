@@ -18,14 +18,8 @@ const MsgFCM = ({ payload }) => {
       )}
       <div className='fcm_mess__body'>
         <div className='fcm_mess__mess'>
-          {payload?.data?.senderName && (
-            <strong className='fcm_mess__sender'>
-              {payload?.data?.senderName || ''}
-            </strong>
-          )}
-          <span className='fcm_mess__text'>
-            {(payload?.data?.body || '').replace(payload?.data?.senderName, '')}
-          </span>
+          {payload?.data?.senderName && <strong className='fcm_mess__sender'>{payload?.data?.senderName || ''}</strong>}
+          <span className='fcm_mess__text'>{(payload?.data?.body || '').replace(payload?.data?.senderName, '')}</span>
         </div>
       </div>
     </div>
@@ -62,10 +56,7 @@ class FirerBaseApp extends Component {
     const { getNotificationsCount } = this.props;
     if (isSupportedMessage) {
       Messaging.onMessage((payload) => {
-        console.log(
-          'FirerBaseApp -> componentDidMount -> payload',
-          JSON.stringify(payload),
-        );
+        console.log('FirerBaseApp -> componentDidMount -> payload', JSON.stringify(payload));
 
         const type = payload?.data?.type;
         const action = payload?.data?.action;

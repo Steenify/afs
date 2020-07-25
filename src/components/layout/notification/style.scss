@@ -56,6 +56,15 @@
 		min-width: 300px;
 	}
 
+	&__footer {
+		.link {
+			font-size: 15px;
+			line-height: 18px;
+			letter-spacing: 0.5px;
+			color: #337fd7;
+		}
+	}
+
 	&__item {
 		display: flex;
 		padding: 10px 15px;

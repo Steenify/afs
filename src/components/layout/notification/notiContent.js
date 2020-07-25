@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Spinner } from 'reactstrap';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
+import Button from 'components/common/button';
 import { ReactComponent as Logo } from 'assets/img/logo.svg';
 import { ReactComponent as NotiEmpty } from 'assets/img/no__notification.svg';
-import {
-  getAllNotifications,
-  getNotificationDetail,
-} from 'services/notification.service';
+import { getAllNotificationsService, getNotificationDetailService } from 'services/notification.service';
 
 import { truncates, dateTimeFromNow, actionTryCatchCreator } from 'utils';
+import { WEB_ROUTES } from 'config';
 
 class NotiContent extends Component {
   constructor() {
@@ -42,7 +41,7 @@ class NotiContent extends Component {
     };
 
     actionTryCatchCreator({
-      service: getAllNotifications(params),
+      service: getAllNotificationsService(params),
       onPending,
       onSuccess,
       onError,
@@ -58,7 +57,7 @@ class NotiContent extends Component {
     };
 
     actionTryCatchCreator({
-      service: getNotificationDetail(noti.id),
+      service: getNotificationDetailService(noti.id),
       onPending,
       onSuccess,
       onError,
@@ -83,10 +82,7 @@ class NotiContent extends Component {
     }
 
     return notis.map((noti) => (
-      <div
-        onClick={() => this.handleClick(noti)}
-        key={`list_noti__header__${noti.id}`}
-        className={`noti__item ${noti.status}`}>
+      <div onClick={() => this.handleClick(noti)} key={`list_noti__header__${noti.id}`} className={`noti__item ${noti.status}`}>
         <div className='noti__icon'>
           <div className='icon'>
             <Logo />
@@ -96,9 +92,7 @@ class NotiContent extends Component {
           <div className='noti__desc'>
             <strong>{noti.senderName}: </strong>
             {truncates(noti.content, 60)}
-            {noti?.additionalData?.orderNumber && (
-              <span> #{noti?.additionalData?.orderNumber}</span>
-            )}
+            {noti?.additionalData?.orderNumber && <span> #{noti?.additionalData?.orderNumber}</span>}
           </div>
           <div className='noti__date'>{dateTimeFromNow(noti.createdDate)}</div>
         </div>
@@ -108,6 +102,7 @@ class NotiContent extends Component {
 
   render() {
     const { isLoading } = this.state;
+    const { onClose } = this.props;
     return (
       <div className='noti__content'>
         <div className='noti__header'>
@@ -115,14 +110,18 @@ class NotiContent extends Component {
         </div>
         <div className='noti__body'>
           {isLoading ? (
-            <div
-              style={{ minHeight: '100px' }}
-              className=' d-flex align-items-center justify-content-center'>
+            <div style={{ minHeight: '100px' }} className=' d-flex align-items-center justify-content-center'>
               <Spinner />
             </div>
           ) : (
             this.handleRenderContent()
           )}
+        </div>
+        <hr />
+        <div className='noti__footer'>
+          <Button tag={Link} className='w-100 link' to={WEB_ROUTES.NOTIFICATION_LIST.path} color='link' onClick={onClose}>
+            See All
+          </Button>
         </div>
       </div>
     );

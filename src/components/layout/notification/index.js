@@ -5,10 +5,7 @@ import Popover from 'react-tiny-popover';
 
 import { ReactComponent as Bell } from 'assets/img/bell.svg';
 
-import {
-  getNotificationsCountAction,
-  readAllNotificationAction,
-} from 'pages/notifications/actions';
+import { getNotificationsCountAction, readAllNotificationAction } from 'pages/notifications/actions';
 
 import NotiContent from './notiContent';
 
@@ -28,7 +25,7 @@ class Notification extends Component {
   }
 
   toggle = () => {
-    const { readAllNotification } = this.props;
+    // const { readAllNotification } = this.props;
     const { isPopoverOpen } = this.state;
 
     this.setState(
@@ -36,7 +33,7 @@ class Notification extends Component {
         isPopoverOpen: !isPopoverOpen,
       },
       () => {
-        readAllNotification();
+        // readAllNotification();
       },
     );
   };
@@ -45,19 +42,8 @@ class Notification extends Component {
     const { className, count } = this.props;
     const { isPopoverOpen } = this.state;
     return (
-      <Popover
-        isOpen={isPopoverOpen}
-        transitionDuration={0.000001}
-        position={['bottom']}
-        padding={10}
-        onClickOutside={this.toggle}
-        content={() => <NotiContent onClose={this.toggle} />}>
-        <button
-          type='button'
-          onClick={this.toggle}
-          className={`noti__toggle ${isPopoverOpen && 'active'} ${
-            className || ''
-          }`}>
+      <Popover isOpen={isPopoverOpen} transitionDuration={0.000001} position={['bottom']} padding={10} onClickOutside={this.toggle} content={() => <NotiContent onClose={this.toggle} />}>
+        <button type='button' onClick={this.toggle} className={`noti__toggle ${isPopoverOpen && 'active'} ${className || ''}`}>
           <div className='icon'>
             <Bell />
           </div>

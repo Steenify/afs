@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  Alert,
-  Table,
-  Input,
-  FormGroup,
-  Label,
-} from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Form, Alert, Table, Input, FormGroup, Label } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
@@ -22,7 +11,7 @@ import Paging from 'components/common/paging';
 import TableBody from 'components/common/tableBody';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
-import { actPublishNotification, actGetNotifications } from './actions';
+import { actPublishNotification, getAllNotificationsAction } from './actions';
 import { actGetUsers } from 'pages/user_management/actions';
 import { getErrorMessage, getPaginationItemsNumber } from 'utils';
 
@@ -123,7 +112,7 @@ const NotificationPublish = ({ style, handleSubmit, ...props }) => {
 
         toast.dark(successMessage);
 
-        props.actGetNotifications();
+        props.getAllNotificationsAction();
       } else {
         let errorMessage = '';
         if (errorKey) {
@@ -168,13 +157,7 @@ const NotificationPublish = ({ style, handleSubmit, ...props }) => {
       content: (item) => (
         <FormGroup check>
           <Label check>
-            <Input
-              type='checkbox'
-              onChange={(e) => handleSelect(e, item)}
-              checked={
-                selectedUsers.filter((st) => st.id === item.id).length > 0
-              }
-            />
+            <Input type='checkbox' onChange={(e) => handleSelect(e, item)} checked={selectedUsers.filter((st) => st.id === item.id).length > 0} />
             {item.firstName} {item.lastName}
           </Label>
         </FormGroup>
@@ -203,11 +186,7 @@ const NotificationPublish = ({ style, handleSubmit, ...props }) => {
                   <th>
                     <FormGroup check>
                       <Label check>
-                        <Input
-                          type='checkbox'
-                          onChange={(e) => handleSelectAll(e)}
-                          checked={isCheckAll}
-                        />
+                        <Input type='checkbox' onChange={(e) => handleSelectAll(e)} checked={isCheckAll} />
                         {t('baseApp.notification.users')}
                       </Label>
                     </FormGroup>
@@ -218,12 +197,7 @@ const NotificationPublish = ({ style, handleSubmit, ...props }) => {
             </Table>
           </div>
           <div className='d-flex justify-content-center'>
-            <Paging
-              items={getPaginationItemsNumber(props.totalItems, 10)}
-              activePage={activePage}
-              onSelect={handlePaging}
-              maxButtons={5}
-            />
+            <Paging items={getPaginationItemsNumber(props.totalItems, 10)} activePage={activePage} onSelect={handlePaging} maxButtons={5} />
           </div>
         </ModalBody>
         <ModalFooter>
@@ -261,7 +235,7 @@ const mapStateToProps = ({ notification, user }) => {
 export default connect(mapStateToProps, {
   actGetUsers,
   actPublishNotification,
-  actGetNotifications,
+  getAllNotificationsAction,
 })(
   reduxForm({
     form: 'notificationPublish',

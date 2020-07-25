@@ -1,0 +1,39 @@
+@import 'styles/var.scss';
+
+.notifications {
+	&__page {
+		font-size: $font_size;
+	}
+
+	&__link {
+		font-size: 15px;
+		line-height: 18px;
+		letter-spacing: 0.5px;
+		color: #337fd7;
+	}
+
+	&__body {
+		margin-bottom: 20px;
+	}
+
+	@include max-sm() {
+		&__filters {
+			.filter {
+				&__text {
+					width: 100%;
+					flex: initial;
+					margin-bottom: 10px;
+					.search__box {
+						border-radius: 4px;
+					}
+				}
+			}
+		}
+
+		&__header,
+		&__body {
+			margin-left: -15px;
+			margin-right: -15px;
+		}
+	}
+}
