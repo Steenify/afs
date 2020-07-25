@@ -21,23 +21,9 @@ import { ReactComponent as Message } from 'assets/img/message.svg';
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
 import { mapStatusCanNotUpload } from 'config';
 
-import {
-  uploadFileWorkLogAction,
-  uploadCommentWorkLogAction,
-  deleteCommentWorkLogAction,
-  updateCommentWorkLogAction,
-} from './actions';
+import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction } from './actions';
 
-const OrderWorkLogItem = ({
-  work,
-  order,
-  uploadFileWorkLog,
-  isOpened,
-  workLog,
-  uploadCommentWorkLog,
-  deleteCommentWorkLog,
-  updateCommentWorkLog,
-}) => {
+const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, uploadCommentWorkLog, deleteCommentWorkLog, updateCommentWorkLog }) => {
   const [isOpenWork, setIsOpenWork] = useState(isOpened || false);
   const toggleWork = () => setIsOpenWork(!isOpenWork);
 
@@ -62,6 +48,7 @@ const OrderWorkLogItem = ({
 
   const activities = work?.activities || [];
   const activitiesGroup = groupBy(activities, 'activityType');
+
   const Act_UPLOADED = activitiesGroup?.UPLOADED || [];
   const Act_APPROVED = activitiesGroup?.APPROVED || [];
   const Act_REJECTED = activitiesGroup?.REJECTED || [];
@@ -136,20 +123,12 @@ const OrderWorkLogItem = ({
       };
 
       if (isEdit) {
-        updateCommentWorkLog(
-          order.id,
-          work.id,
-          editComment.id,
-          data,
-          workLogIndex,
-          editCommentIndex,
-          () => {
-            commentBox.current.clearFiles();
-            commentBox.current.setCommemt('');
-            setEditComment({});
-            setEditCommentIndex(0);
-          },
-        );
+        updateCommentWorkLog(order.id, work.id, editComment.id, data, workLogIndex, editCommentIndex, () => {
+          commentBox.current.clearFiles();
+          commentBox.current.setCommemt('');
+          setEditComment({});
+          setEditCommentIndex(0);
+        });
       } else {
         uploadCommentWorkLog(order.id, work.id, data, workLogIndex, () => {
           commentBox.current.clearFiles();
@@ -186,10 +165,7 @@ const OrderWorkLogItem = ({
           <div className='comfirm_cus'>
             <div className='comfirm_cus__header'>
               <div className='comfirm_cus__titl'>Delete</div>
-              <button
-                type='button'
-                onClick={onClose}
-                className='comfirm_cus__close'>
+              <button type='button' onClick={onClose} className='comfirm_cus__close'>
                 <div className='icon'>
                   <Close />
                 </div>
@@ -199,9 +175,7 @@ const OrderWorkLogItem = ({
               <p>Are you sure you want to delete this comment?</p>
             </div>
             <div className='comfirm_cus__footer text-right'>
-              <button
-                className='comfirm_cus__cancel comfirm_cus__control'
-                onClick={onClose}>
+              <button className='comfirm_cus__cancel comfirm_cus__control' onClick={onClose}>
                 Cancel
               </button>
               <button
@@ -229,25 +203,16 @@ const OrderWorkLogItem = ({
         </div>
 
         <div onClick={toggleWork} className='box__title w-100'>
-          {work.name}{' '}
-          <span className='work__last_update'>
-            {dateTimeToDeadline(work.lastModifiedDate)}
-          </span>
+          {work.name} <span className='work__last_update'>{dateTimeToDeadline(work.lastModifiedDate)}</span>
         </div>
         {isWorking && !notUpload && (
           <div className='control'>
             {isEdit ? (
-              <button
-                type='button'
-                onClick={handleCancel}
-                className='box__control'>
+              <button type='button' onClick={handleCancel} className='box__control'>
                 Cancel
               </button>
             ) : (
-              <button
-                type='button'
-                onClick={handleEdit}
-                className='box__control'>
+              <button type='button' onClick={handleEdit} className='box__control'>
                 Edit
               </button>
             )}
@@ -260,20 +225,10 @@ const OrderWorkLogItem = ({
           <div>
             {!isRejected && !isAproved && (
               <>
-                <Dropbox
-                  className='upload'
-                  ref={dropbox}
-                  finalDriveId={isExported ? order.finalDriveId : ''}
-                  orderNumber={order.number}
-                  id={`work_log__${work.status}__${work.id}`}
-                />
+                <Dropbox className='upload' ref={dropbox} finalDriveId={isExported ? order.finalDriveId : ''} orderNumber={order.number} id={`work_log__${work.status}__${work.id}`} />
                 {isWorking && (
                   <div className='order_detail__ctas text-right'>
-                    <Button
-                      onClick={handleUploadSketch}
-                      color='primary'
-                      className='cta cta2'
-                      type='button'>
+                    <Button onClick={handleUploadSketch} color='primary' className='cta cta2' type='button'>
                       Submit
                     </Button>
                   </div>
@@ -285,25 +240,14 @@ const OrderWorkLogItem = ({
 
         {work.attachments.length > 0 && (
           <div className='photos'>
-            <ImageGallery
-              images={getListImageUrl(work.attachments)}
-              alt={work.status}
-              caption={work.status}
-            />
+            <ImageGallery images={getListImageUrl(work.attachments)} alt={work.status} caption={work.status} />
           </div>
         )}
 
-        <div
-          className={`order_detail__activites activites ${
-            !Act_UPLOADED.length && 'd-none'
-          }`}>
+        <div className={`order_detail__activites activites ${!Act_UPLOADED.length && 'd-none'}`}>
           <div className='activites__list'>
             {Act_UPLOADED.map((act, index) => (
-              <div
-                className='activites__item UPLOADED'
-                key={`order__worklog__${work.id}__act_UPLOADED_by_${
-                  act.actor
-                }__${index.toString()}`}>
+              <div className='activites__item UPLOADED' key={`order__worklog__${work.id}__act_UPLOADED_by_${act.actor}__${index.toString()}`}>
                 <div className='content'>
                   <strong>{act.actor} upload</strong>
                   <span> {dateTimeFromNow(act.lastActionDate)}</span>
@@ -313,78 +257,51 @@ const OrderWorkLogItem = ({
           </div>
         </div>
 
-        <div
-          className={`order_detail__comments comments ${
-            !isWorking && !work.comments.length && !isReview ? 'd-none' : ''
-          }`}>
+        <div className={`order_detail__comments comments ${!isWorking && !work.comments.length && !isReview ? 'd-none' : ''}`}>
           <div className='box__header comments__header'>
             <div onClick={toggleCom} className='box__icon com comments__icon'>
               <div className='icon'>
                 <Message />
               </div>
             </div>
-            <div
-              onClick={toggleCom}
-              className='box__title w-100 comments__title'>
+            <div onClick={toggleCom} className='box__title w-100 comments__title'>
               Comment
             </div>
           </div>
           <Collapse isOpen={isOpenCom}>
             <div className='comments__list'>
               {work.comments.map((com, index) => (
-                <div
-                  key={`comment__item__${work.id}__${com.id}`}
-                  className='comments__item'>
+                <div key={`comment__item__${work.id}__${com.id}`} className='comments__item'>
                   <div className='comments__author'>
                     <div className='left'>
                       <div className='avt'>
-                        <img
-                          src={`https://ui-avatars.com/api/?name=${com?.user?.fullName}`}
-                          alt='comments__author'
-                        />
+                        <img src={`https://ui-avatars.com/api/?name=${com?.user?.fullName}`} alt='comments__author' />
                       </div>
                     </div>
                     <div className='comments__wrapper'>
                       <div className='comments__box'>
                         <span className='name'>{com?.user?.fullName}</span>
                         <span className='comments__mess'>
-                          <P
-                            text={com.content}
-                            id={`comment__item__${work.id}__${com.id}`}
-                          />
+                          <P text={com.content} id={`comment__item__${work.id}__${com.id}`} />
                         </span>
                       </div>
 
                       {com?.attachments && com?.attachments.length > 0 && (
                         <div className='comments__img'>
-                          <ImageGallery
-                            images={getListImageUrl(com?.attachments || [])}
-                            alt={'comment'}
-                            caption={'comment'}
-                          />
+                          <ImageGallery images={getListImageUrl(com?.attachments || [])} alt={'comment'} caption={'comment'} />
                         </div>
                       )}
                       <div className='comments__controls'>
-                        <button
-                          onClick={() => handleCheckEdit(com, index)}
-                          type='button'
-                          className='comments__control'>
+                        <button onClick={() => handleCheckEdit(com, index)} type='button' className='comments__control'>
                           Edit
                         </button>
                         <span className='dot'> · </span>
-                        <button
-                          type='button'
-                          onClick={() =>
-                            handleConfirmDeleteComment(com.id, index)
-                          }
-                          className='comments__control '>
+                        <button type='button' onClick={() => handleConfirmDeleteComment(com.id, index)} className='comments__control '>
                           Delete
                         </button>
 
                         <span className='dot'> · </span>
-                        <span className='date'>
-                          {dateTimeFromNow(com.createdDate)}
-                        </span>
+                        <span className='date'>{dateTimeFromNow(com.createdDate)}</span>
                       </div>
                     </div>
                   </div>
@@ -399,34 +316,34 @@ const OrderWorkLogItem = ({
           </Collapse>
         </div>
 
-        <div
-          className={`order_detail__activites activites ${
-            !Act_NOTIFIED_CUSTOMER.length && 'd-none'
-          }`}>
+        <div className={`order_detail__activites activites ${!Act_NOTIFIED_CUSTOMER.length && 'd-none'}`}>
           <div className='activites__list'>
-            {Act_NOTIFIED_CUSTOMER.map((act, index) => (
-              <div
-                key={`order__worklog__${work.id}__act_NOTIFIED_CUSTOMER_by_${
-                  act.actor
-                }__${index.toString()}`}
-                className='activites__item NOTIFIED_CUSTOMER'>
-                <div className='content'>
-                  <strong>{act.actor} notified the customer </strong>
-                  <span> {dateTimeFromNow(act.lastActionDate)}</span>
+            {Act_NOTIFIED_CUSTOMER.map((act, index) => {
+              const { notificationChannel } = act;
+              const notiChanelMap = {
+                EMAIL: 'via email',
+                MESSENGER: 'via fb/ig',
+              };
+
+              const viaChanel = notiChanelMap[notificationChannel || 'EMAIL'];
+
+              return (
+                <div key={`order__worklog__${work.id}__act_NOTIFIED_CUSTOMER_by_${act.actor}__${index.toString()}`} className='activites__item NOTIFIED_CUSTOMER'>
+                  <div className='content'>
+                    <strong>
+                      [{act.actor}] notified customer {viaChanel}
+                    </strong>
+                    <span> {dateTimeFromNow(act.lastActionDate)}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
-        <div
-          className={`order_detail__activites activites ${
-            !Act_REJECTED.length && 'd-none'
-          }`}>
+        <div className={`order_detail__activites activites ${!Act_REJECTED.length && 'd-none'}`}>
           <div className='activites__list'>
             {Act_REJECTED.map((act) => (
-              <div
-                key={`order__worklog__${work.id}__act_REJECTED_by_${act.actor}`}
-                className='activites__item REJECTED'>
+              <div key={`order__worklog__${work.id}__act_REJECTED_by_${act.actor}`} className='activites__item REJECTED'>
                 <div className='content'>
                   <strong>{act.actor} rejected</strong>
                   <span> {dateTimeFromNow(act.lastActionDate)}</span>
@@ -435,15 +352,10 @@ const OrderWorkLogItem = ({
             ))}
           </div>
         </div>
-        <div
-          className={`order_detail__activites activites ${
-            !Act_APPROVED.length && 'd-none'
-          }`}>
+        <div className={`order_detail__activites activites ${!Act_APPROVED.length && 'd-none'}`}>
           <div className='activites__list'>
             {Act_APPROVED.map((act) => (
-              <div
-                key={`order__worklog__${work.id}__act_APPROVED_by_${act.actor}`}
-                className='activites__item APPROVED'>
+              <div key={`order__worklog__${work.id}__act_APPROVED_by_${act.actor}`} className='activites__item APPROVED'>
                 <div className='content'>
                   <strong>{act.actor} approved</strong>
                   <span> {dateTimeFromNow(act.lastActionDate)}</span>

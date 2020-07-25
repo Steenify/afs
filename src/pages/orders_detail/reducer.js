@@ -21,10 +21,7 @@ import {
   SENT_FB_MESSAGES_NOTIFY_ACTION,
 } from './actions';
 
-import {
-  UPDATE_ORDER_BUDGET_ACTION,
-  UPDATE_ORDER_ARTIST_ACTION,
-} from '../orders/actions';
+import { UPDATE_ORDER_BUDGET_ACTION, UPDATE_ORDER_ARTIST_ACTION } from '../orders/actions';
 
 const initialState = {
   ui: {
@@ -85,6 +82,14 @@ const reducer = (state = initialState, action) => {
         ui: {
           isShowEmail: {
             $set: payload,
+          },
+        },
+      });
+    case ORDER_DETAIL_ACTIONS.UPDATE_ORDER_CUSTOMER:
+      return update(state, {
+        data: {
+          customer: {
+            $merge: payload,
           },
         },
       });

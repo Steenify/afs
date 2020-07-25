@@ -28,6 +28,7 @@ export const ORDER_DETAIL_ACTIONS = {
   UPDATE_SHOW_EMAIL_NOTIFY: 'UPDATE_SHOW_EMAIL_NOTIFY',
   UPDATE_EMAIL_NOTIFY: 'UPDATE_EMAIL_NOTIFY',
   UPDATE_FB_TEMPLATE_NOTIFY: 'UPDATE_FB_TEMPLATE_NOTIFY',
+  UPDATE_ORDER_CUSTOMER: 'UPDATE_ORDER_CUSTOMER',
 };
 
 export const updateOrderItemSumarizeAction = (payload) => (dispatch) => {
@@ -39,6 +40,13 @@ export const updateOrderItemSumarizeAction = (payload) => (dispatch) => {
 export const updateShowEmailNotifyAction = (payload) => (dispatch) => {
   dispatch({
     type: ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_NOTIFY,
+    payload,
+  });
+};
+
+export const updatOrderCustomerAction = (payload) => (dispatch) => {
+  dispatch({
+    type: ORDER_DETAIL_ACTIONS.UPDATE_ORDER_CUSTOMER,
     payload,
   });
 };
@@ -70,10 +78,7 @@ export const getOrderDetailAction = (id) => (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log(
-      'getOrderDetailAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('getOrderDetailAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_ORDER_DETAIL_ACTION.ERROR,
       payload: error.response,
@@ -88,12 +93,8 @@ export const getOrderDetailAction = (id) => (dispatch) => {
   });
 };
 
-export const UPDATE_ORDER_ITEM_SUMARIZE_ACTION = actionCreator(
-  'UPDATE_ORDER_ITEM_SUMARIZE_ACTION',
-);
-export const updateOrderItemSumarizeAPIAction = (id, itemId, data, cb) => (
-  dispatch,
-) => {
+export const UPDATE_ORDER_ITEM_SUMARIZE_ACTION = actionCreator('UPDATE_ORDER_ITEM_SUMARIZE_ACTION');
+export const updateOrderItemSumarizeAPIAction = (id, itemId, data, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_ITEM_SUMARIZE_ACTION.PENDING,
@@ -107,10 +108,7 @@ export const updateOrderItemSumarizeAPIAction = (id, itemId, data, cb) => (
     cb && cb(data);
   };
   const onError = (error) => {
-    console.log(
-      'updateOrderItemSumarizeAPIAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('updateOrderItemSumarizeAPIAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPDATE_ORDER_ITEM_SUMARIZE_ACTION.ERROR,
       payload: error.response,
@@ -125,17 +123,8 @@ export const updateOrderItemSumarizeAPIAction = (id, itemId, data, cb) => (
   });
 };
 
-export const UPDATE_ORDER_ITEM_FILES_ACTION = actionCreator(
-  'UPDATE_ORDER_ITEM_FILES_ACTION',
-);
-export const updateOrderItemFilesAction = (
-  id,
-  itemId,
-  index,
-  data,
-  files,
-  cb,
-) => (dispatch) => {
+export const UPDATE_ORDER_ITEM_FILES_ACTION = actionCreator('UPDATE_ORDER_ITEM_FILES_ACTION');
+export const updateOrderItemFilesAction = (id, itemId, index, data, files, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_ITEM_FILES_ACTION.PENDING,
@@ -153,10 +142,7 @@ export const updateOrderItemFilesAction = (
     }
   };
   const onError = (error) => {
-    console.log(
-      'updateOrderItemSumarizeAPIAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('updateOrderItemSumarizeAPIAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPDATE_ORDER_ITEM_FILES_ACTION.ERROR,
       payload: error.response,
@@ -171,9 +157,7 @@ export const updateOrderItemFilesAction = (
   });
 };
 
-export const GET_ORDER_CUSTOMER_ACTION = actionCreator(
-  'GET_ORDER_CUSTOMER_ACTION',
-);
+export const GET_ORDER_CUSTOMER_ACTION = actionCreator('GET_ORDER_CUSTOMER_ACTION');
 export const getOrderCustomerAction = (id) => (dispatch) => {
   const onPending = () => {
     dispatch({
@@ -187,10 +171,7 @@ export const getOrderCustomerAction = (id) => (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log(
-      'getOrderCustomerAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('getOrderCustomerAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_ORDER_CUSTOMER_ACTION.ERROR,
       payload: error.response,
@@ -205,9 +186,7 @@ export const getOrderCustomerAction = (id) => (dispatch) => {
   });
 };
 
-export const UPDATE_ORDER_STATUS_ACTION = actionCreator(
-  'UPDATE_ORDER_STATUS_ACTION',
-);
+export const UPDATE_ORDER_STATUS_ACTION = actionCreator('UPDATE_ORDER_STATUS_ACTION');
 export const updateOrderStatusAction = (id, to) => (dispatch, getState) => {
   const { status } = getState().order;
 
@@ -230,10 +209,7 @@ export const updateOrderStatusAction = (id, to) => (dispatch, getState) => {
   };
 
   const onError = (error) => {
-    console.log(
-      'updateOrderStatusAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('updateOrderStatusAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPDATE_ORDER_STATUS_ACTION.ERROR,
       payload: error.response,
@@ -248,9 +224,7 @@ export const updateOrderStatusAction = (id, to) => (dispatch, getState) => {
   });
 };
 
-export const GET_ORDER_WORK_LOG_ACTION = actionCreator(
-  'GET_ORDER_WORK_LOG_ACTION',
-);
+export const GET_ORDER_WORK_LOG_ACTION = actionCreator('GET_ORDER_WORK_LOG_ACTION');
 export const getOrderWorkLogAction = (id) => (dispatch) => {
   const onPending = () => {
     dispatch({
@@ -266,10 +240,7 @@ export const getOrderWorkLogAction = (id) => (dispatch) => {
   };
 
   const onError = (error) => {
-    console.log(
-      'updateOrderWorkLoadAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('updateOrderWorkLoadAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_ORDER_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -284,17 +255,8 @@ export const getOrderWorkLogAction = (id) => (dispatch) => {
   });
 };
 
-export const UPLOAD_FILE_WORK_LOG_ACTION = actionCreator(
-  'UPLOAD_FILE_WORK_LOG_ACTION',
-);
-export const uploadFileWorkLogAction = (
-  id,
-  logId,
-  payload,
-  index,
-  files,
-  cb,
-) => (dispatch, getState) => {
+export const UPLOAD_FILE_WORK_LOG_ACTION = actionCreator('UPLOAD_FILE_WORK_LOG_ACTION');
+export const uploadFileWorkLogAction = (id, logId, payload, index, files, cb) => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: UPLOAD_FILE_WORK_LOG_ACTION.PENDING,
@@ -302,9 +264,7 @@ export const uploadFileWorkLogAction = (
   };
   const onSuccess = (data) => {
     const { accountInfo } = getState().auth.data;
-    const actor = `${accountInfo?.firstName || ''} ${
-      accountInfo?.lastName || ''
-    }`;
+    const actor = `${accountInfo?.firstName || ''} ${accountInfo?.lastName || ''}`;
 
     const activives = [
       {
@@ -325,10 +285,7 @@ export const uploadFileWorkLogAction = (
     }
   };
   const onError = (error) => {
-    console.log(
-      'uploadFileWorkLogAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('uploadFileWorkLogAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPLOAD_FILE_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -343,12 +300,8 @@ export const uploadFileWorkLogAction = (
   });
 };
 
-export const UPLOAD_COMMENT_WORK_LOG_ACTION = actionCreator(
-  'UPLOAD_COMMENT_WORK_LOG_ACTION',
-);
-export const uploadCommentWorkLogAction = (id, logId, payload, index, cb) => (
-  dispatch,
-) => {
+export const UPLOAD_COMMENT_WORK_LOG_ACTION = actionCreator('UPLOAD_COMMENT_WORK_LOG_ACTION');
+export const uploadCommentWorkLogAction = (id, logId, payload, index, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPLOAD_COMMENT_WORK_LOG_ACTION.PENDING,
@@ -363,10 +316,7 @@ export const uploadCommentWorkLogAction = (id, logId, payload, index, cb) => (
     cb && cb();
   };
   const onError = (error) => {
-    console.log(
-      'uploadCommentWorkLogAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('uploadCommentWorkLogAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPLOAD_COMMENT_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -381,16 +331,8 @@ export const uploadCommentWorkLogAction = (id, logId, payload, index, cb) => (
   });
 };
 
-export const DELETE_COMMENT_WORK_LOG_ACTION = actionCreator(
-  'DELETE_COMMENT_WORK_LOG_ACTION',
-);
-export const deleteCommentWorkLogAction = (
-  id,
-  logId,
-  comId,
-  logIndex,
-  comIndex,
-) => (dispatch) => {
+export const DELETE_COMMENT_WORK_LOG_ACTION = actionCreator('DELETE_COMMENT_WORK_LOG_ACTION');
+export const deleteCommentWorkLogAction = (id, logId, comId, logIndex, comIndex) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: DELETE_COMMENT_WORK_LOG_ACTION.PENDING,
@@ -403,10 +345,7 @@ export const deleteCommentWorkLogAction = (
     });
   };
   const onError = (error) => {
-    console.log(
-      'deleteCommentWorkLogAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('deleteCommentWorkLogAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: DELETE_COMMENT_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -421,18 +360,8 @@ export const deleteCommentWorkLogAction = (
   });
 };
 
-export const UPDATE_COMMENT_WORK_LOG_ACTION = actionCreator(
-  'UPDATE_COMMENT_WORK_LOG_ACTION',
-);
-export const updateCommentWorkLogAction = (
-  id,
-  logId,
-  comId,
-  payload,
-  logIndex,
-  comIndex,
-  cb,
-) => (dispatch) => {
+export const UPDATE_COMMENT_WORK_LOG_ACTION = actionCreator('UPDATE_COMMENT_WORK_LOG_ACTION');
+export const updateCommentWorkLogAction = (id, logId, comId, payload, logIndex, comIndex, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_COMMENT_WORK_LOG_ACTION.PENDING,
@@ -446,10 +375,7 @@ export const updateCommentWorkLogAction = (
     cb && cb();
   };
   const onError = (error) => {
-    console.log(
-      'updateCommentWorkLogAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('updateCommentWorkLogAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPDATE_COMMENT_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -469,9 +395,7 @@ export const updateCommentWorkLogAction = (
   });
 };
 
-export const APPROVED_WORK_LOG_ACTION = actionCreator(
-  'APPROVED_WORK_LOG_ACTION',
-);
+export const APPROVED_WORK_LOG_ACTION = actionCreator('APPROVED_WORK_LOG_ACTION');
 export const approvedWorkLogAction = (id, logId) => (dispatch, getState) => {
   const { workLog } = getState().orderDetail.data;
   const workLogIndex = findIndex(workLog, (log) => log.id === logId);
@@ -483,9 +407,7 @@ export const approvedWorkLogAction = (id, logId) => (dispatch, getState) => {
   };
   const onSuccess = (data) => {
     const { accountInfo } = getState().auth.data;
-    const actor = `${accountInfo?.firstName || ''} ${
-      accountInfo?.lastName || ''
-    }`;
+    const actor = `${accountInfo?.firstName || ''} ${accountInfo?.lastName || ''}`;
 
     const activives = [
       {
@@ -500,10 +422,7 @@ export const approvedWorkLogAction = (id, logId) => (dispatch, getState) => {
     });
   };
   const onError = (error) => {
-    console.log(
-      'approvedWorkLogAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('approvedWorkLogAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: APPROVED_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -518,13 +437,8 @@ export const approvedWorkLogAction = (id, logId) => (dispatch, getState) => {
   });
 };
 
-export const REJECTED_WORK_LOG_ACTION = actionCreator(
-  'REJECTED_WORK_LOG_ACTION',
-);
-export const rejectedWorkLogAction = (id, logId, payload, index, cb) => (
-  dispatch,
-  getState,
-) => {
+export const REJECTED_WORK_LOG_ACTION = actionCreator('REJECTED_WORK_LOG_ACTION');
+export const rejectedWorkLogAction = (id, logId, payload, index, cb) => (dispatch, getState) => {
   const { workLog } = getState().orderDetail.data;
   const workLogIndex = findIndex(workLog, (log) => log.id === logId);
 
@@ -537,9 +451,7 @@ export const rejectedWorkLogAction = (id, logId, payload, index, cb) => (
     cb && cb();
 
     const { accountInfo } = getState().auth.data;
-    const actor = `${accountInfo?.firstName || ''} ${
-      accountInfo?.lastName || ''
-    }`;
+    const actor = `${accountInfo?.firstName || ''} ${accountInfo?.lastName || ''}`;
 
     const activives = [
       {
@@ -563,10 +475,7 @@ export const rejectedWorkLogAction = (id, logId, payload, index, cb) => (
     });
   };
   const onError = (error) => {
-    console.log(
-      'rejectedWorkLogAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('rejectedWorkLogAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: REJECTED_WORK_LOG_ACTION.ERROR,
       payload: error.response,
@@ -581,12 +490,8 @@ export const rejectedWorkLogAction = (id, logId, payload, index, cb) => (
   });
 };
 
-export const GET_EMAIL_TEMPLATE_ACTION = actionCreator(
-  'GET_EMAIL_TEMPLATE_ACTION',
-);
-export const getEmailTemplateAction = (id, templateId, workLogIndex) => (
-  dispatch,
-) => {
+export const GET_EMAIL_TEMPLATE_ACTION = actionCreator('GET_EMAIL_TEMPLATE_ACTION');
+export const getEmailTemplateAction = (id, templateId, workLogIndex) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.PENDING,
@@ -599,10 +504,7 @@ export const getEmailTemplateAction = (id, templateId, workLogIndex) => (
     });
   };
   const onError = (error) => {
-    console.log(
-      'getEmailTemplateAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('getEmailTemplateAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.ERROR,
       payload: error.response,
@@ -617,10 +519,8 @@ export const getEmailTemplateAction = (id, templateId, workLogIndex) => (
   });
 };
 
-export const SENT_EMAIL_NOTIFY_ACTION = actionCreator(
-  'SENT_EMAIL_NOTIFY_ACTION',
-);
-export const sendEmailNotifyAction = () => (dispatch, getState) => {
+export const SENT_EMAIL_NOTIFY_ACTION = actionCreator('SENT_EMAIL_NOTIFY_ACTION');
+export const sendEmailNotifyAction = (customerEmail = '') => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: SENT_EMAIL_NOTIFY_ACTION.PENDING,
@@ -628,15 +528,14 @@ export const sendEmailNotifyAction = () => (dispatch, getState) => {
   };
   const onSuccess = (data) => {
     const { accountInfo } = getState().auth.data;
-    const actor = `${accountInfo?.firstName || ''} ${
-      accountInfo?.lastName || ''
-    }`;
+    const actor = `${accountInfo?.firstName || ''} ${accountInfo?.lastName || ''}`;
 
     const activives = [
       {
         activityType: 'NOTIFIED_CUSTOMER',
         actor,
         lastActionDate: new Date(),
+        notificationChannel: 'EMAIL',
       },
     ];
     dispatch({
@@ -648,10 +547,7 @@ export const sendEmailNotifyAction = () => (dispatch, getState) => {
     toast.dark('Notified Customer!');
   };
   const onError = (error) => {
-    console.log(
-      'sendEmailNotifyAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('sendEmailNotifyAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: SENT_EMAIL_NOTIFY_ACTION.ERROR,
       payload: error.response,
@@ -662,6 +558,7 @@ export const sendEmailNotifyAction = () => (dispatch, getState) => {
   const { email, order } = data;
   const payload = {
     content: email,
+    to: customerEmail,
   };
   actionTryCatchCreator({
     service: sentOrderEmailNotifyService({ id: order.id, data: payload }),
@@ -671,12 +568,8 @@ export const sendEmailNotifyAction = () => (dispatch, getState) => {
   });
 };
 
-export const GET_FB_MESSAGE_TEMPLATE_ACTION = actionCreator(
-  'GET_FB_MESSAGE_TEMPLATE_ACTION',
-);
-export const getFBMessageTemplateAction = (id, templateId, workLogIndex) => (
-  dispatch,
-) => {
+export const GET_FB_MESSAGE_TEMPLATE_ACTION = actionCreator('GET_FB_MESSAGE_TEMPLATE_ACTION');
+export const getFBMessageTemplateAction = (id, templateId, workLogIndex) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_FB_MESSAGE_TEMPLATE_ACTION.PENDING,
@@ -689,10 +582,7 @@ export const getFBMessageTemplateAction = (id, templateId, workLogIndex) => (
     });
   };
   const onError = (error) => {
-    console.log(
-      'getFBMessageTemplateAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('getFBMessageTemplateAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_FB_MESSAGE_TEMPLATE_ACTION.ERROR,
       payload: error.response,
@@ -707,10 +597,8 @@ export const getFBMessageTemplateAction = (id, templateId, workLogIndex) => (
   });
 };
 
-export const SENT_FB_MESSAGES_NOTIFY_ACTION = actionCreator(
-  'SENT_FB_MESSAGES_NOTIFY_ACTION',
-);
-export const sendFBMessageNotifyAction = () => (dispatch, getState) => {
+export const SENT_FB_MESSAGES_NOTIFY_ACTION = actionCreator('SENT_FB_MESSAGES_NOTIFY_ACTION');
+export const sendFBMessageNotifyAction = (psid) => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: SENT_FB_MESSAGES_NOTIFY_ACTION.PENDING,
@@ -718,15 +606,14 @@ export const sendFBMessageNotifyAction = () => (dispatch, getState) => {
   };
   const onSuccess = (data) => {
     const { accountInfo } = getState().auth.data;
-    const actor = `${accountInfo?.firstName || ''} ${
-      accountInfo?.lastName || ''
-    }`;
+    const actor = `${accountInfo?.firstName || ''} ${accountInfo?.lastName || ''}`;
 
     const activives = [
       {
         activityType: 'NOTIFIED_CUSTOMER',
         actor,
         lastActionDate: new Date(),
+        notificationChannel: 'FACEBOOK',
       },
     ];
     dispatch({
@@ -738,10 +625,7 @@ export const sendFBMessageNotifyAction = () => (dispatch, getState) => {
     toast.dark('Notified Customer!');
   };
   const onError = (error) => {
-    console.log(
-      'sendFBMessageNotifyAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('sendFBMessageNotifyAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: SENT_FB_MESSAGES_NOTIFY_ACTION.ERROR,
       payload: error.response,
@@ -752,6 +636,7 @@ export const sendFBMessageNotifyAction = () => (dispatch, getState) => {
   const { fbTemplate, order } = data;
   const payload = {
     content: fbTemplate,
+    psid: psid || '',
   };
   actionTryCatchCreator({
     service: sentOrderFBTemplateNotifyService({ id: order.id, data: payload }),
@@ -761,16 +646,8 @@ export const sendFBMessageNotifyAction = () => (dispatch, getState) => {
   });
 };
 
-export const DELETE_FILE_DELIVERY_ACTION = actionCreator(
-  'DELETE_FILE_DELIVERY_ACTION',
-);
-export const deleteFileDeliveryAction = (
-  id,
-  fileId,
-  logIndex,
-  fileIndex,
-  cb,
-) => (dispatch) => {
+export const DELETE_FILE_DELIVERY_ACTION = actionCreator('DELETE_FILE_DELIVERY_ACTION');
+export const deleteFileDeliveryAction = (id, fileId, logIndex, fileIndex, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: DELETE_FILE_DELIVERY_ACTION.PENDING,
@@ -788,10 +665,7 @@ export const deleteFileDeliveryAction = (
     }
   };
   const onError = (error) => {
-    console.log(
-      'deleteFileDeliveryAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('deleteFileDeliveryAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: DELETE_FILE_DELIVERY_ACTION.ERROR,
       payload: error.response,
@@ -806,17 +680,8 @@ export const deleteFileDeliveryAction = (
   });
 };
 
-export const DELETE_FILE_SUMMARY_ACTION = actionCreator(
-  'DELETE_FILE_SUMMARY_ACTION',
-);
-export const deleteFileSummaryAction = (
-  id,
-  itemId,
-  fileId,
-  itemIndex,
-  fileIndex,
-  cb,
-) => (dispatch) => {
+export const DELETE_FILE_SUMMARY_ACTION = actionCreator('DELETE_FILE_SUMMARY_ACTION');
+export const deleteFileSummaryAction = (id, itemId, fileId, itemIndex, fileIndex, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: DELETE_FILE_SUMMARY_ACTION.PENDING,
@@ -834,10 +699,7 @@ export const deleteFileSummaryAction = (
     }
   };
   const onError = (error) => {
-    console.log(
-      'deleteFileSummaryAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('deleteFileSummaryAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: DELETE_FILE_SUMMARY_ACTION.ERROR,
       payload: error.response,
