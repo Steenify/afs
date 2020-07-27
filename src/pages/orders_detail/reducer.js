@@ -12,6 +12,7 @@ import {
   REJECTED_WORK_LOG_ACTION,
   GET_EMAIL_TEMPLATE_ACTION,
   SENT_EMAIL_NOTIFY_ACTION,
+  DELETE_ATTACHMENT_WORK_LOG_ACTION,
   UPLOAD_COMMENT_WORK_LOG_ACTION,
   DELETE_COMMENT_WORK_LOG_ACTION,
   UPDATE_COMMENT_WORK_LOG_ACTION,
@@ -100,6 +101,7 @@ const reducer = (state = initialState, action) => {
     case UPLOAD_FILE_WORK_LOG_ACTION.PENDING:
     case UPLOAD_COMMENT_WORK_LOG_ACTION.PENDING:
     case DELETE_COMMENT_WORK_LOG_ACTION.PENDING:
+    case DELETE_ATTACHMENT_WORK_LOG_ACTION.PENDING:
     case APPROVED_WORK_LOG_ACTION.PENDING:
     case REJECTED_WORK_LOG_ACTION.PENDING:
     case SENT_EMAIL_NOTIFY_ACTION.PENDING:
@@ -181,6 +183,22 @@ const reducer = (state = initialState, action) => {
             [payload.index]: {
               comments: {
                 $push: [payload.data],
+              },
+            },
+          },
+        },
+      });
+    }
+    case DELETE_ATTACHMENT_WORK_LOG_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+        data: {
+          workLog: {
+            [payload.logIndex]: {
+              attachments: {
+                $splice: [[payload.attachmentIndex, 1]],
               },
             },
           },
@@ -315,6 +333,7 @@ const reducer = (state = initialState, action) => {
     case UPLOAD_FILE_WORK_LOG_ACTION.ERROR:
     case UPLOAD_COMMENT_WORK_LOG_ACTION.ERROR:
     case DELETE_COMMENT_WORK_LOG_ACTION.ERROR:
+    case DELETE_ATTACHMENT_WORK_LOG_ACTION.ERROR:
     case UPDATE_COMMENT_WORK_LOG_ACTION.ERROR:
     case APPROVED_WORK_LOG_ACTION.ERROR:
     case REJECTED_WORK_LOG_ACTION.ERROR:

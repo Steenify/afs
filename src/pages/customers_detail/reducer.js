@@ -1,6 +1,8 @@
 import update from 'react-addons-update';
 
-import { GET_CUSTOMER_DETAIL_ACTION } from './actions';
+import { mapDataList, mapDataByIds, mapDataByDate, isMobile } from 'utils';
+
+import { GET_CUSTOMER_DETAIL_ACTION, GET_CUSTOMER_ORDERS_ACTION } from './actions';
 
 const initialState = {
   ui: {
@@ -14,11 +16,19 @@ const initialState = {
     orders: [],
     customer: {},
   },
+  filter: {
+    page: 0,
+    size: 100,
+    sizeMobile: 100,
+    text: '',
+    assignee: '',
+  },
 };
 
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case GET_CUSTOMER_ORDERS_ACTION.PENDING:
     case GET_CUSTOMER_DETAIL_ACTION.PENDING: {
       return update(state, {
         ui: {
@@ -36,6 +46,17 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
+    case GET_CUSTOMER_ORDERS_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+        data: {
+          orders: { $set: payload.data },
+        },
+      });
+    }
+    case GET_CUSTOMER_ORDERS_ACTION.ERROR:
     case GET_CUSTOMER_DETAIL_ACTION.ERROR: {
       return update(state, {
         ui: {

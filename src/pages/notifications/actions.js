@@ -1,5 +1,5 @@
 import { actionCreator, actionTryCatchCreator, isMobile } from 'utils';
-import { getAllNotificationsService, getNotificationsCountService, readAllNotificationService } from 'services/notification.service';
+import { getAllNotificationsService, getNotificationsCountService, getNotificationDetailService, readAllNotificationService } from 'services/notification.service';
 
 const buildSearchParam = (input = {}) => {
   var params = new URLSearchParams();
@@ -19,7 +19,7 @@ const buildSearchParam = (input = {}) => {
 
 export const GET_NOTIFICATIONS = actionCreator('GET_NOTIFICATIONS');
 export const getAllNotificationsAction = (params = {}) => async (dispatch, getState) => {
-  const { filter } = getState().customers;
+  const { filter } = getState().notification;
 
   const currSize = isMobile() ? filter.sizeMobile : filter.size;
 
@@ -34,11 +34,11 @@ export const getAllNotificationsAction = (params = {}) => async (dispatch, getSt
       type: GET_NOTIFICATIONS.PENDING,
     });
   };
-  const onSuccess = (data) => {
+  const onSuccess = (data, headers) => {
     if (data) {
       dispatch({
         type: GET_NOTIFICATIONS.SUCCESS,
-        payload: data,
+        payload: { data, headers },
       });
     }
   };
@@ -59,7 +59,7 @@ export const getAllNotificationsAction = (params = {}) => async (dispatch, getSt
 };
 
 export const GET_NOTIFICATIONS_DETAIL = actionCreator('GET_NOTIFICATIONS_DETAIL');
-export const getAllNotificationDetailAction = (params) => async (dispatch, getState) => {
+export const getNotificationDetailAction = (params, callback) => async (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_NOTIFICATIONS_DETAIL.PENDING,
@@ -71,6 +71,7 @@ export const getAllNotificationDetailAction = (params) => async (dispatch, getSt
         type: GET_NOTIFICATIONS_DETAIL.SUCCESS,
         payload: data,
       });
+      if (callback) callback();
     }
   };
   const onError = (error) => {
@@ -82,7 +83,7 @@ export const getAllNotificationDetailAction = (params) => async (dispatch, getSt
   };
 
   actionTryCatchCreator({
-    service: getAllNotificationsService(params),
+    service: getNotificationDetailService(params),
     onPending,
     onSuccess,
     onError,
@@ -150,4 +151,13 @@ export const readAllNotificationAction = () => async (dispatch) => {
     onSuccess,
     onError,
   });
+};
+
+export const UPDATE_NOTIFICATIONS_FILTER_ACTION = 'UPDATE_NOTIFICATIONS_FILTER_ACTION';
+export const updateNotificationFilterAction = (payload) => (dispatch) => {
+  dispatch({
+    type: UPDATE_NOTIFICATIONS_FILTER_ACTION,
+    payload,
+  });
+  dispatch(getAllNotificationsAction());
 };

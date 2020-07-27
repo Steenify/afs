@@ -21,9 +21,9 @@ import { ReactComponent as Message } from 'assets/img/message.svg';
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
 import { mapStatusCanNotUpload } from 'config';
 
-import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction } from './actions';
+import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction } from './actions';
 
-const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, uploadCommentWorkLog, deleteCommentWorkLog, updateCommentWorkLog }) => {
+const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, uploadCommentWorkLog, deleteCommentWorkLog, updateCommentWorkLog, deleteAttachmentWorkLog }) => {
   const [isOpenWork, setIsOpenWork] = useState(isOpened || false);
   const toggleWork = () => setIsOpenWork(!isOpenWork);
 
@@ -193,6 +193,11 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
     });
   };
 
+  const handleDeleteFile = (file) => {
+    const fileIndex = findIndex(work.attachments, (pho) => pho?.id === file?.source?.id);
+    deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'));
+  };
+
   return (
     <div className='order_detail__artwork'>
       <div className='box__header'>
@@ -240,7 +245,7 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
 
         {work.attachments.length > 0 && (
           <div className='photos'>
-            <ImageGallery images={getListImageUrl(work.attachments)} alt={work.status} caption={work.status} />
+            <ImageGallery images={getListImageUrl(work.attachments)} alt={work.status} caption={work.status} canDelete={isEdit} onDelete={handleDeleteFile} />
           </div>
         )}
 
@@ -379,6 +384,7 @@ const mapDispatchToProps = {
   uploadCommentWorkLog: uploadCommentWorkLogAction,
   deleteCommentWorkLog: deleteCommentWorkLogAction,
   updateCommentWorkLog: updateCommentWorkLogAction,
+  deleteAttachmentWorkLog: deleteAttachmentWorkLogAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderWorkLogItem);
