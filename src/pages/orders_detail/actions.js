@@ -613,7 +613,7 @@ export const sendFBMessageNotifyAction = (psid) => (dispatch, getState) => {
         activityType: 'NOTIFIED_CUSTOMER',
         actor,
         lastActionDate: new Date(),
-        notificationChannel: 'FACEBOOK',
+        notificationChannel: 'MESSENGER',
       },
     ];
     dispatch({
