@@ -9,10 +9,11 @@
       "user": "All Users",
       "role": "Role",
       "permission": "Permission",
-      "notification": "Notification",
+      "notification": "Notifications",
       "customer": "Customers",
       "customerGroup": "Group List",
-      "systemProperty": "System Property"
+      "systemProperty": "System Property",
+      "galleryListing": "Gallery"
     }
   }
 }
