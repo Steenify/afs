@@ -1,5 +1,6 @@
 import update from 'react-addons-update';
-import { GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT, READ_ALL_NOTIFICATIONS } from './actions';
+import { GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT, READ_ALL_NOTIFICATIONS, UPDATE_NOTIFICATIONS_FILTER_ACTION } from './actions';
+import { isMobile } from 'utils';
 
 const initialState = {
   ui: {
@@ -17,11 +18,12 @@ const initialState = {
   data: {
     notifications: [],
     totalItems: 0,
+    totalPage: 0,
   },
   filter: {
     page: 0,
-    size: 20,
-    sizeMobile: 20,
+    size: 100,
+    sizeMobile: 100,
     sort: [],
     text: '',
     from: null,
@@ -43,9 +45,15 @@ const reducer = (state = initialState, action) => {
         },
       });
     case GET_NOTIFICATIONS.SUCCESS:
+      const totalItems = parseInt(payload.headers['x-total-count'], 10);
+      const { size, sizeMobile } = state.filter;
+      const currSize = isMobile() ? sizeMobile : size;
+      const totalPage = Math.ceil(totalItems / currSize);
       return update(state, {
         data: {
-          notifications: { $set: payload },
+          notifications: { $set: payload.data },
+          totalItems: { $set: totalItems },
+          totalPage: { $set: totalPage },
         },
         ui: {
           list: {
@@ -88,6 +96,13 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
+    case UPDATE_NOTIFICATIONS_FILTER_ACTION: {
+      return update(state, {
+        filter: {
+          $merge: payload,
+        },
+      });
+    }
     default:
       return state;
   }

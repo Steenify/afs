@@ -133,6 +133,12 @@ export const updateOrderWorkLogCommentService = ({ id, logId, comId, data }) =>
     data,
   });
 
+export const deleteOrderWorkLogAttachmentService = ({ id, logId, attachmentId }) =>
+  request({
+    url: `${ORDERS_API}/${id}/work-logs/${logId}/attachment/${attachmentId}`,
+    method: 'DELETE',
+  });
+
 export const updateOrderArtistPaymentService = (id, data) =>
   request({
     url: `${ORDERS_API}/${id}/artist-payment-status`,

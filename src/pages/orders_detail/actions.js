@@ -21,6 +21,7 @@ import {
   deleteFileSumaryService,
   getOrderFBTemplateService,
   sentOrderFBTemplateNotifyService,
+  deleteOrderWorkLogAttachmentService,
 } from 'services/order';
 
 export const ORDER_DETAIL_ACTIONS = {
@@ -325,6 +326,36 @@ export const uploadCommentWorkLogAction = (id, logId, payload, index, cb) => (di
 
   actionTryCatchCreator({
     service: uploadOrderWorkLogCommentService({ id, logId, data: payload }),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const DELETE_ATTACHMENT_WORK_LOG_ACTION = actionCreator('DELETE_ATTACHMENT_WORK_LOG_ACTION');
+export const deleteAttachmentWorkLogAction = (id, logId, attachmentId, logIndex, attachmentIndex, cb) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: DELETE_ATTACHMENT_WORK_LOG_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    if (cb) cb();
+    dispatch({
+      type: DELETE_ATTACHMENT_WORK_LOG_ACTION.SUCCESS,
+      payload: { logIndex, attachmentIndex },
+    });
+  };
+  const onError = (error) => {
+    console.log('deleteAttachmentWorkLogAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: DELETE_ATTACHMENT_WORK_LOG_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: deleteOrderWorkLogAttachmentService({ id, logId, attachmentId }),
     onPending,
     onSuccess,
     onError,

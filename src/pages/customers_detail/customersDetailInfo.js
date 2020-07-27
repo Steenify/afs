@@ -9,9 +9,7 @@ const CustomerDetailInfo = (props) => {
       <div className='box__header'>
         <div className='box__title'>
           {customer?.firstName} {customer?.lastName}
-          <div className='subText'>
-            {customer?.customerExtension?.city}, {customer?.customerExtension?.province}, {customer?.customerExtension?.country}
-          </div>
+          <div className='subText'>{[customer?.customerExtension?.city, customer?.customerExtension?.province, customer?.customerExtension?.country].filter((item) => item).join(', ')}</div>
           <div className='subText'>{customer?.customerExtension?.totalOrder} order(s)</div>
         </div>
         <div className='float-right'>

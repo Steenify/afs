@@ -1,5 +1,5 @@
 import { actionCreator, actionTryCatchCreator, isMobile } from 'utils';
-import { getCustomersService, getCustomerDetailService, updateCustomerService, createCustomerService } from 'services/customers';
+import { getCustomersService, updateCustomerService, createCustomerService } from 'services/customers';
 
 export const UPDATE_CUSTOMER_ITEM_ACTION = 'UPDATE_CUSTOMER_ITEM_ACTION';
 export const updateCustomersItemsAction = (payload) => (dispatch) => {

@@ -9,8 +9,9 @@ import PageTitle from 'components/common/PageTitle';
 import Button from 'components/common/button';
 
 import CustomerDetailInfo from './customersDetailInfo';
+import CustomerDetailOrders from './customersDetailOrder';
 
-import { getCustomerDetailAction } from './actions';
+import { getCustomerDetailAction, getCustomerOrdersAction } from './actions';
 import { updateCustomerAction } from 'pages/customers/actions';
 
 import { WEB_ROUTES } from 'config';
@@ -19,11 +20,12 @@ const CustomerDetail = (props) => {
   let { login } = useParams();
   let history = useHistory();
   const { t } = useTranslation();
-  const { customer, ui, getCustomerDetailAction } = props;
+  const { customer, orders, ui, getCustomerDetailAction, getCustomerOrdersAction } = props;
 
   useEffect(() => {
     getCustomerDetailAction(login);
-  }, [getCustomerDetailAction, login]);
+    getCustomerOrdersAction(login);
+  }, [getCustomerDetailAction, getCustomerOrdersAction, login]);
 
   if (isEmpty(customer)) {
     return <InPageLoading isLoading={ui.loading} />;
@@ -50,7 +52,9 @@ const CustomerDetail = (props) => {
           </div>
         </div>
         <div className='col-lg-6'>
-          <div className='customer_detail__wrapper'></div>
+          <div className='customer_detail__wrapper'>
+            <CustomerDetailOrders orders={orders} />
+          </div>
         </div>
       </div>
     </div>
@@ -60,11 +64,12 @@ const CustomerDetail = (props) => {
 const mapStateToProps = ({ customerDetail, role }) => {
   const {
     ui,
-    data: { customer },
+    data: { customer, orders },
   } = customerDetail;
   return {
     ui,
     customer,
+    orders,
     authorities: role.data.authorities,
   };
 };
@@ -72,4 +77,5 @@ const mapStateToProps = ({ customerDetail, role }) => {
 export default connect(mapStateToProps, {
   getCustomerDetailAction,
   updateCustomerAction,
+  getCustomerOrdersAction,
 })(CustomerDetail);

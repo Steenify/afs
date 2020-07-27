@@ -1,28 +1,33 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 
 import { ReactComponent as NotiEmpty } from 'assets/img/no__notification.svg';
 import { ReactComponent as Logo } from 'assets/img/logo.svg';
+import NotificationPaging from './notificationPaging';
 
-import { truncates, dateTimeFromNow } from 'utils';
+import { dateTimeFromNow } from 'utils';
 
-import { getAllNotificationsAction, getAllNotificationDetailAction } from './actions';
+import { getAllNotificationsAction, getNotificationDetailAction } from './actions';
 
 import './style.scss';
 import { useHistory } from 'react-router-dom';
 
 const NotificationList = (props) => {
   const history = useHistory();
-  const { t } = useTranslation();
-  const { getAllNotificationsAction, getAllNotificationDetailAction, notifications, ui } = props;
+  // const { t } = useTranslation();
+  const { getAllNotificationsAction, getNotificationDetailAction, notifications } = props;
 
   useEffect(() => {
     getAllNotificationsAction();
   }, [getAllNotificationsAction]);
 
   const handleClick = (noti) => {
-    getAllNotificationDetailAction(noti.id);
+    getNotificationDetailAction(noti.id, () => {
+      if (!noti?.additionalData?.code) {
+        getAllNotificationsAction();
+      }
+    });
     if (noti?.additionalData?.code) {
       history.push(`/order/${noti?.additionalData?.code}`);
     }
@@ -65,7 +70,9 @@ const NotificationList = (props) => {
       <div className='notifications__body box'>
         <div>{handleRenderContent()}</div>
       </div>
-      <div className='notifications__paging'>{/* <CustomersPaging /> */}</div>
+      <div className='notifications__paging'>
+        <NotificationPaging />
+      </div>
     </div>
   );
 };
@@ -78,5 +85,5 @@ const mapStateToProps = ({ notification }) => ({
 
 export default connect(mapStateToProps, {
   getAllNotificationsAction,
-  getAllNotificationDetailAction,
+  getNotificationDetailAction,
 })(NotificationList);
