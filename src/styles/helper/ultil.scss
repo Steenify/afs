@@ -147,18 +147,18 @@ $cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy, crossha
 
 	&__sub_title {
 		font-weight: 600;
-		font-size: 14px;
+		font-size: 16px;
 		line-height: 22px;
 		letter-spacing: 0.2625px;
 		color: #141414;
 	}
 
 	&__link {
-		font-weight: normal;
-		font-size: 16px;
+		font-weight: normal !important;
+		font-size: 16px !important;
 		line-height: 22px;
 		letter-spacing: 0.3px;
-		color: #337fd7;
+		color: #337fd7 !important;
 	}
 
 	&__control {

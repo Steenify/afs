@@ -1,6 +1,6 @@
 import update from 'react-addons-update';
 
-import { mapDataList, mapDataByIds, mapDataByDate, isMobile } from 'utils';
+// import { mapDataList, mapDataByIds, mapDataByDate, isMobile } from 'utils';
 
 import { GET_CUSTOMER_DETAIL_ACTION, GET_CUSTOMER_ORDERS_ACTION } from './actions';
 
