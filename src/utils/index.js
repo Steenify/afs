@@ -377,3 +377,5 @@ export const getTotalPage = (headers = {}, size = 100, sizeMobile = 100) => {
   const currSize = isMobile() ? sizeMobile : size;
   return Math.ceil(totalItems / currSize);
 };
+
+export const uniqIdCreator = () => Math.random().toString(36).slice(2);

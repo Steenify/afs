@@ -41,6 +41,7 @@ import TermsAndConditions from 'pages/TermsAndConditions';
 import Payouts from 'pages/payouts';
 import PayoutsDetail from 'pages/payouts/payoutsDetail';
 import GalleryListing from 'pages/gallery/gallery_listing';
+import GalleryDetail from 'pages/gallery/gallery_detail';
 
 import head from 'utils/head';
 
@@ -106,6 +107,7 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
           <Route exact path={WEB_ROUTES.PAYOUTS.path} component={Payouts} isPrivate={true} role={WEB_ROUTES.PAYOUTS.permission} />
           <Route exact path={WEB_ROUTES.PAYOUTS_DETAIL.path} component={PayoutsDetail} isPrivate={true} role={WEB_ROUTES.PAYOUTS_DETAIL.permission} />
           <Route exact path={WEB_ROUTES.GALLERY_LISTING.path} component={GalleryListing} isPrivate={true} role={WEB_ROUTES.GALLERY_LISTING.permission} />
+          <Route exact path={WEB_ROUTES.GALLERY_DETAIL.path} component={GalleryDetail} isPrivate={true} role={WEB_ROUTES.GALLERY_DETAIL.permission} />
           <PublicRoute exact path={WEB_ROUTES.POLICY.path}>
             <PrivacyPolicy />
           </PublicRoute>

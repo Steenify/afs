@@ -138,6 +138,11 @@ const WEB_ROUTES = {
     title: 'Gallery', // 'baseApp.sidebar.galleryListing',
     permission: '',
   },
+  GALLERY_DETAIL: {
+    path: '/gallery/:id',
+    title: 'Gallery Detail', // 'baseApp.sidebar.galleryListing',
+    permission: '',
+  },
 };
 
 export default WEB_ROUTES;

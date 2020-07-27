@@ -8,3 +8,8 @@ export const getArtworkService = (params) =>
     method: 'GET',
     params,
   });
+
+export const getArtworkDetailService = (id) =>
+  request({
+    url: `${ARTWORK_API}/${id}`,
+  });
