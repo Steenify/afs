@@ -16,6 +16,7 @@ import Filter from './filter';
 import Title from './title';
 import ImageLoadAble from 'components/common/imageLoadAble';
 import { useTranslation } from 'react-i18next';
+import { uniqIdCreator } from 'utils';
 
 const masonryOptions = {
   transitionDuration: 1000,
@@ -58,7 +59,7 @@ const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, d
         imagesLoadedOptions={imagesLoadedOptions} // default {}
       >
         {data.artworks.map((artwork) => (
-          <div className='gallery__artwork' key={`artwork_${artwork.bookingNumber}`}>
+          <div className='gallery__artwork' key={`artwork_${artwork.bookingNumber}_${uniqIdCreator()}`}>
             <div className='cursor-pointer' onClick={() => history.push(`/gallery/${artwork.id}`)}>
               <ImageLoadAble type={artwork.attachment.type} url={artwork.attachment.url} fileName={artwork.attachment.fileName} />
             </div>
