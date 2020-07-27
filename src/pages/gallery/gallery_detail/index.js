@@ -11,11 +11,15 @@ import Tags from '../gallery_listing/tags';
 import { getArtworkDetailAction } from './action';
 
 import './style.scss';
+import { avatarGenerator } from 'utils';
 
 const GalleryDetail = (props) => {
   const {
     history,
     match,
+    auth: {
+      data: { accountInfo },
+    },
     galleryDetailReducer: {
       data: { gallery },
     },
@@ -64,14 +68,25 @@ const GalleryDetail = (props) => {
               {gallery?.attachment?.url}
             </a>
           </p>
+
+          {/* <p>Share feedback, ask questions or leave a comment</p>
+
+          <div className='comment-box'>
+            <img className='rounded-circle' src={avatarGenerator(accountInfo?.imageUrl, accountInfo?.firstName)} alt={accountInfo?.firstName} />
+
+            <div className='form-group w-100'>
+              <input className='form-control' placeholder='Type a comment...' style={{ borderRadius: '25px' }} />
+            </div>
+          </div> */}
         </div>
       </div>
     </Layout>
   );
 };
 
-const mapStateToProps = ({ gallery: { detail } }, ownProps) => ({
+const mapStateToProps = ({ auth, gallery: { detail } }, ownProps) => ({
   ...ownProps,
+  auth,
   galleryDetailReducer: detail,
 });
 

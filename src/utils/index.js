@@ -379,3 +379,5 @@ export const getTotalPage = (headers = {}, size = 100, sizeMobile = 100) => {
 };
 
 export const uniqIdCreator = () => Math.random().toString(36).slice(2);
+
+export const avatarGenerator = (url, name) => url || `https://ui-avatars.com/api/?name=${(name || 'Unknown').split(' ').join('+')}`;
