@@ -4,6 +4,7 @@ import { Spinner } from 'reactstrap';
 import { debounce } from 'lodash';
 import Masonry from 'react-masonry-component';
 import { Link, useHistory } from 'react-router-dom';
+import { confirmAlert } from 'react-confirm-alert';
 
 import Layout from 'components/common/Layout';
 import { getAllTagsAction, getArtworksAction, updateFilterAction } from './action';
@@ -11,12 +12,14 @@ import { WEB_ROUTES } from 'config';
 import './style.scss';
 import { initialState } from './reducer';
 import Paging from 'components/common/paging';
+import { ReactComponent as Close } from 'assets/img/close.svg';
 import Tags from './tags';
 import Filter from './filter';
 import Title from './title';
 import ImageLoadAble from 'components/common/imageLoadAble';
 import { useTranslation } from 'react-i18next';
 import { uniqIdCreator } from 'utils';
+import UploadModal from './uploadModal';
 
 const masonryOptions = {
   transitionDuration: 1000,
@@ -38,9 +41,21 @@ const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, d
     debounceGetArtworks({ page, size, tag, text });
   }, [debounceGetArtworks, filterData]);
 
+  const uploadGalleryAction = (data) => {
+    console.log('uploadGalleryAction -> data', data);
+  };
+
+  const handleUpload = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return <UploadModal onClose={onClose} onConfirm={uploadGalleryAction} />;
+      },
+    });
+  };
+
   return (
     <Layout className='order__container' documentTitle={t(WEB_ROUTES.GALLERY_LISTING.title)} container fluid>
-      <Title onClickUpload={() => {}} />
+      <Title onClickUpload={handleUpload} />
       <div className='gallery gallery__wrapper'>
         <Filter onChange={updateFilterAction} />
         <Tags currentTag={filterData.tag} tags={data?.tags} onClickTag={updateFilterAction} />
