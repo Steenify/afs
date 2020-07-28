@@ -56,8 +56,8 @@ const SettingsPage = (props) => {
     },
     {
       ...WEB_ROUTES.GALLERY_LISTING,
-      icon: <CustomerIcon />,
-      des: 'Payouts',
+      icon: <Package />,
+      des: 'Gallery',
     },
   ];
 
