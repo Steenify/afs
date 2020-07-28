@@ -5,7 +5,7 @@ import P from 'components/common/parapraph';
 const CustomerDetailInfo = (props) => {
   const { customer } = props;
   return (
-    <div className='order_detail__original order_detail__box box'>
+    <div className='customer_detail__original customer_detail__box box'>
       <div className='box__header'>
         <div className='box__title'>
           {customer?.firstName} {customer?.lastName}
