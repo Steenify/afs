@@ -7,7 +7,7 @@ import { WEB_ROUTES } from 'config';
 const GalleryTitle = ({ onClickUpload = () => {} }) => {
   return (
     <PageTitle title={WEB_ROUTES.GALLERY_LISTING.title} className='mb-0 mr-3' containerClassName='justify-content-between'>
-      <Button className='btn-create ml-auto' color='primary'>
+      <Button className='btn-create ml-auto' color='primary' onClick={onClickUpload}>
         <UploadIcon className='mr-2' />
         Upload Gallery
       </Button>

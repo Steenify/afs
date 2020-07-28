@@ -48,7 +48,7 @@ export const actionTryCatchCreator = async ({ service, onPending, onSuccess, onE
       window.location.href = '/signin';
       return;
     }
-    if (status === 200) {
+    if (status >= 200 && status < 300) {
       if (onSuccess) onSuccess(data, headers, status);
     } else {
       throw String(`HTTP request with code ${status} \n ${data.detail || data.message || ''}`);
@@ -377,3 +377,7 @@ export const getTotalPage = (headers = {}, size = 100, sizeMobile = 100) => {
   const currSize = isMobile() ? sizeMobile : size;
   return Math.ceil(totalItems / currSize);
 };
+
+export const uniqIdCreator = () => Math.random().toString(36).slice(2);
+
+export const avatarGenerator = (url, name) => url || `https://ui-avatars.com/api/?name=${(name || 'Unknown').split(' ').join('+')}`;

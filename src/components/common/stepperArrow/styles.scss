@@ -1,0 +1,18 @@
+@import 'styles/var.scss';
+
+.stepper_arrow {
+	.button {
+		border: 1px solid #e2e5ed !important;
+		width: 40px !important;
+		height: 32px !important;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.active {
+		background-color: white !important;
+	}
+	.disabled {
+		background-color: #f3f4f6 !important;
+	}
+}

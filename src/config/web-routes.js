@@ -94,6 +94,11 @@ const WEB_ROUTES = {
     title: 'Artists Detail',
     permission: 'ACCESS_ARTIST',
   },
+  ARTISTS_DETAIL_FORM: {
+    path: '/artists/:login/edit',
+    title: 'Artists Detail',
+    permission: 'ACCESS_ARTIST',
+  },
   CS: {
     path: '/cs',
     title: 'Customer Service',
@@ -136,6 +141,11 @@ const WEB_ROUTES = {
   GALLERY_LISTING: {
     path: '/gallery',
     title: 'Gallery', // 'baseApp.sidebar.galleryListing',
+    permission: '',
+  },
+  GALLERY_DETAIL: {
+    path: '/gallery/:id',
+    title: 'Gallery Detail', // 'baseApp.sidebar.galleryListing',
     permission: '',
   },
 };

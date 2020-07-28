@@ -44,29 +44,18 @@ class ImageGallery extends Component {
             }
 
             return (
-              <div
-                className='images_gallerry__item d-inline-block'
-                key={`images_gallerry__item__${index.toString()}`}>
+              <div className='images_gallerry__item d-inline-block' key={`images_gallerry__item__${index.toString()}`}>
                 {canDelete && (
-                  <button
-                    onClick={() => onDelete(img, index)}
-                    className='images_gallerry__delete'
-                    type='button'>
+                  <button onClick={() => onDelete(img, index)} className='images_gallerry__delete' type='button'>
                     <span className='icon'>
                       <CloseIcon />
                     </span>
                   </button>
                 )}
 
-                <div
-                  className='images_gallerry__img'
-                  onClick={() => this.toggleModal(index)}>
+                <div className='images_gallerry__img' onClick={() => this.toggleModal(index)}>
                   {isObject(img.source) ? (
-                    <ImageLoadAble
-                      type={img.source.type}
-                      url={img.source.thumbnail}
-                      fileName={img.source.fileName}
-                    />
+                    <ImageLoadAble type={img.source.type} url={img.source.thumbnail || img.source.thumbnailLink} fileName={img.source.fileName} />
                   ) : (
                     <ImageLoadAble url={img.source} />
                   )}

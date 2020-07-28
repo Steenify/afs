@@ -5,13 +5,11 @@ import P from 'components/common/parapraph';
 const CustomerDetailInfo = (props) => {
   const { customer } = props;
   return (
-    <div className='order_detail__original order_detail__box box'>
+    <div className='customer_detail__original customer_detail__box box'>
       <div className='box__header'>
         <div className='box__title'>
           {customer?.firstName} {customer?.lastName}
-          <div className='subText'>
-            {customer?.customerExtension?.city}, {customer?.customerExtension?.province}, {customer?.customerExtension?.country}
-          </div>
+          <div className='subText'>{[customer?.customerExtension?.city, customer?.customerExtension?.province, customer?.customerExtension?.country].filter((item) => item).join(', ')}</div>
           <div className='subText'>{customer?.customerExtension?.totalOrder} order(s)</div>
         </div>
         <div className='float-right'>

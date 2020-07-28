@@ -15,7 +15,6 @@ const initialState = {
     customers: [],
     ids: [],
     items: {},
-    itemGroups: [],
     totalItems: 0,
     totalPage: 0,
   },
