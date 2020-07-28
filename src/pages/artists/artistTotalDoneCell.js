@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const ArtistTotalDoneCell = ({ totalDone }) => {
-  return <div className='artist__totaldones artists__cell'>{totalDone}</div>;
+const ArtistTotalDoneCell = ({ numDone }) => {
+  return <div className='artist__totaldones artists__cell'>{numDone}</div>;
 };
 
 const mapStateToProps = ({ artists }, ownProps) => {
@@ -10,13 +10,10 @@ const mapStateToProps = ({ artists }, ownProps) => {
   const { items } = artists.data;
   const item = items[data] || {};
   return {
-    totalDone: item?.totalDone || 0,
+    numDone: item?.numDone || 0,
   };
 };
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ArtistTotalDoneCell);
+export default connect(mapStateToProps, mapDispatchToProps)(ArtistTotalDoneCell);

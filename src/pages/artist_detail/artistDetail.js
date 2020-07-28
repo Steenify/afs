@@ -24,7 +24,7 @@ const ArtistDetail = ({ getArtist, artist, getOrdersAction, updateOrderFiltersAc
   useEffect(() => {
     getArtist(login);
     getOrderStatusAction();
-    updateOrderFiltersAcion({ page: 0, assignee: login });
+    updateOrderFiltersAcion({ assignee: login, page: 0, size: 100, sizeMobile: 100, sort: [{ id: 'number', desc: true }], text: '' });
     getOrdersAction();
   }, [getArtist, login, updateOrderFiltersAcion, getOrdersAction, getOrderStatusAction]);
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { filter } from 'lodash';
+import { Link } from 'react-router-dom';
 
 import Button from 'components/common/button';
 import ImageGallery from 'components/common/imageGallery';
@@ -8,7 +9,7 @@ import P from 'components/common/parapraph';
 
 import { getOrderStatusAction, updateOrderFiltersAcion } from 'pages/orders/actions';
 
-import { getListImageUrl, dateTimeStringFromDate, getOrderItem, getOrderOption, getSelectedStatus } from 'utils';
+import { getListImageUrl, dateTimeStringFromDate, getOrderItem, getOrderOption, getSelectedStatus, formatMoney } from 'utils';
 import { useHistory } from 'react-router-dom';
 import { WEB_ROUTES } from 'config';
 import StepperArrow from 'components/common/stepperArrow';
@@ -32,10 +33,6 @@ const CustomerDetailOrders = (props) => {
     return getOrderItem(item.name) !== 'Faster Processing';
   });
 
-  const onViewOrderDetail = () => {
-    history.push(WEB_ROUTES.ORDERS_DETAIL.path.replace(':id', currOrder.code));
-  };
-
   const onViewAllOrders = () => {
     history.push(WEB_ROUTES.ORDERS.path);
     updateOrderFiltersAcion({ text: currOrder?.customer?.fullName });
@@ -49,7 +46,7 @@ const CustomerDetailOrders = (props) => {
           <div className='float-right d-flex align-items-center'>
             <div className='subText'>{dateTimeStringFromDate(currOrder?.paidAt)}</div>
             <div className='mr-2 ml-2'>&bull;</div>
-            <Button onClick={onViewOrderDetail} className='box__link p-0' type='button' color='link'>
+            <Button tag={Link} className='box__link p-0' to={WEB_ROUTES.ORDERS_DETAIL.path.replace(':id', currOrder.code)} color='link'>
               {`Order #${currOrder?.number}`}
             </Button>
           </div>
@@ -62,7 +59,7 @@ const CustomerDetailOrders = (props) => {
           <>
             <div className='mb-3 d-flex'>
               <div className={`order__status ${getSelectedStatus(currOrder?.status, statuses).name}`}>{getSelectedStatus(currOrder?.status, statuses).friendlyName}</div>
-              <div className='ml-auto box__sub_title'>{`$${currOrder?.totalPrice} from Online Store`}</div>
+              <div className='ml-auto box__sub_title'>{`${formatMoney(currOrder?.totalPrice)} from Online Store`}</div>
             </div>
 
             {filteredItems.map((item, index) => (

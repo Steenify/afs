@@ -11,7 +11,7 @@ import Button from 'components/common/button';
 import CustomerDetailInfo from './customersDetailInfo';
 import CustomerDetailOrders from './customersDetailOrder';
 
-import { getCustomerDetailAction, getCustomerOrdersAction } from './actions';
+import { getCustomerDetailAction, getCustomerOrdersAction, resetCustomerDetailAction } from './actions';
 import { updateCustomerAction } from 'pages/customers/actions';
 
 import { WEB_ROUTES } from 'config';
@@ -20,12 +20,13 @@ const CustomerDetail = (props) => {
   let { login } = useParams();
   let history = useHistory();
   const { t } = useTranslation();
-  const { customer, orders, ui, getCustomerDetailAction, getCustomerOrdersAction } = props;
+  const { customer, orders, ui, getCustomerDetailAction, getCustomerOrdersAction, resetCustomerDetailAction } = props;
 
   useEffect(() => {
     getCustomerDetailAction(login);
     getCustomerOrdersAction(login);
-  }, [getCustomerDetailAction, getCustomerOrdersAction, login]);
+    return resetCustomerDetailAction;
+  }, [getCustomerDetailAction, getCustomerOrdersAction, login, resetCustomerDetailAction]);
 
   if (isEmpty(customer)) {
     return <InPageLoading isLoading={ui.loading} />;
@@ -78,4 +79,5 @@ export default connect(mapStateToProps, {
   getCustomerDetailAction,
   updateCustomerAction,
   getCustomerOrdersAction,
+  resetCustomerDetailAction,
 })(CustomerDetail);

@@ -1,22 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import P from 'components/common/parapraph';
 import { ReactComponent as PencilIcon } from 'assets/img/pencil.svg';
+import Button from 'components/common/button';
 
 import { formatMoney } from 'utils';
-import { updateArtistDetailAction } from '../artists/actions';
+import { updateArtistDetailApiAction, updateArtistDetailAction } from '../artists/actions';
+import { toast } from 'react-toastify';
 
 const ArtistDetailInfo = (props) => {
-  const { artist, updateArtistDetail } = props;
+  const { artist, updateArtistDetailApiAction, updateArtistDetailAction } = props;
 
   const handleUpdateNote = (e) => {
     const { value } = e.target;
-
-    updateArtistDetail({
-      note: value,
-    });
+    updateArtistDetailAction({ note: value });
   };
+
+  const updateNoteAction = () => {
+    updateArtistDetailApiAction({ id: artist?.id, login: artist?.login, artistExtension: { note: artist?.note } }, () => toast.dark('Note is updated'));
+  };
+
+  const doingCount = artist?.numSketch + artist?.numSketchEdit + artist?.numColor + artist?.numColorEdit || 0;
+  const reviewCount = artist?.numSketchReview + artist?.numColorReview + artist?.numExportFile || 0;
 
   return (
     <div className='artist_detail__original artist_detail__box box'>
@@ -25,18 +30,23 @@ const ArtistDetailInfo = (props) => {
           <div className='box__title'>
             {artist?.firstName} {artist?.lastName}
           </div>
-          <div>
-            <span className='subText'>Speed:</span> 13, <span className='subText'>Quality:</span> 2, <span className='subText'>Attitude:</span> 2
+          <div className='subText'>
+            Speed: <span className='text-black'>{artist?.workingSpeedScore}</span>, Quality: <span className='text-black'>{artist?.productQualityScore}</span>, Attitude:{' '}
+            <span className='text-black'>{artist?.workingAttitudeScore}</span>
           </div>
           <div>
-            <span className='subText'>Doing:</span> 13, <span className='subText'>Review:</span> 2
+            <span className='subText'>
+              Doing: <span className='text-black'>{doingCount}</span>, Review: <span className='text-black'>{reviewCount}</span>
+            </span>
           </div>
           <div>
-            <span className='subText'>Processed:</span> 13 order(s)
+            <span className='subText'>
+              Processed: <span className='text-black'>{artist?.numDone}</span> order(s)
+            </span>
           </div>
         </div>
 
-        <div className='float-right'>
+        <div className='float-right text-right'>
           <div className='subText'>Total Unpaid</div>
           <div className='box__title text-blue'>{formatMoney(artist?.totalUnpaid)}</div>
           <div className='subText'>Total Paid</div>
@@ -44,10 +54,13 @@ const ArtistDetailInfo = (props) => {
         </div>
       </div>
       <div className='box__body'>
-        <div className='box__sub_title'>
-          Artist Note <PencilIcon />
+        <div className='box__sub_title d-flex align-items-center mb-2'>
+          Artist Note <PencilIcon className='m-2' />
+          <Button color='primary' onClick={updateNoteAction} className='btn-create' containerClassName='ml-auto'>
+            Save
+          </Button>
         </div>
-        <textarea onChange={handleUpdateNote} value={artist?.note || ''} className='form-control' placeholder='Good Naruto, effect cool...' rows='4'></textarea>
+        <textarea onChange={handleUpdateNote} value={artist?.note} className='form-control' placeholder='Good Naruto, effect cool...' rows='2'></textarea>
       </div>
     </div>
   );
@@ -56,7 +69,8 @@ const ArtistDetailInfo = (props) => {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
-  updateArtistDetail: updateArtistDetailAction,
+  updateArtistDetailApiAction,
+  updateArtistDetailAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArtistDetailInfo);
