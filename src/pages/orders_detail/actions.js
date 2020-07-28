@@ -633,9 +633,10 @@ export const sendFBMessageNotifyAction = (psid) => (dispatch, getState) => {
   };
 
   const { data } = getState().orderDetail;
-  const { fbTemplate, order } = data;
+  const { fbTemplate, order, fbTemplateAttachments } = data;
   const payload = {
     content: fbTemplate,
+    attachments: fbTemplateAttachments || [],
     psid: psid || '',
   };
   actionTryCatchCreator({
