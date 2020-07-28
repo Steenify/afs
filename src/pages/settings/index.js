@@ -10,6 +10,7 @@ import { WEB_ROUTES } from 'config';
 import { ReactComponent as Settings } from 'assets/img/settings.svg';
 import { ReactComponent as CustomerIcon } from 'assets/img/customer.svg';
 import { ReactComponent as Artist } from 'assets/img/Artist.svg';
+import { ReactComponent as Package } from 'assets/img/gallery.svg';
 
 import './style.scss';
 
@@ -53,6 +54,11 @@ const SettingsPage = (props) => {
       icon: <CustomerIcon />,
       des: 'Payouts',
     },
+    {
+      ...WEB_ROUTES.GALLERY_LISTING,
+      icon: <CustomerIcon />,
+      des: 'Payouts',
+    },
   ];
 
   const handleNavigate = (item) => {
@@ -65,21 +71,11 @@ const SettingsPage = (props) => {
         <div className='settings__content box'>
           <div className='row'>
             {SettingsList.map((set, index) => {
-              if (
-                !set.permission ||
-                (set.permission &&
-                  permissions &&
-                  permissions.indexOf(set.permission) !== -1)
-              ) {
+              if (!set.permission || (set.permission && permissions && permissions.indexOf(set.permission) !== -1)) {
                 return (
-                  <div
-                    onClick={() => handleNavigate(set)}
-                    key={`list_settings_page__${index.toString()}`}
-                    className='col-md-4'>
+                  <div onClick={() => handleNavigate(set)} key={`list_settings_page__${index.toString()}`} className='col-md-4'>
                     <div className='settings__item'>
-                      <div className='icon'>
-                        {set.icon ? set.icon : <Settings />}
-                      </div>
+                      <div className='icon'>{set.icon ? set.icon : <Settings />}</div>
                       <div className='content'>
                         <div className='title'>{set.title}</div>
                         <div className='description'>{set.des}</div>
