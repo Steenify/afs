@@ -68,4 +68,23 @@ export const statusPayments = ['PAID', 'UNPAID'];
 
 export const PSDFileType = ['image/vnd.adobe.photoshop', 'application/x-photoshop', 'application/photoshop', 'application/psd', 'image/psd'];
 
-export { default as WEB_ROUTES } from './web-routes';
+export const notifyChannels = [
+  {
+    id: 'email',
+    title: 'Email',
+  },
+  {
+    id: 'facebook',
+    title: 'Facebook',
+  },
+];
+
+export const tinymceInitValues = {
+  apiKey: '8yd4ibfq5z8v9bj8ddn2hezmxgm68ijow36krpjasr0ucty8',
+  height: 500,
+  menubar: false,
+  plugins: ['advlist autolink lists link', 'visualblocks code paste'],
+  toolbar: `undo redo | formatselect | link | bold italic |
+alignleft aligncenter alignright | code | \
+bullist numlist outdent indent`,
+};

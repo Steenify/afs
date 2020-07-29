@@ -17,8 +17,9 @@ import { ReactComponent as Artist } from 'assets/img/Artist.svg';
 import { ReactComponent as Settings } from 'assets/img/settings.svg';
 import { ReactComponent as Payouts } from 'assets/img/payouts.svg';
 import { ReactComponent as Package } from 'assets/img/gallery.svg';
+import { ReactComponent as LateNotification } from 'assets/img/late_notification.svg';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'config/index';
 
 import { toggleMenu } from 'store/actions';
 
@@ -83,6 +84,10 @@ const SideBar = (props) => {
         {
           ...WEB_ROUTES.GALLERY_LISTING,
           icon: <Package />,
+        },
+        {
+          ...WEB_ROUTES.LATE_NOTIFICATION,
+          icon: <LateNotification />,
         },
 
         // {

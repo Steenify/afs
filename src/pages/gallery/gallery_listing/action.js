@@ -1,17 +1,12 @@
-import { actionCreator, actionTryCatchCreator, isMobile } from 'utils';
+import { actionTryCatchCreator } from 'utils';
 import { getArtworkService } from 'services/artwork';
 import { getAllTagsService } from 'services/tag';
-import { initialState } from './reducer';
-
-export const ACTIONS = {
-  UPDATE_FILTER_ACTION: 'GALLERY_UPDATE_FILTER_ACTION',
-};
+import { initialState, ACTIONS, GET_TAGS, GET_ARTWORK } from './const';
 
 export const updateFilterAction = (payload = initialState.filterData) => (dispatch) => {
   dispatch({ type: ACTIONS.UPDATE_FILTER_ACTION, payload });
 };
 
-export const GET_TAGS = actionCreator('GALLERY_GET_TAG');
 export const getAllTagsAction = () => (dispatch, getState) => {
   const onPending = () => {
     dispatch({ type: GET_TAGS.PENDING });
@@ -31,7 +26,6 @@ export const getAllTagsAction = () => (dispatch, getState) => {
   });
 };
 
-export const GET_ARTWORK = actionCreator('GALLERY_GET_ARTWORK');
 export const getArtworksAction = (param) => (dispatch) => {
   const onPending = () => {
     dispatch({ type: GET_ARTWORK.PENDING });

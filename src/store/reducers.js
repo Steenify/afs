@@ -14,6 +14,7 @@ import orderDetail from 'pages/orders_detail/reducer';
 import artists from 'pages/artists/reducer';
 import payouts from 'pages/payouts/reducer';
 import gallery from 'pages/gallery/reducer';
+import lateNotification from 'pages/late_notification/reducer';
 
 import { GLOBAL_ACTIONS, AUTHENTICATE_TOKEN } from './actions';
 
@@ -98,4 +99,5 @@ export default combineReducers({
   artists,
   payouts,
   gallery,
+  lateNotification,
 });

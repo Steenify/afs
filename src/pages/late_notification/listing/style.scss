@@ -1,0 +1,23 @@
+@import 'styles/var.scss';
+
+.late_notification {
+	.content {
+		color: #637381;
+	}
+
+	.sent_content {
+		&:hover {
+			color: #337fd7;
+			text-decoration: underline;
+		}
+		cursor: pointer;
+	}
+	.order_number {
+		padding-left: 5px;
+		color: #337fd7;
+		&:hover {
+			text-decoration: underline;
+		}
+		cursor: pointer;
+	}
+}

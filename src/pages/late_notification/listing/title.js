@@ -1,0 +1,16 @@
+import React from 'react';
+import PageTitle from 'components/common/PageTitle';
+import Button from 'components/common/button';
+import { WEB_ROUTES } from 'config';
+
+const GalleryTitle = ({ onClickUpload = () => {} }) => {
+  return (
+    <PageTitle title={WEB_ROUTES.LATE_NOTIFICATION.title} className='mb-0 mr-3' containerClassName='justify-content-between'>
+      <Button className='btn-create ml-auto pl-4 pr-4' color='primary' onClick={onClickUpload}>
+        History
+      </Button>
+    </PageTitle>
+  );
+};
+
+export default GalleryTitle;

@@ -143,6 +143,11 @@ const WEB_ROUTES = {
     title: 'Gallery Detail', // 'baseApp.sidebar.galleryListing',
     permission: '',
   },
+  LATE_NOTIFICATION: {
+    path: '/late-notification',
+    title: 'Late Notification', // 'baseApp.sidebar.galleryListing',
+    permission: '',
+  },
 };
 
 export default WEB_ROUTES;

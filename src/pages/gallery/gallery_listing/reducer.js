@@ -1,34 +1,20 @@
 import update from 'react-addons-update';
-import { getTotalPage, isMobile } from 'utils';
-import { GET_ARTWORK, GET_TAGS, ACTIONS } from './action';
+import { getTotalPage } from 'utils';
+import { initialState, desktopSize, mobileSize, GET_ARTWORK, GET_TAGS, ACTIONS } from './const';
+
 const { UPDATE_FILTER_ACTION } = ACTIONS;
-
-const desktopSize = 100;
-const mobileSize = 50;
-
-export const initialState = {
-  ui: {
-    loading: false,
-  },
-  filterData: {
-    page: 0,
-    size: isMobile ? mobileSize : desktopSize,
-    tag: null,
-    text: '',
-  },
-  data: {
-    tags: [],
-    artworks: [],
-    totalArtworks: 0,
-    totalPage: 0,
-  },
-};
 
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case UPDATE_FILTER_ACTION:
-      return update(state, { filterData: { $merge: payload } });
+      return update(state, {
+        filterData: { $merge: payload },
+        data: {
+          artworks: { $set: [] },
+          totalPage: { $set: 0 },
+        },
+      });
     case GET_ARTWORK.PENDING:
       return update(state, {
         ui: {
