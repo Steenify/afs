@@ -10,7 +10,7 @@ import { PERMITTIONS_CONFIG } from 'config';
 
 import { remove, get } from 'lodash';
 
-import OrderBulkAction from 'components/tables/bulk_action/orderBulkAction';
+// import OrderBulkAction from './orderBulkAction';
 
 import orderBudgetCell from 'components/tables/cells/orderBugetCell';
 import AssignArtistCell from 'components/tables/cells/orderAssignArtistCell';
@@ -27,7 +27,7 @@ import OrderLastUpdateDateCell from 'components/tables/cells/orderLastUpdateCell
 
 import { updateOrderItemsAcion, updateOrdersBudgetAction, assignOrdersArtistAction, updateAllOrderSelectedAction } from './actions';
 
-class OrderListDesktop extends PureComponent {
+class OrderTableDesktop extends PureComponent {
   getRowProps = (row) => {
     const now = new Date().getTime();
     const deadline = new Date(row.deadline).getTime();
@@ -52,7 +52,7 @@ class OrderListDesktop extends PureComponent {
       {
         accessor: 'selected',
         Header: OrderSelectedAll,
-        headerProps: { updateAllOrderSelected: updateAllOrderSelectedAction },
+        headerProps: { updateAllOrderSelected: updateAllOrderSelectedAction, reducerPath: 'artistDetail' },
         minWidth: 40,
         Cell: OrderSelectedCell,
         cellProps: { updateOrderItems: updateOrderItemsAcion },
@@ -72,12 +72,6 @@ class OrderListDesktop extends PureComponent {
         minWidth: 100,
         Cell: OrderCreatedDateCell,
       },
-      // {
-      //   accessor: 'deadline',
-      //   minWidth: 100,
-      //   Header: 'Deadline',
-      //   Cell: OrderDeadlineCell,
-      // },
       {
         accessor: 'lastModifiedDate',
         minWidth: 110,
@@ -90,7 +84,6 @@ class OrderListDesktop extends PureComponent {
         minWidth: 80,
         Cell: OrderCustomerCell,
       },
-
       {
         accessor: 'subtotal',
         Header: 'Price',
@@ -156,11 +149,11 @@ class OrderListDesktop extends PureComponent {
         <div className={`order__loading ${!loading && 'd-none'}`}>
           <Spinner /> <span className='text'>Loading</span>
         </div>
-        {isCanPay && <OrderBulkAction reducerPath='order' updateAllOrderSelected={updateAllOrderSelectedAction} updateOrderItems={updateOrderItemsAcion} />}
+        {/* {isCanPay && <OrderBulkAction />} */}
         <div className='table-responsive bg-light steenify-table bg-white order__table'>
           <table className='table'>
             <TableHeader columns={columnsOrder} />
-            <TableBody cellProps={{ goToDetail: this.goToDetail }} reducerPath='order' getRowProps={this.getRowProps} data={ids} columns={columnsOrder} rowName='TableRowOrder' />
+            <TableBody cellProps={{ goToDetail: this.goToDetail }} reducerPath='artistDetail' getRowProps={this.getRowProps} data={ids} columns={columnsOrder} rowName='TableRowOrder' />
           </table>
         </div>
       </div>
@@ -168,9 +161,9 @@ class OrderListDesktop extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ order, auth }) => {
-  const ids = get(order, 'table.ids') || {};
-  const loading = get(order, 'ui.list.loading');
+const mapStateToProps = ({ auth, artistDetail }, ownProps) => {
+  const ids = get(artistDetail, 'table.ids') || {};
+  const loading = get(artistDetail, 'table.loading');
   return {
     ids,
     loading,
@@ -185,4 +178,4 @@ const mapDispatchToProps = {
   updateAllOrderSelectedAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderListDesktop));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderTableDesktop));

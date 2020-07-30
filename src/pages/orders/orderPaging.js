@@ -12,7 +12,7 @@ const OrderPaging = ({ totalPage, page, gotoPage }) => {
 };
 
 const mapStateToProps = ({ order }) => {
-  const { totalPage } = order.list;
+  const { totalPage } = order.table;
   const { page } = order.filter;
 
   return {

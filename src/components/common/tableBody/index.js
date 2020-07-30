@@ -7,12 +7,12 @@ const RowMap = {
   TableRowOrder: TableRowOrder,
 };
 
-const TableBody = ({ data, columns, cellProps, getRowProps, rowName }) => {
+const TableBody = ({ data, columns, cellProps, getRowProps, rowName, reducerPath }) => {
   const Row = RowMap[rowName];
   return (
     <tbody>
       {data.map((item) => (
-        <Row key={`table__body__${item}`} columns={columns} cellProps={cellProps} getRowProps={getRowProps} item={item} />
+        <Row key={`table__body__${item}`} columns={columns} cellProps={{ ...cellProps, reducerPath }} getRowProps={getRowProps} item={item} reducerPath={reducerPath} />
       ))}
     </tbody>
   );

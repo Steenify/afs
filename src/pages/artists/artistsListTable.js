@@ -17,6 +17,7 @@ import ArtistTotalDoneCell from './artistTotalDoneCell';
 import ArtistWorkingQualityCell from './artistWorkingQualityCell';
 import ArtistWorkingSpeedCell from './artistWorkingSpeedCell';
 import ArtistWorkingAttitudeCell from './artistWorkingAttitudeCell';
+import ArtistUnpaidCell from './artistUnpaidCell';
 
 let columns = [
   {
@@ -57,6 +58,15 @@ let columns = [
     accessor: 'totalDone',
     Header: 'Done',
     Cell: ArtistTotalDoneCell,
+    style: {
+      textAlign: 'right',
+    },
+  },
+  {
+    accessor: 'totalUnpaid',
+    Header: 'Unpaid',
+    Cell: ArtistUnpaidCell,
+    minWidth: 100,
     style: {
       textAlign: 'right',
     },

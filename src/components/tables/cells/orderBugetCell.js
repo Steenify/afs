@@ -3,6 +3,7 @@ import NumberFormat from 'react-number-format';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import Popover from 'react-tiny-popover';
+import { get } from 'lodash';
 
 import Button from 'components/common/button';
 
@@ -12,16 +13,9 @@ import { PERMITTIONS_CONFIG } from 'config';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
-import { updateOrdersBudgetAction, updateOrderItemsAcion } from './actions';
+// import { updateOrdersBudgetAction, updateOrderItemsAcion } from 'pages/orders/actions';
 
-const OrderBudgetCell = ({
-  budget,
-  accountInfo,
-  id,
-  updateOrdersBudget,
-  updateOrderItems,
-  number,
-}) => {
+const OrderBudgetCell = ({ budget, accountInfo, id, updateOrdersBudget, updateOrderItems, number }) => {
   const [value, setValue] = useState(budget || '');
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -59,11 +53,7 @@ const OrderBudgetCell = ({
       budget: value,
     };
     updateOrdersBudget(payload, id, () => {
-      toast.dark(
-        `Order [#${number}]'s budget is changed to ${formatNumber(
-          value || 0,
-        )}$`,
-      );
+      toast.dark(`Order [#${number}]'s budget is changed to ${formatNumber(value || 0)}$`);
     });
   };
 
@@ -89,27 +79,13 @@ const OrderBudgetCell = ({
             <div className='order__budget'>
               <div className='data'>
                 <strong className='title'>Budget</strong>
-                <NumberFormat
-                  prefix={'$  '}
-                  thousandSeparator={true}
-                  className='form-control bugdet__input'
-                  value={value}
-                  onValueChange={onChange}
-                />
+                <NumberFormat prefix={'$  '} thousandSeparator={true} className='form-control bugdet__input' value={value} onValueChange={onChange} />
               </div>
               <div className='ctas'>
-                <Button
-                  onClick={toggle}
-                  className='bugdet__cancel cta pl-0'
-                  type='button'
-                  color='link'>
+                <Button onClick={toggle} className='bugdet__cancel cta pl-0' type='button' color='link'>
                   Cancel
                 </Button>
-                <Button
-                  onClick={onSave}
-                  className='bugdet__save cta pr-0'
-                  type='button'
-                  color='link'>
+                <Button onClick={onSave} className='bugdet__save cta pr-0' type='button' color='link'>
                   Save
                 </Button>
               </div>
@@ -117,9 +93,7 @@ const OrderBudgetCell = ({
           </form>
         </div>
       )}>
-      <button
-        onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-        className='order__toggle order__user text-left w-100'>
+      <button onClick={() => setIsPopoverOpen(!isPopoverOpen)} className='order__toggle order__user text-left w-100'>
         <div className='d-flex justify-content-end'>
           <span className='icon d-block mr-1'>
             <Pencil width='14px' height='14px' />
@@ -131,10 +105,11 @@ const OrderBudgetCell = ({
   );
 };
 
-const mapStateToProps = ({ order, auth }, ownProps) => {
-  const { data } = ownProps;
-  const { items } = order.list;
-  const item = items[data] || {};
+const mapStateToProps = (reducers, ownProps) => {
+  const { auth } = reducers;
+  const { data, reducerPath = 'order' } = ownProps;
+  const reducer = get(reducers, reducerPath) || {};
+  const item = get(reducer, 'table.items')?.[data] || {};
   return {
     number: item?.number || '',
     id: item?.id,
@@ -143,9 +118,21 @@ const mapStateToProps = ({ order, auth }, ownProps) => {
   };
 };
 
+// const mapStateToProps = ({ order, auth }, ownProps) => {
+//   const { data } = ownProps;
+//   const { items } = order.list;
+//   const item = items[data] || {};
+//   return {
+//     number: item?.number || '',
+//     id: item?.id,
+//     budget: item?.budget || 0,
+//     accountInfo: auth.data.accountInfo,
+//   };
+// };
+
 const mapDispatchToProps = {
-  updateOrdersBudget: updateOrdersBudgetAction,
-  updateOrderItems: updateOrderItemsAcion,
+  // updateOrdersBudget: updateOrdersBudgetAction,
+  // updateOrderItems: updateOrderItemsAcion,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderBudgetCell);

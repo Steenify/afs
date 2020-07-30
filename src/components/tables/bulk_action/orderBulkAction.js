@@ -3,38 +3,26 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { forEach, filter } from 'lodash';
 import { confirmAlert } from 'react-confirm-alert';
+import { get } from 'lodash';
 
 import { PERMITTIONS_CONFIG } from 'config';
 
 import { ReactComponent as Close } from 'assets/img/close.svg';
+import InPageLoading from 'components/common/inPageLoading';
+import OrderSelectedCell from 'components/tables/headers/orderSelectedAll';
+import OrderPayoutModal from 'pages/orders/orderPayoutModal';
 
-import OrderSelectedCell from './orderSelectedAll';
-import OrderPayoutModal from './orderPayoutModal';
+import { updateOrderPaymentStatusBulkAction } from 'pages/orders/actions';
 
-import {
-  updateOrderPaymentStatusBulkAction,
-  updateAllOrderSelectedAction,
-  updateOrderItemsAcion,
-  updateOrderStatusDoneBulkAction,
-} from './actions';
-
-const OrderBulkAction = ({
-  selected,
-  updateOrderPaymentStatusBulk,
-  updateAllOrderSelected,
-  updateOrderItems,
-  updateOrderStatusDoneBulk,
-  accountInfo,
-}) => {
+const OrderBulkAction = ({ selected, updateOrderPaymentStatusBulk, updateAllOrderSelected, updateOrderItems, accountInfo }) => {
   const isHide = !selected || !selected?.length;
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const canPayOut = accountInfo?.permissions?.includes(
-    PERMITTIONS_CONFIG.CREATE_PAYOUT,
-  );
+  const canPayOut = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT);
 
   // const handleChangeStatus = (status) => {
   //   updateOrderPaymentStatusBulk(
@@ -57,22 +45,22 @@ const OrderBulkAction = ({
   // };
 
   const handleUpdateOrderStatusDone = () => {
-    updateOrderStatusDoneBulk(
-      {
-        id: selected,
-      },
-      () => {
-        toast.dark('Order Status Updated');
-        forEach(selected, (item) => {
-          updateOrderItems({
-            id: item,
-            field: 'status',
-            value: 'DONE',
-          });
-        });
-        // updateAllOrderSelected(false);
-      },
-    );
+    // updateOrderStatusDoneBulk(
+    //   {
+    //     id: selected,
+    //   },
+    //   () => {
+    //     toast.dark('Order Status Updated');
+    //     forEach(selected, (item) => {
+    //       updateOrderItems({
+    //         id: item,
+    //         field: 'status',
+    //         value: 'DONE',
+    //       });
+    //     });
+    //     // updateAllOrderSelected(false);
+    //   },
+    // );
   };
 
   const handleConfirmChangeStatus = () => {
@@ -82,10 +70,7 @@ const OrderBulkAction = ({
           <div className='comfirm_cus'>
             <div className='comfirm_cus__header'>
               <div className='comfirm_cus__titl'>Change Status</div>
-              <button
-                type='button'
-                onClick={onClose}
-                className='comfirm_cus__close'>
+              <button type='button' onClick={onClose} className='comfirm_cus__close'>
                 <div className='icon'>
                   <Close />
                 </div>
@@ -95,9 +80,7 @@ const OrderBulkAction = ({
               <p>Are you sure you want to change status this orders?</p>
             </div>
             <div className='comfirm_cus__footer text-right'>
-              <button
-                className='comfirm_cus__cancel comfirm_cus__control'
-                onClick={onClose}>
+              <button className='comfirm_cus__cancel comfirm_cus__control' onClick={onClose}>
                 Cancel
               </button>
               <button
@@ -120,7 +103,7 @@ const OrderBulkAction = ({
       <div className='btn-group'>
         <div className='btn btn-group__item'>
           <div className='d-flex align-items-center order__bulk__selected'>
-            <OrderSelectedCell />
+            <OrderSelectedCell updateAllOrderSelected={updateAllOrderSelected} />
             <span className='number'>{selected?.length} selected</span>
           </div>
         </div>
@@ -135,29 +118,27 @@ const OrderBulkAction = ({
           onClick={() => handleChangeStatus(statusPayments[1])}>
           Unpaid
         </button> */}
-        <button
-          type='button'
-          className='btn btn-group__item'
-          onClick={handleConfirmChangeStatus}>
+        <button type='button' className='btn btn-group__item' onClick={handleConfirmChangeStatus}>
           Mark as Done
         </button>
         {canPayOut && (
-          <button
-            type='button'
-            className='btn btn-group__item'
-            onClick={toggle}>
+          <button type='button' className='btn btn-group__item' onClick={toggle}>
             Paid
           </button>
         )}
       </div>
 
       <OrderPayoutModal isOpen={isOpen} toggle={toggle} />
+      <InPageLoading isLoading={isLoading} />
     </div>
   );
 };
 
-const mapStateToProps = ({ order, auth }) => {
-  const { items } = order.list;
+const mapStateToProps = (reducers, ownProps) => {
+  const { auth } = reducers;
+  const { reducerPath = 'order' } = ownProps;
+  const reducer = get(reducers, reducerPath) || {};
+  const items = get(reducer, 'table.items') || {};
   const selected = filter(items, (or) => or.selected).map((or) => or.id);
   return {
     accountInfo: auth.data.accountInfo,
@@ -165,11 +146,17 @@ const mapStateToProps = ({ order, auth }) => {
   };
 };
 
+// const mapStateToProps = ({ order, auth }) => {
+//   const { items } = order.table;
+//   const selected = filter(items, (or) => or.selected).map((or) => or.id);
+//   return {
+//     accountInfo: auth.data.accountInfo,
+//     selected,
+//   };
+// };
+
 const mapDispatchToProps = {
-  updateOrderPaymentStatusBulk: updateOrderPaymentStatusBulkAction,
-  updateAllOrderSelected: updateAllOrderSelectedAction,
-  updateOrderItems: updateOrderItemsAcion,
-  updateOrderStatusDoneBulk: updateOrderStatusDoneBulkAction,
+  // updateOrderPaymentStatusBulk: updateOrderPaymentStatusBulkAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderBulkAction);

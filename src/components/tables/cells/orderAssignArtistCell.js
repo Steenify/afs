@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import Popover from 'react-tiny-popover';
 import { toast } from 'react-toastify';
+import { get } from 'lodash';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
 import { PERMITTIONS_CONFIG } from 'config';
 
-import { updateOrderItemsAcion, assignOrdersArtistAction } from './actions';
+// import { updateOrderItemsAcion, assignOrdersArtistAction } from 'pages/orders/actions';
 
 import ListArtists from 'components/layout/ListArtistAssign';
 
@@ -58,23 +59,35 @@ const AssignArtistCell = ({ assignedTo, accountInfo, id, updateOrderItems, assig
   );
 };
 
-const mapStateToProps = ({ order, auth }, ownProps) => {
-  const { data } = ownProps;
-  const { items } = order.list;
-  const item = items[data] || {};
-
+const mapStateToProps = (reducers, ownProps) => {
+  const { auth } = reducers;
+  const { data, reducerPath = 'order' } = ownProps;
+  const reducer = get(reducers, reducerPath) || {};
+  const item = get(reducer, 'table.items')?.[data] || {};
   return {
     number: item?.number || '',
     id: item?.id || 0,
     assignedTo: item?.assignedTo,
     accountInfo: auth.data.accountInfo,
-    // artists: order.artists,
   };
 };
 
+// const mapStateToProps = ({ order, auth }, ownProps) => {
+//   const { data } = ownProps;
+//   const { items } = order.list;
+//   const item = items[data] || {};
+
+//   return {
+//     number: item?.number || '',
+//     id: item?.id || 0,
+//     assignedTo: item?.assignedTo,
+//     accountInfo: auth.data.accountInfo,
+//   };
+// };
+
 const mapDispatchToProps = {
-  updateOrderItems: updateOrderItemsAcion,
-  assignOrdersArtist: assignOrdersArtistAction,
+  // updateOrderItems: updateOrderItemsAcion,
+  // assignOrdersArtist: assignOrdersArtistAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(AssignArtistCell));

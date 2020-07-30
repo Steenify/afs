@@ -12,21 +12,22 @@ import { WEB_ROUTES } from 'config';
 
 import ArtistDetailInfo from './artistDetailInfo';
 import ArtistDetailContact from './artistDetailContact';
+import ArtitsDetailOrders from './artistDetailOrders';
 import { getArtistAction } from '../artists/actions';
 
-import OrderListDesktop from 'pages/orders/OrderListDesktop';
-import { getOrdersAction, updateOrderFiltersAcion, getOrderStatusAction } from 'pages/orders/actions';
+import { getOrderStatusAction } from 'pages/orders/actions';
+import { getArtistDetailOrdersAction, updateArtistDetailFilterOrderAction } from './actions';
 
-const ArtistDetail = ({ getArtist, artist, getOrdersAction, updateOrderFiltersAcion, getOrderStatusAction }) => {
+const ArtistDetail = ({ getArtist, artist, getArtistDetailOrdersAction, updateArtistDetailFilterOrderAction, getOrderStatusAction }) => {
   const { login } = useParams();
   const history = useHistory();
 
   useEffect(() => {
     getArtist(login);
     getOrderStatusAction();
-    updateOrderFiltersAcion({ assignee: login, page: 0, size: 100, sizeMobile: 100, sort: [{ id: 'number', desc: true }], text: '' });
-    getOrdersAction();
-  }, [getArtist, login, updateOrderFiltersAcion, getOrdersAction, getOrderStatusAction]);
+    updateArtistDetailFilterOrderAction({ assignee: login, page: 0, size: 100, sizeMobile: 100, sort: [{ id: 'number', desc: true }], text: '' });
+    getArtistDetailOrdersAction();
+  }, [getArtist, login, updateArtistDetailFilterOrderAction, getArtistDetailOrdersAction, getOrderStatusAction]);
 
   const goToEdit = () => {
     const url = WEB_ROUTES.ARTISTS_DETAIL_FORM.path.replace(':login', artist.login);
@@ -57,7 +58,7 @@ const ArtistDetail = ({ getArtist, artist, getOrdersAction, updateOrderFiltersAc
           </div>
         </div>
         <div>
-          <OrderListDesktop />
+          <ArtitsDetailOrders />
         </div>
       </div>
     </Layout>
@@ -70,8 +71,8 @@ const mapStateToProps = ({ artists }) => ({
 
 const mapDispatchToProps = {
   getArtist: getArtistAction,
-  getOrdersAction,
-  updateOrderFiltersAcion,
+  getArtistDetailOrdersAction,
+  updateArtistDetailFilterOrderAction,
   getOrderStatusAction,
 };
 

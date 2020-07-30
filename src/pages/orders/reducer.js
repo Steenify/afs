@@ -25,13 +25,22 @@ const initialState = {
     text: '',
     assignee: '',
   },
-  list: {
+  filterArtist: {
+    page: 0,
+    size: 100,
+    sizeMobile: 100,
+    sort: [{ id: 'number', desc: true }],
+    text: '',
+    assignee: '',
+  },
+  table: {
     orders: [],
     ids: [],
     items: {},
     itemGroups: [],
     totalItems: 0,
     totalPage: 0,
+    loading: false,
   },
   artists: [],
   status: [],
@@ -47,15 +56,15 @@ const reducer = (state = initialState, action) => {
       return update(state, {
         ui: {
           list: {
-            loading: { $set: true },
+            loading: { $set: false },
           },
+        },
+        table: {
+          loading: { $set: true },
         },
       });
     case GET_ORDER_ACTION.SUCCESS: {
-      const { ids, items } = mapDataByIds(
-        mapDataList(payload.data, 'selected', false),
-        'id',
-      );
+      const { ids, items } = mapDataByIds(mapDataList(payload.data, 'selected', false), 'id');
 
       const itemGroups = mapDataByDate(payload.data, 'paidAt');
 
@@ -70,17 +79,17 @@ const reducer = (state = initialState, action) => {
             loading: { $set: false },
           },
         },
-        list: {
+        table: {
           orders: { $set: mapDataList(payload.data, 'selected', false) },
           ids: { $set: ids },
           items: { $set: items },
           itemGroups: { $set: itemGroups },
           totalItems: { $set: payload.headers['x-total-count'] },
           totalPage: { $set: totalPage },
+          loading: { $set: false },
         },
       });
     }
-
     case GET_ORDER_ACTION.ERROR:
     case UPDATE_ORDER_PAYMENT_STATUS_ACTION.ERROR:
     case UPDATE_ORDER_PAYMENT_STATUS_ACTION.SUCCESS:
@@ -96,7 +105,7 @@ const reducer = (state = initialState, action) => {
 
     case ORDER_ACTIONS.UPDATE_ORDER_ITEMS_ACTION:
       return update(state, {
-        list: {
+        table: {
           items: {
             [payload.id]: {
               [payload.field]: {
@@ -114,6 +123,12 @@ const reducer = (state = initialState, action) => {
         },
       });
 
+    case ORDER_ACTIONS.UPDATE_ORDER_FILTER_ARTIST:
+      return update(state, {
+        filterArtist: {
+          $merge: payload,
+        },
+      });
     case GET_ARTISTS_ASSIGN_ACTION.SUCCESS:
       return update(state, {
         artists: {
@@ -136,7 +151,7 @@ const reducer = (state = initialState, action) => {
 
     case ORDER_ACTIONS.UPDATE_ALL_SELECTED_ROW_ACTION:
       return update(state, {
-        list: {
+        table: {
           items: {
             $apply: (items) => {
               const res = mapDataList(items, 'selected', payload);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Popover from 'react-tiny-popover';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import Button from 'components/common/button';
 import ImageGallery from 'components/common/imageGallery';
@@ -24,12 +25,7 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
   return (
     <div>
       <div className='order__toggle__group d-flex align-items-center'>
-        <Button
-          tag={Link}
-          className='w-100 order__link p-0'
-          style={{ minWidth: 'auto' }}
-          to={`/order/${code}`}
-          color='link'>
+        <Button tag={Link} className='w-100 order__link p-0' style={{ minWidth: 'auto' }} to={`/order/${code}`} color='link'>
           #{number}
         </Button>
         <Popover
@@ -49,9 +45,7 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
               <div>
                 {items.map((item) => {
                   return (
-                    <div
-                      key={`order__item__${number}__${item.id}`}
-                      className='content'>
+                    <div key={`order__item__${number}__${item.id}`} className='content'>
                       <strong className='name d-block'>{item.name}</strong>
                       {item.note ? (
                         <div>
@@ -63,11 +57,7 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
                         <div>
                           <label className='mb-0'> Images: </label>
                           <div className='images'>
-                            <ImageGallery
-                              images={getListImageUrl(item.photos)}
-                              alt={item.name}
-                              caption={item.name}
-                            />
+                            <ImageGallery images={getListImageUrl(item.photos)} alt={item.name} caption={item.name} />
                           </div>
                         </div>
                       ) : null}
@@ -77,12 +67,7 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
               </div>
             </div>
           )}>
-          <Button
-            color='link'
-            id={`order_detail_cell__${id}`}
-            style={{ minWidth: 'auto' }}
-            onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-            className='order__toggle order__toggle__nocavet'>
+          <Button color='link' id={`order_detail_cell__${id}`} style={{ minWidth: 'auto' }} onClick={() => setIsPopoverOpen(!isPopoverOpen)} className='order__toggle order__toggle__nocavet'>
             <span className='icon' style={{ opacity: 1 }}>
               <Eye />
             </span>
@@ -92,20 +77,32 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
     </div>
   );
 };
-
-const mapStateToProps = ({ order, auth }, ownProps) => {
-  const { data } = ownProps;
-  const { items } = order.list;
-  const orderItem = items[data] || {};
+const mapStateToProps = (reducers, ownProps) => {
+  const { auth } = reducers;
+  const { data, reducerPath = 'order' } = ownProps;
+  const reducer = get(reducers, reducerPath) || {};
+  const item = get(reducer, 'table.items')?.[data] || {};
   return {
-    id: orderItem?.id || 0,
-    number: orderItem?.number || 0,
-    code: orderItem?.code || '',
-    items: orderItem?.items || [],
-    artists: order.artists,
+    id: item?.id || 0,
+    number: item?.number || 0,
+    code: item?.code || '',
+    items: item?.items || [],
     accountInfo: auth.data.accountInfo,
   };
 };
+
+// const mapStateToProps = ({ order, auth }, ownProps) => {
+//   const { data } = ownProps;
+//   const { items } = order.list;
+//   const orderItem = items[data] || {};
+//   return {
+//     id: orderItem?.id || 0,
+//     number: orderItem?.number || 0,
+//     code: orderItem?.code || '',
+//     items: orderItem?.items || [],
+//     accountInfo: auth.data.accountInfo,
+//   };
+// };
 
 const mapDispatchToProps = {};
 
