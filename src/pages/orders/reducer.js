@@ -25,6 +25,14 @@ const initialState = {
     text: '',
     assignee: '',
   },
+  filterByArtist: {
+    page: 0,
+    size: 100,
+    sizeMobile: 100,
+    sort: [{ id: 'number', desc: true }],
+    text: '',
+    assignee: '',
+  },
   list: {
     orders: [],
     ids: [],
@@ -52,10 +60,7 @@ const reducer = (state = initialState, action) => {
         },
       });
     case GET_ORDER_ACTION.SUCCESS: {
-      const { ids, items } = mapDataByIds(
-        mapDataList(payload.data, 'selected', false),
-        'id',
-      );
+      const { ids, items } = mapDataByIds(mapDataList(payload.data, 'selected', false), 'id');
 
       const itemGroups = mapDataByDate(payload.data, 'paidAt');
 
@@ -110,6 +115,13 @@ const reducer = (state = initialState, action) => {
     case ORDER_ACTIONS.UPDATE_ORDER_FILTER:
       return update(state, {
         filter: {
+          $merge: payload,
+        },
+      });
+
+    case ORDER_ACTIONS.UPDATE_ORDER_FILTER_BY_ARTIST:
+      return update(state, {
+        filterByArtist: {
           $merge: payload,
         },
       });

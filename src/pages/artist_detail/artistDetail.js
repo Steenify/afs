@@ -15,18 +15,18 @@ import ArtistDetailContact from './artistDetailContact';
 import { getArtistAction } from '../artists/actions';
 
 import OrderListDesktop from 'pages/orders/OrderListDesktop';
-import { getOrdersAction, updateOrderFiltersAcion, getOrderStatusAction } from 'pages/orders/actions';
+import { getOrdersAction, updateOrderFilterByArtistAcion, getOrderStatusAction } from 'pages/orders/actions';
 
-const ArtistDetail = ({ getArtist, artist, getOrdersAction, updateOrderFiltersAcion, getOrderStatusAction }) => {
+const ArtistDetail = ({ getArtist, artist, getOrdersAction, updateOrderFilterByArtistAcion, getOrderStatusAction }) => {
   const { login } = useParams();
   const history = useHistory();
 
   useEffect(() => {
     getArtist(login);
     getOrderStatusAction();
-    updateOrderFiltersAcion({ assignee: login, page: 0, size: 100, sizeMobile: 100, sort: [{ id: 'number', desc: true }], text: '' });
-    getOrdersAction();
-  }, [getArtist, login, updateOrderFiltersAcion, getOrdersAction, getOrderStatusAction]);
+    updateOrderFilterByArtistAcion({ assignee: login, page: 0, size: 100, sizeMobile: 100, sort: [{ id: 'number', desc: true }], text: '' });
+    getOrdersAction({}, true);
+  }, [getArtist, login, updateOrderFilterByArtistAcion, getOrdersAction, getOrderStatusAction]);
 
   const goToEdit = () => {
     const url = WEB_ROUTES.ARTISTS_DETAIL_FORM.path.replace(':login', artist.login);
@@ -71,7 +71,7 @@ const mapStateToProps = ({ artists }) => ({
 const mapDispatchToProps = {
   getArtist: getArtistAction,
   getOrdersAction,
-  updateOrderFiltersAcion,
+  updateOrderFilterByArtistAcion,
   getOrderStatusAction,
 };
 
