@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Spinner } from 'reactstrap';
-import { filter, reduce, map, forEach, isEmpty } from 'lodash';
+import { filter, reduce, map, isEmpty } from 'lodash';
 import NumberFormat from 'react-number-format';
 import { toast } from 'react-toastify';
 
