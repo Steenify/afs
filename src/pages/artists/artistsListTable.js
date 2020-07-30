@@ -5,6 +5,8 @@ import { Spinner } from 'reactstrap';
 import TableBody from 'components/common/tableBody';
 import TableHeader from 'components/common/tableHeader';
 
+import { PERMITTIONS_CONFIG } from 'config';
+
 import ArtistFullNameCell from './artistFullNameCell';
 import ArtistNoteCell from './artistNoteCell';
 import ArtistWorkLoadCell from './artistWorkLoadCell';
@@ -17,6 +19,8 @@ import ArtistTotalDoneCell from './artistTotalDoneCell';
 import ArtistWorkingQualityCell from './artistWorkingQualityCell';
 import ArtistWorkingSpeedCell from './artistWorkingSpeedCell';
 import ArtistWorkingAttitudeCell from './artistWorkingAttitudeCell';
+import ArtistUnpaidCell from './artistUnpaidCell';
+import ArtistsBulkAction from './artistsBulkAction';
 
 let columns = [
   {
@@ -62,6 +66,15 @@ let columns = [
     },
   },
   {
+    accessor: 'totalUnpaid',
+    Header: 'Unpaid',
+    Cell: ArtistUnpaidCell,
+    minWidth: 100,
+    style: {
+      textAlign: 'right',
+    },
+  },
+  {
     accessor: 'note',
     Header: 'Note',
     minWidth: 150,
@@ -77,13 +90,16 @@ let columns = [
 
 class ArtistListTable extends PureComponent {
   render() {
-    const { loading, ids } = this.props;
+    const { loading, ids, accountInfo } = this.props;
+
+    const isCanPay = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_PAYMENT_STATUS);
 
     return (
       <div className={`payouts__list relative`}>
         <div className={`payouts__loading ${!loading && 'd-none'}`}>
           <Spinner /> <span className='text'>Loading</span>
         </div>
+        {isCanPay && <ArtistsBulkAction />}
         <div className='table-responsive bg-light steenify-table bg-white payout__table'>
           <table className='table'>
             <TableHeader columns={columns} />
@@ -95,9 +111,10 @@ class ArtistListTable extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ artists }) => ({
+const mapStateToProps = ({ artists, auth }) => ({
   ids: artists.data.ids,
   loading: artists.ui.loading,
+  accountInfo: auth.data.accountInfo,
 });
 
 const mapDispatchToProps = {};
