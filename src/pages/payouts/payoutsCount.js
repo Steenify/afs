@@ -1,7 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import CanShow from 'components/layout/canshow';
+
 import { formatMoney } from 'utils';
+
+import { PERMITTIONS_CONFIG } from 'config';
 
 const PayoutsCount = ({ summary }) => {
   return (
@@ -14,8 +18,10 @@ const PayoutsCount = ({ summary }) => {
       </div>
 
       <div className='right'>
-        <div className='name'>Total:</div>
-        <div className='number'>{formatMoney(summary?.totalBudget)}</div>
+        <CanShow permission={PERMITTIONS_CONFIG.ASSIGN_BOOKING}>
+          <div className='name'>Total:</div>
+          <div className='number'>{formatMoney(summary?.totalBudget)}</div>
+        </CanShow>
       </div>
     </div>
   );

@@ -3,8 +3,18 @@ import { connect } from 'react-redux';
 import { formatMoney } from 'utils';
 
 const ArtistUnpaidCell = ({ numUnpaid, totalUnpaid }) => {
-  // return <div className='artist__unpaid artists__cell'>{totalUnpaid && `${formatMoney(totalUnpaid)} (${numUnpaid} orders)`}</div>;
-  return <div className='artist__unpaid artists__cell'>{formatMoney(totalUnpaid)}</div>;
+  return (
+    <div className='artist__unpaid artists__cell'>
+      {totalUnpaid && (
+        <div>
+          {`${formatMoney(totalUnpaid)}`}
+          <div style={{ fontSize: '12px' }} className='text-muted'>
+            ({numUnpaid} orders)
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 const mapStateToProps = ({ artists }, ownProps) => {

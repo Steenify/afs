@@ -29,6 +29,7 @@ const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defa
 
   useEffect(() => {
     setNote(defaultNote);
+    setExtra(0);
   }, [defaultNote]);
 
   const handleChangeNote = (e) => {

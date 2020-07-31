@@ -60,7 +60,7 @@ const ArtistDetailInfo = (props) => {
             Save
           </Button>
         </div>
-        <textarea onChange={handleUpdateNote} value={artist?.note} className='form-control' placeholder='Good Naruto, effect cool...' rows='2'></textarea>
+        <textarea onChange={handleUpdateNote} value={artist?.note || ''} className='form-control' placeholder='Good Naruto, effect cool...' rows='2'></textarea>
       </div>
     </div>
   );
