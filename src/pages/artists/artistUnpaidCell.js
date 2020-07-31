@@ -9,7 +9,7 @@ const ArtistUnpaidCell = ({ numUnpaid, totalUnpaid }) => {
         <div>
           {`${formatMoney(totalUnpaid)}`}
           <div style={{ fontSize: '12px' }} className='text-muted'>
-            (${numUnpaid} orders)
+            ({numUnpaid} orders)
           </div>
         </div>
       )}
