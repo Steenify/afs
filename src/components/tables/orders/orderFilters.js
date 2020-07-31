@@ -27,7 +27,6 @@ class OrderFilters extends Component {
       payload: {
         selectedStatus: status,
         page: 0,
-        text: '',
       },
       reducer,
     });
