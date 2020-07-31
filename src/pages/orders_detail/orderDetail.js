@@ -28,12 +28,8 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
     return getOrderItem(item.name) !== 'Faster Processing';
   });
 
-  const canEditAssign =
-    accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) ||
-    false;
-  const canGetArtists =
-    accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) ||
-    false;
+  const canEditAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;
+  const canGetArtists = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) || false;
 
   return (
     <div className='order_detail'>
@@ -43,12 +39,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
             <div className='info__left'>
               <div className='number'>#{order?.number}</div>
               <div className='status'>
-                <span
-                  className={`order__status ${
-                    getSelectedStatus(order.status, status).name
-                  }`}>
-                  {getSelectedStatus(order.status, status).friendlyName}
-                </span>
+                <span className={`order__status ${getSelectedStatus(order.status, status).name}`}>{getSelectedStatus(order.status, status).friendlyName}</span>
               </div>
               <div className='deadline'>
                 <strong>Deadline: </strong>
@@ -58,9 +49,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
           </div>
           <div className='col-lg-6 col-xl-5 text-right'>
             <div className='info__right'>
-              {canEditAssign && canGetArtists && (
-                <OrderAssignedBox order={order} />
-              )}
+              {canEditAssign && canGetArtists && <OrderAssignedBox order={order} />}
               <OrderBudget order={order} />
             </div>
           </div>
@@ -89,11 +78,11 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
   );
 };
 
-const mapStateToProps = ({ orderDetail, order, auth }) => {
+const mapStateToProps = ({ orderDetail, orderTable, auth }) => {
   return {
     loading: orderDetail.ui.loading,
     order: orderDetail.data.order,
-    status: order.status,
+    status: orderTable.orders.status,
     accountInfo: auth.data.accountInfo,
   };
 };

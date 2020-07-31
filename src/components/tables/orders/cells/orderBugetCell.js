@@ -13,9 +13,9 @@ import { PERMITTIONS_CONFIG } from 'config';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
-// import { updateOrdersBudgetAction, updateOrderItemsAcion } from 'pages/orders/actions';
+import { updateOrderTableItemsAction, updateOrderTableBudgetAction } from 'components/tables/orders/actions';
 
-const OrderBudgetCell = ({ budget, accountInfo, id, updateOrdersBudget, updateOrderItems, number }) => {
+const OrderBudgetCell = ({ budget, accountInfo, id, updateOrderTableBudgetAction, updateOrderTableItemsAction, number, reducer }) => {
   const [value, setValue] = useState(budget || '');
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -42,19 +42,20 @@ const OrderBudgetCell = ({ budget, accountInfo, id, updateOrdersBudget, updateOr
     }
     toggle();
 
-    updateOrderItems({
-      id: id,
-      field: 'budget',
-      value: value,
+    updateOrderTableItemsAction({
+      payload: {
+        id: id,
+        field: 'budget',
+        value: value,
+      },
+      reducer,
     });
 
     const payload = {
       id: id,
       budget: value,
     };
-    updateOrdersBudget(payload, id, () => {
-      toast.dark(`Order [#${number}]'s budget is changed to ${formatNumber(value || 0)}$`);
-    });
+    updateOrderTableBudgetAction({ payload, id, reducer, onSuccess: () => toast.dark(`Order [#${number}]'s budget is changed to ${formatNumber(value || 0)}$`) });
   };
 
   if (!accountInfo) {
@@ -107,9 +108,8 @@ const OrderBudgetCell = ({ budget, accountInfo, id, updateOrdersBudget, updateOr
 
 const mapStateToProps = (reducers, ownProps) => {
   const { auth } = reducers;
-  const { data, reducerPath = 'order' } = ownProps;
-  const reducer = get(reducers, reducerPath) || {};
-  const item = get(reducer, 'table.items')?.[data] || {};
+  const { data, reducer = 'orders' } = ownProps;
+  const item = get(reducers, `orderTable.${reducer}.table.items`)?.[data] || {};
   return {
     number: item?.number || '',
     id: item?.id,
@@ -118,21 +118,9 @@ const mapStateToProps = (reducers, ownProps) => {
   };
 };
 
-// const mapStateToProps = ({ order, auth }, ownProps) => {
-//   const { data } = ownProps;
-//   const { items } = order.list;
-//   const item = items[data] || {};
-//   return {
-//     number: item?.number || '',
-//     id: item?.id,
-//     budget: item?.budget || 0,
-//     accountInfo: auth.data.accountInfo,
-//   };
-// };
-
 const mapDispatchToProps = {
-  // updateOrdersBudget: updateOrdersBudgetAction,
-  // updateOrderItems: updateOrderItemsAcion,
+  updateOrderTableBudgetAction,
+  updateOrderTableItemsAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderBudgetCell);

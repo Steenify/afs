@@ -12,26 +12,15 @@ const OrderStatusCell = ({ status, statuses, goToDetail, code }) => {
   );
 };
 const mapStateToProps = (reducers, ownProps) => {
-  const { data, reducerPath = 'order' } = ownProps;
-  const reducer = get(reducers, reducerPath) || {};
-  const item = get(reducer, 'table.items')?.[data] || {};
+  const { data, reducer = 'orders' } = ownProps;
+  const item = get(reducers, `orderTable.${reducer}.table.items`)?.[data] || {};
+  const statuses = get(reducers, `orderTable.${reducer}.status`) || [];
   return {
     status: item?.status || '',
     code: item?.code || '',
-    statuses: get(reducer, 'status'),
+    statuses,
   };
 };
-
-// const mapStateToProps = ({ order }, ownProps) => {
-//   const { data } = ownProps;
-//   const { items } = order.list;
-//   const item = items[data] || {};
-//   return {
-//     status: item?.status || '',
-//     code: item?.code || '',
-//     statuses: order.status,
-//   };
-// };
 
 const mapDispatchToProps = {};
 

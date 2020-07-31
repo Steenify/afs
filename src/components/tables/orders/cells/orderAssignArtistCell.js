@@ -9,26 +9,30 @@ import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
 import { PERMITTIONS_CONFIG } from 'config';
 
-// import { updateOrderItemsAcion, assignOrdersArtistAction } from 'pages/orders/actions';
-
+import { updateOrderTableItemsAction, updateOrderTableAssignArtistAction } from 'components/tables/orders/actions';
 import ListArtists from 'components/layout/ListArtistAssign';
 
-const AssignArtistCell = ({ assignedTo, accountInfo, id, updateOrderItems, assignOrdersArtist, number }) => {
+const AssignArtistCell = ({ assignedTo, accountInfo, id, updateOrderTableItemsAction, updateOrderTableAssignArtistAction, number, reducer }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
   const onSave = (value) => {
     toggle();
-    updateOrderItems({
-      id: id,
-      field: 'assignedTo',
-      value: value,
+    updateOrderTableItemsAction({
+      payload: {
+        id: id,
+        field: 'assignedTo',
+        value: value,
+      },
+      reducer,
     });
 
     const payload = { id: id, to: value.login };
     const name = value.login !== 'null' ? value.firstName : '_______';
-    assignOrdersArtist(payload, () => {
-      toast.dark(`Order [#${number}] is assigned to [${name}]`);
+    updateOrderTableAssignArtistAction({
+      payload,
+      reducer,
+      onSuccess: () => toast.dark(`Order [#${number}] is assigned to [${name}]`),
     });
   };
 
@@ -61,9 +65,8 @@ const AssignArtistCell = ({ assignedTo, accountInfo, id, updateOrderItems, assig
 
 const mapStateToProps = (reducers, ownProps) => {
   const { auth } = reducers;
-  const { data, reducerPath = 'order' } = ownProps;
-  const reducer = get(reducers, reducerPath) || {};
-  const item = get(reducer, 'table.items')?.[data] || {};
+  const { data, reducer = 'orders' } = ownProps;
+  const item = get(reducers, `orderTable.${reducer}.table.items`)?.[data] || {};
   return {
     number: item?.number || '',
     id: item?.id || 0,
@@ -72,22 +75,9 @@ const mapStateToProps = (reducers, ownProps) => {
   };
 };
 
-// const mapStateToProps = ({ order, auth }, ownProps) => {
-//   const { data } = ownProps;
-//   const { items } = order.list;
-//   const item = items[data] || {};
-
-//   return {
-//     number: item?.number || '',
-//     id: item?.id || 0,
-//     assignedTo: item?.assignedTo,
-//     accountInfo: auth.data.accountInfo,
-//   };
-// };
-
 const mapDispatchToProps = {
-  // updateOrderItems: updateOrderItemsAcion,
-  // assignOrdersArtist: assignOrdersArtistAction,
+  updateOrderTableItemsAction,
+  updateOrderTableAssignArtistAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(AssignArtistCell));

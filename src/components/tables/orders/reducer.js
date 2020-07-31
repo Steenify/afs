@@ -1,13 +1,16 @@
 import update from 'react-addons-update';
 import { mapDataList, mapDataByIds, mapDataByDate, isMobile } from 'utils';
 
-import { UPDATE_ARTIST_DETAIL_FILTER_ORDER, GET_ARTIST_DETAIL_ORDERS_ACTION, UPDATE_ARTIST_DETAIL_UPDATE_ORDER_ITEM_ACTION, UPDATE_ARTIST_DETAIL_SELECT_ALL_ORDER_ACTION } from './actions';
-import { GET_ORDER_STATUS_ACTION } from 'pages/orders/actions';
+import {
+  ORDER_TABLE_GET_LIST_ACTION,
+  ORDER_TABLE_UPDATE_ITEM_ACTION,
+  ORDER_TABLE_ALL_SELECTED_ACTION,
+  ORDER_TABLE_UPDATE_FILTER_ACTION,
+  ORDER_TABLE_GET_STATUS_ACTION,
+  ORDER_TABLE_GET_COUNT_BY_STATUS_ACTION,
+} from './actions';
 
-const initialState = {
-  ui: {
-    loading: false,
-  },
+const templateState = {
   filter: {
     page: 0,
     size: 100,
@@ -17,7 +20,7 @@ const initialState = {
     assignee: '',
   },
   table: {
-    list: [],
+    orders: [],
     ids: [],
     items: {},
     itemGroups: [],
@@ -29,30 +32,36 @@ const initialState = {
   orderStatusCount: {},
 };
 
-const reducer = (state = initialState, action) => {
+const initialState = {
+  orders: { ...templateState },
+  artistDetail: { ...templateState },
+};
+
+const templateReducer = (state = templateState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case GET_ORDER_STATUS_ACTION.SUCCESS:
+    case ORDER_TABLE_GET_COUNT_BY_STATUS_ACTION.SUCCESS: {
+      return update(state, {
+        orderStatusCount: {
+          $set: payload,
+        },
+      });
+    }
+    case ORDER_TABLE_GET_STATUS_ACTION.SUCCESS: {
       return update(state, {
         status: {
           $set: payload,
         },
       });
-    case UPDATE_ARTIST_DETAIL_FILTER_ORDER: {
-      return update(state, {
-        filter: {
-          $merge: payload,
-        },
-      });
     }
-    case GET_ARTIST_DETAIL_ORDERS_ACTION.PENDING: {
+    case ORDER_TABLE_GET_LIST_ACTION.PENDING: {
       return update(state, {
         table: {
           loading: { $set: true },
         },
       });
     }
-    case GET_ARTIST_DETAIL_ORDERS_ACTION.SUCCESS: {
+    case ORDER_TABLE_GET_LIST_ACTION.SUCCESS: {
       const { ids, items } = mapDataByIds(mapDataList(payload.data, 'selected', false), 'id');
 
       const itemGroups = mapDataByDate(payload.data, 'paidAt');
@@ -64,7 +73,7 @@ const reducer = (state = initialState, action) => {
 
       return update(state, {
         table: {
-          list: { $set: mapDataList(payload.data, 'selected', false) },
+          orders: { $set: mapDataList(payload.data, 'selected', false) },
           ids: { $set: ids },
           items: { $set: items },
           itemGroups: { $set: itemGroups },
@@ -74,15 +83,21 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
-    case GET_ARTIST_DETAIL_ORDERS_ACTION.ERROR: {
+    case ORDER_TABLE_GET_LIST_ACTION.ERROR: {
       return update(state, {
         table: {
-          loading: { $set: false },
+          loading: { $set: true },
         },
       });
     }
-
-    case UPDATE_ARTIST_DETAIL_UPDATE_ORDER_ITEM_ACTION:
+    case ORDER_TABLE_UPDATE_FILTER_ACTION: {
+      return update(state, {
+        filter: {
+          $merge: payload,
+        },
+      });
+    }
+    case ORDER_TABLE_UPDATE_ITEM_ACTION: {
       return update(state, {
         table: {
           items: {
@@ -94,8 +109,9 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
+    }
 
-    case UPDATE_ARTIST_DETAIL_SELECT_ALL_ORDER_ACTION:
+    case ORDER_TABLE_ALL_SELECTED_ACTION: {
       return update(state, {
         table: {
           items: {
@@ -106,8 +122,21 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
+    }
     default:
       return state;
+  }
+};
+
+const reducer = (state = initialState, action) => {
+  const { type, reducer = 'orders' } = action;
+  if (type.includes('ORDER_TABLE_')) {
+    return {
+      ...state,
+      [reducer]: templateReducer(state[reducer], action),
+    };
+  } else {
+    return state;
   }
 };
 export default reducer;

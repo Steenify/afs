@@ -71,25 +71,13 @@ const OrderCustomerCell = ({ customer, accountInfo }) => {
 
 const mapStateToProps = (reducers, ownProps) => {
   const { auth } = reducers;
-  const { data, reducerPath = 'order' } = ownProps;
-  const reducer = get(reducers, reducerPath) || {};
-  const item = get(reducer, 'table.items')?.[data] || {};
+  const { data, reducer = 'orders' } = ownProps;
+  const item = get(reducers, `orderTable.${reducer}.table.items`)?.[data] || {};
   return {
     customer: item?.customer || {},
     accountInfo: auth.data.accountInfo,
   };
 };
-
-// const mapStateToProps = ({ order, auth }, ownProps) => {
-//   const { data } = ownProps;
-//   const { items } = order.list;
-//   const item = items[data] || {};
-
-//   return {
-//     customer: item?.customer || {},
-//     accountInfo: auth.data.accountInfo,
-//   };
-// };
 
 const mapDispatchToProps = {};
 

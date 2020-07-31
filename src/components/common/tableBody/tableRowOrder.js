@@ -4,7 +4,7 @@ import { get } from 'lodash';
 
 const TableRowOrder = ({ columns, item, cellProps, getRowProps, data }) => {
   return (
-    <tr key={`table__body__item__${item}`} {...getRowProps(data)}>
+    <tr key={`table__body__item__${item}`} {...getRowProps(data || {})}>
       {columns.map((column) => {
         const { Cell } = column;
         const style = Object.assign({}, column.style || {}, {
@@ -26,23 +26,12 @@ TableRowOrder.defaultProps = {
 };
 
 const mapStateToProps = (reducers, ownProps) => {
-  const { item, reducerPath = 'order' } = ownProps;
-  const reducer = get(reducers, reducerPath) || {};
-  const items = get(reducer, 'table.items') || {};
-  const data = items[item] || {};
+  const { item, reducer = 'orders' } = ownProps;
+  const data = get(reducers, `orderTable.${reducer}.table.items`)?.[item];
   return {
     data,
   };
 };
-
-// const mapStateToProps = ({ order }, ownProps) => {
-//   const { item } = ownProps;
-//   const { items } = order.list;
-//   const data = items[item] || {};
-//   return {
-//     data,
-//   };
-// };
 
 const mapDispatchToProps = {};
 

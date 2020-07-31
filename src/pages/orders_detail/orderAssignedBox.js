@@ -7,7 +7,7 @@ import Popover from 'react-tiny-popover';
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 import ListArtists from 'components/layout/ListArtistAssign';
 
-import { assignOrdersArtistAction } from '../orders/actions';
+import { updateOrderTableAssignArtistAction } from 'components/tables/orders/actions';
 
 class OrderAssignedBox extends Component {
   constructor() {
@@ -25,7 +25,7 @@ class OrderAssignedBox extends Component {
 
   onSave = (artist) => {
     const { isPopoverOpen } = this.state;
-    const { order, assignOrdersArtist } = this.props;
+    const { order, updateOrderTableAssignArtistAction } = this.props;
     const { assignedTo } = order;
 
     if ((assignedTo || {})['login'] === artist?.login) {
@@ -45,9 +45,7 @@ class OrderAssignedBox extends Component {
       () => {
         const payload = { id: order.id, to: artist.login };
         const name = artist.login !== 'null' ? artist.firstName : '_______';
-        assignOrdersArtist(payload, () => {
-          toast.dark(`Order [#${order?.number}] is assigned to [${name}]`);
-        });
+        updateOrderTableAssignArtistAction({ payload, onSuccess: () => toast.dark(`Order [#${order?.number}] is assigned to [${name}]`) });
       },
     );
   };
@@ -70,22 +68,12 @@ class OrderAssignedBox extends Component {
           transitionDuration={0.000001}
           padding={10}
           onClickOutside={this.toggle}
-          content={() => (
-            <ListArtists onSave={this.onSave} assignedTo={assignedTo} />
-          )}>
-          <button
-            type='button'
-            onClick={this.toggle}
-            className='order__toggle order__assigned assign__artist budget p-0'>
+          content={() => <ListArtists onSave={this.onSave} assignedTo={assignedTo} />}>
+          <button type='button' onClick={this.toggle} className='order__toggle order__assigned assign__artist budget p-0'>
             <div className='d-flex align-items-end'>
               <strong className='mr-2'> Artist:</strong>
               <span className='name'>
-                {isEmpty(assignedTo) || assignedTo?.login === 'null'
-                  ? '____________'
-                  : `${assignedTo?.fullName || ''}` ||
-                    `${assignedTo?.firstName || ''} ${
-                      assignedTo?.lastName || ''
-                    }`}
+                {isEmpty(assignedTo) || assignedTo?.login === 'null' ? '____________' : `${assignedTo?.fullName || ''}` || `${assignedTo?.firstName || ''} ${assignedTo?.lastName || ''}`}
               </span>
               <span className='icon d-block ml-1'>
                 <Pencil width='14px' height='14px' />
@@ -101,7 +89,7 @@ class OrderAssignedBox extends Component {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
-  assignOrdersArtist: assignOrdersArtistAction,
+  updateOrderTableAssignArtistAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderAssignedBox);

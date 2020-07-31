@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { filter } from 'lodash';
 import { get } from 'lodash';
 
-// import { updateAllOrderSelectedAction } from 'pages/orders/actions';
+import { updateOrderTableSelectAllAction } from 'components/tables/orders/actions';
 
-const OrderSelectedAll = ({ selected, updateAllOrderSelected }) => {
+const OrderSelectedAll = ({ selected, updateOrderTableSelectAllAction, reducer }) => {
   const handleChange = (status) => {
-    updateAllOrderSelected(status);
+    updateOrderTableSelectAllAction({ payload: status, reducer });
   };
 
   return (
@@ -19,9 +19,8 @@ const OrderSelectedAll = ({ selected, updateAllOrderSelected }) => {
 };
 
 const mapStateToProps = (reducers, ownProps) => {
-  const { reducerPath = 'order' } = ownProps;
-  const reducer = get(reducers, reducerPath) || {};
-  const items = get(reducer, 'table.items');
+  const { reducer = 'orders' } = ownProps;
+  const items = get(reducers, `orderTable.${reducer}.table.items`) || {};
   const selected = filter(items, (or) => or.selected).map((or) => or.id);
 
   return {
@@ -29,17 +28,8 @@ const mapStateToProps = (reducers, ownProps) => {
   };
 };
 
-// const mapStateToProps = ({ order }) => {
-//   const { items } = order.list;
-//   const selected = filter(items, (or) => or.selected).map((or) => or.id);
-
-//   return {
-//     selected: selected.length > 0,
-//   };
-// };
-
 const mapDispatchToProps = {
-  // updateAllOrderSelected: updateAllOrderSelectedAction,
+  updateOrderTableSelectAllAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderSelectedAll);

@@ -5,7 +5,7 @@ import { ToastContainer, Flip } from 'react-toastify';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 
-import { getOrderCountByStatusAction } from 'pages/orders/actions';
+import { getOrderTableCountByStatusAction } from 'components/tables/orders/actions';
 
 import Route from 'components/common/Route';
 import FirerBaseApp from 'components/layout/firebaseapp';
@@ -50,16 +50,16 @@ import { WEB_ROUTES, mapRoles } from 'config';
 
 import CustomerChat from 'vendor/facebookChat';
 
-const App = ({ getOrderCountByStatus, accountInfo }) => {
+const App = ({ getOrderTableCountByStatusAction, accountInfo }) => {
   const isLogged = !isEmpty(accountInfo);
 
   const isArtist = accountInfo?.authorities?.includes(mapRoles.ROLE_ARTIST) || false;
 
   useEffect(() => {
     if (isLogged) {
-      getOrderCountByStatus();
+      getOrderTableCountByStatusAction({});
     }
-  }, [getOrderCountByStatus, isLogged]);
+  }, [getOrderTableCountByStatusAction, isLogged]);
   return (
     <>
       <Helmet {...head}></Helmet>
@@ -134,7 +134,7 @@ const mapStateToProps = ({ auth }) => ({
   accountInfo: auth.data.accountInfo,
 });
 const mapDispatchToProps = {
-  getOrderCountByStatus: getOrderCountByStatusAction,
+  getOrderTableCountByStatusAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

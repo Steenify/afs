@@ -8,13 +8,7 @@ import OrderCustomerBox from './orderCustomerBox';
 import OrderArtDelivery from './orderArtDelivery';
 import { getOrderWorkLogAction } from './actions';
 
-const OrderArtWorkBox = ({
-  order,
-  status,
-  getOrderWorkLog,
-  loading,
-  workLog,
-}) => {
+const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog }) => {
   useEffect(() => {
     if (order.id) {
       getOrderWorkLog(order.id);
@@ -25,9 +19,7 @@ const OrderArtWorkBox = ({
 
   if (loading || !status.length) {
     return (
-      <div
-        style={{ minHeight: '100px' }}
-        className='order_detail__work_list box d-flex align-items-center justify-content-center'>
+      <div style={{ minHeight: '100px' }} className='order_detail__work_list box d-flex align-items-center justify-content-center'>
         <Spinner />
       </div>
     );
@@ -39,28 +31,11 @@ const OrderArtWorkBox = ({
 
   const NEW_ORDER = [...(worklogGroup.NEW_ORDER || [])];
 
-  const SKETCH = sortBy(
-    [
-      ...(worklogGroup.SKETCH || []),
-      ...(worklogGroup.SKETCH_REVIEW || []),
-      ...(worklogGroup.SKETCH_EDIT || []),
-    ],
-    (skethItem) => new Date(skethItem.createdDate),
-  );
+  const SKETCH = sortBy([...(worklogGroup.SKETCH || []), ...(worklogGroup.SKETCH_REVIEW || []), ...(worklogGroup.SKETCH_EDIT || [])], (skethItem) => new Date(skethItem.createdDate));
 
-  const COLOR = sortBy(
-    [
-      ...(worklogGroup.COLOR || []),
-      ...(worklogGroup.COLOR_REVIEW || []),
-      ...(worklogGroup.COLOR_EDIT || []),
-    ],
-    (colorItem) => new Date(colorItem.createdDate),
-  );
+  const COLOR = sortBy([...(worklogGroup.COLOR || []), ...(worklogGroup.COLOR_REVIEW || []), ...(worklogGroup.COLOR_EDIT || [])], (colorItem) => new Date(colorItem.createdDate));
 
-  const EXPORT_FILE = sortBy(
-    [...(worklogGroup.EXPORT_FILE || []), ...(worklogGroup.SEND_FILE || [])],
-    (exportItem) => new Date(exportItem.createdDate),
-  );
+  const EXPORT_FILE = sortBy([...(worklogGroup.EXPORT_FILE || []), ...(worklogGroup.SEND_FILE || [])], (exportItem) => new Date(exportItem.createdDate));
 
   const DONE = [...(worklogGroup.DONE || [])];
 
@@ -98,26 +73,17 @@ const OrderArtWorkBox = ({
       <div className='row'>
         <div className='col-lg-8'>
           <div className='order_detail__tabs'>
-            <button
-              type='button'
-              onClick={() => setTab('activity')}
-              className={`order_detail__tab ${tab === 'activity' && 'active'}`}>
+            <button type='button' onClick={() => setTab('activity')} className={`order_detail__tab ${tab === 'activity' && 'active'}`}>
               Activity
             </button>
-            <button
-              type='button'
-              onClick={() => setTab('delivery')}
-              className={`order_detail__tab ${tab === 'delivery' && 'active'}`}>
+            <button type='button' onClick={() => setTab('delivery')} className={`order_detail__tab ${tab === 'delivery' && 'active'}`}>
               Delivery
             </button>
           </div>
         </div>
 
         <div className='col-lg-8'>
-          <div
-            className={`order_detail__content ${
-              tab === 'activity' && 'active'
-            } `}>
+          <div className={`order_detail__content ${tab === 'activity' && 'active'} `}>
             <div className='order_detail__work_items box'>
               {isEmpty(order.assignedTo) && (
                 <Alert color='warning'>
@@ -127,25 +93,12 @@ const OrderArtWorkBox = ({
 
               {!isEmpty(order.assignedTo) &&
                 map(WorkGrouped, (works, key) => {
-                  return (
-                    <OrderArtWorkGroup
-                      isNewOrder={isNewOrder}
-                      works={works}
-                      order={order}
-                      group={key}
-                      key={`workGroup__item__${key}`}
-                      lastWorkLog={lastWorkLog}
-                      status={status}
-                    />
-                  );
+                  return <OrderArtWorkGroup isNewOrder={isNewOrder} works={works} order={order} group={key} key={`workGroup__item__${key}`} lastWorkLog={lastWorkLog} status={status} />;
                 })}
             </div>
           </div>
 
-          <div
-            className={`order_detail__content ${
-              tab === 'delivery' && 'active'
-            } `}>
+          <div className={`order_detail__content ${tab === 'delivery' && 'active'} `}>
             <div className='order_detail__delivery box'>
               {!EXPORT_FILE.length && (
                 <Alert color='warning'>
@@ -153,13 +106,7 @@ const OrderArtWorkBox = ({
                 </Alert>
               )}
 
-              {EXPORT_FILE.length > 0 && (
-                <OrderArtDelivery
-                  works={[...(worklogGroup.EXPORT_FILE || [])]}
-                  order={order}
-                  images={allExportImage}
-                />
-              )}
+              {EXPORT_FILE.length > 0 && <OrderArtDelivery works={[...(worklogGroup.EXPORT_FILE || [])]} order={order} images={allExportImage} />}
             </div>
           </div>
         </div>
@@ -172,8 +119,8 @@ const OrderArtWorkBox = ({
   );
 };
 
-const mapStateToProps = ({ order, orderDetail, auth }) => ({
-  status: order.status,
+const mapStateToProps = ({ orderTable, orderDetail, auth }) => ({
+  status: orderTable.orders.status,
   loading: orderDetail.ui.loadingWorkLog,
   workLog: orderDetail.data.workLog,
   accountInfo: auth.data.accountInfo,

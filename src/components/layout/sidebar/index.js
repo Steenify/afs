@@ -156,11 +156,11 @@ const SideBar = (props) => {
   );
 };
 
-const mapStateToProps = ({ auth, global, order }) => {
+const mapStateToProps = ({ auth, global, orderTable }) => {
   return {
     accountInfo: auth.data.accountInfo,
     isMenuOpen: global.ui.isMenuOpen,
-    orderStatus: order.orderStatusCount,
+    orderStatus: orderTable.orders.orderStatusCount,
   };
 };
 
