@@ -1,14 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import {
-  filter,
-  isObject,
-  unionBy,
-  reduce,
-  map,
-  forEach,
-  isEmpty,
-} from 'lodash';
+import { filter, isObject, unionBy, reduce, map, forEach, isEmpty } from 'lodash';
 import NumberFormat from 'react-number-format';
 import { toast } from 'react-toastify';
 
@@ -21,17 +13,7 @@ import { statusPayments } from 'config';
 
 import { createOrderPayoutsBulkAction, updateOrderItemsAcion } from './actions';
 
-const OrderPayoutModal = ({
-  isOpen,
-  className,
-  toggle,
-  orders,
-  totalBudget,
-  defaultNote,
-  createOrderPayoutsBulk,
-  artist,
-  updateOrderItems,
-}) => {
+const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defaultNote, createOrderPayoutsBulk, artist, updateOrderItems }) => {
   const hasArtist = !isEmpty(artist);
 
   const dropbox = useRef(null);
@@ -47,6 +29,7 @@ const OrderPayoutModal = ({
 
   useEffect(() => {
     setNote(defaultNote);
+    setExtra(0);
   }, [defaultNote]);
 
   const handleChangeNote = (e) => {
@@ -137,25 +120,16 @@ const OrderPayoutModal = ({
   const totalDisplay = totalBudget + (parseInt(extra, 10) || 0);
 
   return (
-    <PageModal
-      isOpen={isOpen}
-      toggle={toggle}
-      title={`Payouts ${artist?.firstName || ''} ${artist?.lastName || ''}`}
-      className={`order__payout ${className}`}>
+    <PageModal isOpen={isOpen} toggle={toggle} title={`Payouts ${artist?.firstName || ''} ${artist?.lastName || ''}`} className={`order__payout ${className}`}>
       <div className='payout__list'>
         {orders.map((order) => {
-          const filteredItems = filter(
-            order.items,
-            (item) => getOrderItem(item.name) !== 'Faster Processing',
-          );
+          const filteredItems = filter(order.items, (item) => getOrderItem(item.name) !== 'Faster Processing');
           return (
             <div key={`order__payout__item__${order.id}`}>
               <div className='payout__item order'>
                 <div className='left'>
                   <span className='number'>#{order.number}</span>
-                  <span className='name'>
-                    {getOrderOption((filteredItems[0] || {})?.name || '')}
-                  </span>
+                  <span className='name'>{getOrderOption((filteredItems[0] || {})?.name || '')}</span>
                 </div>
                 <div className='right'>
                   <strong className='money'>{formatMoney(order.budget)}</strong>
@@ -180,23 +154,10 @@ const OrderPayoutModal = ({
             <span className='payout__label'>Extra Payment</span>
           </div>
           <div className='right'>
-            <NumberFormat
-              prefix={'$  '}
-              thousandSeparator={true}
-              className='form-control payout__extra money'
-              value={extra}
-              onValueChange={onChangeExtra}
-            />
+            <NumberFormat prefix={'$  '} thousandSeparator={true} className='form-control payout__extra money' value={extra} onValueChange={onChangeExtra} />
           </div>
         </div>
-        <textarea
-          rows='2'
-          placeholder={`extra paymen note`}
-          number={'extra'}
-          value={noteItem['extra'] || ''}
-          onChange={handleChangeNoteItems}
-          className='form-control payout__note mb-3'
-        />
+        <textarea rows='2' placeholder={`extra paymen note`} number={'extra'} value={noteItem['extra'] || ''} onChange={handleChangeNoteItems} className='form-control payout__note mb-3' />
 
         <div className='payout__divider'></div>
 
@@ -216,13 +177,7 @@ const OrderPayoutModal = ({
             <span className='payout__label'>Note</span>
           </div>
           <div className='right'>
-            <textarea
-              rows='3'
-              placeholder='extra note'
-              value={note}
-              onChange={handleChangeNote}
-              className='form-control payout__note'
-            />
+            <textarea rows='3' placeholder='extra note' value={note} onChange={handleChangeNote} className='form-control payout__note' />
           </div>
         </div>
 
@@ -231,32 +186,18 @@ const OrderPayoutModal = ({
             <span className='payout__label'>Evidence:</span>
           </div>
           <div className='right'>
-            <Dropbox
-              className='upload'
-              orderNumber={`payout-${artist?.id}`}
-              ref={dropbox}
-              id={`order__payout__log`}
-            />
+            <Dropbox className='upload' orderNumber={`payout-${artist?.id}`} ref={dropbox} id={`order__payout__log`} />
           </div>
         </div>
 
         <div className='payout__item action'>
           <div className='left'>
-            <Button
-              color='normal'
-              onClick={toggle}
-              className='payout__cancel payout__action'
-              type='button'>
+            <Button color='normal' onClick={toggle} className='payout__cancel payout__action' type='button'>
               Cancel
             </Button>
           </div>
           <div className='right'>
-            <Button
-              onClick={handleSubmit}
-              disabled={!hasArtist}
-              color='primary'
-              className='payout__submit payout__action'
-              type='button'>
+            <Button onClick={handleSubmit} disabled={!hasArtist} color='primary' className='payout__submit payout__action' type='button'>
               Confirm
             </Button>
           </div>
@@ -268,10 +209,7 @@ const OrderPayoutModal = ({
 
 const mapStateToProps = ({ order, auth }) => {
   const { items } = order.list;
-  const selectedOrder = filter(
-    items,
-    (or) => or.selected && isObject(or.assignedTo),
-  );
+  const selectedOrder = filter(items, (or) => or.selected && isObject(or.assignedTo));
   const artistSelected = unionBy(selectedOrder, 'assignedTo');
   const artist = artistSelected[0]?.assignedTo || {};
 

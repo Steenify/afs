@@ -31,7 +31,7 @@ let columns = [
   },
   {
     accessor: 'fullName',
-    Header: 'Artist Name',
+    Header: 'Name',
     minWidth: 100,
     Cell: ArtistFullNameCell,
   },
@@ -57,14 +57,14 @@ let columns = [
     minWidth: 150,
     Cell: ArtistWorkLoadCell,
   },
-  {
-    accessor: 'totalDone',
-    Header: 'Done',
-    Cell: ArtistTotalDoneCell,
-    style: {
-      textAlign: 'right',
-    },
-  },
+  // {
+  //   accessor: 'totalDone',
+  //   Header: 'Done',
+  //   Cell: ArtistTotalDoneCell,
+  //   style: {
+  //     textAlign: 'right',
+  //   },
+  // },
   {
     accessor: 'totalUnpaid',
     Header: 'Unpaid',
