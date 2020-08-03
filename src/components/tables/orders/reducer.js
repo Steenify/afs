@@ -34,7 +34,6 @@ const templateState = {
 
 const initialState = {
   orders: { ...templateState },
-  artistDetail: { ...templateState },
 };
 
 const templateReducer = (state = templateState, action) => {

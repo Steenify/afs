@@ -8,7 +8,6 @@ import {
   getOrderCountByStatusService,
   getOrderBulkMarkAsDoneService,
 } from 'services/order';
-import { getAssignArtistsService } from 'services/artist';
 import { getAllStatusService } from 'services/status';
 import { createPayoutService } from 'services/payout';
 
