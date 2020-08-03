@@ -73,10 +73,10 @@ export const notifyChannels = [
     id: 'email',
     title: 'Email',
   },
-  {
-    id: 'facebook',
-    title: 'Facebook',
-  },
+  // {
+  //   id: 'facebook',
+  //   title: 'Facebook',
+  // },
 ];
 
 export const tinymceInitValues = {

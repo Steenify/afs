@@ -3,16 +3,7 @@ import { grantType, HostAPI } from 'config';
 
 import { getData } from 'utils';
 
-export const request = async ({
-  host = '',
-  url = '',
-  method = 'GET',
-  params = {},
-  data = {},
-  headers = {},
-  token = '',
-  onUploadProgress,
-}) => {
+export const request = async ({ host = '', url = '', method = 'GET', params = {}, data = {}, headers = {}, token = '', onUploadProgress }) => {
   const _token = token || getData('token');
   const uploadProgress = onUploadProgress || (() => {});
   const res = await axios({

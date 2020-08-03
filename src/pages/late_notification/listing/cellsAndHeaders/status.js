@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { dateFormatString, timeFormatString } from 'utils';
-const StatusCell = ({ sendDate }) => {
-  return <div>{sendDate}</div>;
+const StatusCell = ({ sentDate }) => {
+  return <div>{sentDate}</div>;
 };
 
 const mapStateToProps = (
@@ -18,13 +18,13 @@ const mapStateToProps = (
 ) => {
   const { data } = ownProps;
   const item = items[data] || {};
-  let sendDate = item?.sendDate || 'Not send';
+  let sentDate = item?.sentDate || 'Not send';
 
-  if (moment(sendDate || null).isValid()) {
-    sendDate = `Sent at ${moment(sendDate).format(`${timeFormatString} ${dateFormatString}`)}`;
+  if (moment(sentDate || null).isValid()) {
+    sentDate = `Sent at ${moment(sentDate).format(`${timeFormatString} ${dateFormatString}`)}`;
   }
   return {
-    sendDate,
+    sentDate,
   };
 };
 

@@ -1,49 +1,51 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { map } from 'lodash';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 
 import Button from 'components/common/button';
-import ImageGallery from 'components/common/imageGallery';
-
-import { getListImageUrl, mapDataList, mapDataByIds } from 'utils';
-
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 import { notifyChannels, tinymceInitValues } from 'constants/index';
 import {
-  updateCurrentItemAction,
-  updateCurrentItemOrderSelectionAction,
-  updateEmailTemplateAction,
-  updateMessageTemplateAction,
-  updatePreviewOrdersAction,
+  setCurrentItemAction,
+  setCurrentPreviewIdAction,
   setPreviewOrdersAction,
-  updatePreviewEmailTemplateAction,
+  updateCurrentItemOrderSelectionAction,
+  updateCurrentItemAction,
+  updatePreviewItemsAction,
+  generateTemplateAction,
+  sendEmailAction,
+  viewSentContentAction,
 } from './action';
+import useKeyPress from 'utils/useKeyPress';
+import ContactPopover from 'components/layout/contactPopover/index.js';
 
 const Template = ({
-  sendEmailNotify,
-  customer,
-  updateFbTemplateNotify,
-  sendFBMessageNotify,
   item,
   lateBookings = [],
   emailTemplate = { title: '', content: '' },
   messageTemplate = { content: '', attachments: [] },
-  previewOrderItems,
+  previewOrderItems = [],
   isPreview = false,
+  isView = false,
   currentPreview,
+  currentViewId,
   previewItem,
+  generatingTemplate,
+  sentEmail = { title: '', content: '', customerEmail: '' },
 
-  updateCurrentItemAction,
+  setCurrentItemAction,
   updateCurrentItemOrderSelectionAction,
-  updateEmailTemplateAction,
-  updateMessageTemplateAction,
-  updatePreviewOrdersAction,
+  setCurrentPreviewIdAction,
   setPreviewOrdersAction,
-  updatePreviewEmailTemplateAction,
+  generateTemplateAction,
+  sendEmailAction,
+  updateCurrentItemAction,
+  updatePreviewItemsAction,
+  viewSentContentAction,
 }) => {
   const [notifyType, setNotifyType] = useState(notifyChannels[0].id);
 
@@ -51,42 +53,77 @@ const Template = ({
     if (item === null) {
       setNotifyType(notifyChannels[0].id);
       setPreviewOrdersAction(null);
-      updatePreviewOrdersAction(null);
+      setCurrentPreviewIdAction(null);
     }
-  }, [item, setPreviewOrdersAction, updatePreviewOrdersAction]);
+  }, [item, setPreviewOrdersAction, setCurrentPreviewIdAction]);
+
+  useEffect(() => {
+    if (isView) {
+      viewSentContentAction();
+    }
+  }, [viewSentContentAction, item?.currentViewId]);
 
   const toggle = () => {
-    updateCurrentItemAction(null);
+    setCurrentItemAction(null);
   };
 
-  const handleUpdateEmailContent = (e) => {
-    const value = e.target.getContent();
-    const field = 'content';
+  const handleUpdateEmailContent = (value) => {
     if (isPreview) {
-      updatePreviewEmailTemplateAction({ id: currentPreview, field, value });
+      updatePreviewItemsAction({
+        [currentPreview]: {
+          ...(previewItem || {}),
+          emailTemplate: {
+            ...(previewItem?.emailTemplate || {}),
+            content: value,
+          },
+        },
+      });
     } else {
-      updateEmailTemplateAction({ field, value });
+      updateCurrentItemAction({ emailTemplate: { ...(item?.emailTemplate || {}), content: value } });
     }
   };
 
   const handleUpdateEmailTitle = (e) => {
     const { value } = e.target;
-    const field = 'title';
     if (isPreview) {
-      updatePreviewEmailTemplateAction({ id: currentPreview, field, value });
+      updatePreviewItemsAction({
+        [currentPreview]: {
+          ...(previewItem || {}),
+          emailTemplate: {
+            ...(previewItem?.emailTemplate || {}),
+            title: value,
+          },
+        },
+      });
     } else {
-      updateEmailTemplateAction({ field, value });
+      updateCurrentItemAction({ emailTemplate: { ...(item?.emailTemplate || {}), title: value } });
     }
   };
 
-  const handleUpdateEmail = (e) => {
-    const { value } = e.target;
-    updatePreviewEmailTemplateAction({ id: currentPreview, field: 'email', value });
+  const handleSaveData = (value) => {
+    // const { contact } = customer;
+    // updatOrderCustomer({
+    //   contact: {
+    //     ...contact,
+    //     psid: value.exId,
+    //   },
+    // });
   };
 
   const handleUpdateFBTemplate = (e) => {
     const { value } = e.target;
-    updateMessageTemplateAction({ field: 'content', value });
+    if (isPreview) {
+      updatePreviewItemsAction({
+        [currentPreview]: {
+          ...(previewItem || {}),
+          messageTemplate: {
+            content: value,
+          },
+        },
+      });
+    } else {
+      updateCurrentItemAction({ messageTemplate: { content: value } });
+    }
   };
 
   const handleChangeTabType = (e) => {
@@ -96,6 +133,7 @@ const Template = ({
 
   const handleSentNotify = () => {
     if (notifyType === 'email') {
+      sendEmailAction();
       // sendEmailNotify(customerEmail);
     } else {
       // sendFBMessageNotify(customer?.contact?.psid);
@@ -103,20 +141,8 @@ const Template = ({
   };
 
   const handlePreview = () => {
-    const orders = lateBookings
-      .filter((b) => b.selected)
-      .map((b, index) => {
-        const { number, customer } = b;
-        const mappedEmail = {
-          title: emailTemplate.title.replace(/#Order/gi, `#${number}`),
-          content: emailTemplate.content.replace(/Customer/gi, customer?.firstName || customer?.lastName || 'Customer'),
-          email: customer?.email || '',
-        };
-        const mappedMessage = { ...messageTemplate };
-        return { ...b, messageTemplate: mappedMessage, emailTemplate: mappedEmail };
-      });
-    updatePreviewOrdersAction(orders[0]?.id || null);
-    setPreviewOrdersAction(mapDataByIds(orders, 'id').items);
+    const orders = lateBookings.filter((b) => b.selected);
+    generateTemplateAction(orders);
   };
 
   const CheckboxOrder = ({ order }) => {
@@ -134,14 +160,19 @@ const Template = ({
 
   const PreviewOrder = ({ order }) => {
     const { number, id } = order;
-    return <div className={`preview_item ${id === currentPreview && 'preview_active'}`} onClick={() => updatePreviewOrdersAction(id)}>{`#${number}`}</div>;
+    return <div className={`preview_item ${id === currentPreview && 'preview_active'}`} onClick={() => setCurrentPreviewIdAction(id)}>{`#${number}`}</div>;
+  };
+
+  const ViewOrder = ({ order }) => {
+    const { number, id } = order;
+    return <div className={`preview_item ${id === currentViewId && 'preview_active'}`} onClick={() => updateCurrentItemAction({ currentViewId: id })}>{`#${number}`}</div>;
   };
 
   return (
     <Modal isOpen={item !== null} toggle={toggle} fade={false} size='xl' className='modal-dialog-centered  modal-no-border'>
       <div className='order_detail__email'>
         <ModalHeader toggle={toggle}>
-          {isPreview ? 'Send Notification' : 'Template Content'}
+          {isView ? 'Sent Content' : isPreview ? 'Send Notification' : 'Template Content'}
           <button type='button' className='modal-close' onClick={toggle}>
             <CloseIcon width='25px' height='25px' />
           </button>
@@ -160,89 +191,121 @@ const Template = ({
           <div className='template__content__wrapper row'>
             <div className='col-lg-2 col-md-4 content_left'>
               <div className='content_title'>Order:</div>
-              {!isPreview && lateBookings.map?.((order, index) => <CheckboxOrder order={order} key={`CheckboxOrder__${index}`} />)}
-              {isPreview && previewOrderItems.map?.((order, index) => <PreviewOrder order={order} key={`PreviewOrder__${index}`} />)}
+              {!isView && !isPreview && lateBookings.map?.((order, index) => <CheckboxOrder order={order} key={`CheckboxOrder__${index}`} />)}
+              {!isView && isPreview && previewOrderItems.map?.((order, index) => <PreviewOrder order={order} key={`PreviewOrder__${index}`} />)}
+              {isView && lateBookings.map?.((order, index) => <ViewOrder order={order} key={`ViewOrder__${index}`} />)}
             </div>
             <div className='col-lg-10 col-md-8 content_right'>
-              <div className='content_title'>{isPreview ? 'Content:' : 'Template Content:'}</div>
-              <div className={`template__content ${notifyType !== 'email' ? 'd-none' : ''}`}>
-                <div>
-                  {isPreview && (
-                    <div className='input-group clipboad mb-3'>
-                      <div className='input-group-append'>
-                        <span className='input-group-text'>Email: </span>
+              <div className='content_title'>{isView ? 'Sent Content:' : isPreview ? 'Content:' : 'Template Content:'}</div>
+              {generatingTemplate ? (
+                <div style={{ minHeight: '100px' }} className='order_detail__customer box d-flex align-items-center justify-content-center'>
+                  <Spinner />
+                </div>
+              ) : (
+                <React.Fragment>
+                  <div className={`template__content ${notifyType !== 'email' ? 'd-none' : ''}`}>
+                    <div>
+                      {(isPreview || isView) && (
+                        <div className='input-group clipboad mb-3'>
+                          <div className='input-group-append'>
+                            <span className='input-group-text'>Email: </span>
+                          </div>
+                          <input
+                            type='text'
+                            className='form-control clipboad__input'
+                            value={isView ? sentEmail.customerEmail : previewItem?.emailTemplate?.email || ''}
+                            disabled={true}
+                            placeholder='Customer Email'
+                          />
+                          <CopyToClipboard text={isView ? sentEmail.customerEmail : previewItem?.emailTemplate?.email || ''} onCopy={() => toast.dark('Copied')}>
+                            <div className='input-group-append clipboad__input'>
+                              <span className='input-group-text'>Copy</span>
+                            </div>
+                          </CopyToClipboard>
+                        </div>
+                      )}
+                      <div className='input-group clipboad mb-3'>
+                        <div className='input-group-append'>
+                          <span className='input-group-text '>Title: </span>
+                        </div>
+                        <input
+                          type='text'
+                          className='form-control clipboad__input email-title'
+                          value={isView ? sentEmail.title : isPreview ? previewItem?.emailTemplate?.title || '' : emailTemplate.title || ''}
+                          onChange={handleUpdateEmailTitle}
+                          placeholder='Email Title'
+                          disabled={isView}
+                        />
+                        {(isPreview || isView) && (
+                          <CopyToClipboard text={isView ? sentEmail.title : previewItem?.emailTemplate?.title || ''} onCopy={() => toast.dark('Copied')}>
+                            <div className='input-group-append clipboad__input'>
+                              <span className='input-group-text'>Copy</span>
+                            </div>
+                          </CopyToClipboard>
+                        )}
                       </div>
-                      <input type='text' className='form-control clipboad__input' value={previewItem?.emailTemplate?.email || ''} onChange={handleUpdateEmail} placeholder='Customer Email' />
-                      <CopyToClipboard text={previewItem?.emailTemplate?.email || ''} onCopy={() => toast.dark('Copied')}>
-                        <div className='input-group-append clipboad__input'>
-                          <span className='input-group-text'>Copy</span>
-                        </div>
-                      </CopyToClipboard>
+                      <Editor
+                        apiKey={tinymceInitValues.apiKey}
+                        value={isView ? sentEmail.content : isPreview ? previewItem?.emailTemplate?.content || '' : emailTemplate.content || ''}
+                        init={tinymceInitValues}
+                        onEditorChange={handleUpdateEmailContent}
+                        disabled={isView}
+                      />
+                      {/* {isPreview ? (
+
+                      ) : (
+                        <Editor key='This2' apiKey={tinymceInitValues.apiKey} value={emailTemplate.content || ''} init={tinymceInitValues} onEditorChange={handleUpdateEmailContent} />
+                      )} */}
                     </div>
-                  )}
-                  <div className='input-group clipboad mb-3'>
-                    <div className='input-group-append'>
-                      <span className='input-group-text'>Title: </span>
-                    </div>
-                    <input
-                      type='text'
-                      className='form-control clipboad__input'
-                      value={isPreview ? previewItem?.emailTemplate?.title || '' : emailTemplate.title || ''}
-                      onChange={handleUpdateEmailTitle}
-                      placeholder='Email Title'
-                    />
-                    {isPreview && (
-                      <CopyToClipboard text={previewItem?.emailTemplate?.title || ''} onCopy={() => toast.dark('Copied')}>
-                        <div className='input-group-append clipboad__input'>
-                          <span className='input-group-text'>Copy</span>
-                        </div>
-                      </CopyToClipboard>
-                    )}
                   </div>
 
-                  <Editor
-                    apiKey={tinymceInitValues.apiKey}
-                    initialValue={emailTemplate.content || ''}
-                    value={isPreview ? previewItem?.emailTemplate?.content || '' : emailTemplate.content || ''}
-                    init={tinymceInitValues}
-                    onChange={handleUpdateEmailContent}
-                  />
-                </div>
-              </div>
-
-              <div className={`template__content ${notifyType === 'email' ? 'd-none' : ''}`}>
-                <div className='template__message'>
-                  {/* <CustomersUpdateContact id={customer?.id} login={customer?.login} psid={customer?.contact?.psid} onSaveData={handleSaveCustomerContact} /> */}
-
-                  <div className='content mb-3'>
-                    <textarea className='form-control' value={messageTemplate.content || ''} onChange={handleUpdateFBTemplate} cols='30' rows='10' />
+                  <div className={`template__content ${notifyType === 'email' ? 'd-none' : ''}`}>
+                    <div className='template__message'>
+                      {isPreview && <ContactPopover psid={previewItem?.customer?.psid} onSaveData={handleSaveData} />}
+                      <div className='content mb-3'>
+                        <textarea
+                          className='form-control'
+                          value={isPreview ? previewItem?.messageTemplate?.content || '' : messageTemplate.content || ''}
+                          onChange={handleUpdateFBTemplate}
+                          cols='30'
+                          rows='10'
+                        />
+                      </div>
+                    </div>
                   </div>
-                  {/* <div className='title mb-3'>Attachments</div>
-                  <div className='photos'>
-                    <ImageGallery images={getListImageUrl(messageTemplate.attachments || [])} alt={'Late notification attachments'} caption={'Late notification attachments'} />
-                  </div> */}
-                </div>
-              </div>
+                </React.Fragment>
+              )}
             </div>
           </div>
         </ModalBody>
         <ModalFooter>
-          {isPreview && (
+          {/* {isPreview && (
             <Button
               color='secondary'
               onClick={() => {
                 setPreviewOrdersAction(null);
-                updatePreviewOrdersAction(null);
+                setCurrentPreviewIdAction(null);
               }}>
               Back
             </Button>
+          )} */}
+          <Button
+            color='secondary'
+            onClick={
+              isPreview
+                ? () => {
+                    setPreviewOrdersAction(null);
+                    setCurrentPreviewIdAction(null);
+                  }
+                : toggle
+            }>
+            {isPreview ? 'Back' : 'Cancel'}
+          </Button>
+          {!isView && (
+            <Button color='primary' type='submit' onClick={isPreview ? handleSentNotify : handlePreview} disabled={lateBookings.filter((item) => item.selected).length === 0} style={{ width: 210 }}>
+              {isPreview ? 'Send' : 'Preview'}
+            </Button>
           )}
-          <Button color='secondary' onClick={toggle}>
-            Cancel
-          </Button>
-          <Button color='primary' type='submit' onClick={isPreview ? handleSentNotify : handlePreview} disabled={lateBookings.filter((item) => item.selected).length === 0} style={{ width: 210 }}>
-            {isPreview ? 'Send' : 'Preview'}
-          </Button>
         </ModalFooter>
       </div>
     </Modal>
@@ -253,22 +316,12 @@ const mapStateToProps = ({
   order,
   lateNotification: {
     listing: {
-      data: { currentItem, template, previewOrderItems, currentPreview },
+      data: { currentItem, template, previewOrderItems, currentPreview, sentEmail },
+      ui: { generatingTemplate },
     },
   },
 }) => {
-  // const mappedItems =
   return {
-    status: order.status,
-    isShowEmail: orderDetail.ui.isShowEmail,
-    loadingEmail: orderDetail.ui.loadingEmail,
-    selectedEmailTemplate: orderDetail.data.selectedEmailTemplate,
-    email: orderDetail.data.email,
-    emailTitle: orderDetail.data.emailTitle,
-    fbTemplate: orderDetail.data.fbTemplate,
-    fbTemplateAttachments: orderDetail.data.fbTemplateAttachments,
-    customer: orderDetail.data.customer,
-    currentWorkLogIndex: orderDetail.data.currentWorkLogIndex,
     item: currentItem,
     messageTemplate: currentItem?.messageTemplate,
     emailTemplate: currentItem?.emailTemplate,
@@ -276,18 +329,24 @@ const mapStateToProps = ({
     previewItem: previewOrderItems?.[currentPreview] || null,
     previewOrderItems: Object.values(previewOrderItems || {}),
     currentPreview,
+    currentViewId: currentItem?.currentViewId,
     isPreview: previewOrderItems !== null,
+    isView: currentItem?.action === 'VIEW',
+    sentEmail,
+    generatingTemplate,
   };
 };
 
 const mapDispatchToProps = {
   updateCurrentItemOrderSelectionAction,
-  updateCurrentItemAction,
-  updateEmailTemplateAction,
-  updateMessageTemplateAction,
-  updatePreviewOrdersAction,
+  setCurrentItemAction,
   setPreviewOrdersAction,
-  updatePreviewEmailTemplateAction,
+  setCurrentPreviewIdAction,
+  generateTemplateAction,
+  sendEmailAction,
+  updateCurrentItemAction,
+  updatePreviewItemsAction,
+  viewSentContentAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Template);

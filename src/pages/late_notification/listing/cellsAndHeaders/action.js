@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateCurrentItemAction } from '../action';
+import { setCurrentItemAction } from '../action';
 
 import Button from 'components/common/button';
 
-const ActionCell = ({ item, updateCurrentItemAction }) => {
-  const { sendDate } = item;
+const ActionCell = ({ item, setCurrentItemAction }) => {
+  const { sentDate } = item;
   const handleClick = (value) => {
-    updateCurrentItemAction(item);
+    setCurrentItemAction(item);
   };
-  return sendDate ? null : (
+  return sentDate || !item?.lateBookings?.length ? null : (
     <Button className='btn-create ml-auto pl-4 pr-4' color='primary' onClick={handleClick}>
       Send Notification
     </Button>
@@ -33,6 +33,6 @@ const mapStateToProps = (
   };
 };
 
-const mapDispatchToProps = { updateCurrentItemAction };
+const mapDispatchToProps = { setCurrentItemAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActionCell);

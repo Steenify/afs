@@ -1,8 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-const ContentCell = ({ isSend }) => {
-  return isSend ? <div className='content sent_content'>Sent Content</div> : <div className='content'>N/A</div>;
+import { setCurrentItemAction } from '../action';
+const ContentCell = ({ isSend, setCurrentItemAction, item }) => {
+  return isSend ? (
+    <div
+      className='content sent_content'
+      onClick={() => {
+        item?.lateBookings?.length && setCurrentItemAction({ ...item, action: 'VIEW', currentViewId: item.lateBookings[0]?.id });
+      }}>
+      Sent Content
+    </div>
+  ) : (
+    <div className='content'>N/A</div>
+  );
 };
 
 const mapStateToProps = (
@@ -17,13 +28,14 @@ const mapStateToProps = (
 ) => {
   const { data } = ownProps;
   const item = items[data] || {};
-  const sendDate = item?.sendDate || null;
+  const sentDate = item?.sentDate || null;
 
   return {
-    isSend: moment(sendDate).isValid(),
+    isSend: moment(sentDate).isValid(),
+    item,
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { setCurrentItemAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContentCell);

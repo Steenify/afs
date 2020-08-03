@@ -1,27 +1,48 @@
 import update from 'react-addons-update';
 import { getTotalPage, mapDataByIds, mapDataList } from 'utils';
 
-import { initialState, ACTIONS, GET_LIST, GET_TEMPLATE, desktopSize, mobileSize } from './const';
+import { initialState, GET_MESSAGE_TEMPLATE, ACTIONS, GET_LIST, GET_EMAIL_TEMPLATE, desktopSize, mobileSize, GENERATE_TEMPLATE, SEND_EMAIL, VIEW_SENT_CONTENT } from './const';
 
 const {
   UPDATE_FILTER_ACTION,
   UPDATE_ITEM_ACTION,
   UPDATE_ALL_SELECTION,
-  UPDATE_CURRENT_ITEM_ACTION,
+  SET_CURRENT_ITEM_ACTION,
   UPDATE_CURRENT_ITEM_ORDER_SELECTION_ACTION,
-  UPDATE_EMAIL_TEMPLATE_ACTION,
-  UPDATE_MESSAGE_TEMPLATE_ACTION,
   UPDATE_PREVIEW_ORDERS_ACTION,
   SET_PREVIEW_ORDERS_ACTION,
-  UPDATE_PREVIEW_EMAIL_TEMPLATE_ACTION,
+
+  UPDATE_CURRENT_ITEM_ACTION,
+  UPDATE_PREVIEW_ITEMS_ACTION,
 } = ACTIONS;
 
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case UPDATE_FILTER_ACTION: {
-      return update(state, { filterData: { $merge: payload } });
+      return update(state, { filterData: { $merge: payload || {} } });
     }
+    case SEND_EMAIL.PENDING:
+    case VIEW_SENT_CONTENT.PENDING:
+    case GENERATE_TEMPLATE.PENDING: {
+      return update(state, {
+        ui: {
+          generatingTemplate: { $set: true },
+        },
+      });
+    }
+    case SEND_EMAIL.ERROR:
+    case VIEW_SENT_CONTENT.ERROR:
+    case GENERATE_TEMPLATE.SUCCESS:
+    case GENERATE_TEMPLATE.ERROR: {
+      return update(state, {
+        ui: {
+          generatingTemplate: { $set: false },
+        },
+      });
+    }
+    case GET_EMAIL_TEMPLATE.PENDING:
+    case GET_MESSAGE_TEMPLATE.PENDING:
     case GET_LIST.PENDING: {
       return update(state, {
         ui: {
@@ -29,8 +50,9 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
-    case GET_TEMPLATE.PENDING:
-    case GET_TEMPLATE.ERROR:
+
+    case GET_EMAIL_TEMPLATE.ERROR:
+    case GET_MESSAGE_TEMPLATE.ERROR:
     case GET_LIST.ERROR: {
       return update(state, {
         ui: {
@@ -55,13 +77,18 @@ const reducer = (state = initialState, action) => {
       });
     }
 
-    case GET_TEMPLATE.SUCCESS: {
+    case GET_EMAIL_TEMPLATE.SUCCESS: {
       return update(state, {
-        ui: {
-          loading: { $set: false },
-        },
         data: {
           emailTemplate: { $set: payload },
+        },
+      });
+    }
+
+    case GET_MESSAGE_TEMPLATE.SUCCESS: {
+      return update(state, {
+        data: {
+          messageTemplate: { $set: payload },
         },
       });
     }
@@ -91,53 +118,6 @@ const reducer = (state = initialState, action) => {
                 selected: {
                   $set: value,
                 },
-              },
-            },
-          },
-        },
-      });
-    }
-
-    case UPDATE_PREVIEW_EMAIL_TEMPLATE_ACTION: {
-      const { id, field, value } = payload;
-      return update(state, {
-        data: {
-          previewOrderItems: {
-            [id]: {
-              emailTemplate: {
-                [field]: {
-                  $set: value,
-                },
-              },
-            },
-          },
-        },
-      });
-    }
-
-    case UPDATE_EMAIL_TEMPLATE_ACTION: {
-      const { field, value } = payload;
-      return update(state, {
-        data: {
-          currentItem: {
-            emailTemplate: {
-              [field]: {
-                $set: value,
-              },
-            },
-          },
-        },
-      });
-    }
-
-    case UPDATE_MESSAGE_TEMPLATE_ACTION: {
-      const { field, value } = payload;
-      return update(state, {
-        data: {
-          currentItem: {
-            messageTemplate: {
-              [field]: {
-                $set: value,
               },
             },
           },
@@ -178,7 +158,7 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
-    case UPDATE_CURRENT_ITEM_ACTION: {
+    case SET_CURRENT_ITEM_ACTION: {
       const newItem =
         payload === null
           ? payload
@@ -191,6 +171,60 @@ const reducer = (state = initialState, action) => {
           currentItem: {
             $set: newItem,
           },
+        },
+      });
+    }
+
+    case UPDATE_CURRENT_ITEM_ACTION: {
+      return update(state, {
+        data: {
+          currentItem: state?.data?.currentItem
+            ? {
+                $merge: payload || {},
+              }
+            : { $set: null },
+        },
+      });
+    }
+
+    case UPDATE_PREVIEW_ITEMS_ACTION: {
+      return update(state, {
+        data: {
+          previewOrderItems: state?.data?.previewOrderItems
+            ? {
+                $merge: payload || {},
+              }
+            : { $set: null },
+        },
+      });
+    }
+
+    case SEND_EMAIL.SUCCESS: {
+      const current = state?.data?.currentItem || {};
+      const sentDate = payload?.[0];
+      return update(state, {
+        ui: {
+          generatingTemplate: { $set: false },
+        },
+        data: {
+          items: {
+            [current?.id || 0]: {
+              sentDate: { $set: sentDate },
+            },
+          },
+          currentItem: { $set: null },
+          previewOrderItems: { $set: null },
+          currentPreview: { $set: null },
+        },
+      });
+    }
+    case VIEW_SENT_CONTENT.SUCCESS: {
+      return update(state, {
+        ui: {
+          generatingTemplate: { $set: false },
+        },
+        data: {
+          sentEmail: { $set: payload },
         },
       });
     }

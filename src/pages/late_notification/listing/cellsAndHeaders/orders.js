@@ -1,14 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 const ContentCell = ({ orders }) => {
   return (
     <div>
       {orders.map(({ id = 0, number = '', code = '' }, index) => (
-        <React.Fragment>
+        <React.Fragment key={`order__number_${index}`}>
           <Link to={`/order/${code}`}>
-            <span className='order_number' key={`order__number_${index}`}>{`#${number}`}</span>
+            <span className='order_number'>{`#${number}`}</span>
           </Link>
           {index !== orders.length - 1 && <span>, </span>}
         </React.Fragment>
