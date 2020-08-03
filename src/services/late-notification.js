@@ -39,7 +39,6 @@ export const sendLateNotificationEmailService = (id = 0, items = []) =>
   request({
     url: SEND_EMAIL(id),
     method: 'POST',
-    host: 'http://864d0408a8cd.ngrok.io',
     data: {
       request: items,
     },
@@ -48,5 +47,6 @@ export const sendLateNotificationEmailService = (id = 0, items = []) =>
 export const viewLateNotificationSentContentService = (id = 0, bookingId = 0) =>
   request({
     url: VIEW_SENT_CONTENT(id, bookingId),
+    host: 'http://864d0408a8cd.ngrok.io',
     method: 'POST',
   });
