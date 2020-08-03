@@ -37,7 +37,6 @@ export const getArtworksAction = (param) => (dispatch) => {
     dispatch({ type: GET_ARTWORK.PENDING });
   };
   const onSuccess = (data, headers) => {
-    console.log('onSuccess -> data', data);
     dispatch({ type: GET_ARTWORK.SUCCESS, payload: { data, headers } });
   };
   const onError = (error) => {
