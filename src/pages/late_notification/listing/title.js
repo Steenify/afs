@@ -5,10 +5,10 @@ import { WEB_ROUTES } from 'config';
 
 const GalleryTitle = ({ onClickUpload = () => {} }) => {
   return (
-    <PageTitle title={WEB_ROUTES.LATE_NOTIFICATION.title} className='mb-0 mr-3' containerClassName='justify-content-between'>
-      <Button className='btn-create ml-auto pl-4 pr-4' color='primary' onClick={onClickUpload}>
+    <PageTitle title={WEB_ROUTES.LATE_NOTIFICATION.title} className='mb-0 mr-3 mb-2' containerClassName='justify-content-between'>
+      {/* <Button className='btn-create ml-auto pl-4 pr-4' color='primary' onClick={onClickUpload}>
         History
-      </Button>
+      </Button> */}
     </PageTitle>
   );
 };

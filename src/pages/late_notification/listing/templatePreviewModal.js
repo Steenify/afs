@@ -20,7 +20,6 @@ import {
   sendEmailAction,
   viewSentContentAction,
 } from './action';
-import useKeyPress from 'utils/useKeyPress';
 import ContactPopover from 'components/layout/contactPopover/index.js';
 
 const Template = ({
@@ -134,9 +133,6 @@ const Template = ({
   const handleSentNotify = () => {
     if (notifyType === 'email') {
       sendEmailAction();
-      // sendEmailNotify(customerEmail);
-    } else {
-      // sendFBMessageNotify(customer?.contact?.psid);
     }
   };
 
@@ -251,11 +247,6 @@ const Template = ({
                         onEditorChange={handleUpdateEmailContent}
                         disabled={isView}
                       />
-                      {/* {isPreview ? (
-
-                      ) : (
-                        <Editor key='This2' apiKey={tinymceInitValues.apiKey} value={emailTemplate.content || ''} init={tinymceInitValues} onEditorChange={handleUpdateEmailContent} />
-                      )} */}
                     </div>
                   </div>
 
@@ -279,16 +270,6 @@ const Template = ({
           </div>
         </ModalBody>
         <ModalFooter>
-          {/* {isPreview && (
-            <Button
-              color='secondary'
-              onClick={() => {
-                setPreviewOrdersAction(null);
-                setCurrentPreviewIdAction(null);
-              }}>
-              Back
-            </Button>
-          )} */}
           <Button
             color='secondary'
             onClick={

@@ -1,6 +1,5 @@
 import { isMobile, actionCreator } from 'utils';
 
-//TODO: change it to 100
 export const desktopSize = 100;
 export const mobileSize = 100;
 
