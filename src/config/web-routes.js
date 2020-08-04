@@ -94,6 +94,11 @@ const WEB_ROUTES = {
     title: 'Artists Detail',
     permission: 'ACCESS_ARTIST',
   },
+  ARTISTS_DETAIL_FORM: {
+    path: '/artists/:login/edit',
+    title: 'Artists Detail',
+    permission: 'ACCESS_ARTIST',
+  },
   CS: {
     path: '/cs',
     title: 'Customer Service',

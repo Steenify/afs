@@ -188,9 +188,7 @@ class DropBox extends Component {
     };
 
     const onUploadProgress = (progressEvent) => {
-      const percentCompleted = Math.round(
-        (progressEvent.loaded * 100) / progressEvent.total,
-      );
+      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 
       const { fileList } = this.state;
       const fileIndex = findIndex(fileList, (item) => item.uui === uui);
@@ -238,19 +236,10 @@ class DropBox extends Component {
             <div className='upload-file__items'>
               {fileList.length &&
                 fileList.map((item, index) => (
-                  <div
-                    className='file-item'
-                    key={`image_upload__${
-                      item.file.name
-                    }__${index.toString()}`}>
-                    {!item.isUploaded && (
-                      <div className='file-item__loading'>{item.percent} %</div>
-                    )}
+                  <div className='file-item' key={`image_upload__${item.file.name}__${index.toString()}`}>
+                    {!item.isUploaded && <div className='file-item__loading'>{item.percent} %</div>}
                     <ImageFile className='file-item__img' file={item.file} />
-                    <button
-                      type='button'
-                      className='file-item__delete'
-                      onClick={() => this.onDeleteFile(index)}>
+                    <button type='button' className='file-item__delete' onClick={() => this.onDeleteFile(index)}>
                       <Close className='icon' />
                     </button>
                   </div>
@@ -259,18 +248,14 @@ class DropBox extends Component {
           </div>
         </div>
         <div className={`upload-file ${className || ''}`} ref={this.dropRef}>
-          <label
-            htmlFor={`file-upload__${id || ''}`}
-            className='upload-file__form'>
+          <label htmlFor={`file-upload__${id || ''}`} className='upload-file__form'>
             <div className='content'>
               <span className='custom-file-upload'>
                 <div className='icon'>
                   <Upload />
                 </div>
               </span>
-              <span className='custom-file-upload'>
-                Drag & Drop or Click to Upload
-              </span>
+              <span className='custom-file-upload'>Drag & Drop or Click to Upload</span>
               <input
                 multiple
                 type='file'
@@ -278,20 +263,13 @@ class DropBox extends Component {
                 id={`file-upload__${id || ''}`}
                 className='sr-only'
                 disabled={disabled || false}
-                accept={
-                  'image/*,image/vnd.adobe.photoshop,application/x-photoshop,application/photoshop,application/psd,image/psd'
-                }
+                accept={'image/*,image/vnd.adobe.photoshop,application/x-photoshop,application/photoshop,application/psd,image/psd'}
                 onChange={this.handleChangeFiles}
               />
             </div>
           </label>
         </div>
-        <input
-          type='text'
-          placeholder='Paste your image here'
-          className='form-control upload-file__input'
-          ref={this.pasteRef}
-        />
+        <input type='text' placeholder='Paste your image here' className='form-control upload-file__input' ref={this.pasteRef} />
       </>
     );
   }

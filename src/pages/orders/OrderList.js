@@ -18,7 +18,7 @@ class OrderList extends Component {
     const { getOrders } = this.props;
     setTimeout(() => {
       getOrders({});
-    }, 1000);
+    }, 100);
   }
 
   gotoPage = (page) => {
@@ -50,7 +50,4 @@ const mapDispatchToProps = {
   updateOrderFilters: updateOrderFiltersAcion,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(OrderList));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderList));

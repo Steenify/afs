@@ -17,6 +17,7 @@ export const ORDER_ACTIONS = {
   UPDATE_ALL_SELECTED_ROW_ACTION: 'UPDATE_ALL_SELECTED_ROW_ACTION',
   UPDATE_ORDER_ITEMS_ACTION: 'UPDATE_ORDER_ITEMS_ACTION',
   UPDATE_ORDER_FILTER: 'UPDATE_ORDER_FILTER',
+  UPDATE_ORDER_FILTER_BY_ARTIST: 'UPDATE_ORDER_FILTER_BY_ARTIST',
 };
 
 export const updateOrderItemsAcion = (payload) => (dispatch) => {
@@ -33,6 +34,13 @@ export const updateOrderFiltersAcion = (payload) => (dispatch) => {
   });
 };
 
+export const updateOrderFilterByArtistAcion = (payload) => (dispatch) => {
+  dispatch({
+    type: ORDER_ACTIONS.UPDATE_ORDER_FILTER_BY_ARTIST,
+    payload,
+  });
+};
+
 export const updateAllOrderSelectedAction = (payload) => (dispatch) => {
   dispatch({
     type: ORDER_ACTIONS.UPDATE_ALL_SELECTED_ROW_ACTION,
@@ -41,16 +49,17 @@ export const updateAllOrderSelectedAction = (payload) => (dispatch) => {
 };
 
 export const GET_ORDER_ACTION = actionCreator('GET_ORDER_ACTION');
-export const getOrdersAction = (params) => (dispatch, getState) => {
+export const getOrdersAction = (params, byArtist) => (dispatch, getState) => {
   const state = getState();
-  const { filter } = state.order;
+  const { filter, filterByArtist } = state.order;
+  const finalFilter = byArtist ? filterByArtist : filter;
 
-  const currSize = isMobile() ? filter.sizeMobile : filter.size;
+  const currSize = isMobile() ? finalFilter.sizeMobile : finalFilter.size;
 
   const searchParams = buildSearchParam({
-    ...filter,
+    ...finalFilter,
     ...params,
-    status: filter.selectedStatus,
+    status: finalFilter.selectedStatus,
     size: currSize,
   });
 
@@ -100,9 +109,7 @@ const buildSearchParam = (input = {}) => {
   return params;
 };
 
-export const UPDATE_ORDER_BUDGET_ACTION = actionCreator(
-  'UPDATE_ORDER_BUDGET_ACTION',
-);
+export const UPDATE_ORDER_BUDGET_ACTION = actionCreator('UPDATE_ORDER_BUDGET_ACTION');
 export const updateOrdersBudgetAction = (payload, id, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
@@ -114,10 +121,7 @@ export const updateOrdersBudgetAction = (payload, id, cb) => (dispatch) => {
     cb && cb();
   };
   const onError = (error) => {
-    console.log(
-      'updateOrdersAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('updateOrdersAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPDATE_ORDER_BUDGET_ACTION.ERROR,
       payload: error.response,
@@ -132,12 +136,8 @@ export const updateOrdersBudgetAction = (payload, id, cb) => (dispatch) => {
   });
 };
 
-export const GET_ARTISTS_ASSIGN_ACTION = actionCreator(
-  'GET_ARTISTS_ASSIGN_ACTION',
-);
-export const getArtistsAssignAction = (params = { size: 100 }) => (
-  dispatch,
-) => {
+export const GET_ARTISTS_ASSIGN_ACTION = actionCreator('GET_ARTISTS_ASSIGN_ACTION');
+export const getArtistsAssignAction = (params = { size: 100 }) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_ARTISTS_ASSIGN_ACTION.PENDING,
@@ -147,10 +147,7 @@ export const getArtistsAssignAction = (params = { size: 100 }) => (
     dispatch({ type: GET_ARTISTS_ASSIGN_ACTION.SUCCESS, payload: data });
   };
   const onError = (error) => {
-    console.log(
-      'GET_ARTISTS_ASSIGN_ACTION => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('GET_ARTISTS_ASSIGN_ACTION => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_ARTISTS_ASSIGN_ACTION.ERROR,
       payload: error.response,
@@ -165,9 +162,7 @@ export const getArtistsAssignAction = (params = { size: 100 }) => (
   });
 };
 
-export const UPDATE_ORDER_ARTIST_ACTION = actionCreator(
-  'UPDATE_ORDER_ARTIST_ACTION',
-);
+export const UPDATE_ORDER_ARTIST_ACTION = actionCreator('UPDATE_ORDER_ARTIST_ACTION');
 export const assignOrdersArtistAction = (payload, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
@@ -179,10 +174,7 @@ export const assignOrdersArtistAction = (payload, cb) => (dispatch) => {
     cb && cb();
   };
   const onError = (error) => {
-    console.log(
-      'assignOrdersArtistAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('assignOrdersArtistAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPDATE_ORDER_ARTIST_ACTION.ERROR,
       payload: error.response,
@@ -208,10 +200,7 @@ export const getOrderStatusAction = (payload) => (dispatch) => {
     dispatch({ type: GET_ORDER_STATUS_ACTION.SUCCESS, payload: data });
   };
   const onError = (error) => {
-    console.log(
-      'getOrderStatusAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('getOrderStatusAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_ORDER_STATUS_ACTION.ERROR,
       payload: error.response,
@@ -226,9 +215,7 @@ export const getOrderStatusAction = (payload) => (dispatch) => {
   });
 };
 
-export const UPDATE_ORDER_PAYMENT_STATUS_ACTION = actionCreator(
-  'UPDATE_ORDER_PAYMENT_STATUS_ACTION',
-);
+export const UPDATE_ORDER_PAYMENT_STATUS_ACTION = actionCreator('UPDATE_ORDER_PAYMENT_STATUS_ACTION');
 export const updateOrderPaymentStatusAction = (payload, id) => (dispatch) => {
   const onPending = () => {
     dispatch({
@@ -242,10 +229,7 @@ export const updateOrderPaymentStatusAction = (payload, id) => (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log(
-      'updateOrderPaymentStatusAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('updateOrderPaymentStatusAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPDATE_ORDER_PAYMENT_STATUS_ACTION.ERROR,
       payload: error.response,
@@ -260,9 +244,7 @@ export const updateOrderPaymentStatusAction = (payload, id) => (dispatch) => {
   });
 };
 
-export const UPDATE_ORDER_STATUS_DONE_BULK_ACTION = actionCreator(
-  'UPDATE_ORDER_STATUS_DONE_BULK_ACTION',
-);
+export const UPDATE_ORDER_STATUS_DONE_BULK_ACTION = actionCreator('UPDATE_ORDER_STATUS_DONE_BULK_ACTION');
 export const updateOrderStatusDoneBulkAction = (payload, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
@@ -279,10 +261,7 @@ export const updateOrderStatusDoneBulkAction = (payload, cb) => (dispatch) => {
     }
   };
   const onError = (error) => {
-    console.log(
-      'updateOrderStatusDoneBulkAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('updateOrderStatusDoneBulkAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPDATE_ORDER_STATUS_DONE_BULK_ACTION.ERROR,
       payload: error.response,
@@ -297,9 +276,7 @@ export const updateOrderStatusDoneBulkAction = (payload, cb) => (dispatch) => {
   });
 };
 
-export const GET_ORDER_COUNT_BY_STATUS_ACTION = actionCreator(
-  'GET_ORDER_COUNT_BY_STATUS_ACTION',
-);
+export const GET_ORDER_COUNT_BY_STATUS_ACTION = actionCreator('GET_ORDER_COUNT_BY_STATUS_ACTION');
 export const getOrderCountByStatusAction = () => (dispatch) => {
   const onPending = () => {
     dispatch({
@@ -313,10 +290,7 @@ export const getOrderCountByStatusAction = () => (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log(
-      'getOrderCountByStatusAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('getOrderCountByStatusAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_ORDER_COUNT_BY_STATUS_ACTION.ERROR,
       payload: error.response,
@@ -331,12 +305,8 @@ export const getOrderCountByStatusAction = () => (dispatch) => {
   });
 };
 
-export const UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION = actionCreator(
-  'UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION',
-);
-export const updateOrderPaymentStatusBulkAction = (status, payload, cb) => (
-  dispatch,
-) => {
+export const UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION = actionCreator('UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION');
+export const updateOrderPaymentStatusBulkAction = (status, payload, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.PENDING,
@@ -352,10 +322,7 @@ export const updateOrderPaymentStatusBulkAction = (status, payload, cb) => (
     }
   };
   const onError = (error) => {
-    console.log(
-      'updateOrderPaymentStatusBulkAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('updateOrderPaymentStatusBulkAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPDATE_ORDER_PAYMENT_STATUS_BULK_ACTION.ERROR,
       payload: error.response,
@@ -370,9 +337,7 @@ export const updateOrderPaymentStatusBulkAction = (status, payload, cb) => (
   });
 };
 
-export const UPDATE_ORDER_PAYOUTS_BULK_ACTION = actionCreator(
-  'UPDATE_ORDER_PAYOUTS_BULK_ACTION',
-);
+export const UPDATE_ORDER_PAYOUTS_BULK_ACTION = actionCreator('UPDATE_ORDER_PAYOUTS_BULK_ACTION');
 export const createOrderPayoutsBulkAction = (payload, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
@@ -387,10 +352,7 @@ export const createOrderPayoutsBulkAction = (payload, cb) => (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log(
-      'createOrderPayoutsBulkAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('createOrderPayoutsBulkAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: UPDATE_ORDER_PAYOUTS_BULK_ACTION.ERROR,
       payload: error.response,

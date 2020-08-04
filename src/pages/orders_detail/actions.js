@@ -644,7 +644,7 @@ export const sendFBMessageNotifyAction = (psid) => (dispatch, getState) => {
         activityType: 'NOTIFIED_CUSTOMER',
         actor,
         lastActionDate: new Date(),
-        notificationChannel: 'FACEBOOK',
+        notificationChannel: 'MESSENGER',
       },
     ];
     dispatch({
@@ -664,9 +664,10 @@ export const sendFBMessageNotifyAction = (psid) => (dispatch, getState) => {
   };
 
   const { data } = getState().orderDetail;
-  const { fbTemplate, order } = data;
+  const { fbTemplate, order, fbTemplateAttachments } = data;
   const payload = {
     content: fbTemplate,
+    attachments: fbTemplateAttachments || [],
     psid: psid || '',
   };
   actionTryCatchCreator({

@@ -11,7 +11,7 @@ import Tags from '../gallery_listing/tags';
 import { getArtworkDetailAction } from './action';
 
 import './style.scss';
-import { avatarGenerator } from 'utils';
+// import { avatarGenerator } from 'utils';
 
 const GalleryDetail = (props) => {
   const {
@@ -26,15 +26,15 @@ const GalleryDetail = (props) => {
     getArtworkDetailAction,
   } = props;
 
-  console.log(gallery);
+  const { id } = match.params;
 
   useEffect(() => {
-    if (!match.params?.id) {
+    if (!id) {
       history.goBack();
+    } else {
+      getArtworkDetailAction(id);
     }
-
-    getArtworkDetailAction(match.params?.id);
-  }, []);
+  }, [id, history, getArtworkDetailAction]);
 
   return (
     <Layout documentTitle={WEB_ROUTES.GALLERY_DETAIL.title} container fluid onGoBack={() => history.goBack()}>

@@ -79,4 +79,182 @@
 			}
 		}
 	}
+
+	&__payout {
+		.payout {
+			&__item {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 10px;
+
+				&.order {
+					.number {
+						font-style: normal;
+						font-weight: 500;
+						font-size: 16px;
+						line-height: 22px;
+						letter-spacing: 0.3px;
+						color: #637381;
+						display: inline-block;
+						margin-right: 5px;
+					}
+
+					.name {
+						display: inline-block;
+						font-size: 15px;
+						line-height: 22px;
+						letter-spacing: 0.28125px;
+						color: #9ea0a5;
+						margin-right: 5px;
+					}
+				}
+
+				&.note,
+				&.evidence {
+					align-items: flex-start;
+					margin-bottom: 20px;
+
+					.left {
+						width: 100px;
+					}
+
+					.right {
+						flex: 1;
+					}
+				}
+
+				.money {
+					font-weight: 600;
+					font-size: 16px;
+					line-height: 22px;
+					text-align: right;
+					letter-spacing: 0.3px;
+					color: #141414;
+				}
+			}
+
+			&__extra {
+				background: #fafafa;
+				border: 1px solid #dbdee0;
+				box-sizing: border-box;
+				border-radius: 3px;
+				height: 40px;
+				width: 124px;
+			}
+
+			&__divider {
+				height: 1px;
+				background: #f2f4f5;
+				width: 100%;
+				margin-top: 20px;
+				margin-bottom: 20px;
+			}
+
+			&__label {
+				font-weight: 500;
+				font-size: 16px;
+				line-height: 22px;
+				letter-spacing: 0.3px;
+				color: #141414;
+			}
+
+			&__action {
+				height: 40px;
+				margin-bottom: 5px;
+			}
+
+			&__cancel {
+				width: 100px;
+			}
+
+			&__submit {
+				width: 200px;
+			}
+		}
+	}
+}
+
+.artist_detail {
+	.subText {
+		font-size: 16px;
+		font-weight: normal;
+		line-height: 22px;
+		letter-spacing: 0.3px;
+		color: #637381;
+	}
+
+	&__header {
+		position: relative;
+		margin-bottom: 20px;
+	}
+
+	&__box {
+		background: $white;
+		border: 1px solid #e2e5ed;
+		box-sizing: border-box;
+		box-shadow: inset 0px 1px 2px rgba(102, 113, 123, 0.21);
+		border-radius: 3px;
+		padding: 20px 30px;
+	}
+
+	&__wrapper {
+		height: 100%;
+		padding-bottom: 20px;
+	}
+
+	&__original {
+		margin-bottom: 20px;
+	}
+
+	&__orders {
+		margin-bottom: 20px;
+		.name {
+			font-size: 16px;
+			line-height: 22px;
+			letter-spacing: 0.3px;
+			color: #337fd7;
+		}
+
+		.options {
+			font-size: 15px;
+			line-height: 22px;
+			letter-spacing: 0.28125px;
+			color: #767676;
+			margin-bottom: 10px;
+		}
+
+		.description {
+			font-size: 16px;
+			line-height: 22px;
+			letter-spacing: 0.3px;
+			color: #141414;
+			margin-bottom: 20px;
+		}
+
+		.photos {
+			&__title {
+				font-size: 16px;
+				line-height: 22px;
+				letter-spacing: 0.3px;
+				color: #141414;
+				display: block;
+				margin-bottom: 10px;
+			}
+
+			.images_gallerry__item {
+				width: 100px;
+				height: 100px;
+				margin-right: 10px;
+				margin-bottom: 10px;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					border-radius: 6px;
+				}
+			}
+		}
+	}
 }

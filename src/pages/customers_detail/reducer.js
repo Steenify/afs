@@ -2,7 +2,7 @@ import update from 'react-addons-update';
 
 // import { mapDataList, mapDataByIds, mapDataByDate, isMobile } from 'utils';
 
-import { GET_CUSTOMER_DETAIL_ACTION, GET_CUSTOMER_ORDERS_ACTION } from './actions';
+import { GET_CUSTOMER_DETAIL_ACTION, GET_CUSTOMER_ORDERS_ACTION, RESET_CUSTOMER_DETAIL_ACTION } from './actions';
 
 const initialState = {
   ui: {
@@ -63,6 +63,9 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
       });
+    }
+    case RESET_CUSTOMER_DETAIL_ACTION: {
+      return { ...initialState };
     }
     default:
       return state;

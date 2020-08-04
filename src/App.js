@@ -33,7 +33,8 @@ import Orders from 'pages/orders';
 import OrderDetail from 'pages/orders_detail';
 import Settings from 'pages/settings';
 import Artists from 'pages/artists';
-import ArtistDetail from 'pages/artists/artistDetailForm';
+import ArtistDetail from 'pages/artist_detail/artistDetail';
+import ArtistDetailForm from 'pages/artists/artistDetailForm';
 import CS from 'pages/customer_service';
 import CSDetail from 'pages/customer_service/customerServiceDetail';
 import PrivacyPolicy from 'pages/PrivacyPolicy';
@@ -101,6 +102,7 @@ const App = ({ getOrderCountByStatus, accountInfo }) => {
           <Route exact path={WEB_ROUTES.SETTINGS.path} component={Settings} isPrivate={true} role={WEB_ROUTES.SETTINGS.permission} />
           <Route exact path={WEB_ROUTES.ARTISTS.path} component={Artists} isPrivate={true} role={WEB_ROUTES.ARTISTS.permission} />
           <Route exact path={WEB_ROUTES.ARTISTS_DETAIL.path} component={ArtistDetail} isPrivate={true} role={WEB_ROUTES.ARTISTS_DETAIL.permission} />
+          <Route exact path={WEB_ROUTES.ARTISTS_DETAIL_FORM.path} component={ArtistDetailForm} isPrivate={true} role={WEB_ROUTES.ARTISTS_DETAIL_FORM.permission} />
 
           <Route exact path={WEB_ROUTES.CS.path} component={CS} isPrivate={true} role={WEB_ROUTES.CS.permission} />
           <Route exact path={WEB_ROUTES.CS_DETAIL.path} component={CSDetail} isPrivate={true} role={WEB_ROUTES.CS_DETAIL.permission} />

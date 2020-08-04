@@ -53,3 +53,10 @@ export const getCustomerOrdersAction = (login, onSuccess, onError) => async (dis
     },
   });
 };
+
+export const RESET_CUSTOMER_DETAIL_ACTION = 'RESET_CUSTOMER_DETAIL_ACTION';
+export const resetCustomerDetailAction = () => async (dispatch) => {
+  dispatch({
+    type: RESET_CUSTOMER_DETAIL_ACTION,
+  });
+};
