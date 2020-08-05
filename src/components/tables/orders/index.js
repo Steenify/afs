@@ -8,23 +8,33 @@ import TableHeader from 'components/common/tableHeader';
 
 import { PERMITTIONS_CONFIG } from 'config';
 
-import { remove } from 'lodash';
+import { remove, get } from 'lodash';
 
-import orderBudgetCell from './orderBugetCell';
-import AssignArtistCell from './assignArtistCell';
-import OrderDetailCell from './orderDetailCell';
-import OrderCustomerCell from './orderCustomerCell';
-import OrderPaymentCell from './orderPaymentCell';
-import OrderBulkAction from './orderBulkAction';
-import OrderSelectedCell from './orderSelectedCell';
-import OrderSelectedAll from './orderSelectedAll';
-import OrderCreatedDateCell from './orderCreateDateCell';
-// import OrderDeadlineCell from './orderDeadlineCell';
-import OrderSubTotalCell from './orderSubTotalCell';
-import OrderStatusCell from './orderStatusCell';
-import OrderLastUpdateDateCell from './orderLastUpdateCell';
+import OrderBulkAction from 'components/tables/orders/orderBulkAction';
+import OrderPaging from 'components/tables/orders/orderPaging';
+import OrderFilter from 'components/tables/orders/orderFilters';
 
-class OrderListDesktop extends PureComponent {
+import orderBudgetCell from 'components/tables/orders/cells/orderBugetCell';
+import AssignArtistCell from 'components/tables/orders/cells/orderAssignArtistCell';
+import OrderDetailCell from 'components/tables/orders/cells/orderDetailCell';
+import OrderCustomerCell from 'components/tables/orders/cells/orderCustomerCell';
+import OrderPaymentCell from 'components/tables/orders/cells/orderPaymentCell';
+import OrderSelectedCell from 'components/tables/orders/cells/orderSelectedCell';
+import OrderSelectedAll from 'components/tables/orders/headers/orderSelectedAll';
+import OrderCreatedDateCell from 'components/tables/orders/cells/orderCreateDateCell';
+import OrderSubTotalCell from 'components/tables/orders/cells/orderSubTotalCell';
+import OrderStatusCell from 'components/tables/orders/cells/orderStatusCell';
+import OrderLastUpdateDateCell from 'components/tables/orders/cells/orderLastUpdateCell';
+
+import { getOrderTableStatusAction, getListAction } from './actions';
+
+class OrderTable extends PureComponent {
+  componentDidMount() {
+    const { getOrderTableStatusAction, reducer, getListAction, filter } = this.props;
+    getOrderTableStatusAction({ reducer });
+    getListAction({ payload: filter, reducer });
+  }
+
   getRowProps = (row) => {
     const now = new Date().getTime();
     const deadline = new Date(row.deadline).getTime();
@@ -43,12 +53,12 @@ class OrderListDesktop extends PureComponent {
   };
 
   render() {
-    const { loading, accountInfo, ids } = this.props;
-
+    const { loading, accountInfo, ids, reducer = 'orders', showFilter = true } = this.props;
     let columnsOrder = [
       {
         accessor: 'selected',
         Header: OrderSelectedAll,
+        headerProps: { reducer },
         minWidth: 40,
         Cell: OrderSelectedCell,
       },
@@ -67,12 +77,6 @@ class OrderListDesktop extends PureComponent {
         minWidth: 100,
         Cell: OrderCreatedDateCell,
       },
-      // {
-      //   accessor: 'deadline',
-      //   minWidth: 100,
-      //   Header: 'Deadline',
-      //   Cell: OrderDeadlineCell,
-      // },
       {
         accessor: 'lastModifiedDate',
         minWidth: 110,
@@ -85,7 +89,6 @@ class OrderListDesktop extends PureComponent {
         minWidth: 80,
         Cell: OrderCustomerCell,
       },
-
       {
         accessor: 'subtotal',
         Header: 'Price',
@@ -139,28 +142,38 @@ class OrderListDesktop extends PureComponent {
     const isCanPay = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_PAYMENT_STATUS);
 
     return (
-      <div className={`order__wrapper relative`}>
-        <div className={`order__loading ${!loading && 'd-none'}`}>
-          <Spinner /> <span className='text'>Loading</span>
+      <>
+        {showFilter && <OrderFilter reducer={reducer} />}
+
+        <div className={`order__wrapper relative`}>
+          <div className={`order__loading ${!loading && 'd-none'}`}>
+            <Spinner /> <span className='text'>Loading</span>
+          </div>
+          {isCanPay && <OrderBulkAction reducer={reducer} />}
+          <div className='table-responsive bg-light steenify-table bg-white order__table'>
+            <table className='table'>
+              <TableHeader columns={columnsOrder} />
+              <TableBody cellProps={{ goToDetail: this.goToDetail, reducer }} getRowProps={this.getRowProps} reducer={reducer} data={ids} columns={columnsOrder} rowName='TableRowOrder' />
+            </table>
+          </div>
         </div>
-        {isCanPay && <OrderBulkAction />}
-        <div className='table-responsive bg-light steenify-table bg-white order__table'>
-          <table className='table'>
-            <TableHeader columns={columnsOrder} />
-            <TableBody cellProps={{ goToDetail: this.goToDetail }} getRowProps={this.getRowProps} data={ids} columns={columnsOrder} rowName='TableRowOrder' />
-          </table>
-        </div>
-      </div>
+        <OrderPaging reducer={reducer} />
+      </>
     );
   }
 }
 
-const mapStateToProps = ({ order, auth }) => ({
-  ids: order.list.ids,
-  loading: order.ui.list.loading,
-  accountInfo: auth.data.accountInfo,
-});
+const mapStateToProps = ({ orderTable, auth }, ownProps) => {
+  const { reducer = 'orders' } = ownProps;
+  const ids = get(orderTable, `${reducer}.table.ids`) || [];
+  const loading = get(orderTable, `${reducer}.table.loading`);
+  return {
+    ids,
+    loading,
+    accountInfo: auth.data.accountInfo,
+  };
+};
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { getOrderTableStatusAction, getListAction };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderListDesktop));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderTable));

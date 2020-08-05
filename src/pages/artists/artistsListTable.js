@@ -15,7 +15,7 @@ import ArtistSelectedCell from './artistSelectedCell';
 import ArtistSelectedAll from './artistSelectedAll';
 
 import ArtistUpdateContactCell from './artistUpdateContactCell';
-import ArtistTotalDoneCell from './artistTotalDoneCell';
+// import ArtistTotalDoneCell from './artistTotalDoneCell';
 import ArtistWorkingQualityCell from './artistWorkingQualityCell';
 import ArtistWorkingSpeedCell from './artistWorkingSpeedCell';
 import ArtistWorkingAttitudeCell from './artistWorkingAttitudeCell';

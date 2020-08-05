@@ -8,7 +8,7 @@ import Breadcrumb from 'components/common/breadcrumb';
 import { WEB_ROUTES } from 'config';
 
 import { getOrderDetailAction } from './actions';
-import { getOrderStatusAction } from '../orders/actions';
+import { getOrderTableStatusAction } from 'components/tables/orders/actions';
 
 import Detail from './orderDetail';
 
@@ -16,13 +16,13 @@ import './style.scss';
 
 // import { useTranslation } from 'react-i18next';
 
-const OrderDetail = ({ getOrderDetail, getOrderStatus }) => {
+const OrderDetail = ({ getOrderDetail, getOrderTableStatusAction }) => {
   let { id } = useParams();
 
   useEffect(() => {
-    getOrderStatus();
+    getOrderTableStatusAction({});
     getOrderDetail(id);
-  }, [getOrderDetail, id, getOrderStatus]);
+  }, [getOrderDetail, id, getOrderTableStatusAction]);
 
   return (
     <Layout documentTitle={WEB_ROUTES.ORDERS_DETAIL.title} container fluid>
@@ -45,7 +45,7 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   getOrderDetail: getOrderDetailAction,
-  getOrderStatus: getOrderStatusAction,
+  getOrderTableStatusAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderDetail);

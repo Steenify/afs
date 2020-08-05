@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { filter, isObject, unionBy, reduce, map, forEach, isEmpty } from 'lodash';
+import { filter, isObject, unionBy, reduce, map, forEach, isEmpty, get } from 'lodash';
 import NumberFormat from 'react-number-format';
 import { toast } from 'react-toastify';
 
@@ -11,9 +11,9 @@ import Button from 'components/common/button';
 import { getOrderItem, getOrderOption, formatMoney } from 'utils';
 import { statusPayments } from 'config';
 
-import { createOrderPayoutsBulkAction, updateOrderItemsAcion } from './actions';
+import { createOrderTablePayoutsBulkAction, updateOrderTableItemsAction } from './actions';
 
-const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defaultNote, createOrderPayoutsBulk, artist, updateOrderItems }) => {
+const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defaultNote, createOrderTablePayoutsBulkAction, artist, updateOrderTableItemsAction, reducer }) => {
   const hasArtist = !isEmpty(artist);
 
   const dropbox = useRef(null);
@@ -90,29 +90,30 @@ const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defa
         note,
         totalPaid: totalBudget + (parseInt(extra, 10) || 0),
       };
-
-      createOrderPayoutsBulk(payload, () => {
-        const messge = orders.map((or) => or?.number).join(', ');
-        toast.dark(`Updated status payment of ${messge}`);
-        setNote('');
-        setExtra(0);
-        setNoteItem({});
-        forEach(orders, (item) => {
-          updateOrderItems({
-            id: item.id,
-            field: 'artistPaymentStatus',
-            value: statusPayments[0],
+      createOrderTablePayoutsBulkAction({
+        payload,
+        reducer,
+        onSuccess: () => {
+          const messge = orders.map((or) => or?.number).join(', ');
+          toast.dark(`Updated status payment of ${messge}`);
+          setNote('');
+          setExtra(0);
+          setNoteItem({});
+          forEach(orders, (item) => {
+            updateOrderTableItemsAction({
+              payload: { id: item.id, field: 'artistPaymentStatus', value: statusPayments[0] },
+              reducer,
+            });
           });
-        });
-        forEach(orders, (item) => {
-          updateOrderItems({
-            id: item.id,
-            field: 'selected',
-            value: false,
+          forEach(orders, (item) => {
+            updateOrderTableItemsAction({
+              payload: { id: item.id, field: 'selected', value: false },
+              reducer,
+            });
           });
-        });
 
-        toggle();
+          toggle();
+        },
       });
     }
   };
@@ -207,8 +208,9 @@ const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defa
   );
 };
 
-const mapStateToProps = ({ order, auth }) => {
-  const { items } = order.list;
+const mapStateToProps = ({ orderTable, auth }, ownProps) => {
+  const { reducer = 'orders' } = ownProps;
+  const items = get(orderTable, `${reducer}.table.items`) || {};
   const selectedOrder = filter(items, (or) => or.selected && isObject(or.assignedTo));
   const artistSelected = unionBy(selectedOrder, 'assignedTo');
   const artist = artistSelected[0]?.assignedTo || {};
@@ -244,8 +246,8 @@ const mapStateToProps = ({ order, auth }) => {
 };
 
 const mapDispatchToProps = {
-  createOrderPayoutsBulk: createOrderPayoutsBulkAction,
-  updateOrderItems: updateOrderItemsAcion,
+  createOrderTablePayoutsBulkAction,
+  updateOrderTableItemsAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderPayoutModal);

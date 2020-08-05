@@ -221,8 +221,8 @@ const EmaiNotify = (props) => {
     </Modal>
   );
 };
-const mapStateToProps = ({ orderDetail, order }) => ({
-  status: order.status,
+const mapStateToProps = ({ orderDetail, orderTable }) => ({
+  status: orderTable.orders.status,
   isShowEmail: orderDetail.ui.isShowEmail,
   loadingEmail: orderDetail.ui.loadingEmail,
   selectedEmailTemplate: orderDetail.data.selectedEmailTemplate,

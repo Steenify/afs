@@ -9,11 +9,8 @@ const TableRow = ({ columns, item, cellProps, getRowProps }) => {
           minWidth: column.minWidth || 0,
         });
         return (
-          <td
-            className={`${column.className || ''}`}
-            style={style}
-            key={`table__row__item__${item + column.accessor}`}>
-            <Cell data={item} {...cellProps} />
+          <td className={`${column.className || ''}`} style={style} key={`table__row__item__${item + column.accessor}`}>
+            <Cell data={item} {...cellProps} {...column.cellProps} />
           </td>
         );
       })}

@@ -12,12 +12,12 @@ import Button from 'components/common/button';
 import { getOrderItem, getOrderOption, formatMoney, actionTryCatchCreator } from 'utils';
 import { statusPayments } from 'config';
 
-import { createOrderPayoutsBulkAction } from 'pages/orders/actions';
+import { createOrderTablePayoutsBulkAction } from 'components/tables/orders/actions';
 import { getArtistsListAction } from './actions';
 import { getAllOrdersService } from 'services/order';
 
 const ArtistPayoutModal = (props) => {
-  const { isOpen, className, toggle, artist, createOrderPayoutsBulkAction, getArtistsListAction } = props;
+  const { isOpen, className, toggle, artist, createOrderTablePayoutsBulkAction, getArtistsListAction } = props;
 
   const dropbox = useRef(null);
   const [extra, setExtra] = useState(0);
@@ -108,14 +108,17 @@ const ArtistPayoutModal = (props) => {
         totalPaid: totalBudget + (parseInt(extra, 10) || 0),
       };
 
-      createOrderPayoutsBulkAction(payload, () => {
-        const messge = orders.map((or) => or?.number).join(', ');
-        toast.dark(`Updated status payment of ${messge}`);
-        setNote('');
-        setExtra(0);
-        setNoteItem({});
-        getArtistsListAction();
-        toggle();
+      createOrderTablePayoutsBulkAction({
+        payload,
+        onSuccess: () => {
+          const messge = orders.map((or) => or?.number).join(', ');
+          toast.dark(`Updated status payment of ${messge}`);
+          setNote('');
+          setExtra(0);
+          setNoteItem({});
+          getArtistsListAction();
+          toggle();
+        },
       });
     }
   };
@@ -227,6 +230,6 @@ const mapStateToProps = ({ artists, auth }) => {
   };
 };
 
-const mapDispatchToProps = { createOrderPayoutsBulkAction, getArtistsListAction };
+const mapDispatchToProps = { createOrderTablePayoutsBulkAction, getArtistsListAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArtistPayoutModal);

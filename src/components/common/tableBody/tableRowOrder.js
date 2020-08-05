@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 const TableRowOrder = ({ columns, item, cellProps, getRowProps, data }) => {
   return (
-    <tr key={`table__body__item__${item}`} {...getRowProps(data)}>
+    <tr key={`table__body__item__${item}`} {...getRowProps(data || {})}>
       {columns.map((column) => {
         const { Cell } = column;
         const style = Object.assign({}, column.style || {}, {
@@ -11,7 +12,7 @@ const TableRowOrder = ({ columns, item, cellProps, getRowProps, data }) => {
         });
         return (
           <td className={`${column.className || ''}`} style={style} key={`table__row__item__${item + column.accessor}`}>
-            <Cell data={item} {...cellProps} />
+            <Cell data={item} {...cellProps} {...column.cellProps} />
           </td>
         );
       })}
@@ -24,10 +25,9 @@ TableRowOrder.defaultProps = {
   getRowProps: () => ({}),
 };
 
-const mapStateToProps = ({ order }, ownProps) => {
-  const { item } = ownProps;
-  const { items } = order.list;
-  const data = items[item] || {};
+const mapStateToProps = (reducers, ownProps) => {
+  const { item, reducer = 'orders' } = ownProps;
+  const data = get(reducers, `orderTable.${reducer}.table.items`)?.[item];
   return {
     data,
   };

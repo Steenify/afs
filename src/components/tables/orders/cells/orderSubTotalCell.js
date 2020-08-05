@@ -1,20 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import { formatNumber } from 'utils';
 
 const OrderSubTotalCell = ({ subtotal, goToDetail, code }) => {
-  return (
-    <div
-      onClick={() => goToDetail(code)}
-      className={`order__subtotal`}>{`${formatNumber(subtotal)}$`}</div>
-  );
+  return <div onClick={() => goToDetail(code)} className={`order__subtotal`}>{`${formatNumber(subtotal)}$`}</div>;
 };
 
-const mapStateToProps = ({ order }, ownProps) => {
-  const { data } = ownProps;
-  const { items } = order.list;
-  const item = items[data] || {};
+const mapStateToProps = (reducers, ownProps) => {
+  const { data, reducer = 'orders' } = ownProps;
+  const item = get(reducers, `orderTable.${reducer}.table.items`)?.[data] || {};
   return {
     code: item?.code,
     subtotal: item?.subtotal || 0,

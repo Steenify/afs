@@ -22,7 +22,7 @@ import {
   SENT_FB_MESSAGES_NOTIFY_ACTION,
 } from './actions';
 
-import { UPDATE_ORDER_BUDGET_ACTION, UPDATE_ORDER_ARTIST_ACTION } from '../orders/actions';
+import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
 
 const initialState = {
   ui: {
@@ -290,14 +290,14 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
-    case UPDATE_ORDER_BUDGET_ACTION.SUCCESS: {
+    case ORDER_TABLE_UPDATE_BUDGET_ACTION.SUCCESS: {
       return update(state, {
         data: {
           order: { budget: { $set: payload.budget } },
         },
       });
     }
-    case UPDATE_ORDER_ARTIST_ACTION.SUCCESS: {
+    case ORDER_TABLE_UPDATE_ARTIST_ACTION.SUCCESS: {
       return update(state, {
         data: {
           order: { assignedTo: { $set: payload.assignedTo } },

@@ -159,6 +159,7 @@ $cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy, crossha
 		line-height: 22px;
 		letter-spacing: 0.3px;
 		color: #337fd7 !important;
+		word-wrap: break-word;
 	}
 
 	&__control {

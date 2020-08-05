@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
 
@@ -12,11 +12,10 @@ import { formatMoney } from 'utils';
 
 const CustomerDetailInfo = (props) => {
   const { customer, updateCustomerAction } = props;
-  const [note, setNote] = useState(customer?.customerExtension?.note);
-
-  const handleUpdateNote = (e) => setNote(e.target.value);
+  const noteRef = useRef(null);
 
   const updateCustomerNoteAction = () => {
+    const note = noteRef.current.value;
     const params = merge({}, customer, { customerExtension: { note } });
     updateCustomerAction(params, () => toast.dark('Customer note is updated'));
   };
@@ -41,20 +40,69 @@ const CustomerDetailInfo = (props) => {
             Save
           </Button>
         </div>
-        <textarea value={note} onChange={handleUpdateNote} className='form-control' placeholder='Add a note' rows='2'></textarea>
+        <textarea ref={noteRef} defaultValue={customer?.customerExtension?.note} className='form-control' placeholder='Add a note' rows='2' />
         <div className='box__device' />
         <div className='row'>
           <div className='col-6'>
             <div className='box__sub_title mb-2'>Contact</div>
-            <div className='box__link'>{customer?.email}</div>
-            <div className='box__link'>{customer?.fbUrl}</div>
-            <div className='box__link'>{customer?.igUrl}</div>
-            <div className='box__link'>{customer?.snapChatUrl}</div>
-            <div className='box__link'>{customer?.linkedUrl}</div>
-            <div className='box__link'>{customer?.twitterUrl}</div>
-            <div className=''>
-              {customer?.phonePrefix} {customer?.phoneNumber}
-            </div>
+            {customer?.email && <p className='mb-1'>Email: {customer?.email}</p>}
+            {customer?.phoneNumber && <p className='mb-1'>Phone: {customer?.phoneNumber}</p>}
+            {customer?.customerExtension?.fbChat && (
+              <p className='mb-1'>
+                Facebook Chat: &nbsp;
+                <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.fbChat}`}>
+                  Link
+                </a>
+              </p>
+            )}
+            {customer?.customerExtension?.mailChain && (
+              <p className='mb-1'>
+                Mail Chain: &nbsp;
+                <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.mailChain}`}>
+                  Link
+                </a>
+              </p>
+            )}
+            {customer?.customerExtension?.fbUrl && (
+              <p className='mb-1'>
+                Facebook: &nbsp;
+                <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.fbUrl}`}>
+                  Link
+                </a>
+              </p>
+            )}
+            {customer?.customerExtension?.igUrl && (
+              <p className='mb-1'>
+                Instagram: &nbsp;
+                <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.igUrl}`}>
+                  Link
+                </a>
+              </p>
+            )}
+            {customer?.customerExtension?.snapChatUrl && (
+              <p className='mb-1'>
+                SnapChat: &nbsp;
+                <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.snapChatUrl}`}>
+                  Link
+                </a>
+              </p>
+            )}
+            {customer?.customerExtension?.linkedUrl && (
+              <p className='mb-1'>
+                LinkedIn: &nbsp;
+                <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.linkedUrl}`}>
+                  Link
+                </a>
+              </p>
+            )}
+            {customer?.customerExtension?.twitterUrl && (
+              <p className='mb-1'>
+                Twitter: &nbsp;
+                <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.twitterUrl}`}>
+                  Link
+                </a>
+              </p>
+            )}
           </div>
           <div className='col-6'>
             <div className='box__sub_title mb-2'>Address</div>

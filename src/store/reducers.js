@@ -9,6 +9,7 @@ import customers from 'pages/customers/reducer';
 import customerDetail from 'pages/customers_detail/reducer';
 import notification from 'pages/notifications/reducer';
 import systemProperty from 'pages/system_property_management/reducer';
+import orderTable from 'components/tables/orders/reducer';
 import order from 'pages/orders/reducer';
 import orderDetail from 'pages/orders_detail/reducer';
 import artists from 'pages/artists/reducer';
@@ -94,6 +95,7 @@ export default combineReducers({
   customerDetail,
   notification,
   systemProperty,
+  orderTable,
   order,
   orderDetail,
   artists,

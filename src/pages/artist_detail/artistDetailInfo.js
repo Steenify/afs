@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 
 import { ReactComponent as PencilIcon } from 'assets/img/pencil.svg';
@@ -10,14 +10,14 @@ import { toast } from 'react-toastify';
 
 const ArtistDetailInfo = (props) => {
   const { artist, updateArtistDetailApiAction, updateArtistDetailAction } = props;
-
-  const handleUpdateNote = (e) => {
-    const { value } = e.target;
-    updateArtistDetailAction({ note: value });
-  };
+  const noteRef = useRef(null);
 
   const updateNoteAction = () => {
-    updateArtistDetailApiAction({ id: artist?.id, login: artist?.login, artistExtension: { note: artist?.note } }, () => toast.dark('Note is updated'));
+    const note = noteRef.current.value;
+    updateArtistDetailApiAction({ id: artist?.id, login: artist?.login, artistExtension: { note } }, () => {
+      updateArtistDetailAction({ note });
+      toast.dark('Note is updated');
+    });
   };
 
   const doingCount = artist?.numSketch + artist?.numSketchEdit + artist?.numColor + artist?.numColorEdit || 0;
@@ -60,7 +60,7 @@ const ArtistDetailInfo = (props) => {
             Save
           </Button>
         </div>
-        <textarea onChange={handleUpdateNote} value={artist?.note || ''} className='form-control' placeholder='Good Naruto, effect cool...' rows='2'></textarea>
+        <textarea ref={noteRef} defaultValue={artist?.note} className='form-control' placeholder='Good Naruto, effect cool...' rows='2' />
       </div>
     </div>
   );

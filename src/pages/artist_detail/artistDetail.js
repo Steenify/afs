@@ -12,21 +12,20 @@ import { WEB_ROUTES } from 'config';
 
 import ArtistDetailInfo from './artistDetailInfo';
 import ArtistDetailContact from './artistDetailContact';
+
+import OrderTable from 'components/tables/orders';
+
 import { getArtistAction } from '../artists/actions';
 
-import OrderListDesktop from 'pages/orders/OrderListDesktop';
-import { getOrdersAction, updateOrderFilterByArtistAcion, getOrderStatusAction } from 'pages/orders/actions';
+const reducerName = 'artistDetail';
 
-const ArtistDetail = ({ getArtist, artist, getOrdersAction, updateOrderFilterByArtistAcion, getOrderStatusAction }) => {
+const ArtistDetail = ({ getArtist, artist }) => {
   const { login } = useParams();
   const history = useHistory();
 
   useEffect(() => {
     getArtist(login);
-    getOrderStatusAction();
-    updateOrderFilterByArtistAcion({ assignee: login, page: 0, size: 100, sizeMobile: 100, sort: [{ id: 'number', desc: true }], text: '' });
-    getOrdersAction({}, true);
-  }, [getArtist, login, updateOrderFilterByArtistAcion, getOrdersAction, getOrderStatusAction]);
+  }, [getArtist, login]);
 
   const goToEdit = () => {
     const url = WEB_ROUTES.ARTISTS_DETAIL_FORM.path.replace(':login', artist.login);
@@ -57,7 +56,7 @@ const ArtistDetail = ({ getArtist, artist, getOrdersAction, updateOrderFilterByA
           </div>
         </div>
         <div>
-          <OrderListDesktop />
+          <OrderTable reducer={reducerName} showFilter={false} filter={{ assignee: login }} />
         </div>
       </div>
     </Layout>
@@ -70,9 +69,6 @@ const mapStateToProps = ({ artists }) => ({
 
 const mapDispatchToProps = {
   getArtist: getArtistAction,
-  getOrdersAction,
-  updateOrderFilterByArtistAcion,
-  getOrderStatusAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArtistDetail);

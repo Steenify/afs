@@ -6,17 +6,14 @@ const TableHeader = (props) => {
     <thead>
       <tr>
         {props.columns.map((column) => {
-          const { Header } = column;
+          const { Header, headerProps } = column;
           const style = Object.assign({}, column.style || {}, {
             minWidth: column.minWidth || 0,
           });
 
           return (
-            <th
-              className={column.className || ''}
-              style={style}
-              key={`table__header__item__${column.accessor}`}>
-              {isString(Header) ? Header : <Header />}
+            <th className={column.className || ''} style={style} key={`table__header__item__${column.accessor}`}>
+              {isString(Header) ? Header : <Header {...headerProps} />}
             </th>
           );
         })}

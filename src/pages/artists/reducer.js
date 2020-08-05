@@ -2,12 +2,7 @@ import update from 'react-addons-update';
 
 import { mapDataList, mapDataByIds, isMobile } from 'utils';
 
-import {
-  ARTISTS_ACTIONS,
-  GET_ARTISTS_LIST_ACTION,
-  GET_ARTISTS_ACTION,
-  UPDATE_ARTISTS_API_ACTION,
-} from './actions';
+import { ARTISTS_ACTIONS, GET_ARTISTS_LIST_ACTION, GET_ARTISTS_ACTION, UPDATE_ARTISTS_API_ACTION } from './actions';
 
 const initialState = {
   ui: { loading: false, loadingDetail: false },
@@ -30,6 +25,14 @@ const initialState = {
     detail: {},
   },
   artist: {},
+  list: {
+    orders: [],
+    ids: [],
+    items: {},
+    itemGroups: [],
+    totalItems: 0,
+    totalPage: 0,
+  },
 };
 
 const reducer = (state = initialState, action) => {
@@ -48,10 +51,7 @@ const reducer = (state = initialState, action) => {
         },
       });
     case GET_ARTISTS_LIST_ACTION.SUCCESS: {
-      const { ids, items } = mapDataByIds(
-        mapDataList(payload.data, 'selected', false),
-        'id',
-      );
+      const { ids, items } = mapDataByIds(mapDataList(payload.data, 'selected', false), 'id');
       const totalItems = parseInt(payload.headers['x-total-count'], 10);
       const { size, sizeMobile } = state.filter;
       const currSize = isMobile() ? sizeMobile : size;

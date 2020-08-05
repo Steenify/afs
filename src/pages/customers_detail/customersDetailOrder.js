@@ -7,7 +7,7 @@ import Button from 'components/common/button';
 import ImageGallery from 'components/common/imageGallery';
 import P from 'components/common/parapraph';
 
-import { getOrderStatusAction, updateOrderFiltersAcion } from 'pages/orders/actions';
+import { getOrderTableStatusAction, updateOrderTableFilterAction } from 'components/tables/orders/actions';
 
 import { getListImageUrl, dateTimeStringFromDate, getOrderItem, getOrderOption, getSelectedStatus, formatMoney } from 'utils';
 import { useHistory } from 'react-router-dom';
@@ -16,11 +16,11 @@ import StepperArrow from 'components/common/stepperArrow';
 
 const CustomerDetailOrders = (props) => {
   const history = useHistory();
-  const { orders, getOrderStatusAction, updateOrderFiltersAcion, statuses } = props;
+  const { orders, getOrderTableStatusAction, updateOrderTableFilterAction, statuses } = props;
 
   useEffect(() => {
-    getOrderStatusAction();
-  }, [getOrderStatusAction]);
+    getOrderTableStatusAction({});
+  }, [getOrderTableStatusAction]);
 
   const [currIndex, setCurrIndex] = useState(0);
   const isEmpty = !orders || orders.length === 0;
@@ -35,7 +35,7 @@ const CustomerDetailOrders = (props) => {
 
   const onViewAllOrders = () => {
     history.push(WEB_ROUTES.ORDERS.path);
-    updateOrderFiltersAcion({ text: currOrder?.customer?.fullName });
+    updateOrderTableFilterAction({ payload: { text: currOrder?.customer?.fullName } });
   };
 
   return (
@@ -96,13 +96,13 @@ const CustomerDetailOrders = (props) => {
     </div>
   );
 };
-const mapStateToProps = ({ order }) => ({
-  statuses: order.status,
+const mapStateToProps = ({ orderTable }) => ({
+  statuses: orderTable.orders.status,
 });
 
 const mapDispatchToProps = {
-  getOrderStatusAction,
-  updateOrderFiltersAcion,
+  getOrderTableStatusAction,
+  updateOrderTableFilterAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetailOrders);

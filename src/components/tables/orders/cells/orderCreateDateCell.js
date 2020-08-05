@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import { dateTimeToDeadline } from 'utils';
 
@@ -11,11 +12,9 @@ const OrderCreatedDateCell = ({ paidAt, goToDetail, code }) => {
   );
 };
 
-const mapStateToProps = ({ order }, ownProps) => {
-  const { data } = ownProps;
-  const { items } = order.list;
-  const item = items[data] || {};
-
+const mapStateToProps = (reducers, ownProps) => {
+  const { data, reducer = 'orders' } = ownProps;
+  const item = get(reducers, `orderTable.${reducer}.table.items`)?.[data] || {};
   return {
     paidAt: item?.paidAt,
     code: item?.code,
@@ -24,7 +23,4 @@ const mapStateToProps = ({ order }, ownProps) => {
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(OrderCreatedDateCell);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderCreatedDateCell);

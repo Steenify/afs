@@ -1,22 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import { mapStatusPayment, statusPayments } from 'config';
 
 const OrderPaymentCell = ({ artistPaymentStatus, goToDetail, code }) => {
   return (
-    <div
-      onClick={() => goToDetail(code)}
-      className={`order__status ${artistPaymentStatus || statusPayments[1]}`}>
+    <div onClick={() => goToDetail(code)} className={`order__status ${artistPaymentStatus || statusPayments[1]}`}>
       {mapStatusPayment[artistPaymentStatus] || mapStatusPayment.UNPAID}
     </div>
   );
 };
 
-const mapStateToProps = ({ order }, ownProps) => {
-  const { data } = ownProps;
-  const { items } = order.list;
-  const item = items[data] || {};
+const mapStateToProps = (reducers, ownProps) => {
+  const { data, reducer = 'orders' } = ownProps;
+  const item = get(reducers, `orderTable.${reducer}.table.items`)?.[data] || {};
   return {
     code: item?.code,
     artistPaymentStatus: item?.artistPaymentStatus || '',
