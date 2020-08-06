@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { updateArtistItemsAction } from './actions';
+import { updateArtistItemsAction } from '../actions';
 
 const ArtistSelectedCell = ({ selected, updateArtistItems, id }) => {
   const handleChange = (checked) => {
@@ -13,12 +13,7 @@ const ArtistSelectedCell = ({ selected, updateArtistItems, id }) => {
   };
   return (
     <label className='cus-checkbox'>
-      <input
-        className='form-control sr-only'
-        type='checkbox'
-        checked={selected}
-        onChange={() => handleChange(!selected)}
-      />
+      <input className='form-control sr-only' type='checkbox' checked={selected} onChange={() => handleChange(!selected)} />
       <span className='checkmark'></span>
     </label>
   );

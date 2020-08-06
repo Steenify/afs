@@ -7,19 +7,19 @@ import TableHeader from 'components/common/tableHeader';
 
 import { PERMITTIONS_CONFIG } from 'configs';
 
-import ArtistFullNameCell from './artistFullNameCell';
-import ArtistNoteCell from './artistNoteCell';
-import ArtistWorkLoadCell from './artistWorkLoadCell';
+import ArtistFullNameCell from './cells/artistFullNameCell';
+import ArtistNoteCell from './cells/artistNoteCell';
+import ArtistWorkLoadCell from './cells/artistWorkLoadCell';
 
-import ArtistSelectedCell from './artistSelectedCell';
+import ArtistSelectedCell from './cells/artistSelectedCell';
 import ArtistSelectedAll from './artistSelectedAll';
 
-import ArtistUpdateContactCell from './artistUpdateContactCell';
+import ArtistUpdateContactCell from './cells/artistUpdateContactCell';
 // import ArtistTotalDoneCell from './artistTotalDoneCell';
-import ArtistWorkingQualityCell from './artistWorkingQualityCell';
-import ArtistWorkingSpeedCell from './artistWorkingSpeedCell';
-import ArtistWorkingAttitudeCell from './artistWorkingAttitudeCell';
-import ArtistUnpaidCell from './artistUnpaidCell';
+import ArtistWorkingQualityCell from './cells/artistWorkingQualityCell';
+import ArtistWorkingSpeedCell from './cells/artistWorkingSpeedCell';
+import ArtistWorkingAttitudeCell from './cells/artistWorkingAttitudeCell';
+import ArtistUnpaidCell from './cells/artistUnpaidCell';
 import ArtistsBulkAction from './artistsBulkAction';
 
 let columns = [

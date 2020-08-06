@@ -2,15 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-const ArtistWorkLoadCell = ({
-  totalNew,
-  totalDoing,
-  totalReview,
-  newOrderArray,
-  doingArray,
-  reviewArray,
-  data,
-}) => {
+const ArtistWorkLoadCell = ({ totalNew, totalDoing, totalReview, newOrderArray, doingArray, reviewArray, data }) => {
   let artistWorkload = [].concat(newOrderArray, doingArray, reviewArray);
   artistWorkload.length = 8;
 
@@ -29,9 +21,7 @@ const ArtistWorkLoadCell = ({
       </div>
       <div className='workload__progress'>
         {artistWorkload.map((work, index) => (
-          <div
-            key={`work_load__item__${index}__order__${data}`}
-            className={`workload__item ${work?.name}`}></div>
+          <div key={`work_load__item__${index}__order__${data}`} className={`workload__item ${work?.name}`}></div>
         ))}
       </div>
     </div>
@@ -52,22 +42,11 @@ const newCountSelector = () => {
 };
 
 const doingCountSelector = () => {
-  return createSelector(
-    numSketch,
-    numSketchEdit,
-    numColorEdit,
-    numColor,
-    (n1, n2, n3, n4) => n1 + n2 + n3 + n4,
-  );
+  return createSelector(numSketch, numSketchEdit, numColorEdit, numColor, (n1, n2, n3, n4) => n1 + n2 + n3 + n4);
 };
 
 const reviewingCountSelector = () => {
-  return createSelector(
-    numSketchReview,
-    numColorReview,
-    numExportFile,
-    (n1, n2, n3) => n1 + n2 + n3,
-  );
+  return createSelector(numSketchReview, numColorReview, numExportFile, (n1, n2, n3) => n1 + n2 + n3);
 };
 
 const newOrderArraySelector = () => {
@@ -79,27 +58,18 @@ const newOrderArraySelector = () => {
 };
 
 const doingOrderArraySelector = () => {
-  return createSelector(
-    numSketch,
-    numSketchEdit,
-    numColorEdit,
-    numColor,
-    (n1, n2, n3, n4) =>
-      [...Array(n1 + n2 + n3 + n4).keys()].map(() => ({
-        name: 'Doing',
-      })),
+  return createSelector(numSketch, numSketchEdit, numColorEdit, numColor, (n1, n2, n3, n4) =>
+    [...Array(n1 + n2 + n3 + n4).keys()].map(() => ({
+      name: 'Doing',
+    })),
   );
 };
 
 const reviewingOrderArraySelector = () => {
-  return createSelector(
-    numSketchReview,
-    numColorReview,
-    numExportFile,
-    (n1, n2, n3) =>
-      [...Array(n1 + n2 + n3).keys()].map(() => ({
-        name: 'Review',
-      })),
+  return createSelector(numSketchReview, numColorReview, numExportFile, (n1, n2, n3) =>
+    [...Array(n1 + n2 + n3).keys()].map(() => ({
+      name: 'Review',
+    })),
   );
 };
 

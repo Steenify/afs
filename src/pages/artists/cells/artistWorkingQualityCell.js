@@ -7,26 +7,17 @@ import Button from 'components/common/button';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
-import {
-  updateArtistItemsAction,
-  updateArtistDetailApiAction,
-} from './actions';
+import { updateArtistItemsAction, updateArtistDetailApiAction } from '../actions';
 
-const ArtistWorkingAttitudeCell = ({
-  workingAttitudeScore,
-  id,
-  login,
-  updateArtistItems,
-  updateArtistDetailApi,
-}) => {
-  const [value, setValue] = useState(workingAttitudeScore || '');
+const ArtistWorkingQualityCell = ({ productQualityScore, id, login, updateArtistItems, updateArtistDetailApi }) => {
+  const [value, setValue] = useState(productQualityScore || '');
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
   useEffect(() => {
-    setValue(workingAttitudeScore || '');
-  }, [workingAttitudeScore]);
+    setValue(productQualityScore || '');
+  }, [productQualityScore]);
 
   const onChange = (e) => {
     const { value } = e.target;
@@ -38,7 +29,7 @@ const ArtistWorkingAttitudeCell = ({
     toggle();
     updateArtistItems({
       id: id,
-      field: 'workingAttitudeScore',
+      field: 'productQualityScore',
       value: value,
     });
 
@@ -47,11 +38,11 @@ const ArtistWorkingAttitudeCell = ({
         id: id,
         login: login,
         artistExtension: {
-          workingAttitudeScore: value,
+          productQualityScore: value,
         },
       },
       () => {
-        toast.dark(`[${login}] updated ${value} speed score`);
+        toast.dark(`[${login}] updated ${value} quality score`);
       },
     );
   };
@@ -71,17 +62,12 @@ const ArtistWorkingAttitudeCell = ({
           <form action='' onSubmit={onSave}>
             <div className='order__budget'>
               <div className='data'>
-                <strong className='title mr-3'>Attitude</strong>
-                <select
-                  className='form-control'
-                  value={value}
-                  onChange={onChange}>
+                <strong className='title mr-3'>Quality</strong>
+                <select className='form-control' value={value} onChange={onChange}>
                   <option value='0'>0</option>
                   {scores.map((sco) => {
                     return (
-                      <option
-                        key={`artist__${id}__select__score_attitute__${sco}`}
-                        value={sco + 1}>
+                      <option key={`artist__${id}__select__score_quality__${sco}`} value={sco + 1}>
                         {sco + 1}
                       </option>
                     );
@@ -89,18 +75,10 @@ const ArtistWorkingAttitudeCell = ({
                 </select>
               </div>
               <div className='ctas'>
-                <Button
-                  onClick={toggle}
-                  className='bugdet__cancel cta pl-0'
-                  type='button'
-                  color='link'>
+                <Button onClick={toggle} className='bugdet__cancel cta pl-0' type='button' color='link'>
                   Cancel
                 </Button>
-                <Button
-                  onClick={onSave}
-                  className='bugdet__save cta pr-0'
-                  type='button'
-                  color='link'>
+                <Button onClick={onSave} className='bugdet__save cta pr-0' type='button' color='link'>
                   Save
                 </Button>
               </div>
@@ -108,11 +86,9 @@ const ArtistWorkingAttitudeCell = ({
           </form>
         </div>
       )}>
-      <button
-        onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-        className='order__toggle order__user text-left w-100'>
+      <button onClick={() => setIsPopoverOpen(!isPopoverOpen)} className='order__toggle order__user text-left w-100'>
         <div className='d-flex justify-content-end'>
-          {workingAttitudeScore || 0}
+          {productQualityScore || 0}
           <span className='icon d-block ml-1'>
             <Pencil width='14px' height='14px' />
           </span>
@@ -127,7 +103,7 @@ const mapStateToProps = ({ artists, auth }, ownProps) => {
   const { items } = artists.data;
   const item = items[data] || {};
   return {
-    workingAttitudeScore: item?.workingAttitudeScore || '',
+    productQualityScore: item?.productQualityScore || '',
     id: item?.id,
     login: item?.login || 0,
     accountInfo: auth.data.accountInfo,
@@ -139,7 +115,4 @@ const mapDispatchToProps = {
   updateArtistDetailApi: updateArtistDetailApiAction,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ArtistWorkingAttitudeCell);
+export default connect(mapStateToProps, mapDispatchToProps)(ArtistWorkingQualityCell);

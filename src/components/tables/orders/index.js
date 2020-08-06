@@ -36,12 +36,9 @@ class OrderTable extends PureComponent {
   }
 
   getRowProps = (row) => {
-    const now = new Date().getTime();
-    const deadline = new Date(row.deadline).getTime();
-    const isLated = now > deadline || false;
     const isNotDone = row.status !== 'DONE';
     return {
-      className: `${isLated && isNotDone ? 'lated' : ''} ${!isNotDone && 'DONE'}`,
+      className: `${!isNotDone && 'DONE'}`,
     };
   };
 
