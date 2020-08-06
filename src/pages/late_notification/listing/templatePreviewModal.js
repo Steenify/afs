@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 import Button from 'components/common/button';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
-import { notifyChannels, tinymceInitValues } from 'configs';
+import { notifyChannels, tinymceInitValues } from 'configs/index';
 import {
   setCurrentItemAction,
   setCurrentPreviewIdAction,
