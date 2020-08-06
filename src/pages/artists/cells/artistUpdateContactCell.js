@@ -3,20 +3,11 @@ import { connect } from 'react-redux';
 import Popover from 'react-tiny-popover';
 import { toast } from 'react-toastify';
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
-import {
-  updateArtistItemsAction,
-  updateArtistDetailApiAction,
-} from './actions';
+import { updateArtistItemsAction, updateArtistDetailApiAction } from '../actions';
 
-import ListContacts from './listContact';
+import ListContacts from '../listContact';
 
-const ArtistUpdateContactCell = ({
-  id,
-  uid,
-  login,
-  updateArtistDetailApi,
-  updateArtistItems,
-}) => {
+const ArtistUpdateContactCell = ({ id, uid, login, updateArtistDetailApi, updateArtistItems }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
@@ -43,17 +34,8 @@ const ArtistUpdateContactCell = ({
   };
 
   return (
-    <Popover
-      isOpen={isPopoverOpen}
-      position={'bottom'}
-      transitionDuration={0.0000001}
-      padding={10}
-      onClickOutside={toggle}
-      content={() => <ListContacts onSave={onSave} uid={uid} />}>
-      <button
-        type='button'
-        onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-        className='order__toggle order__assigned w-100'>
+    <Popover isOpen={isPopoverOpen} position={'bottom'} transitionDuration={0.0000001} padding={10} onClickOutside={toggle} content={() => <ListContacts onSave={onSave} uid={uid} />}>
+      <button type='button' onClick={() => setIsPopoverOpen(!isPopoverOpen)} className='order__toggle order__assigned w-100'>
         <div className='d-flex'>
           <span className='name'>{uid || '__________'}</span>
           <span className='icon d-block ml-1'>
@@ -81,7 +63,4 @@ const mapDispatchToProps = {
   updateArtistDetailApi: updateArtistDetailApiAction,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ArtistUpdateContactCell);
+export default connect(mapStateToProps, mapDispatchToProps)(ArtistUpdateContactCell);
