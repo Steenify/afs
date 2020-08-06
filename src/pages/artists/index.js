@@ -6,7 +6,7 @@ import ArtistList from './artistList';
 
 import './style.scss';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const Artists = () => {
   return (

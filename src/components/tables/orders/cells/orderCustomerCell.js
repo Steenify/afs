@@ -6,7 +6,7 @@ import { get } from 'lodash';
 
 import Button from 'components/common/button';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 

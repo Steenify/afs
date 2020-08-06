@@ -10,7 +10,7 @@ import Dropbox from 'components/common/dropbox';
 import Button from 'components/common/button';
 
 import { getOrderItem, getOrderOption, formatMoney, actionTryCatchCreator } from 'utils';
-import { statusPayments } from 'config';
+import { statusPayments } from 'configs';
 
 import { createOrderTablePayoutsBulkAction } from 'components/tables/orders/actions';
 import { getArtistsListAction } from './actions';

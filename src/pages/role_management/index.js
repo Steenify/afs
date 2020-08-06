@@ -7,7 +7,7 @@ import Layout from 'components/common/Layout';
 import Breadcrumb from 'components/common/breadcrumb';
 import PageTitle from 'components/common/PageTitle';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const RoleManagement = () => {
   const { t } = useTranslation();

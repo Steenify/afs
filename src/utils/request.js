@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { grantType, HostAPI } from 'config';
+import { grantType, HostAPI } from 'configs';
 
 import { getData } from 'utils';
 

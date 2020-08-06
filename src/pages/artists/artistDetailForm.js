@@ -16,7 +16,7 @@ import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
 import { getArtistAction, updateArtistDetailApiAction } from './actions';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const ArtistDetail = ({ style, handleSubmit, ...props }) => {
   const { login } = useParams();
@@ -60,100 +60,32 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
   return (
     <Layout documentTitle={WEB_ROUTES.ARTISTS_DETAIL.title} container fluid>
       <div className='d-flex mt-2 mb-3'>
-        <Button
-          className='artists__back'
-          tag={Link}
-          color='link'
-          to={WEB_ROUTES.ARTISTS.path}
-          replace>
+        <Button className='artists__back' tag={Link} color='link' to={WEB_ROUTES.ARTISTS.path} replace>
           <ArrowLeftIcon />
           &nbsp; &nbsp;
           <span className='d-none d-md-inline'>{WEB_ROUTES.ARTISTS.title}</span>
         </Button>
       </div>
 
-      <PageTitle
-        title={WEB_ROUTES.ARTISTS_DETAIL.title}
-        className='mb-0 mr-3'></PageTitle>
+      <PageTitle title={WEB_ROUTES.ARTISTS_DETAIL.title} className='mb-0 mr-3'></PageTitle>
 
       <Form style={{ marginTop: 27 }} onSubmit={handleSubmit(onSubmit)}>
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='login'
-          label={t('baseApp.userManagement.login')}
-          disabled
-        />
+        <Field className='form-group--inline' component={Input} name='login' label={t('baseApp.userManagement.login')} disabled />
 
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='email'
-          label={t('baseApp.customerManagement.email')}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='phoneNumber'
-          label={t('baseApp.customerManagement.phoneNumber')}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='lastName'
-          label={t('baseApp.customerManagement.lastName')}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='firstName'
-          label={t('baseApp.customerManagement.firstName')}
-        />
+        <Field className='form-group--inline' component={Input} name='email' label={t('baseApp.customerManagement.email')} />
+        <Field className='form-group--inline' component={Input} name='phoneNumber' label={t('baseApp.customerManagement.phoneNumber')} />
+        <Field className='form-group--inline' component={Input} name='lastName' label={t('baseApp.customerManagement.lastName')} />
+        <Field className='form-group--inline' component={Input} name='firstName' label={t('baseApp.customerManagement.firstName')} />
 
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='note'
-          label={'Note'}
-        />
+        <Field className='form-group--inline' component={Input} name='note' label={'Note'} />
 
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='fbUrl'
-          label={'Facebook Url'}
-        />
+        <Field className='form-group--inline' component={Input} name='fbUrl' label={'Facebook Url'} />
 
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='igUrl'
-          label={'Instagram Url'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='uid'
-          label={'Contact UID'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='productQualityScore'
-          label={'Quality Score'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='workingSpeedScore'
-          label={'Speed Score'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='workingAttitudeScore'
-          label={'Attitude Score'}
-        />
+        <Field className='form-group--inline' component={Input} name='igUrl' label={'Instagram Url'} />
+        <Field className='form-group--inline' component={Input} name='uid' label={'Contact UID'} />
+        <Field className='form-group--inline' component={Input} name='productQualityScore' label={'Quality Score'} />
+        <Field className='form-group--inline' component={Input} name='workingSpeedScore' label={'Speed Score'} />
+        <Field className='form-group--inline' component={Input} name='workingAttitudeScore' label={'Attitude Score'} />
 
         <FormGroup className='form-group--inline'>
           <label>Status</label>
@@ -187,9 +119,7 @@ const ArtistDetail = ({ style, handleSubmit, ...props }) => {
             }}>
             <ArrowLeftIcon />
             &nbsp;
-            <span className='d-none d-md-inline'>
-              {t('entity.action.back')}
-            </span>
+            <span className='d-none d-md-inline'>{t('entity.action.back')}</span>
           </Button>
           &nbsp;
           <Button

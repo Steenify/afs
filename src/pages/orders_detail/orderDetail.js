@@ -4,7 +4,7 @@ import { isEmpty, filter } from 'lodash';
 
 import InPageLoading from 'components/common/inPageLoading';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 import { dateTimeStringFromDate, getSelectedStatus, getOrderItem } from 'utils';
 
 import OrderSumaryBox from './orderSumaryBox';

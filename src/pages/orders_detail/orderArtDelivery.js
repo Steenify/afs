@@ -9,7 +9,7 @@ import Dropbox from 'components/common/dropbox';
 import Button from 'components/common/button';
 
 import { getListImageUrl, getSelectedStatus } from 'utils';
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { uploadFileWorkLogAction, deleteFileDeliveryAction, getEmailTemplateAction } from './actions';
 

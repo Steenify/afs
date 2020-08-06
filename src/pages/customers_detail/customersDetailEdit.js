@@ -18,7 +18,7 @@ import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 import { getCustomerDetailAction } from './actions';
 import { updateCustomerAction } from 'pages/customers/actions';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const CustomerDetail = ({ style, handleSubmit, history, getCustomerDetailAction, ...props }) => {
   let { login } = useParams();

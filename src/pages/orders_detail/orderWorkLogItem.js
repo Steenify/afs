@@ -19,7 +19,7 @@ import { ReactComponent as PencilLine } from 'assets/img/pencil_line.svg';
 import { ReactComponent as Message } from 'assets/img/message.svg';
 
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
-import { mapStatusCanNotUpload } from 'config';
+import { mapStatusCanNotUpload } from 'configs';
 
 import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction } from './actions';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PageTitle from 'components/common/PageTitle';
 import Button from 'components/common/button';
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const GalleryTitle = ({ onClickUpload = () => {} }) => {
   return (

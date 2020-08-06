@@ -9,7 +9,7 @@ import { appToken } from 'vendor/firebase';
 
 import { isMobile } from 'utils';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 import Notification from '../notification';
 import AccountInfo from './AccountInfo';
@@ -73,9 +73,7 @@ const Header = (props) => {
   return (
     <header className={`header__main ${className || ''}`}>
       <div className='container-fluid p-0'>
-        <Navbar
-          theme='light'
-          className='align-items-stretch flex-md-nowrap p-0'>
+        <Navbar theme='light' className='align-items-stretch flex-md-nowrap p-0'>
           <Nav>
             <button className='hamburger' onClick={handleToggle}>
               <span className='line'></span>

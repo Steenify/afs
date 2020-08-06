@@ -21,7 +21,7 @@ import {
   actUpdateCustomerGroup,
 } from './actions';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const CustomerGroupDetail = ({ style, handleSubmit, ...props }) => {
   let { id } = useParams();

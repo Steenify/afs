@@ -10,7 +10,7 @@ import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
 import {} from './actions';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const ArtistDetail = () => {
   let { login } = useParams();
@@ -21,12 +21,7 @@ const ArtistDetail = () => {
   return (
     <Layout documentTitle={WEB_ROUTES.CS_DETAIL.title} container fluid>
       <div className='d-flex mt-2 mb-3'>
-        <Button
-          className='artists__back'
-          tag={Link}
-          color='link'
-          to={WEB_ROUTES.CS.path}
-          replace>
+        <Button className='artists__back' tag={Link} color='link' to={WEB_ROUTES.CS.path} replace>
           <ArrowLeftIcon />
           &nbsp; &nbsp;
           <span className='d-none d-md-inline'>{WEB_ROUTES.CS.title}</span>

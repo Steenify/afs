@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { reduce } from 'lodash';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import './style.scss';
 
@@ -19,7 +19,7 @@ import { ReactComponent as Payouts } from 'assets/img/payouts.svg';
 import { ReactComponent as Package } from 'assets/img/gallery.svg';
 import { ReactComponent as LateNotification } from 'assets/img/late_notification.svg';
 
-import { WEB_ROUTES } from 'config/index';
+import { WEB_ROUTES } from 'configs/index';
 
 import { toggleMenu } from 'store/actions';
 

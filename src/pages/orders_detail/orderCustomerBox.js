@@ -4,31 +4,17 @@ import { Spinner } from 'reactstrap';
 import { isEmpty } from 'lodash';
 import { Link } from 'react-router-dom';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { formatMoney } from 'utils';
 
 import { getOrderCustomerAction } from './actions';
 
-const OrderCustomerBox = ({
-  order,
-  customer,
-  loadingUser,
-  getOrderCustomer,
-  accountInfo,
-}) => {
-  const canViewCustommer =
-    accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO) ||
-    false;
-  const canViewGeneralInfo =
-    accountInfo?.permissions?.includes(
-      PERMITTIONS_CONFIG.VIEW_CUSTOMER_GENERAL_INFO,
-    ) || false;
+const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, accountInfo }) => {
+  const canViewCustommer = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO) || false;
+  const canViewGeneralInfo = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_GENERAL_INFO) || false;
 
-  const canViewContactInfo =
-    accountInfo?.permissions?.includes(
-      PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO,
-    ) || false;
+  const canViewContactInfo = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO) || false;
 
   useEffect(() => {
     if (canViewCustommer && order.id) {
@@ -42,9 +28,7 @@ const OrderCustomerBox = ({
 
   if (loadingUser || isEmpty(customer)) {
     return (
-      <div
-        style={{ minHeight: '100px' }}
-        className='order_detail__customer box d-flex align-items-center justify-content-center'>
+      <div style={{ minHeight: '100px' }} className='order_detail__customer box d-flex align-items-center justify-content-center'>
         <Spinner />
       </div>
     );
@@ -58,10 +42,7 @@ const OrderCustomerBox = ({
         <div className='box__title'>Customer info </div>
         <div className='control'>
           <div className='order_detail__avt'>
-            <img
-              src={`https://ui-avatars.com/api/?name=${customer?.firstName}${customer?.lastName}`}
-              alt='comments__author'
-            />
+            <img src={`https://ui-avatars.com/api/?name=${customer?.firstName}${customer?.lastName}`} alt='comments__author' />
           </div>
         </div>
       </div>
@@ -81,26 +62,14 @@ const OrderCustomerBox = ({
               )}
             </p>
             <p className='mb-1'>{customer?.totalOrder || 1} Order </p>
-            {canViewContactInfo && (
-              <p className='mb-1'>
-                Total Spent: {formatMoney(customer?.totalSpent || 0)}
-              </p>
-            )}
+            {canViewContactInfo && <p className='mb-1'>Total Spent: {formatMoney(customer?.totalSpent || 0)}</p>}
 
-            {customer?.note && (
-              <p className='mb-1'>Note: {customer?.note || ''} </p>
-            )}
+            {customer?.note && <p className='mb-1'>Note: {customer?.note || ''} </p>}
 
-            {customer?.sex && (
-              <p className='mb-1'>Gender: {customer?.sex || ''} </p>
-            )}
-            {customer?.age && (
-              <p className='mb-1'>Age: {customer?.age || ''} </p>
-            )}
+            {customer?.sex && <p className='mb-1'>Gender: {customer?.sex || ''} </p>}
+            {customer?.age && <p className='mb-1'>Age: {customer?.age || ''} </p>}
 
-            {customer?.dob && (
-              <p className='mb-1'>DoB: {customer?.dob || ''} </p>
-            )}
+            {customer?.dob && <p className='mb-1'>DoB: {customer?.dob || ''} </p>}
           </>
         )}
         {canViewContactInfo && (
@@ -110,17 +79,12 @@ const OrderCustomerBox = ({
               <div className='box__title'>Contact Info</div>
             </div>
             {contact?.email && <p className='mb-1'>Email: {contact?.email}</p>}
-            {contact?.phoneNumber && (
-              <p className='mb-1'>Phone: {contact?.phoneNumber}</p>
-            )}
+            {contact?.phoneNumber && <p className='mb-1'>Phone: {contact?.phoneNumber}</p>}
 
             {contact?.fbChat && (
               <p className='mb-1'>
                 Facebook Chat: &nbsp;
-                <a
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={`${contact?.fbChat}`}>
+                <a target='_blank' rel='noopener noreferrer' href={`${contact?.fbChat}`}>
                   Link
                 </a>
               </p>
@@ -128,10 +92,7 @@ const OrderCustomerBox = ({
             {contact?.mailChain && (
               <p className='mb-1'>
                 Mail Chain: &nbsp;
-                <a
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={`${contact?.mailChain}`}>
+                <a target='_blank' rel='noopener noreferrer' href={`${contact?.mailChain}`}>
                   Link
                 </a>
               </p>
@@ -139,10 +100,7 @@ const OrderCustomerBox = ({
             {contact?.fbUrl && (
               <p className='mb-1'>
                 Facebook: &nbsp;
-                <a
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={`${contact?.fbUrl}`}>
+                <a target='_blank' rel='noopener noreferrer' href={`${contact?.fbUrl}`}>
                   Link
                 </a>
               </p>
@@ -150,10 +108,7 @@ const OrderCustomerBox = ({
             {contact?.igUrl && (
               <p className='mb-1'>
                 Instagram: &nbsp;
-                <a
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={`${contact?.igUrl}`}>
+                <a target='_blank' rel='noopener noreferrer' href={`${contact?.igUrl}`}>
                   Link
                 </a>
               </p>
@@ -161,10 +116,7 @@ const OrderCustomerBox = ({
             {contact?.snapChatUrl && (
               <p className='mb-1'>
                 SnapChat: &nbsp;
-                <a
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={`${contact?.snapChatUrl}`}>
+                <a target='_blank' rel='noopener noreferrer' href={`${contact?.snapChatUrl}`}>
                   Link
                 </a>
               </p>
@@ -172,10 +124,7 @@ const OrderCustomerBox = ({
             {contact?.linkedUrl && (
               <p className='mb-1'>
                 LinkedIn: &nbsp;
-                <a
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={`${contact?.linkedUrl}`}>
+                <a target='_blank' rel='noopener noreferrer' href={`${contact?.linkedUrl}`}>
                   Link
                 </a>
               </p>
@@ -183,10 +132,7 @@ const OrderCustomerBox = ({
             {contact?.twitterUrl && (
               <p className='mb-1'>
                 Twitter: &nbsp;
-                <a
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={`${contact?.twitterUrl}`}>
+                <a target='_blank' rel='noopener noreferrer' href={`${contact?.twitterUrl}`}>
                   Link
                 </a>
               </p>
@@ -200,27 +146,18 @@ const OrderCustomerBox = ({
             <div className='box__header mb-2'>
               <div className='box__title'>Address</div>
             </div>
-            {orderInfo?.company && (
-              <p className='mb-1'>{orderInfo?.company || ''}</p>
-            )}
-            {orderInfo?.address1 && (
-              <p className='mb-1'>{`${orderInfo?.address1 || ''}`}</p>
-            )}
-            {orderInfo?.address2 && (
-              <p className='mb-1'>{`${orderInfo?.address2 || ''}`}</p>
-            )}
+            {orderInfo?.company && <p className='mb-1'>{orderInfo?.company || ''}</p>}
+            {orderInfo?.address1 && <p className='mb-1'>{`${orderInfo?.address1 || ''}`}</p>}
+            {orderInfo?.address2 && <p className='mb-1'>{`${orderInfo?.address2 || ''}`}</p>}
 
             {orderInfo?.province ||
               orderInfo?.city ||
               (orderInfo?.zip && (
                 <p className='mb-1'>
-                  {orderInfo?.city || ''} {orderInfo?.province || ''}{' '}
-                  {orderInfo?.zip || ''}
+                  {orderInfo?.city || ''} {orderInfo?.province || ''} {orderInfo?.zip || ''}
                 </p>
               ))}
-            {orderInfo?.country && (
-              <p className='mb-1'>{orderInfo?.country || ''}</p>
-            )}
+            {orderInfo?.country && <p className='mb-1'>{orderInfo?.country || ''}</p>}
           </>
         )}
       </div>

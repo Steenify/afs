@@ -5,7 +5,7 @@ import NotificationList from './notificationList';
 import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const NotificationManagement = () => {
   const { t } = useTranslation();

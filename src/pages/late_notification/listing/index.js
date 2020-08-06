@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Layout from 'components/common/Layout';
 import { getLateNotificationAction, updateFilterAction, getLateNotificationTemplateAction } from './action';
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 import { initialState } from './const';
 import Paging from 'components/common/paging';
 import Title from './title';

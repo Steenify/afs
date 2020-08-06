@@ -8,28 +8,12 @@ import ImageGallery from 'components/common/imageGallery';
 import Dropbox from 'components/common/dropbox';
 
 import { getListImageUrl } from 'utils';
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
-import {
-  updateOrderItemSumarizeAction,
-  updateOrderItemSumarizeAPIAction,
-  updateOrderItemFilesAction,
-  deleteFileSummaryAction,
-} from './actions';
+import { updateOrderItemSumarizeAction, updateOrderItemSumarizeAPIAction, updateOrderItemFilesAction, deleteFileSummaryAction } from './actions';
 
-const OrderSumaryBox = ({
-  item,
-  order,
-  index,
-  updateOrderItemSumarize,
-  updateOrderItemSumarizeAPI,
-  updateOrderItemFiles,
-  accountInfo,
-  deleteFileSummary,
-}) => {
-  const canEditSumary =
-    accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_SUMMARY) ||
-    false;
+const OrderSumaryBox = ({ item, order, index, updateOrderItemSumarize, updateOrderItemSumarizeAPI, updateOrderItemFiles, accountInfo, deleteFileSummary }) => {
+  const canEditSumary = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_SUMMARY) || false;
 
   const [isEdit, setIsEdit] = useState(false);
   const dropbox = useRef(null);
@@ -98,21 +82,11 @@ const OrderSumaryBox = ({
   };
 
   const handleDeleteFile = (file) => {
-    const fileIndex = findIndex(
-      item.photos,
-      (pho) => pho?.id === file?.source?.id,
-    );
+    const fileIndex = findIndex(item.photos, (pho) => pho?.id === file?.source?.id);
 
-    deleteFileSummary(
-      order.id,
-      item.id,
-      file?.source?.id,
-      index,
-      fileIndex,
-      () => {
-        toast.dark('File deleteted!');
-      },
-    );
+    deleteFileSummary(order.id, item.id, file?.source?.id, index, fileIndex, () => {
+      toast.dark('File deleteted!');
+    });
   };
 
   const morePhotos = filter(item.photos, (p) => !p.external);
@@ -124,17 +98,11 @@ const OrderSumaryBox = ({
         {canEditSumary && (
           <div className='control'>
             {isEdit ? (
-              <button
-                type='button'
-                onClick={handleSave}
-                className='box__control'>
+              <button type='button' onClick={handleSave} className='box__control'>
                 Save
               </button>
             ) : (
-              <button
-                type='button'
-                onClick={handleEdit}
-                className='box__control'>
+              <button type='button' onClick={handleEdit} className='box__control'>
                 Edit
               </button>
             )}
@@ -157,10 +125,7 @@ const OrderSumaryBox = ({
               apiKey: '8yd4ibfq5z8v9bj8ddn2hezmxgm68ijow36krpjasr0ucty8',
               height: 300,
               menubar: false,
-              plugins: [
-                'advlist autolink lists link',
-                'visualblocks code paste',
-              ],
+              plugins: ['advlist autolink lists link', 'visualblocks code paste'],
               toolbar: `formatselect | link | bold italic |
             alignleft aligncenter alignright |
             bullist | numlist | outdent | indent | code`,
@@ -173,14 +138,7 @@ const OrderSumaryBox = ({
         {morePhotos && morePhotos.length > 0 ? (
           <>
             <h3 className='photos__title'>More photo from customer:</h3>
-            <ImageGallery
-              className='photos__gallery'
-              images={getListImageUrl(morePhotos)}
-              alt={item.name}
-              caption={item.name}
-              canDelete={canEditSumary && isEdit}
-              onDelete={handleDeleteFile}
-            />
+            <ImageGallery className='photos__gallery' images={getListImageUrl(morePhotos)} alt={item.name} caption={item.name} canDelete={canEditSumary && isEdit} onDelete={handleDeleteFile} />
           </>
         ) : null}
 

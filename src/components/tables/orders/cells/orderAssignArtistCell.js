@@ -7,7 +7,7 @@ import { get } from 'lodash';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { updateOrderTableItemsAction, updateOrderTableAssignArtistAction } from 'components/tables/orders/actions';
 import ListArtists from 'components/layout/ListArtistAssign';

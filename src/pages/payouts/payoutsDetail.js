@@ -13,7 +13,7 @@ import { ReactComponent as ArrowLeftIcon } from 'assets/img/chevonRight.svg';
 
 import { getPayoutDetailAction } from './actions';
 
-import { WEB_ROUTES, PERMITTIONS_CONFIG } from 'config';
+import { WEB_ROUTES, PERMITTIONS_CONFIG } from 'configs';
 
 import { formatMoney, getListImageUrl, dateTimeToDeadline } from 'utils';
 
@@ -29,21 +29,14 @@ const PayoutDetail = (props) => {
   return (
     <Layout documentTitle={WEB_ROUTES.PAYOUTS_DETAIL.title} container fluid>
       <div className='d-flex mt-2 mb-3'>
-        <Button
-          className='artists__back p-0'
-          tag={Link}
-          color='link'
-          to={WEB_ROUTES.PAYOUTS.path}
-          replace>
+        <Button className='artists__back p-0' tag={Link} color='link' to={WEB_ROUTES.PAYOUTS.path} replace>
           <ArrowLeftIcon />
           &nbsp; &nbsp;
           <span>{WEB_ROUTES.PAYOUTS.title}</span>
         </Button>
       </div>
 
-      <PageTitle
-        title={WEB_ROUTES.PAYOUTS_DETAIL.title}
-        className='mb-4 mr-3 d-none d-md-block'></PageTitle>
+      <PageTitle title={WEB_ROUTES.PAYOUTS_DETAIL.title} className='mb-4 mr-3 d-none d-md-block'></PageTitle>
 
       <div className='payouts_detail'>
         <div className='payouts_detail__box box'>
@@ -54,16 +47,12 @@ const PayoutDetail = (props) => {
                   <div className='to'>
                     <strong>Payment sent</strong> to
                     <Link to={`/artists/${detail?.artist?.login}`}>
-                      <span className='payouts__link'>
-                        {` ${detail?.artist?.firstName} ${detail?.artist?.lastName}`}
-                      </span>
+                      <span className='payouts__link'>{` ${detail?.artist?.firstName} ${detail?.artist?.lastName}`}</span>
                     </Link>
                   </div>
                 </CanShow>
 
-                <div className='date'>
-                  {dateTimeToDeadline(detail?.createdDate)}
-                </div>
+                <div className='date'>{dateTimeToDeadline(detail?.createdDate)}</div>
                 <div className='status'>
                   Payment status: <strong>Complete</strong>
                 </div>
@@ -75,9 +64,7 @@ const PayoutDetail = (props) => {
             </div>
             <div className='right'>
               <div className='name'>Amount</div>
-              <div className='number'>
-                {formatMoney(detail?.totalPaid || 0)}
-              </div>
+              <div className='number'>{formatMoney(detail?.totalPaid || 0)}</div>
             </div>
           </div>
           <div className='box__device'></div>
@@ -91,44 +78,30 @@ const PayoutDetail = (props) => {
                     {(detail?.items || []).map((item) => {
                       if (item?.payoutItemType === 'EXTRA_PAYMENT') {
                         return (
-                          <div
-                            key={`payout__detail__item__${item.id}`}
-                            className='row payouts_detail__order'>
+                          <div key={`payout__detail__item__${item.id}`} className='row payouts_detail__order'>
                             <div className='col-6'>
                               <span className='label'>Extra</span>
                             </div>
                             <div className='col-6'>
-                              <strong className='value'>
-                                {formatMoney(item?.paid)}
-                              </strong>
+                              <strong className='value'>{formatMoney(item?.paid)}</strong>
 
-                              {item?.note && (
-                                <span className='ml-2'>({item?.note})</span>
-                              )}
+                              {item?.note && <span className='ml-2'>({item?.note})</span>}
                             </div>
                           </div>
                         );
                       }
 
                       return (
-                        <div
-                          key={`payout__detail__item__${item.id}`}
-                          className='row payouts_detail__order'>
+                        <div key={`payout__detail__item__${item.id}`} className='row payouts_detail__order'>
                           <div className='col-6'>
                             <Link to={`/order/${item?.booking?.code}`}>
-                              <span className='label'>
-                                #{item?.booking?.number}
-                              </span>
+                              <span className='label'>#{item?.booking?.number}</span>
                             </Link>
                           </div>
                           <div className='col-6'>
-                            <strong className='value'>
-                              {formatMoney(item?.paid)}
-                            </strong>
+                            <strong className='value'>{formatMoney(item?.paid)}</strong>
 
-                            {item?.note && (
-                              <span className='ml-2'>({item?.note})</span>
-                            )}
+                            {item?.note && <span className='ml-2'>({item?.note})</span>}
                           </div>
                         </div>
                       );
@@ -140,9 +113,7 @@ const PayoutDetail = (props) => {
                         <strong className='value'>Total</strong>
                       </div>
                       <div className='col-6'>
-                        <strong className='value'>
-                          {formatMoney(detail?.totalPaid)}{' '}
-                        </strong>
+                        <strong className='value'>{formatMoney(detail?.totalPaid)} </strong>
                       </div>
                     </div>
 
@@ -152,9 +123,7 @@ const PayoutDetail = (props) => {
                         <strong className='value'>Payment Sent to</strong>
                       </div>
                       <div className='col-6'>
-                        <strong className='value'>
-                          {detail?.artist?.email}
-                        </strong>
+                        <strong className='value'>{detail?.artist?.email}</strong>
                       </div>
                     </div>
 
@@ -176,11 +145,7 @@ const PayoutDetail = (props) => {
                   <div className='payouts_detail__title'>Evidence</div>
                   <div className='payouts_detail__body'>
                     <div className='payouts_detail__photos'>
-                      <ImageGallery
-                        images={getListImageUrl(detail?.attachments || [])}
-                        alt={`payout`}
-                        caption={'payout'}
-                      />
+                      <ImageGallery images={getListImageUrl(detail?.attachments || [])} alt={`payout`} caption={'payout'} />
                     </div>
                   </div>
                 </div>

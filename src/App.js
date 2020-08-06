@@ -47,7 +47,7 @@ import LateNotificationList from 'pages/late_notification/listing';
 
 import head from 'utils/head';
 
-import { WEB_ROUTES, mapRoles } from 'config';
+import { WEB_ROUTES, mapRoles } from 'configs';
 
 import CustomerChat from 'vendor/facebookChat';
 

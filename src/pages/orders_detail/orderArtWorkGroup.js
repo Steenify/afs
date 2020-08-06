@@ -5,12 +5,7 @@ import { toast } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import { findIndex } from 'lodash';
 import { getSelectedStatus, dateTimeStringFromDate } from 'utils';
-import {
-  PERMITTIONS_CONFIG,
-  mapStatusOpen,
-  mapStatusNotiy,
-  mapStatusVerifyFile,
-} from 'config';
+import { PERMITTIONS_CONFIG, mapStatusOpen, mapStatusNotiy, mapStatusVerifyFile } from 'configs';
 
 import { ReactComponent as Toggle } from 'assets/img/toggle.svg';
 import { ReactComponent as Close } from 'assets/img/close.svg';
@@ -20,13 +15,7 @@ import Button from 'components/common/button';
 import OrderWorkLogItem from './orderWorkLogItem';
 import OrderRejectModal from './orderRejectModal';
 
-import {
-  approvedWorkLogAction,
-  rejectedWorkLogAction,
-  getEmailTemplateAction,
-  updateOrderStatusAction,
-  uploadCommentWorkLogAction,
-} from './actions';
+import { approvedWorkLogAction, rejectedWorkLogAction, getEmailTemplateAction, updateOrderStatusAction, uploadCommentWorkLogAction } from './actions';
 
 const OrderArtWorkGroup = ({
   order,
@@ -57,22 +46,12 @@ const OrderArtWorkGroup = ({
 
   const lastWork = works[works.length - 1];
 
-  const canNotifyCustomer =
-    accountInfo?.permissions?.includes(
-      PERMITTIONS_CONFIG.NOTIFY_BOOKING_TO_CUSTOMER,
-    ) || false;
+  const canNotifyCustomer = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.NOTIFY_BOOKING_TO_CUSTOMER) || false;
 
-  const canAprroved =
-    accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) ||
-    false;
-  const canRejected =
-    accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.REJECT_WORK_LOG) ||
-    false;
+  const canAprroved = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) || false;
+  const canRejected = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.REJECT_WORK_LOG) || false;
 
-  const canChangeStatus =
-    accountInfo?.permissions?.includes(
-      PERMITTIONS_CONFIG.UPDATE_STATUS_BOOKING,
-    ) || false;
+  const canChangeStatus = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_STATUS_BOOKING) || false;
 
   const handleApproveWorkLog = (LogId) => {
     confirmAlert({
@@ -81,10 +60,7 @@ const OrderArtWorkGroup = ({
           <div className='comfirm_cus'>
             <div className='comfirm_cus__header'>
               <div className='comfirm_cus__titl'>Change Status</div>
-              <button
-                type='button'
-                onClick={onClose}
-                className='comfirm_cus__close'>
+              <button type='button' onClick={onClose} className='comfirm_cus__close'>
                 <div className='icon'>
                   <Close />
                 </div>
@@ -94,9 +70,7 @@ const OrderArtWorkGroup = ({
               <p>Are you sure you want to change status this orders?</p>
             </div>
             <div className='comfirm_cus__footer text-right'>
-              <button
-                className='comfirm_cus__cancel comfirm_cus__control'
-                onClick={onClose}>
+              <button className='comfirm_cus__cancel comfirm_cus__control' onClick={onClose}>
                 Cancel
               </button>
               <button
@@ -117,11 +91,7 @@ const OrderArtWorkGroup = ({
   const handleNotifyEmail = (workLogIndex) => {
     const currentStatus = getSelectedStatus(order.status, status);
     if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
-      getEmailTemplate(
-        order.id,
-        currentStatus.emailTemplates[0].id,
-        workLogIndex,
-      );
+      getEmailTemplate(order.id, currentStatus.emailTemplates[0].id, workLogIndex);
     } else {
       toast.warn('No Email template found!');
     }
@@ -159,12 +129,8 @@ const OrderArtWorkGroup = ({
     <div className='order_detail__work_group group'>
       <div className={`group__header ${group || ''}`}>
         <div className='group__title' onClick={toggle}>
-          <div className='state dot'>
-            {getSelectedStatus(group, status).friendlyName}
-          </div>
-          <div className='deadline'>
-            {dateTimeStringFromDate(lastWork?.createdDate)}
-          </div>
+          <div className='state dot'>{getSelectedStatus(group, status).friendlyName}</div>
+          <div className='deadline'>{dateTimeStringFromDate(lastWork?.createdDate)}</div>
         </div>
 
         <button onClick={toggle} type='button' className='group__toggle'>
@@ -177,18 +143,14 @@ const OrderArtWorkGroup = ({
         <div className={`group__body ${isNewOrder && 'isNewOrder'}`}>
           {works.map((work) => {
             const showActionState = lastWorkLog.id === work.id;
-            const showActionPermitions =
-              canNotifyCustomer || canAprroved || canRejected;
+            const showActionPermitions = canNotifyCustomer || canAprroved || canRejected;
 
             const isNewStatus = work.status === 'NEW_ORDER';
             const isDoneStatus = work.status === 'DONE';
             const isExportFile = work.status === 'EXPORT_FILE';
             const isSendFile = work.status === 'SEND_FILE';
 
-            const workLogIndex = findIndex(
-              workLog,
-              (log) => log.id === work.id,
-            );
+            const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
 
             if (isDoneStatus) {
               return null;
@@ -197,16 +159,10 @@ const OrderArtWorkGroup = ({
             if (isNewStatus) {
               if (isNewOrder) {
                 return (
-                  <div
-                    key={`order_detail__work__${work.id}`}
-                    className='order_detail__work'>
+                  <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                     {canChangeStatus && (
                       <div className='order_detail__ctas text-center'>
-                        <Button
-                          onClick={handleStartSketch}
-                          color='primary'
-                          className='cta'
-                          type='button'>
+                        <Button onClick={handleStartSketch} color='primary' className='cta' type='button'>
                           Start Sketching
                         </Button>
                       </div>
@@ -217,24 +173,14 @@ const OrderArtWorkGroup = ({
             }
 
             return (
-              <div
-                key={`order_detail__work__${work.id}`}
-                className='order_detail__work'>
-                <OrderWorkLogItem
-                  work={work}
-                  isOpened={showActionState}
-                  order={order}
-                />
+              <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
+                <OrderWorkLogItem work={work} isOpened={showActionState} order={order} />
 
                 {showActionState && showActionPermitions && (
                   <div className='order_detail__ctas d-flex flex-wrap justify-content-between'>
                     <div className=''>
                       {canNotifyCustomer && isNotifyStatus && (
-                        <Button
-                          color='primary'
-                          onClick={() => handleNotifyEmail(workLogIndex)}
-                          className='cta cta2 mb-3 order_detail__notify'
-                          type='button'>
+                        <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} className='cta cta2 mb-3 order_detail__notify' type='button'>
                           Notify Customer
                         </Button>
                       )}
@@ -244,37 +190,22 @@ const OrderArtWorkGroup = ({
                       {canRejected && !isExportFile && !isSendFile && (
                         <Button
                           color='secondary'
-                          onClick={() =>
-                            handleConfirmRejectWorkLog(work.id, workLogIndex)
-                          }
+                          onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex)}
                           className='cta cta2 mr-2 mb-3'
-                          disabled={
-                            !(work.attachments.length > 0) && needCheckFile
-                          }
+                          disabled={!(work.attachments.length > 0) && needCheckFile}
                           type='button'>
                           Reject
                         </Button>
                       )}
 
                       {canAprroved && !isSendFile && (
-                        <Button
-                          color='primary'
-                          onClick={() => handleApproveWorkLog(work.id)}
-                          className='cta cta2 mb-3'
-                          disabled={
-                            !(work.attachments.length > 0) && needCheckFile
-                          }
-                          type='button'>
+                        <Button color='primary' onClick={() => handleApproveWorkLog(work.id)} className='cta cta2 mb-3' disabled={!(work.attachments.length > 0) && needCheckFile} type='button'>
                           Approved
                         </Button>
                       )}
 
                       {isSendFile && (
-                        <Button
-                          color='primary'
-                          onClick={() => handleApproveWorkLog(work.id)}
-                          className='cta cta2 mb-3'
-                          type='button'>
+                        <Button color='primary' onClick={() => handleApproveWorkLog(work.id)} className='cta cta2 mb-3' type='button'>
                           Mark as Done
                         </Button>
                       )}

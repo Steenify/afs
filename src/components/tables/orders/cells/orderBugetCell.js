@@ -9,7 +9,7 @@ import Button from 'components/common/button';
 
 import { formatMoney, formatNumber } from 'utils';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 

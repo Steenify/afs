@@ -6,7 +6,7 @@ import { Spinner } from 'reactstrap';
 import TableBody from 'components/common/tableBody';
 import TableHeader from 'components/common/tableHeader';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { remove, get } from 'lodash';
 

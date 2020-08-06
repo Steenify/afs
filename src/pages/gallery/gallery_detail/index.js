@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Layout from 'components/common/Layout';
-import WEB_ROUTES from 'config/web-routes';
+import WEB_ROUTES from 'configs/web-routes';
 import PageTitle from 'components/common/PageTitle';
 import ImageLoadAble from 'components/common/imageLoadAble';
 import Tags from '../gallery_listing/tags';

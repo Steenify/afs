@@ -11,7 +11,7 @@ import { getOrderTableStatusAction, updateOrderTableFilterAction } from 'compone
 
 import { getListImageUrl, dateTimeStringFromDate, getOrderItem, getOrderOption, getSelectedStatus, formatMoney } from 'utils';
 import { useHistory } from 'react-router-dom';
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 import StepperArrow from 'components/common/stepperArrow';
 
 const CustomerDetailOrders = (props) => {

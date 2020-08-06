@@ -15,13 +15,9 @@ import PageTitle from 'components/common/PageTitle';
 import Button from 'components/common/button';
 import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
-import {
-  actGetAuthority,
-  actGetAllPermissions,
-  actUpdateAuthority,
-} from './actions';
+import { actGetAuthority, actGetAllPermissions, actUpdateAuthority } from './actions';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const RoleDetail = ({ style, handleSubmit, ...props }) => {
   let { id } = useParams();
@@ -89,27 +85,12 @@ const RoleDetail = ({ style, handleSubmit, ...props }) => {
           },
         ]}
       />
-      <PageTitle
-        title={t(WEB_ROUTES.USER_ROLE.title)}
-        className='mb-0 mr-3'></PageTitle>
+      <PageTitle title={t(WEB_ROUTES.USER_ROLE.title)} className='mb-0 mr-3'></PageTitle>
 
       <Form onSubmit={handleSubmit(onSubmit)}>
-        {errorRequest && errorRequest.message && (
-          <Alert color='danger'>{errorRequest.message}</Alert>
-        )}
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='name'
-          label={t('baseApp.authority.name')}
-        />
-        <Field
-          className='form-group--inline form-group--textarea'
-          type='textarea'
-          component={Input}
-          name='description'
-          label={t('baseApp.authority.description')}
-        />
+        {errorRequest && errorRequest.message && <Alert color='danger'>{errorRequest.message}</Alert>}
+        <Field className='form-group--inline' component={Input} name='name' label={t('baseApp.authority.name')} />
+        <Field className='form-group--inline form-group--textarea' type='textarea' component={Input} name='description' label={t('baseApp.authority.description')} />
         <Field
           className='form-group--inline'
           component={Select}
@@ -136,9 +117,7 @@ const RoleDetail = ({ style, handleSubmit, ...props }) => {
             }}>
             <ArrowLeftIcon />
             &nbsp;
-            <span className='d-none d-md-inline'>
-              {t('entity.action.back')}
-            </span>
+            <span className='d-none d-md-inline'>{t('entity.action.back')}</span>
           </Button>
           &nbsp;
           <Button
@@ -167,9 +146,7 @@ const mapStateToProps = ({ role }) => {
       id: role.detail.id,
       name: role.detail.name,
       description: role.detail.description,
-      permissions:
-        role.detail.permissions &&
-        role.detail.permissions.map((item) => item.name),
+      permissions: role.detail.permissions && role.detail.permissions.map((item) => item.name),
     },
     errorRequest: role.error,
     ui: role.ui.edit,

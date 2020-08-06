@@ -3,7 +3,7 @@ import React from 'react';
 import Layout from 'components/common/Layout';
 import Breadcrumb from 'components/common/breadcrumb';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 import Detail from './customersDetail';
 

@@ -8,16 +8,13 @@ import SystemPropertyList from './SystemPropertyList';
 
 import './style.scss';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const SystemPropertiesManagement = () => {
   const { t } = useTranslation();
 
   return (
-    <Layout
-      documentTitle={t(WEB_ROUTES.SYSTEM_PROPERTY_LIST.title)}
-      container
-      fluid>
+    <Layout documentTitle={t(WEB_ROUTES.SYSTEM_PROPERTY_LIST.title)} container fluid>
       <Breadcrumb
         data={[
           {
@@ -27,9 +24,7 @@ const SystemPropertiesManagement = () => {
           },
         ]}
       />
-      <PageTitle
-        title={t(WEB_ROUTES.SYSTEM_PROPERTY_LIST.title)}
-        className='mb-0 mr-3'></PageTitle>
+      <PageTitle title={t(WEB_ROUTES.SYSTEM_PROPERTY_LIST.title)} className='mb-0 mr-3'></PageTitle>
       <SystemPropertyList />
     </Layout>
   );

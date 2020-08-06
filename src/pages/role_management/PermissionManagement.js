@@ -7,7 +7,7 @@ import Layout from 'components/common/Layout';
 import Breadcrumb from 'components/common/breadcrumb';
 import PageTitle from 'components/common/PageTitle';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const PermissionManagement = () => {
   const { t } = useTranslation();
@@ -23,9 +23,7 @@ const PermissionManagement = () => {
           },
         ]}
       />
-      <PageTitle
-        title={t(WEB_ROUTES.USER_PERMISSION.title)}
-        className='mb-0 mr-3'>
+      <PageTitle title={t(WEB_ROUTES.USER_PERMISSION.title)} className='mb-0 mr-3'>
         <PermissionCreate />
       </PageTitle>
       <PermissionList />

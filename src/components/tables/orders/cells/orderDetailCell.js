@@ -8,7 +8,7 @@ import Button from 'components/common/button';
 import ImageGallery from 'components/common/imageGallery';
 import { getListImageUrl } from 'utils';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { ReactComponent as Eye } from 'assets/img/eye.svg';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';

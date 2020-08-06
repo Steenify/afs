@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import Layout from 'components/common/Layout';
 import Breadcrumb from 'components/common/breadcrumb';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 import { getOrderDetailAction } from './actions';
 import { getOrderTableStatusAction } from 'components/tables/orders/actions';

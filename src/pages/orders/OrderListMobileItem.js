@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { getSelectedStatus, timeStringFromDate, formatMoney } from 'utils';
-import { mapStatusPayment, statusPayments } from 'config';
+import { mapStatusPayment, statusPayments } from 'configs';
 
 const OrderListMobileItem = ({ item, goToDetail, statuses }) => {
   const assignedTo = item?.assignedTo || {};
@@ -12,27 +12,14 @@ const OrderListMobileItem = ({ item, goToDetail, statuses }) => {
     <div onClick={() => goToDetail(item?.code)} className={`group__item`}>
       <div className='left'>
         <div className='top'>
-          <div className='name'>
-            {`${customer?.firstName || ''} ${customer?.lastName || ''}`}
-          </div>
+          <div className='name'>{`${customer?.firstName || ''} ${customer?.lastName || ''}`}</div>
           <div className='time'>{timeStringFromDate(item?.paidAt)}</div>
         </div>
         <div className='number'>#{item?.number}</div>
         <div className='status'>
-          <div
-            className={`order__status ${
-              getSelectedStatus(item?.status, statuses).name
-            }`}>
-            {getSelectedStatus(item?.status, statuses).friendlyName}
-          </div>
+          <div className={`order__status ${getSelectedStatus(item?.status, statuses).name}`}>{getSelectedStatus(item?.status, statuses).friendlyName}</div>
 
-          <div
-            className={`order__status ${
-              item?.artistPaymentStatus || statusPayments[1]
-            }`}>
-            {mapStatusPayment[item?.artistPaymentStatus] ||
-              mapStatusPayment.UNPAID}
-          </div>
+          <div className={`order__status ${item?.artistPaymentStatus || statusPayments[1]}`}>{mapStatusPayment[item?.artistPaymentStatus] || mapStatusPayment.UNPAID}</div>
         </div>
 
         <div className='item'>{(item?.items || []).length} items</div>
@@ -45,15 +32,7 @@ const OrderListMobileItem = ({ item, goToDetail, statuses }) => {
 
         <div className='bot'>
           <div className='assign'>
-            Artist:{' '}
-            <span>
-              {isEmpty(assignedTo) || assignedTo?.login === 'null'
-                ? '_______'
-                : `${assignedTo?.fullName || ''}` ||
-                  `${assignedTo?.firstName || ''} ${
-                    assignedTo?.lastName || ''
-                  }`}
-            </span>
+            Artist: <span>{isEmpty(assignedTo) || assignedTo?.login === 'null' ? '_______' : `${assignedTo?.fullName || ''}` || `${assignedTo?.firstName || ''} ${assignedTo?.lastName || ''}`}</span>
           </div>
         </div>
       </div>
@@ -74,7 +53,4 @@ const mapStateToProps = ({ order }, ownProps) => {
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(OrderListMobileItem);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderListMobileItem);

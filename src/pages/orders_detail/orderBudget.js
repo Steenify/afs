@@ -7,7 +7,7 @@ import Popover from 'react-tiny-popover';
 
 import { formatMoney } from 'utils';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 

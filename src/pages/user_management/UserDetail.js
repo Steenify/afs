@@ -20,7 +20,7 @@ import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 import { actGetUser, actUpdateUser } from './actions';
 import { actGetAuthorities } from 'pages/role_management/actions';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 import { useTranslation } from 'react-i18next';
 
@@ -36,9 +36,7 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
   const { ui, errorRequest, authorities } = props;
   const { t } = useTranslation();
 
-  const selectAuthorities = authorities.filter(
-    (item) => item.name !== 'ROLE_CUSTOMER',
-  );
+  const selectAuthorities = authorities.filter((item) => item.name !== 'ROLE_CUSTOMER');
 
   const onSubmit = (values) => {
     props.actUpdateUser(values).then((res) => {
@@ -84,45 +82,15 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
           },
         ]}
       />
-      <PageTitle
-        title={t('baseApp.userManagement.detail.title')}
-        className='mb-0 mr-3'></PageTitle>
+      <PageTitle title={t('baseApp.userManagement.detail.title')} className='mb-0 mr-3'></PageTitle>
 
       <Form style={{ marginTop: 27 }} onSubmit={handleSubmit(onSubmit)}>
-        {errorRequest && errorRequest.message && (
-          <Alert color='danger'>{errorRequest.message}</Alert>
-        )}
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='login'
-          label={t('baseApp.userManagement.login')}
-          disabled
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='email'
-          label={t('baseApp.userManagement.email')}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='phoneNumber'
-          label={'Phone number'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='lastName'
-          label={t('baseApp.userManagement.lastName')}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='firstName'
-          label={t('baseApp.userManagement.firstName')}
-        />
+        {errorRequest && errorRequest.message && <Alert color='danger'>{errorRequest.message}</Alert>}
+        <Field className='form-group--inline' component={Input} name='login' label={t('baseApp.userManagement.login')} disabled />
+        <Field className='form-group--inline' component={Input} name='email' label={t('baseApp.userManagement.email')} />
+        <Field className='form-group--inline' component={Input} name='phoneNumber' label={'Phone number'} />
+        <Field className='form-group--inline' component={Input} name='lastName' label={t('baseApp.userManagement.lastName')} />
+        <Field className='form-group--inline' component={Input} name='firstName' label={t('baseApp.userManagement.firstName')} />
         <Field
           className='form-group--inline form-group--role'
           component={Select}
@@ -135,69 +103,19 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
             desc: item.name,
           }))}
         />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.note'
-          label={'Note'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.fbChat'
-          label={'Facebook Chat'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.mailChain'
-          label={'Mail Chain'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.fbUrl'
-          label={'Facebook Url'}
-        />
+        <Field className='form-group--inline' component={Input} name='customerExtension.note' label={'Note'} />
+        <Field className='form-group--inline' component={Input} name='customerExtension.fbChat' label={'Facebook Chat'} />
+        <Field className='form-group--inline' component={Input} name='customerExtension.mailChain' label={'Mail Chain'} />
+        <Field className='form-group--inline' component={Input} name='customerExtension.fbUrl' label={'Facebook Url'} />
 
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.igUrl'
-          label={'Instagram Url'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.linkedUrl'
-          label={'LinkedIn Url'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.snapChatUrl'
-          label={'SnapChat Url'}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.twitterUrl'
-          label={'Twitter Url'}
-        />
+        <Field className='form-group--inline' component={Input} name='customerExtension.igUrl' label={'Instagram Url'} />
+        <Field className='form-group--inline' component={Input} name='customerExtension.linkedUrl' label={'LinkedIn Url'} />
+        <Field className='form-group--inline' component={Input} name='customerExtension.snapChatUrl' label={'SnapChat Url'} />
+        <Field className='form-group--inline' component={Input} name='customerExtension.twitterUrl' label={'Twitter Url'} />
 
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='customerExtension.gen'
-          label={'Gender'}
-        />
+        <Field className='form-group--inline' component={Input} name='customerExtension.gen' label={'Gender'} />
 
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='rawPassword'
-          label={'Raw Password'}
-        />
+        <Field className='form-group--inline' component={Input} name='rawPassword' label={'Raw Password'} />
 
         <FormGroup className='form-group--inline'>
           <label>{t('baseApp.userManagement.status')}</label>
@@ -219,12 +137,7 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
         </FormGroup>
         <div className='form-group--inline'>
           <label>{t('baseApp.userManagement.createdDate')}</label>
-          <div style={{ paddingTop: 11 }}>
-            {props.initialValues.createdDate &&
-              moment(props.initialValues.createdDate).format(
-                'DD/MM/YYYY HH:mm',
-              )}
-          </div>
+          <div style={{ paddingTop: 11 }}>{props.initialValues.createdDate && moment(props.initialValues.createdDate).format('DD/MM/YYYY HH:mm')}</div>
         </div>
         <div className='d-flex'>
           <Button
@@ -241,9 +154,7 @@ const UserDetail = ({ style, handleSubmit, ...props }) => {
             }}>
             <ArrowLeftIcon />
             &nbsp;
-            <span className='d-none d-md-inline'>
-              {t('entity.action.back')}
-            </span>
+            <span className='d-none d-md-inline'>{t('entity.action.back')}</span>
           </Button>
           <Button
             color='primary'

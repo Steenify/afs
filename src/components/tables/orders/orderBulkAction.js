@@ -5,7 +5,7 @@ import { forEach, filter } from 'lodash';
 import { confirmAlert } from 'react-confirm-alert';
 import { get } from 'lodash';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { ReactComponent as Close } from 'assets/img/close.svg';
 import OrderSelectedCell from 'components/tables/orders/headers/orderSelectedAll';

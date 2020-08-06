@@ -8,7 +8,7 @@ import { confirmAlert } from 'react-confirm-alert';
 
 import Layout from 'components/common/Layout';
 import { getAllTagsAction, getArtworksAction, updateFilterAction } from './action';
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 import './style.scss';
 import { initialState } from './const';
 import Paging from 'components/common/paging';
@@ -21,12 +21,12 @@ import { uniqIdCreator } from 'utils';
 import UploadModal from './uploadModal';
 
 const masonryOptions = {
-  transitionDuration: 0,
+  transitionDuration: 200,
 };
 
 const imagesLoadedOptions = { background: '.my-bg-image-el' };
 
-const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, data = initialState.data, getAllTagsAction, getArtworksAction, updateFilterAction }) => {
+const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, data = initialState.data, getAllTagsAction, getArtworksAction, updateFilterAction, isMenuOpen = false }) => {
   const debounceGetArtworks = useCallback(debounce(getArtworksAction, 500), [getArtworksAction]);
   const history = useHistory();
   const masonryRef = useRef(null);
@@ -35,6 +35,10 @@ const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, d
   useEffect(() => {
     getAllTagsAction();
   }, [getAllTagsAction]);
+
+  useEffect(() => {
+    setTimeout(() => masonryRef.current?.performLayout?.(), 200);
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const { page, size, tag, text } = filterData;
@@ -69,21 +73,15 @@ const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, d
         </div>
       ) : (
         <>
-          <Masonry ref={masonryRef} className={'gallery__wrapper mt-0'} options={masonryOptions} imagesLoadedOptions={imagesLoadedOptions}>
+          <Masonry ref={masonryRef} className={'gallery__wrapper mt-0'} options={masonryOptions} imagesLoadedOptions={imagesLoadedOptions} enableResizableChildren={true}>
             {data.artworks.map((artwork) => (
               <div className='gallery__artwork' key={`artwork_${artwork.bookingNumber}_${uniqIdCreator()}`}>
                 <div className='cursor-pointer' onClick={() => history.push(`/gallery/${artwork.id}`)}>
                   <img src={artwork.attachment.url} alt={artwork.attachment.fileName} />
-                  {/* <ImageLoadAble type={artwork.attachment.type} url={artwork.attachment.url} fileName={artwork.attachment.fileName} /> */}
                 </div>
-                <div className='gallery__artwork__title pl-4' onClick={() => history.push(`/gallery/${artwork.id}`)}>{`#${artwork.bookingNumber} ${artwork.title}`}</div>
-                <div className='pl-4'>
-                  Artist:
-                  <Link className='ml-1' to={`/artists/${artwork.artistLogin}`}>
-                    {artwork.artistFullName}
-                  </Link>
-                </div>
-                <div className='pl-4 gallery'>{<Tags tags={artwork.tags.map((item) => item?.name).filter((item) => item)} disable />}</div>
+                <div className='gallery__artwork__title pl-3'>{artwork.title}</div>
+
+                <div className='pl-3 gallery'>{<Tags tags={artwork.tags.map((item) => item?.name).filter((item) => item)} disable />}</div>
               </div>
             ))}
           </Masonry>
@@ -96,8 +94,13 @@ const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, d
   );
 };
 
-const mapStateToProps = ({ gallery: { listing } }) => {
-  return { ...listing };
+const mapStateToProps = ({
+  gallery: { listing },
+  global: {
+    ui: { isMenuOpen = false },
+  },
+}) => {
+  return { ...listing, isMenuOpen };
 };
 
 const mapDispatchToProps = {

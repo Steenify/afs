@@ -9,7 +9,7 @@ import Dropbox from 'components/common/dropbox';
 import Button from 'components/common/button';
 
 import { getOrderItem, getOrderOption, formatMoney } from 'utils';
-import { statusPayments } from 'config';
+import { statusPayments } from 'configs';
 
 import { createOrderTablePayoutsBulkAction, updateOrderTableItemsAction } from './actions';
 

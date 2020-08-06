@@ -5,7 +5,7 @@ import CanShow from 'components/layout/canshow';
 
 import { formatMoney } from 'utils';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 const PayoutsCount = ({ summary }) => {
   return (

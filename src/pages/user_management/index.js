@@ -9,7 +9,7 @@ import UserCreate from './UserCreate';
 
 import './style.scss';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const UserManagement = () => {
   const { t } = useTranslation();

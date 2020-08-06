@@ -7,7 +7,7 @@ import { remove } from 'lodash';
 import TableBody from 'components/common/tableBody';
 import TableHeader from 'components/common/tableHeader';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import PayoutsSelectedAll from './payoutsSelectedAll';
 import PayoutsSelectedCell from './payoutsSelectedCell';
@@ -94,7 +94,4 @@ const mapStateToProps = ({ payouts, auth }) => ({
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(OrderListDesktop));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderListDesktop));

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduce, debounce, get } from 'lodash';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { updateOrderTableFilterAction, getOrderTableCountByStatusAction } from './actions';
 

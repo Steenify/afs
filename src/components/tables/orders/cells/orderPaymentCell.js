@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { mapStatusPayment, statusPayments } from 'config';
+import { mapStatusPayment, statusPayments } from 'configs';
 
 const OrderPaymentCell = ({ artistPaymentStatus, goToDetail, code }) => {
   return (

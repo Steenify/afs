@@ -17,7 +17,7 @@ import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 import { actGetPermission, actUpdatePermission } from './actions';
 import { required } from 'utils/validation';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const PermissionDetail = ({ style, handleSubmit, ...props }) => {
   let { id } = useParams();
@@ -74,33 +74,12 @@ const PermissionDetail = ({ style, handleSubmit, ...props }) => {
           },
         ]}
       />
-      <PageTitle
-        title={t(WEB_ROUTES.USER_PERMISSION.title)}
-        className='mb-0 mr-3'></PageTitle>
+      <PageTitle title={t(WEB_ROUTES.USER_PERMISSION.title)} className='mb-0 mr-3'></PageTitle>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        {errorRequest && errorRequest.message && (
-          <Alert color='danger'>{errorRequest.message}</Alert>
-        )}
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='name'
-          label={t('baseApp.permission.name')}
-          validate={[required]}
-        />
-        <Field
-          className='form-group--inline'
-          type='textarea'
-          component={Input}
-          name='description'
-          label={t('baseApp.permission.description')}
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='permissionGroup'
-          label={t('baseApp.permission.permissionGroup')}
-        />
+        {errorRequest && errorRequest.message && <Alert color='danger'>{errorRequest.message}</Alert>}
+        <Field className='form-group--inline' component={Input} name='name' label={t('baseApp.permission.name')} validate={[required]} />
+        <Field className='form-group--inline' type='textarea' component={Input} name='description' label={t('baseApp.permission.description')} />
+        <Field className='form-group--inline' component={Input} name='permissionGroup' label={t('baseApp.permission.permissionGroup')} />
         <div className='d-flex'>
           <Button
             tag={Link}
@@ -116,9 +95,7 @@ const PermissionDetail = ({ style, handleSubmit, ...props }) => {
             }}>
             <ArrowLeftIcon />
             &nbsp;
-            <span className='d-none d-md-inline'>
-              {t('entity.action.back')}
-            </span>
+            <span className='d-none d-md-inline'>{t('entity.action.back')}</span>
           </Button>
           &nbsp;
           <Button

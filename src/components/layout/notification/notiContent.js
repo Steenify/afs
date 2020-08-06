@@ -8,7 +8,7 @@ import { ReactComponent as NotiEmpty } from 'assets/img/no__notification.svg';
 import { getAllNotificationsService, getNotificationDetailService } from 'services/notification.service';
 
 import { truncates, dateTimeFromNow, actionTryCatchCreator } from 'utils';
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 class NotiContent extends Component {
   constructor() {

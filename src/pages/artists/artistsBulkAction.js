@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { filter } from 'lodash';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import ArtistSelectedAllCell from './artistSelectedAll';
 import ArtistPayoutModal from './artistsPayoutModal';

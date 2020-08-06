@@ -6,7 +6,7 @@ import PayoutList from './payoutsList';
 
 import './style.scss';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const Payouts = () => {
   return (

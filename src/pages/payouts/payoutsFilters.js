@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 
-import { PERMITTIONS_CONFIG } from 'config';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { updatePayoutFilterAction, getPayoutListAction } from './actions';
 
@@ -34,21 +34,13 @@ class PayoutFilters extends Component {
   render() {
     const { text, accountInfo } = this.props;
 
-    const canAssign = accountInfo?.permissions?.includes(
-      PERMITTIONS_CONFIG.ASSIGN_BOOKING,
-    );
+    const canAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING);
 
     return (
       <div className='payouts__filters'>
         <div className='filter__main'>
           <div className='filter__text'>
-            <input
-              type='text'
-              value={text}
-              placeholder='Search orders'
-              className='search__box form-control'
-              onChange={this.handleChangeText}
-            />
+            <input type='text' value={text} placeholder='Search orders' className='search__box form-control' onChange={this.handleChangeText} />
           </div>
           {canAssign && <PayoutsFilterAssignee />}
           {canAssign && <PayoutsFilterDate />}

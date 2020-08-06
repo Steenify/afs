@@ -8,7 +8,7 @@ import CustomerCreate from './customersCreate';
 
 import './style.scss';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const CustomerManagement = () => {
   const { t } = useTranslation();

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 import { ReactComponent as Settings } from 'assets/img/settings.svg';
 import { ReactComponent as CustomerIcon } from 'assets/img/customer.svg';

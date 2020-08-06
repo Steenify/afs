@@ -8,7 +8,7 @@ import PageTitle from 'components/common/PageTitle';
 import Button from 'components/common/button';
 import Breadcrumb from 'components/common/breadcrumb';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 import ArtistDetailInfo from './artistDetailInfo';
 import ArtistDetailContact from './artistDetailContact';

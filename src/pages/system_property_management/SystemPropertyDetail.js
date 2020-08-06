@@ -17,7 +17,7 @@ import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrowleft.svg';
 
 import { actGetSystemProperty, actUpdateSystemProperty } from './actions';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const SystemPropertyDetail = ({ style, handleSubmit, ...props }) => {
   let { id } = useParams();
@@ -34,8 +34,7 @@ const SystemPropertyDetail = ({ style, handleSubmit, ...props }) => {
       const { errorKey, message } = data;
 
       if (status === 200) {
-        const successMessage =
-          t('baseApp.systemProperties.updated') + data.name;
+        const successMessage = t('baseApp.systemProperties.updated') + data.name;
 
         toast.dark(successMessage);
       } else {
@@ -58,10 +57,7 @@ const SystemPropertyDetail = ({ style, handleSubmit, ...props }) => {
   };
 
   return (
-    <Layout
-      documentTitle={t(WEB_ROUTES.SYSTEM_PROPERTY_DETAIL.title)}
-      container
-      fluid>
+    <Layout documentTitle={t(WEB_ROUTES.SYSTEM_PROPERTY_DETAIL.title)} container fluid>
       <Breadcrumb
         data={[
           {
@@ -76,28 +72,12 @@ const SystemPropertyDetail = ({ style, handleSubmit, ...props }) => {
           },
         ]}
       />
-      <PageTitle
-        title={t(WEB_ROUTES.SYSTEM_PROPERTY_DETAIL.title)}
-        className='mb-0 mr-3'></PageTitle>
+      <PageTitle title={t(WEB_ROUTES.SYSTEM_PROPERTY_DETAIL.title)} className='mb-0 mr-3'></PageTitle>
 
       <Form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: 27 }}>
-        {errorRequest && errorRequest.message && (
-          <Alert color='danger'>{errorRequest.message}</Alert>
-        )}
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='name'
-          label={t('baseApp.systemProperties.name')}
-          disabled
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='value'
-          label={t('baseApp.systemProperties.value')}
-          disabled={!props.isEditable}
-        />
+        {errorRequest && errorRequest.message && <Alert color='danger'>{errorRequest.message}</Alert>}
+        <Field className='form-group--inline' component={Input} name='name' label={t('baseApp.systemProperties.name')} disabled />
+        <Field className='form-group--inline' component={Input} name='value' label={t('baseApp.systemProperties.value')} disabled={!props.isEditable} />
         <div className='d-flex'>
           <Button
             tag={Link}
@@ -113,9 +93,7 @@ const SystemPropertyDetail = ({ style, handleSubmit, ...props }) => {
             }}>
             <ArrowLeftIcon />
             &nbsp;
-            <span className='d-none d-md-inline'>
-              {t('entity.action.back')}
-            </span>
+            <span className='d-none d-md-inline'>{t('entity.action.back')}</span>
           </Button>
           {props.isEditable && (
             <Button

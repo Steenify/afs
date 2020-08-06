@@ -7,7 +7,7 @@ import CSList from './customerServiceList';
 
 import './style.scss';
 
-import { WEB_ROUTES } from 'config';
+import { WEB_ROUTES } from 'configs';
 
 const Orders = () => {
   const { t } = useTranslation();
