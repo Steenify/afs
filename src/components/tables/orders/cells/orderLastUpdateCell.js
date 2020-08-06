@@ -7,9 +7,9 @@ import { dateTimeToDeadline } from 'utils';
 import { ReactComponent as RedAlert } from 'assets/img/red__alert.svg';
 
 const MapAlert = {
-  NO_ASSIGNEE: 'This order need to assign to someone, follow up?',
-  NO_ACTIVITY: 'Over 1 day no activity, follow up?',
-  LATE_WORK_LOG_DEADLINE: 'No activity, follow up?',
+  NO_ASSIGNEE: 'This order need to assign to someone. Follow up?',
+  NO_ACTIVITY: 'Over 1 day no activity. Follow up?',
+  LATE_WORK_LOG_DEADLINE: 'No activity. Follow up?',
   LATE_FINAL_DEADLINE: 'Late deadline. Follow up?',
 };
 
