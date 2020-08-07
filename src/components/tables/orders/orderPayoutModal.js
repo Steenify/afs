@@ -11,10 +11,23 @@ import Button from 'components/common/button';
 import { getOrderItem, getOrderOption, formatMoney } from 'utils';
 import { statusPayments } from 'configs';
 
-import { createOrderTablePayoutsBulkAction, updateOrderTableItemsAction } from './actions';
+import { createOrderTablePayoutsBulkAction, updateOrderTableItemsAction, confirmOrderTablePayoutsBulkAction } from './actions';
 
-const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defaultNote, createOrderTablePayoutsBulkAction, artist, updateOrderTableItemsAction, reducer }) => {
+const OrderPayoutModal = ({
+  isOpen,
+  className,
+  toggle,
+  orders,
+  totalBudget,
+  defaultNote,
+  createOrderTablePayoutsBulkAction,
+  confirmOrderTablePayoutsBulkAction,
+  artist,
+  updateOrderTableItemsAction,
+  reducer,
+}) => {
   const hasArtist = !isEmpty(artist);
+  const canPay = hasArtist && orders.length > 0;
 
   const dropbox = useRef(null);
 
@@ -42,6 +55,22 @@ const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defa
     const number = e.target.getAttribute('number');
 
     setNoteItem({ ...noteItem, [number]: value });
+  };
+
+  const handleArtistConfirmation = () => {
+    const payload = {
+      payout: map(orders, (or) => ({
+        bookingNumber: or.number,
+        paid: or?.budget,
+      })),
+    };
+    confirmOrderTablePayoutsBulkAction({
+      payload,
+      reducer,
+      onSuccess: () => {
+        toast.dark(`Confirmation sent to ${artist?.firstName || ''} ${artist?.lastName || ''}`);
+      },
+    });
   };
 
   const handleSubmit = () => {
@@ -192,14 +221,22 @@ const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defa
         </div>
 
         <div className='payout__item action'>
+          <div className='left' />
+          <div className='right'>
+            <Button onClick={handleArtistConfirmation} disabled={!canPay} color='primary' className='payout__submit payout__action' type='button'>
+              Confirm with Artist
+            </Button>
+          </div>
+        </div>
+        <div className='payout__item action'>
           <div className='left'>
             <Button color='normal' onClick={toggle} className='payout__cancel payout__action' type='button'>
               Cancel
             </Button>
           </div>
           <div className='right'>
-            <Button onClick={handleSubmit} disabled={!hasArtist} color='primary' className='payout__submit payout__action' type='button'>
-              Confirm
+            <Button onClick={handleSubmit} disabled={!canPay} color='primary' className='payout__submit payout__action' type='button'>
+              Confirm Pay
             </Button>
           </div>
         </div>
@@ -246,6 +283,7 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
 };
 
 const mapDispatchToProps = {
+  confirmOrderTablePayoutsBulkAction,
   createOrderTablePayoutsBulkAction,
   updateOrderTableItemsAction,
 };
