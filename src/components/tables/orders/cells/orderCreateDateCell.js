@@ -6,7 +6,7 @@ import { dateTimeToDeadline } from 'utils';
 
 const OrderCreatedDateCell = ({ paidAt, goToDetail, code }) => {
   return (
-    <div onClick={() => goToDetail(code)} className={`order__created_date`}>
+    <div onClick={() => goToDetail(code)} className={`order__created_date cursor-pointer`}>
       {dateTimeToDeadline(paidAt)}
     </div>
   );

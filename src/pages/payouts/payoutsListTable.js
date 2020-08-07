@@ -18,73 +18,71 @@ import PayoutsEvidenceCell from './payoutsEvidenceCell';
 import PayoutsArtistCell from './payoutsArtistCell';
 import PayoutsTransactionCell from './payoutsTransactionCell';
 
-let columns = [
-  {
-    accessor: 'selected',
-    minWidth: 40,
-    Cell: PayoutsSelectedCell,
-    Header: PayoutsSelectedAll,
-  },
-  {
-    accessor: 'transactionId',
-    minWidth: 200,
-    Cell: PayoutsTransactionCell,
-    Header: 'Transaction',
-  },
-  {
-    accessor: 'createdDate',
-    minWidth: 100,
-    Cell: PayoutsDateCell,
-    Header: 'Date',
-  },
-  {
-    accessor: 'artist',
-    minWidth: 120,
-    Cell: PayoutsArtistCell,
-    Header: 'Artist',
-  },
-  {
-    accessor: 'totalPaid',
-    minWidth: 80,
-    Cell: PayoutsAmountCell,
-    Header: 'Amount',
-  },
-  {
-    accessor: 'note',
-    minWidth: 350,
-    Cell: PayoutsNoteCell,
-    Header: 'Note',
-  },
-  {
-    accessor: 'attachments',
-    minWidth: 100,
-    Cell: PayoutsEvidenceCell,
-    Header: 'Evidence',
-  },
-];
-class OrderListDesktop extends PureComponent {
-  render() {
-    const { loading, ids, accountInfo } = this.props;
+const OrderListDesktop = (props) => {
+  const { loading, ids, accountInfo } = props;
+  let columns = [
+    {
+      accessor: 'selected',
+      minWidth: 40,
+      Cell: PayoutsSelectedCell,
+      Header: PayoutsSelectedAll,
+    },
+    {
+      accessor: 'transactionId',
+      minWidth: 200,
+      Cell: PayoutsTransactionCell,
+      Header: 'Transaction',
+    },
+    {
+      accessor: 'createdDate',
+      minWidth: 100,
+      Cell: PayoutsDateCell,
+      Header: 'Date',
+    },
+    {
+      accessor: 'artist',
+      minWidth: 120,
+      Cell: PayoutsArtistCell,
+      Header: 'Artist',
+    },
+    {
+      accessor: 'totalPaid',
+      minWidth: 80,
+      Cell: PayoutsAmountCell,
+      Header: 'Amount',
+    },
+    {
+      accessor: 'note',
+      minWidth: 350,
+      Cell: PayoutsNoteCell,
+      Header: 'Note',
+    },
+    {
+      accessor: 'attachments',
+      minWidth: 100,
+      Cell: PayoutsEvidenceCell,
+      Header: 'Evidence',
+    },
+  ];
 
-    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT)) {
-      columns = remove(columns, (col) => col.Header !== 'Artist');
-    }
-
-    return (
-      <div className={`payouts__list relative`}>
-        <div className={`payouts__loading ${!loading && 'd-none'}`}>
-          <Spinner /> <span className='text'>Loading</span>
-        </div>
-        <div className='table-responsive bg-light steenify-table bg-white payout__table'>
-          <table className='table'>
-            <TableHeader columns={columns} />
-            <TableBody data={ids} columns={columns} />
-          </table>
-        </div>
-      </div>
-    );
+  if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT)) {
+    columns = remove(columns, (col) => col.Header !== 'Artist');
   }
-}
+
+  return (
+    <div className={`payouts__list relative`}>
+      <div className={`payouts__loading ${!loading && 'd-none'}`}>
+        <Spinner /> <span className='text'>Loading</span>
+      </div>
+      <div className='table-responsive bg-light steenify-table bg-white payout__table'>
+        <table className='table'>
+          <TableHeader columns={columns} />
+          <TableBody data={ids} columns={columns} />
+        </table>
+      </div>
+    </div>
+  );
+};
 
 const mapStateToProps = ({ payouts, auth }) => ({
   ids: payouts.list.ids,

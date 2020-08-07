@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { isEmpty, filter } from 'lodash';
+import { isEmpty, filter, includes } from 'lodash';
 
 import InPageLoading from 'components/common/inPageLoading';
 
-import { PERMITTIONS_CONFIG } from 'configs';
+import { PERMITTIONS_CONFIG, filterOrderItems } from 'configs';
 import { dateTimeStringFromDate, getSelectedStatus, getOrderItem } from 'utils';
 
 import OrderSumaryBox from './orderSumaryBox';
@@ -18,14 +18,12 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
   if (isEmpty(order) || !status.length) {
     return <InPageLoading isLoading={loading} />;
   }
-
   let hasFaster = false;
-
   const filteredItems = filter(order.items, (item) => {
-    if (getOrderItem(item.name) === 'Faster Processing') {
+    if (getOrderItem(item.name) === filterOrderItems[1] || getOrderItem(item.name) === filterOrderItems[0]) {
       hasFaster = true;
     }
-    return getOrderItem(item.name) !== 'Faster Processing';
+    return !includes(filterOrderItems, getOrderItem(item.name));
   });
 
   const canEditAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;

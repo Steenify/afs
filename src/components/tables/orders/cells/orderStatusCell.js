@@ -6,7 +6,7 @@ import { getSelectedStatus } from 'utils';
 
 const OrderStatusCell = ({ status, statuses, goToDetail, code }) => {
   return (
-    <div onClick={() => goToDetail(code)} className={`order__status ${getSelectedStatus(status, statuses).name}`}>
+    <div onClick={() => goToDetail(code)} className={`order__status cursor-pointer ${getSelectedStatus(status, statuses).name}`}>
       {getSelectedStatus(status, statuses).friendlyName}
     </div>
   );

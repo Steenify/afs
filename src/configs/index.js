@@ -89,4 +89,6 @@ alignleft aligncenter alignright | code | \
 bullist numlist outdent indent`,
 };
 
+export const filterOrderItems = ['Tip', 'Faster Processing', 'Enhanced Matte Paper Poster '];
+
 export { default as WEB_ROUTES } from './web-routes';
