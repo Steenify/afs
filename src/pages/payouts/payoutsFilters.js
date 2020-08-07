@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 
 import { PERMITTIONS_CONFIG } from 'configs';
 
-import { updatePayoutFilterAction, getPayoutListAction } from './actions';
+import { updatePayoutFilterAction, getPayoutListAction, getPayoutSummaryAction } from './actions';
 
 import PayoutsFilterAssignee from './payoutsFiltersAssignee';
 import PayoutsFilterDate from './payoutsFiltersDate';
@@ -27,8 +27,9 @@ class PayoutFilters extends Component {
   };
 
   handleSearchTextAPI = () => {
-    const { getPayoutList } = this.props;
+    const { getPayoutList, getPayoutSummary } = this.props;
     getPayoutList({});
+    getPayoutSummary({});
   };
 
   render() {
@@ -60,6 +61,7 @@ const mapStateToProps = ({ payouts, auth }) => {
 const mapDispatchToProps = {
   updatePayoutFilter: updatePayoutFilterAction,
   getPayoutList: getPayoutListAction,
+  getPayoutSummary: getPayoutSummaryAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PayoutFilters);
