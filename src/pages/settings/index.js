@@ -11,6 +11,7 @@ import { ReactComponent as Settings } from 'assets/img/settings.svg';
 import { ReactComponent as CustomerIcon } from 'assets/img/customer.svg';
 import { ReactComponent as Artist } from 'assets/img/Artist.svg';
 import { ReactComponent as Package } from 'assets/img/gallery.svg';
+import { ReactComponent as LateNotificationIcon } from 'assets/img/late_notification.svg';
 
 import './style.scss';
 
@@ -43,21 +44,17 @@ const SettingsPage = (props) => {
     //   icon: <Artist />,
     //   des: 'Manage Artist',
     // },
-    {
-      ...WEB_ROUTES.CUSTOMER_LIST,
-      title: t(WEB_ROUTES.CUSTOMER_LIST.title),
-      icon: <CustomerIcon />,
-      des: 'Manage Customer',
-    },
-    {
-      ...WEB_ROUTES.PAYOUTS,
-      icon: <CustomerIcon />,
-      des: 'Payouts',
-    },
+
     {
       ...WEB_ROUTES.GALLERY_LISTING,
       icon: <Package />,
       des: 'Gallery',
+    },
+    {
+      ...WEB_ROUTES.LATE_NOTIFICATION,
+      // title: t(WEB_ROUTES.CUSTOMER_LIST.title),
+      icon: <LateNotificationIcon />,
+      des: 'Late Notification',
     },
   ];
 
