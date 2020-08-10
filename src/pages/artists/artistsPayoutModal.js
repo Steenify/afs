@@ -219,7 +219,6 @@ const ArtistPayoutModal = (props) => {
               <Dropbox className='upload' orderNumber={`payout-${artist?.id}`} ref={dropbox} id={`order__payout__log`} />
             </div>
           </div>
-
           <div className='payout__item action'>
             <div className='left' />
             <div className='right'>
@@ -228,7 +227,6 @@ const ArtistPayoutModal = (props) => {
               </Button>
             </div>
           </div>
-
           <div className='payout__item action'>
             <div className='left'>
               <Button color='normal' onClick={toggle} className='payout__cancel payout__action' type='button'>
