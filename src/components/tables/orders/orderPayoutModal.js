@@ -211,8 +211,8 @@ const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defa
         <div className='payout__item action'>
           <div className='left' />
           <div className='right'>
-            <Button onClick={handleArtistConfirmation} disabled={!canPay} color='primary' className='payout__submit payout__action' type='button'>
-              Confirm with Artist
+            <Button onClick={handleArtistConfirmation} disabled={!canPay} color='confirm' className='payout__submit payout__action' type='button'>
+              Confirm Payment
             </Button>
           </div>
         </div>
@@ -224,7 +224,7 @@ const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defa
           </div>
           <div className='right'>
             <Button onClick={handleSubmit} disabled={!canPay} color='primary' className='payout__submit payout__action' type='button'>
-              Confirm Pay
+              Pay
             </Button>
           </div>
         </div>

@@ -12,12 +12,12 @@ import Button from 'components/common/button';
 import { getOrderItem, getOrderOption, formatMoney, actionTryCatchCreator } from 'utils';
 import { statusPayments } from 'configs';
 
-import { createOrderTablePayoutsBulkAction } from 'components/tables/orders/actions';
+import { createOrderTablePayoutsBulkAction, confirmOrderTablePayoutsBulkAction } from 'components/tables/orders/actions';
 import { getArtistsListAction } from './actions';
 import { getAllOrdersService } from 'services/order';
 
 const ArtistPayoutModal = (props) => {
-  const { isOpen, className, toggle, artist, createOrderTablePayoutsBulkAction, getArtistsListAction } = props;
+  const { isOpen, className, toggle, artist, createOrderTablePayoutsBulkAction, getArtistsListAction, confirmOrderTablePayoutsBulkAction } = props;
 
   const dropbox = useRef(null);
   const [extra, setExtra] = useState(0);
@@ -58,6 +58,23 @@ const ArtistPayoutModal = (props) => {
     const number = e.target.getAttribute('number');
 
     setNoteItem({ ...noteItem, [number]: value });
+  };
+
+  const handleArtistConfirmation = () => {
+    const payload = {
+      artistId: artist.id,
+      payout: map(data?.orders || [], (or) => ({
+        bookingNumber: or.number,
+        paid: or?.budget,
+      })),
+    };
+    confirmOrderTablePayoutsBulkAction({
+      payload,
+      reducer: 'orders',
+      onSuccess: () => {
+        toast.dark(`Confirmation sent to ${artist?.firstName || ''} ${artist?.lastName || ''}`);
+      },
+    });
   };
 
   const handleSubmit = () => {
@@ -204,6 +221,15 @@ const ArtistPayoutModal = (props) => {
           </div>
 
           <div className='payout__item action'>
+            <div className='left' />
+            <div className='right'>
+              <Button onClick={handleArtistConfirmation} disabled={!canPay} color='confirm' className='payout__submit payout__action' type='button'>
+                Confirm Payment
+              </Button>
+            </div>
+          </div>
+
+          <div className='payout__item action'>
             <div className='left'>
               <Button color='normal' onClick={toggle} className='payout__cancel payout__action' type='button'>
                 Cancel
@@ -211,7 +237,7 @@ const ArtistPayoutModal = (props) => {
             </div>
             <div className='right'>
               <Button onClick={handleSubmit} disabled={!canPay} color='primary' className='payout__submit payout__action' type='button'>
-                Confirm
+                Pay
               </Button>
             </div>
           </div>
@@ -230,6 +256,6 @@ const mapStateToProps = ({ artists, auth }) => {
   };
 };
 
-const mapDispatchToProps = { createOrderTablePayoutsBulkAction, getArtistsListAction };
+const mapDispatchToProps = { createOrderTablePayoutsBulkAction, getArtistsListAction, confirmOrderTablePayoutsBulkAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArtistPayoutModal);
