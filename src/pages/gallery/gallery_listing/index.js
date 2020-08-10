@@ -7,7 +7,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 
 import Layout from 'components/common/Layout';
-import { getAllTagsAction, getArtworksAction, updateFilterAction } from './action';
+import { getAllTagsAction, getArtworksAction, updateFilterAction, addArtworksAction } from './action';
 import { WEB_ROUTES } from 'configs';
 import './style.scss';
 import { initialState } from './const';
@@ -15,10 +15,10 @@ import Paging from 'components/common/paging';
 import Tags from './tags';
 import Filter from './filter';
 import Title from './title';
-import ImageLoadAble from 'components/common/imageLoadAble';
 import { useTranslation } from 'react-i18next';
 import { uniqIdCreator } from 'utils';
 import UploadModal from './uploadModal';
+import { toast } from 'react-toastify';
 
 const masonryOptions = {
   transitionDuration: 200,
@@ -26,7 +26,17 @@ const masonryOptions = {
 
 const imagesLoadedOptions = { background: '.my-bg-image-el' };
 
-const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, data = initialState.data, getAllTagsAction, getArtworksAction, updateFilterAction, isMenuOpen = false }) => {
+const Listing = ({
+  ui = initialState.ui,
+  filterData = initialState.filterData,
+  data = initialState.data,
+  isMenuOpen = false,
+
+  getAllTagsAction,
+  getArtworksAction,
+  updateFilterAction,
+  addArtworksAction,
+}) => {
   const debounceGetArtworks = useCallback(debounce(getArtworksAction, 500), [getArtworksAction]);
   const history = useHistory();
   const masonryRef = useRef(null);
@@ -45,15 +55,20 @@ const Listing = ({ ui = initialState.ui, filterData = initialState.filterData, d
     debounceGetArtworks({ page, size, tag, text });
   }, [debounceGetArtworks, filterData]);
 
-  const uploadGalleryAction = (data) => {
-    masonryRef.current.performLayout();
+  const uploadGalleryAction = (data, callback) => {
     console.log('uploadGalleryAction -> data', data);
+    addArtworksAction(data, () => {
+      toast.dark('Upload gallery successful');
+      const { page, size, tag, text } = filterData;
+      debounceGetArtworks({ page, size, tag, text });
+      callback && callback();
+    });
   };
 
   const handleUpload = () => {
     confirmAlert({
       customUI: ({ onClose }) => {
-        return <UploadModal onClose={onClose} onConfirm={uploadGalleryAction} />;
+        return <UploadModal isLoading={ui.isUploading} onClose={onClose} onConfirm={uploadGalleryAction} tagItems={data.tagItems.map(({ id = 0, name = '' }) => ({ label: name, value: id }))} />;
       },
     });
   };
@@ -107,6 +122,7 @@ const mapDispatchToProps = {
   getAllTagsAction,
   getArtworksAction,
   updateFilterAction,
+  addArtworksAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Listing);

@@ -8,3 +8,10 @@ export const getAllTagsService = (params) =>
     method: 'GET',
     params,
   });
+
+// export const addTagsService = (tagName = '') =>
+//   request({
+//     url: TAG_API,
+//     method: 'POST',
+//     data: { name: tagName },
+//   });
