@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import { isObject } from 'lodash';
+import { saveAs } from 'file-saver';
 
 import ImageLoadAble from '../imageLoadAble';
 
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
 import './style.scss';
+
+const ClickableImageView = (props) => {
+  const {
+    currentView: { source, alt, caption },
+  } = props;
+  return (
+    <div className='react-images__view react-images__view--isModal' style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
+      <img className='react-images__view-image--isModal' src={source.regular || source} alt={alt} style={{ height: 'auto', maxHeight: 'calc(100vh - 100px)' }} />
+      <span className='text-white cursor-pointer m-2 font-weight-bold' onClick={() => saveAs(source.download, caption)}>
+        Download
+      </span>
+    </div>
+  );
+};
 
 class ImageGallery extends Component {
   constructor() {
@@ -24,7 +39,6 @@ class ImageGallery extends Component {
   render() {
     const { modalIsOpen, currentIndex } = this.state;
     const { images, alt, title, canDelete, onDelete, renderItem } = this.props;
-
     const list = images.map((source) => ({
       caption: source?.fileName || title,
       alt: alt,
@@ -54,11 +68,7 @@ class ImageGallery extends Component {
                 )}
 
                 <div className='images_gallerry__img' onClick={() => this.toggleModal(index)}>
-                  {isObject(img.source) ? (
-                    <ImageLoadAble type={img.source.type} url={img.source.thumbnail || img.source.thumbnailLink} fileName={img.source.fileName} />
-                  ) : (
-                    <ImageLoadAble url={img.source} />
-                  )}
+                  {isObject(img.source) ? <ImageLoadAble type={img.source.type} url={img.source.thumbnail || img.source.thumbnailLink} fileName={img.source.fileName} /> : <ImageLoadAble url={img.source} />}
                 </div>
               </div>
             );
@@ -70,11 +80,13 @@ class ImageGallery extends Component {
               <Carousel
                 views={list}
                 currentIndex={currentIndex}
+                components={{ View: ClickableImageView }}
                 styles={{
                   container: (base) => ({
                     ...base,
                     height: '100vh',
                   }),
+                  pager: (base) => ({ ...base, zIndex: 9999 }),
                   view: (base) => ({
                     ...base,
                     alignItems: 'center',

@@ -19,7 +19,7 @@ const OrderLastUpdateDateCell = ({ lastModifiedDate, goToDetail, code, alert, st
   const isShowAlert = status !== 'DONE' && message;
 
   return (
-    <div onClick={() => goToDetail(code)} className={`order__created_date`}>
+    <div onClick={() => goToDetail(code)} className={`order__created_date cursor-pointer`}>
       <div className=''>
         {dateTimeToDeadline(lastModifiedDate)}
         {isShowAlert ? (

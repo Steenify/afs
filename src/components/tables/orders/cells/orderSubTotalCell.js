@@ -5,7 +5,7 @@ import { get } from 'lodash';
 import { formatNumber } from 'utils';
 
 const OrderSubTotalCell = ({ subtotal, goToDetail, code }) => {
-  return <div onClick={() => goToDetail(code)} className={`order__subtotal`}>{`${formatNumber(subtotal)}$`}</div>;
+  return <div onClick={() => goToDetail(code)} className={`order__subtotal cursor-pointer`}>{`${formatNumber(subtotal)}$`}</div>;
 };
 
 const mapStateToProps = (reducers, ownProps) => {

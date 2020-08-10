@@ -12,9 +12,10 @@ import { PERMITTIONS_CONFIG } from 'configs';
 
 import { updateOrderItemSumarizeAction, updateOrderItemSumarizeAPIAction, updateOrderItemFilesAction, deleteFileSummaryAction } from './actions';
 
-const OrderSumaryBox = ({ item, order, index, updateOrderItemSumarize, updateOrderItemSumarizeAPI, updateOrderItemFiles, accountInfo, deleteFileSummary }) => {
-  const canEditSumary = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_SUMMARY) || false;
+const OrderSumaryBox = ({ item, order, updateOrderItemSumarize, updateOrderItemSumarizeAPI, updateOrderItemFiles, accountInfo, deleteFileSummary }) => {
+  const index = findIndex(order.items, (it) => it?.id === item?.id);
 
+  const canEditSumary = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_SUMMARY) || false;
   const [isEdit, setIsEdit] = useState(false);
   const dropbox = useRef(null);
 
@@ -83,7 +84,6 @@ const OrderSumaryBox = ({ item, order, index, updateOrderItemSumarize, updateOrd
 
   const handleDeleteFile = (file) => {
     const fileIndex = findIndex(item.photos, (pho) => pho?.id === file?.source?.id);
-
     deleteFileSummary(order.id, item.id, file?.source?.id, index, fileIndex, () => {
       toast.dark('File deleteted!');
     });
@@ -150,9 +150,11 @@ const OrderSumaryBox = ({ item, order, index, updateOrderItemSumarize, updateOrd
   );
 };
 
-const mapStateToProps = ({ auth }) => ({
-  accountInfo: auth.data.accountInfo,
-});
+const mapStateToProps = ({ auth }) => {
+  return {
+    accountInfo: auth.data.accountInfo,
+  };
+};
 
 const mapDispatchToProps = {
   updateOrderItemSumarize: updateOrderItemSumarizeAction,

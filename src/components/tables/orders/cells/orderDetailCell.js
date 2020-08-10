@@ -2,25 +2,35 @@ import React, { useState } from 'react';
 import Popover from 'react-tiny-popover';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { get } from 'lodash';
+import { get, filter, includes } from 'lodash';
 
 import Button from 'components/common/button';
 import ImageGallery from 'components/common/imageGallery';
-import { getListImageUrl } from 'utils';
+import { getListImageUrl, getOrderItem } from 'utils';
 
-import { PERMITTIONS_CONFIG } from 'configs';
+import { PERMITTIONS_CONFIG, filterOrderItems, filterOrderItemsAdmin } from 'configs';
 
 import { ReactComponent as Eye } from 'assets/img/eye.svg';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
 const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
+
+  const SHOW_POSTER = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.SHOW_POSTER);
+  const itemsToFilter = SHOW_POSTER ? filterOrderItemsAdmin : filterOrderItems;
 
   if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_BOOKING)) {
     return <div className=''>#{number}</div>;
   }
+
+  let hasFaster = false;
+  const filteredItems = filter(items, (item) => {
+    if (getOrderItem(item.name) === filterOrderItems[1] || getOrderItem(item.name) === filterOrderItems[0]) {
+      hasFaster = true;
+    }
+    return !includes(itemsToFilter, getOrderItem(item.name));
+  });
 
   return (
     <div>
@@ -43,10 +53,11 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
                 </span>
               </button>
               <div>
-                {items.map((item) => {
+                {filteredItems.map((item) => {
                   return (
                     <div key={`order__item__${number}__${item.id}`} className='content'>
                       <strong className='name d-block'>{item.name}</strong>
+                      {hasFaster && <strong className='name'>(Faster Processing)</strong>}
                       {item.note ? (
                         <div>
                           <label className='mb-0'> Note: </label>

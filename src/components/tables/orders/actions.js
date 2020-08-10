@@ -9,7 +9,7 @@ import {
   getOrderBulkMarkAsDoneService,
 } from 'services/order';
 import { getAllStatusService } from 'services/status';
-import { createPayoutService } from 'services/payout';
+import { createPayoutService, confirmPayoutService } from 'services/payout';
 
 const buildSearchParam = (input = {}) => {
   var params = new URLSearchParams();
@@ -214,6 +214,30 @@ export const createOrderTablePayoutsBulkAction = ({ payload, reducer, onSuccess 
       console.log('createOrderTablePayoutsBulkAction => onError -> error', JSON.stringify(error));
       dispatch({
         type: ORDER_TABLE_CREATE_PAYOUTS_BULK_ACTION.ERROR,
+        payload: error.response,
+        reducer,
+      });
+    },
+  });
+};
+
+export const ORDER_TABLE_CONFIRM_PAYOUTS_BULK_ACTION = actionCreator('ORDER_TABLE_CONFIRM_PAYOUTS_BULK_ACTION');
+export const confirmOrderTablePayoutsBulkAction = ({ payload, reducer, onSuccess }) => (dispatch) => {
+  actionTryCatchCreator({
+    service: confirmPayoutService(payload),
+    onPending: () => dispatch({ type: ORDER_TABLE_CONFIRM_PAYOUTS_BULK_ACTION.PENDING, reducer }),
+    onSuccess: (data) => {
+      dispatch({
+        type: ORDER_TABLE_CONFIRM_PAYOUTS_BULK_ACTION.SUCCESS,
+        payload: data,
+        reducer,
+      });
+      onSuccess && onSuccess();
+    },
+    onError: (error) => {
+      console.log('confirmOrderTablePayoutsBulkAction => onError -> error', JSON.stringify(error));
+      dispatch({
+        type: ORDER_TABLE_CONFIRM_PAYOUTS_BULK_ACTION.ERROR,
         payload: error.response,
         reducer,
       });

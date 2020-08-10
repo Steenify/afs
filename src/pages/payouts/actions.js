@@ -1,15 +1,10 @@
 import { actionCreator, actionTryCatchCreator, isMobile } from 'utils';
 
-import {
-  getPayoutsService,
-  getPayoutDetailService,
-  getPayoutsSummaryService,
-} from 'services/payout';
+import { getPayoutsService, getPayoutDetailService, getPayoutsSummaryService } from 'services/payout';
 
 export const PAYOUTS_ACTIONS = {
   UPDATE_PAYOUTS_ITEMS_ACTION: 'UPDATE_PAYOUTS_ITEMS_ACTION',
-  UPDATE_PAYOUT_ALL_SELECTED_ROW_ACTION:
-    'UPDATE_PAYOUT_ALL_SELECTED_ROW_ACTION',
+  UPDATE_PAYOUT_ALL_SELECTED_ROW_ACTION: 'UPDATE_PAYOUT_ALL_SELECTED_ROW_ACTION',
   UPDATE_PAYOUT_FILTERS_ACTION: 'UPDATE_PAYOUT_FILTERS_ACTION',
 };
 
@@ -34,10 +29,7 @@ export const updatePayoutFilterAction = (payload) => (dispatch) => {
 };
 
 export const GET_PAYOUTS_LIST_ACTION = actionCreator('GET_PAYOUTS_LIST_ACTION');
-export const getPayoutListAction = (params = {}) => async (
-  dispatch,
-  getState,
-) => {
+export const getPayoutListAction = (params = {}) => async (dispatch, getState) => {
   const { filter } = getState().payouts;
 
   const currSize = isMobile() ? filter.sizeMobile : filter.size;
@@ -60,10 +52,7 @@ export const getPayoutListAction = (params = {}) => async (
     });
   };
   const onError = (error) => {
-    console.log(
-      'getPayoutListAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('getPayoutListAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_PAYOUTS_LIST_ACTION.ERROR,
     });
@@ -103,9 +92,7 @@ const buildSearchParamPayouts = (input = {}) => {
   return params;
 };
 
-export const GET_PAYOUTS_DETAIL_ACTION = actionCreator(
-  'GET_PAYOUTS_DETAIL_ACTION',
-);
+export const GET_PAYOUTS_DETAIL_ACTION = actionCreator('GET_PAYOUTS_DETAIL_ACTION');
 export const getPayoutDetailAction = (id) => async (dispatch) => {
   const onPending = () => {
     dispatch({
@@ -119,10 +106,7 @@ export const getPayoutDetailAction = (id) => async (dispatch) => {
     });
   };
   const onError = (error) => {
-    console.log(
-      'getPayoutDetailAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('getPayoutDetailAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_PAYOUTS_DETAIL_ACTION.ERROR,
     });
@@ -136,16 +120,24 @@ export const getPayoutDetailAction = (id) => async (dispatch) => {
   });
 };
 
-export const GET_PAYOUTS_SUMMARY_ACTION = actionCreator(
-  'GET_PAYOUTS_SUMMARY_ACTION',
-);
-export const getPayoutSummaryAction = () => async (dispatch, getState) => {
-  const { filter } = getState().payouts;
+export const GET_PAYOUTS_SUMMARY_ACTION = actionCreator('GET_PAYOUTS_SUMMARY_ACTION');
+export const getPayoutSummaryAction = (params) => async (dispatch, getState) => {
+  // const { filter } = getState().payouts;
+  // const parrams = {};
+  // if (filter.assignee && filter.assignee !== 'null') {
+  //   parrams.assignee = filter.assignee;
+  // }
+  const {
+    filter: { assignee, text, from, to },
+  } = getState().payouts;
 
-  const parrams = {};
-  if (filter.assignee && filter.assignee !== 'null') {
-    parrams.assignee = filter.assignee;
-  }
+  const searchParams = {
+    assignee,
+    text,
+    from,
+    to,
+    ...params,
+  };
 
   const onPending = () => {
     dispatch({
@@ -159,17 +151,14 @@ export const getPayoutSummaryAction = () => async (dispatch, getState) => {
     });
   };
   const onError = (error) => {
-    console.log(
-      'getPayoutDetailAction => onError -> error',
-      JSON.stringify(error),
-    );
+    console.log('getPayoutDetailAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_PAYOUTS_SUMMARY_ACTION.ERROR,
     });
   };
 
   actionTryCatchCreator({
-    service: getPayoutsSummaryService(parrams),
+    service: getPayoutsSummaryService(searchParams),
     onPending,
     onSuccess,
     onError,
