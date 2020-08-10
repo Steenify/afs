@@ -4,7 +4,7 @@ import { isEmpty, filter, includes } from 'lodash';
 
 import InPageLoading from 'components/common/inPageLoading';
 
-import { PERMITTIONS_CONFIG, filterOrderItems } from 'configs';
+import { PERMITTIONS_CONFIG, filterOrderItems, filterOrderItemsAdmin } from 'configs';
 import { dateTimeStringFromDate, getSelectedStatus, getOrderItem } from 'utils';
 
 import OrderSumaryBox from './orderSumaryBox';
@@ -18,16 +18,20 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
   if (isEmpty(order) || !status.length) {
     return <InPageLoading isLoading={loading} />;
   }
+
+  const canEditAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;
+  const canGetArtists = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) || false;
+
+  const SHOW_POSTER = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.SHOW_POSTER);
+  const itemsToFilter = SHOW_POSTER ? filterOrderItemsAdmin : filterOrderItems;
+
   let hasFaster = false;
   const filteredItems = filter(order.items, (item) => {
     if (getOrderItem(item.name) === filterOrderItems[1] || getOrderItem(item.name) === filterOrderItems[0]) {
       hasFaster = true;
     }
-    return !includes(filterOrderItems, getOrderItem(item.name));
+    return !includes(itemsToFilter, getOrderItem(item.name));
   });
-
-  const canEditAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;
-  const canGetArtists = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) || false;
 
   return (
     <div className='order_detail'>
@@ -54,7 +58,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
         </div>
       </div>
 
-      {filteredItems.map((item, index) => (
+      {filteredItems.map((item) => (
         <div className='row' key={`order_list_item_${item.id}`}>
           <div className='col-lg-6'>
             <div className='order_detail__wrapper'>
@@ -63,7 +67,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
           </div>
           <div className='col-lg-6'>
             <div className='order_detail__wrapper'>
-              <OrderSumaryBox item={item} order={order} index={index} />
+              <OrderSumaryBox item={item} order={order} />
             </div>
           </div>
         </div>

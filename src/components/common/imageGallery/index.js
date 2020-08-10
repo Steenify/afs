@@ -39,8 +39,6 @@ class ImageGallery extends Component {
   render() {
     const { modalIsOpen, currentIndex } = this.state;
     const { images, alt, title, canDelete, onDelete, renderItem } = this.props;
-    console.log('ImageGallery -> render -> images', images);
-
     const list = images.map((source) => ({
       caption: source?.fileName || title,
       alt: alt,
@@ -70,11 +68,7 @@ class ImageGallery extends Component {
                 )}
 
                 <div className='images_gallerry__img' onClick={() => this.toggleModal(index)}>
-                  {isObject(img.source) ? (
-                    <ImageLoadAble type={img.source.type} url={img.source.thumbnail || img.source.thumbnailLink} fileName={img.source.fileName} />
-                  ) : (
-                    <ImageLoadAble url={img.source} />
-                  )}
+                  {isObject(img.source) ? <ImageLoadAble type={img.source.type} url={img.source.thumbnail || img.source.thumbnailLink} fileName={img.source.fileName} /> : <ImageLoadAble url={img.source} />}
                 </div>
               </div>
             );

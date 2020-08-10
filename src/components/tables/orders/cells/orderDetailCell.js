@@ -8,15 +8,17 @@ import Button from 'components/common/button';
 import ImageGallery from 'components/common/imageGallery';
 import { getListImageUrl, getOrderItem } from 'utils';
 
-import { PERMITTIONS_CONFIG, filterOrderItems } from 'configs';
+import { PERMITTIONS_CONFIG, filterOrderItems, filterOrderItemsAdmin } from 'configs';
 
 import { ReactComponent as Eye } from 'assets/img/eye.svg';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
 const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
+
+  const SHOW_POSTER = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.SHOW_POSTER);
+  const itemsToFilter = SHOW_POSTER ? filterOrderItemsAdmin : filterOrderItems;
 
   if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_BOOKING)) {
     return <div className=''>#{number}</div>;
@@ -27,7 +29,7 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
     if (getOrderItem(item.name) === filterOrderItems[1] || getOrderItem(item.name) === filterOrderItems[0]) {
       hasFaster = true;
     }
-    return !includes(filterOrderItems, getOrderItem(item.name));
+    return !includes(itemsToFilter, getOrderItem(item.name));
   });
 
   return (

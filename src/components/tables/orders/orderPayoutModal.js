@@ -13,19 +13,7 @@ import { statusPayments } from 'configs';
 
 import { createOrderTablePayoutsBulkAction, updateOrderTableItemsAction, confirmOrderTablePayoutsBulkAction } from './actions';
 
-const OrderPayoutModal = ({
-  isOpen,
-  className,
-  toggle,
-  orders,
-  totalBudget,
-  defaultNote,
-  createOrderTablePayoutsBulkAction,
-  confirmOrderTablePayoutsBulkAction,
-  artist,
-  updateOrderTableItemsAction,
-  reducer,
-}) => {
+const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defaultNote, createOrderTablePayoutsBulkAction, confirmOrderTablePayoutsBulkAction, artist, updateOrderTableItemsAction, reducer }) => {
   const hasArtist = !isEmpty(artist);
   const canPay = hasArtist && orders.length > 0;
 
@@ -53,12 +41,12 @@ const OrderPayoutModal = ({
   const handleChangeNoteItems = (e) => {
     const { value } = e.target;
     const number = e.target.getAttribute('number');
-
     setNoteItem({ ...noteItem, [number]: value });
   };
 
   const handleArtistConfirmation = () => {
     const payload = {
+      artistId: artist.id,
       payout: map(orders, (or) => ({
         bookingNumber: or.number,
         paid: or?.budget,
