@@ -13,3 +13,10 @@ export const getArtworkDetailService = (id) =>
   request({
     url: `${ARTWORK_API}/${id}`,
   });
+
+export const addArtworkService = (data) =>
+  request({
+    url: `${ARTWORK_API}`,
+    method: 'POST',
+    data,
+  });

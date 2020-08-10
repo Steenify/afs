@@ -161,10 +161,13 @@ class DropBox extends Component {
   };
 
   handleUploadFile = (file, uui) => {
-    const { finalDriveId, orderNumber } = this.props;
+    const { finalDriveId, orderNumber, quality } = this.props;
     const data = new FormData();
     if (finalDriveId) {
       data.append('driveId', finalDriveId);
+    }
+    if (quality) {
+      data.append('quality', quality);
     }
     if (orderNumber) {
       data.append('orderNumber', orderNumber);
