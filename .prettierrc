@@ -7,5 +7,5 @@
   "jsxSingleQuote": true,
   "jsxBracketSameLine": true,
   "arrowParens": "always",
-  "printWidth": 600
+  "printWidth": 200
 }
