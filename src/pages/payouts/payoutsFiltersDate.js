@@ -50,10 +50,7 @@ class OrderFilterDate extends PureComponent {
     const hasFilter = from && to;
 
     return (
-      <Dropdown
-        className='filter__dropdown'
-        isOpen={dropdownOpen}
-        toggle={this.toggle}>
+      <Dropdown className='filter__dropdown' isOpen={dropdownOpen} toggle={this.toggle}>
         <DropdownToggle className='filter__toggle filter__dropdown_toggle'>
           <span className='dispaly_name'>
             {hasFilter ? (
@@ -69,11 +66,7 @@ class OrderFilterDate extends PureComponent {
           </span>
         </DropdownToggle>
         <DropdownMenu right className='filter__dropdown_menu'>
-          <DateRangePicker
-            className='filter__date'
-            onChange={this.handleChange}
-            onClear={this.handleClear}
-          />
+          <DateRangePicker className='filter__date' onChange={this.handleChange} onClear={this.handleClear} />
         </DropdownMenu>
       </Dropdown>
     );
