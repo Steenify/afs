@@ -7,13 +7,7 @@ import AuthLayout from 'components/layout/auth';
 
 import { actGetAccount, actSignout } from 'pages/auth/actions';
 
-const RouteWrapper = ({
-  component: Component,
-  isPrivate,
-  role,
-  layout,
-  ...rest
-}) => {
+const RouteWrapper = ({ component: Component, isPrivate, role, layout, className, ...rest }) => {
   const { isAuthUser, accountInfo } = rest;
 
   useEffect(() => {
@@ -34,12 +28,7 @@ const RouteWrapper = ({
     return (window.location.href = '/');
   }
 
-  if (
-    role &&
-    accountInfo &&
-    accountInfo.permissions &&
-    accountInfo.permissions.indexOf(role) === -1
-  ) {
+  if (role && accountInfo && accountInfo.permissions && accountInfo.permissions.indexOf(role) === -1) {
     return <Redirect to='/' />;
   }
 
@@ -49,7 +38,7 @@ const RouteWrapper = ({
     <Route
       {...rest}
       render={(props) => (
-        <Layout>
+        <Layout className={`${className || ''}`}>
           <Component {...props} />
         </Layout>
       )}
@@ -64,9 +53,7 @@ const mapStateToProps = ({ auth }) => {
   };
 };
 
-export default connect(mapStateToProps, { actGetAccount, actSignout })(
-  RouteWrapper,
-);
+export default connect(mapStateToProps, { actGetAccount, actSignout })(RouteWrapper);
 
 RouteWrapper.defaultProps = {
   isPrivate: false,

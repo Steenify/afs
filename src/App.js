@@ -111,7 +111,7 @@ const App = ({ getOrderTableCountByStatusAction, accountInfo }) => {
           <Route exact path={WEB_ROUTES.PAYOUTS_DETAIL.path} component={PayoutsDetail} isPrivate={true} role={WEB_ROUTES.PAYOUTS_DETAIL.permission} />
           <Route exact path={WEB_ROUTES.GALLERY_LISTING.path} component={GalleryListing} isPrivate={true} role={WEB_ROUTES.GALLERY_LISTING.permission} />
           <Route exact path={WEB_ROUTES.LATE_NOTIFICATION.path} component={LateNotificationList} isPrivate={true} role={WEB_ROUTES.LATE_NOTIFICATION.permission} />
-          <Route exact path={WEB_ROUTES.GALLERY_DETAIL.path} component={GalleryDetail} isPrivate={true} role={WEB_ROUTES.GALLERY_DETAIL.permission} />
+          <Route exact path={WEB_ROUTES.GALLERY_DETAIL.path} component={GalleryDetail} isPrivate={true} role={WEB_ROUTES.GALLERY_DETAIL.permission} className='gallery__page' />
           <PublicRoute exact path={WEB_ROUTES.POLICY.path}>
             <PrivacyPolicy />
           </PublicRoute>
