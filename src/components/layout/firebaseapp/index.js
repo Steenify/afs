@@ -3,9 +3,9 @@ import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 
 import { getNotificationsCountAction } from 'pages/notifications/actions';
-import { newCommentWorkLogAction } from './actions';
+import { newCommentWorkLogAction, editCommentWorkLogAction } from './actions';
 
-import { Messaging, isSupportedMessage, onMessageListener, onFirebaseMessage } from 'vendor/firebase';
+import { Messaging, isSupportedMessage } from 'vendor/firebase';
 
 import './styles.scss';
 
@@ -52,79 +52,44 @@ const MsgFCM = ({ payload }) => {
 //     },
 //   };
 
-class FirerBaseApp extends Component {
-  componentDidMount() {
-    const { getNotificationsCount, newCommentWorkLogAction } = this.props;
-    onFirebaseMessage((payload) => {
-      console.log('FirerBaseApp -> componentDidMount -> payload', JSON.stringify(payload));
+const FireBaseApp = (props) => {
+  const { getNotificationsCount, newCommentWorkLogAction, editCommentWorkLogAction } = props;
+  useEffect(() => {
+    if (isSupportedMessage) {
+      const subscriber = Messaging.onMessage((payload) => {
+        console.log('FirerBaseApp -> componentDidMount -> payload', JSON.stringify(payload));
+        const type = payload?.data?.type;
+        const action = payload?.data?.action;
+        if (type === 'NOTIFICATION') {
+          getNotificationsCount();
+          toast(<MsgFCM payload={payload} />);
+        }
 
-      const type = payload?.data?.type;
-      const action = payload?.data?.action;
-      if (type === 'NOTIFICATION') {
-        getNotificationsCount();
-        toast(<MsgFCM payload={payload} />);
-      }
+        if (action === 'SUMMARIZATION_UPDATE') {
+          console.log('payload', payload);
+        }
 
-      if (action === 'SUMMARIZATION_UPDATE') {
-        console.log('payload', payload);
-      }
+        if (action === 'booking_comment.create') {
+          newCommentWorkLogAction(payload.data);
+        }
 
-      if (action === 'booking_comment.create') {
-        newCommentWorkLogAction(payload.data);
-      }
-    });
+        if (action === 'booking_comment.modify') {
+          editCommentWorkLogAction(payload.data);
+        }
+      });
+      return subscriber;
+    }
+  }, [isSupportedMessage]);
 
-    // if (isSupportedMessage) {
-    //   Messaging.onMessage((payload) => {
-    //     console.log('FirerBaseApp -> componentDidMount -> payload', JSON.stringify(payload));
-
-    //     const type = payload?.data?.type;
-    //     const action = payload?.data?.action;
-    //     if (type === 'NOTIFICATION') {
-    //       getNotificationsCount();
-    //       toast(<MsgFCM payload={payload} />);
-    //     }
-
-    //     if (action === 'SUMMARIZATION_UPDATE') {
-    //       console.log('payload', payload);
-    //     }
-
-    //     if (action === 'booking_comment.create') {
-    //       newCommentWorkLogAction(payload.data);
-    //     }
-    //   });
-    // }
-
-    // onMessageListener().then((payload) => {
-    //   console.log('FirerBaseApp -> componentDidMount -> payload', JSON.stringify(payload));
-
-    //   const type = payload?.data?.type;
-    //   const action = payload?.data?.action;
-    //   if (type === 'NOTIFICATION') {
-    //     getNotificationsCount();
-    //     toast(<MsgFCM payload={payload} />);
-    //   }
-
-    //   if (action === 'SUMMARIZATION_UPDATE') {
-    //     console.log('payload', payload);
-    //   }
-
-    //   if (action === 'booking_comment.create') {
-    //     newCommentWorkLogAction(payload.data);
-    //   }
-    // });
-  }
-
-  render() {
-    return <> </>;
-  }
-}
+  return <></>;
+};
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   getNotificationsCount: getNotificationsCountAction,
   newCommentWorkLogAction,
+  editCommentWorkLogAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FirerBaseApp);
+export default connect(mapStateToProps, mapDispatchToProps)(FireBaseApp);

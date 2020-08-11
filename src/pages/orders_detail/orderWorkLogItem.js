@@ -92,7 +92,7 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
     }
   };
 
-  const handleUploadComment = (text, files) => {
+  const handleUploadComment = (text, files, attachments) => {
     if (commentBox.current) {
       if (!text) {
         toast.warn('Please Comment!');
@@ -114,25 +114,28 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
 
       const data = {
         content: text,
-        attachments: files.map((file) => ({
-          id: file.id,
-          thumbnailLink: file?.thumbnailLink,
-          url: file?.url,
-          external: file?.external,
-        })),
+        attachments: [
+          ...files.map((file) => ({
+            id: file.id,
+            thumbnailLink: file?.thumbnailLink,
+            url: file?.url,
+            external: file?.external,
+          })),
+          ...attachments,
+        ],
       };
 
       if (isEdit) {
         updateCommentWorkLog(order.id, work.id, editComment.id, data, workLogIndex, editCommentIndex, () => {
           commentBox.current.clearFiles();
-          commentBox.current.setCommemt('');
+          commentBox.current.setComment({ content: '', attachments: [] });
           setEditComment({});
           setEditCommentIndex(0);
         });
       } else {
         uploadCommentWorkLog(order.id, work.id, data, workLogIndex, () => {
           commentBox.current.clearFiles();
-          commentBox.current.setCommemt('');
+          commentBox.current.setComment({ content: '', attachments: [] });
         });
       }
     }
@@ -145,7 +148,7 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
   const handleCheckEdit = (com, index) => {
     if (commentBox.current) {
       setEditComment(com);
-      commentBox.current.setCommemt(com.content);
+      commentBox.current.setComment(com);
       setEditCommentIndex(index);
     }
   };
@@ -297,10 +300,14 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
                         </div>
                       )}
                       <div className='comments__controls'>
-                        <button onClick={() => handleCheckEdit(com, index)} type='button' className='comments__control'>
-                          Edit
-                        </button>
-                        <span className='dot'> · </span>
+                        {(isWorking || isReview) && (
+                          <>
+                            <button onClick={() => handleCheckEdit(com, index)} type='button' className='comments__control'>
+                              Edit
+                            </button>
+                            <span className='dot'> · </span>
+                          </>
+                        )}
                         <button type='button' onClick={() => handleConfirmDeleteComment(com.id, index)} className='comments__control '>
                           Delete
                         </button>

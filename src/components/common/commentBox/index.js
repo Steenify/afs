@@ -10,6 +10,7 @@ import { uploadService, deleteFileService } from 'services/attachment';
 import { actionTryCatchCreator, getUniqueID } from 'utils';
 
 import ImageFile from '../imageFile';
+import ImageLoadAble from '../imageLoadAble';
 
 import './style.scss';
 
@@ -18,6 +19,7 @@ class CommentBox extends Component {
     super(props);
     this.state = {
       fileList: [],
+      attachments: [],
       text: '',
     };
     this.pasteRef = React.createRef();
@@ -95,9 +97,10 @@ class CommentBox extends Component {
     });
   };
 
-  setCommemt = (text) => {
+  setComment = (com) => {
     this.setState({
-      text: text,
+      text: com.content,
+      attachments: com.attachments,
     });
   };
 
@@ -107,6 +110,13 @@ class CommentBox extends Component {
     const temp = [...fileList];
     temp.splice(index, 1);
     this.setState({ fileList: temp });
+  };
+
+  onDeleteAttachment = (index) => {
+    const { attachments } = this.state;
+    const temp = [...attachments];
+    temp.splice(index, 1);
+    this.setState({ attachments: temp });
   };
 
   handleCheckfile = () => {
@@ -144,9 +154,7 @@ class CommentBox extends Component {
     };
 
     const onUploadProgress = (progressEvent) => {
-      const percentCompleted = Math.round(
-        (progressEvent.loaded * 100) / progressEvent.total,
-      );
+      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
       const { fileList } = this.state;
       const fileIndex = findIndex(fileList, (item) => item.uui === uui);
       if (fileIndex !== -1) {
@@ -192,35 +200,35 @@ class CommentBox extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { fileList, text } = this.state;
+    const { fileList, text, attachments } = this.state;
     const { onSubmit } = this.props;
 
-    onSubmit(text, fileList);
+    onSubmit(text, fileList, attachments);
   };
 
   render() {
-    const { fileList, text } = this.state;
+    const { fileList, text, attachments } = this.state;
     const { disabled, className } = this.props;
     return (
       <div className={`comment_box ${className}`}>
-        <div className={`${!fileList.length && 'd-none'}`}>
+        <div className={`${!(fileList.length || attachments.length) && 'd-none'}`}>
           <div className='upload-file__list'>
             <div className='upload-file__items'>
-              {fileList.length &&
+              {fileList.length > 0 &&
                 fileList.map((item, index) => (
-                  <div
-                    className='file-item'
-                    key={`image_upload__${
-                      item.file.name
-                    }__${index.toString()}`}>
-                    {!item.isUploaded && (
-                      <div className='file-item__loading'>{item.percent} %</div>
-                    )}
+                  <div className='file-item' key={`image_upload__${item.file.name}__${index.toString()}`}>
+                    {!item.isUploaded && <div className='file-item__loading'>{item.percent} %</div>}
                     <ImageFile className='file-item__img' file={item.file} />
-                    <button
-                      type='button'
-                      className='file-item__delete'
-                      onClick={() => this.onDeleteFile(index)}>
+                    <button type='button' className='file-item__delete' onClick={() => this.onDeleteFile(index)}>
+                      <Close className='icon' />
+                    </button>
+                  </div>
+                ))}
+              {attachments.length > 0 &&
+                attachments.map((attachment, index) => (
+                  <div className='file-item' key={`image_upload__${attachment.fileName}__${index.toString()}`}>
+                    <ImageLoadAble url={attachment.url} className='file-item__img' />
+                    <button type='button' className='file-item__delete' onClick={() => this.onDeleteAttachment(index)}>
                       <Close className='icon' />
                     </button>
                   </div>
@@ -231,34 +239,16 @@ class CommentBox extends Component {
 
         <div className='comments__actions'>
           <form action='' onSubmit={this.handleSubmit}>
-            <input
-              placeholder='Enter comment here..'
-              type='text'
-              onChange={this.handleChangeText}
-              value={text}
-              ref={this.pasteRef}
-              className='form-control comments__input'
-            />
+            <input placeholder='Enter comment here..' type='text' onChange={this.handleChangeText} value={text} ref={this.pasteRef} className='form-control comments__input' />
 
             <label className='comments__action comments__upload'>
               <span className='icon'>
                 <UploadPhoto />
               </span>
 
-              <input
-                multiple
-                type='file'
-                name='files[]'
-                className='sr-only'
-                disabled={disabled || false}
-                accept={'image/*'}
-                onChange={this.handleChangeFiles}
-              />
+              <input multiple type='file' name='files[]' className='sr-only' disabled={disabled || false} accept={'image/*'} onChange={this.handleChangeFiles} />
             </label>
-            <button
-              type='button'
-              onClick={this.handleSubmit}
-              className='comments__action comments__sent'>
+            <button type='button' onClick={this.handleSubmit} className='comments__action comments__sent'>
               <span className='icon'>
                 <Send />
               </span>

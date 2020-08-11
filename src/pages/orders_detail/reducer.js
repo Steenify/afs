@@ -231,7 +231,7 @@ const reducer = (state = initialState, action) => {
             [payload.logIndex]: {
               comments: {
                 [payload.comIndex]: {
-                  $set: payload.data,
+                  $merge: payload.data,
                 },
               },
             },
