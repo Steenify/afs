@@ -36,6 +36,29 @@ if (isSupportedMessage) {
     });
 }
 
+const onFirebaseMessage = (callback) => {
+  if (isSupportedMessage) {
+    firebase.messaging().onMessage((payload) => {
+      callback(payload);
+    });
+  } else {
+    console.log('isSupportedMessage -> ', isSupportedMessage);
+    callback(undefined);
+  }
+};
+
+const onMessageListener = () =>
+  new Promise((resolve) => {
+    if (isSupportedMessage) {
+      firebase.messaging().onMessage((payload) => {
+        resolve(payload);
+      });
+    } else {
+      console.log('isSupportedMessage -> ', isSupportedMessage);
+      resolve(undefined);
+    }
+  });
+
 export const MyFirebase = firebase;
 
-export { isSupportedMessage, Messaging, appToken };
+export { isSupportedMessage, Messaging, appToken, onMessageListener, onFirebaseMessage };
