@@ -94,10 +94,10 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item = 1, tagItems = [],
                   <input type='text' className='form-control' value={name} onChange={(e) => setName(e.target.value)} />
                 </WrapperRow>
                 <WrapperRow label='Tags:'>
-                  <SelectCreatable isMulti options={tagItems} value={tags} onChange={(items) => setTags(items)} />
+                  <SelectCreatable isMulti options={tagItems} value={tags} onChange={(items) => setTags(items)} formatCreateLabel={(input) => `Add tag "${input}"`} />
                 </WrapperRow>
                 <WrapperRow label='Upload File:'>
-                  <Dropbox className='upload' ref={dropbox} id={`Gallery__upload`} quality='low' />
+                  <Dropbox className='upload' ref={dropbox} id={`Gallery__upload`} quality='low' orderNumber='artwork' />
                 </WrapperRow>
               </Fragment>
             )}
