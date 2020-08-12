@@ -6,7 +6,7 @@ import WEB_ROUTES from 'configs/web-routes';
 import ImageLoadAble from 'components/common/imageLoadAble';
 import Tags from '../gallery_listing/tags';
 import { ReactComponent as BackArrow } from 'assets/img/left_arrow.svg';
-
+import { saveAs } from 'file-saver';
 import { getArtworkDetailAction } from './action';
 
 import './style.scss';
@@ -35,6 +35,12 @@ const GalleryDetail = (props) => {
     }
   }, [id, history, getArtworkDetailAction]);
 
+  const onDownload = () => {
+    if (gallery?.attachment?.url) {
+      saveAs(gallery?.attachment?.url, gallery?.attachment?.fileName || 'gallery image');
+    }
+  };
+
   return (
     <Layout documentTitle={WEB_ROUTES.GALLERY_DETAIL.title} container fluid>
       {/* <PageTitle {...WEB_ROUTES.GALLERY_DETAIL} /> */}
@@ -45,7 +51,9 @@ const GalleryDetail = (props) => {
       </div>
       <div className='row'>
         <div className='col col-6'>
-          <div className='gallery__artwork detail'>{gallery?.attachment && <ImageLoadAble type={gallery?.attachment.type} url={gallery?.attachment?.url} fileName={gallery?.attachment.fileName} />}</div>
+          <div className='gallery__artwork detail'>
+            {gallery?.attachment && <ImageLoadAble type={gallery?.attachment.type} url={gallery?.attachment?.url} fileName={gallery?.attachment.fileName} />}
+          </div>
         </div>
 
         <div className='col col-6'>
@@ -63,9 +71,9 @@ const GalleryDetail = (props) => {
           <div>Download:</div>
 
           <p>
-            <a href={gallery?.attachment?.url} download>
+            <div className='fake__link' onClick={onDownload}>
               {gallery?.attachment?.url}
-            </a>
+            </div>
           </p>
 
           {/* <p>Share feedback, ask questions or leave a comment</p>

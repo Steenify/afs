@@ -57,9 +57,7 @@ const Listing = ({
   }, [debounceGetArtworks, filterData]);
 
   const uploadGalleryAction = (data, callback) => {
-    console.log('uploadGalleryAction -> data', data);
     addArtworksAction(data, () => {
-      toast.dark('Upload gallery successful');
       const { page, size, tag, text } = filterData;
       debounceGetArtworks({ page, size, tag, text });
       callback && callback();
