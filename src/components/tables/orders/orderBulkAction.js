@@ -5,7 +5,7 @@ import { forEach, filter } from 'lodash';
 import { confirmAlert } from 'react-confirm-alert';
 import { get } from 'lodash';
 
-import { PERMITTIONS_CONFIG } from 'configs';
+import { PERMITTIONS_CONFIG, statusPayments } from 'configs';
 
 import { ReactComponent as Close } from 'assets/img/close.svg';
 import OrderSelectedCell from 'components/tables/orders/headers/orderSelectedAll';
@@ -20,7 +20,7 @@ const OrderBulkAction = ({ selected, updateOrderTableStatusDoneBulkAction, updat
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const canPayOut = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT);
+  const canPayOut = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT) && selected.filter((s) => s.artistPaymentStatus === statusPayments[1]).length > 0;
 
   const handleUpdateOrderStatusDone = () => {
     updateOrderTableStatusDoneBulkAction({
@@ -100,7 +100,7 @@ const OrderBulkAction = ({ selected, updateOrderTableStatusDoneBulkAction, updat
 const mapStateToProps = ({ orderTable, auth }, ownProps) => {
   const { reducer = 'orders' } = ownProps;
   const items = get(orderTable, `${reducer}.table.items`) || {};
-  const selected = filter(items, (or) => or.selected).map((or) => or.id);
+  const selected = filter(items, (or) => or.selected).map((or) => or);
   return {
     accountInfo: auth.data.accountInfo,
     selected,

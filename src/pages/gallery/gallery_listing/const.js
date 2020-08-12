@@ -6,6 +6,7 @@ export const mobileSize = 100;
 export const initialState = {
   ui: {
     loading: false,
+    isUploading: false,
   },
   filterData: {
     page: 0,
@@ -26,3 +27,4 @@ export const ACTIONS = {
 };
 export const GET_TAGS = actionCreator('GALLERY_GET_TAG');
 export const GET_ARTWORK = actionCreator('GALLERY_GET_ARTWORK');
+export const ADD_ARTWORK = actionCreator('GALLERY_ADD_ARTWORK');

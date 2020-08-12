@@ -1,5 +1,8 @@
 @import 'styles/var.scss';
 
+.react-images__pager {
+	z-index: 2;
+}
 .images_gallerry__item {
 	background: none;
 	border: none;

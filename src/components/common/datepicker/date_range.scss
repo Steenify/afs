@@ -41,6 +41,19 @@
 		}
 	}
 
+	&__controller {
+		margin-left: -20px;
+		margin-right: -20px;
+
+		.DayPicker_transitionContainer {
+			height: 320px !important;
+		}
+
+		.DayPicker__hidden {
+			visibility: visible;
+		}
+	}
+
 	&__footer {
 		display: flex;
 		justify-content: space-between;

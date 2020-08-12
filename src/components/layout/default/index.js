@@ -10,9 +10,9 @@ import SentryErrorBoundary from 'components/SentryErrorBoundary';
 import './style.scss';
 
 const DefaultLayout = (props) => {
-  const { children, isMenuOpen } = props;
+  const { children, isMenuOpen, className } = props;
   return (
-    <React.Fragment>
+    <div className={className}>
       <SentryErrorBoundary>
         <SideBar />
       </SentryErrorBoundary>
@@ -28,7 +28,7 @@ const DefaultLayout = (props) => {
           <Footer />
         </SentryErrorBoundary>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

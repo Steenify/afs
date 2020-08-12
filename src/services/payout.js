@@ -1,6 +1,7 @@
 import { request } from 'utils/request';
 
 const PAYOUT_API = '/api/payouts';
+const PAYOUT_CONFIRMATION_API = '/api/payouts/confirmation';
 const PAYOUT_SUMMARIZE_API = '/api/summarize-payouts';
 
 export const getPayoutsService = (params) =>
@@ -22,8 +23,16 @@ export const createPayoutService = (data) =>
     method: 'POST',
     data,
   });
+
 export const getPayoutDetailService = (id) =>
   request({
     url: `${PAYOUT_API}/${id}`,
     method: 'GET',
+  });
+
+export const confirmPayoutService = (data) =>
+  request({
+    url: PAYOUT_CONFIRMATION_API,
+    method: 'POST',
+    data,
   });

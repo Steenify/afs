@@ -37,6 +37,10 @@ export const PERMITTIONS_CONFIG = {
   VIEW_PAYOUT_LIST: 'VIEW_PAYOUT_LIST',
   VIEW_PAYOUT_DETAIL: 'VIEW_PAYOUT_DETAIL',
   CREATE_PAYOUT: 'CREATE_PAYOUT',
+  SHOW_POSTER: 'SHOW_POSTER',
+  CREATE_ARTWORK: 'CREATE_ARTWORK',
+  NOTIFY_LATE_BOOKING_TO_CUSTOMER: 'NOTIFY_LATE_BOOKING_TO_CUSTOMER',
+  VIEW_LATE_BOOKING_SENT_CONTENT: 'VIEW_LATE_BOOKING_SENT_CONTENT',
 };
 
 export const listStatus = ['NEW_ORDER', 'SKETCH', 'SKETCH_REVIEW', 'SKETCH_EDIT', 'COLOR', 'COLOR_REVIEW', 'COLOR_EDIT', 'EXPORT_FILE', 'SEND_FILE', 'DONE'];
@@ -88,5 +92,8 @@ export const tinymceInitValues = {
 alignleft aligncenter alignright | code | \
 bullist numlist outdent indent`,
 };
+
+export const filterOrderItems = ['Tip', 'Faster Processing', 'Enhanced Matte Paper Poster', 'Enhanced Matte Paper Poster '];
+export const filterOrderItemsAdmin = ['Tip', 'Faster Processing'];
 
 export { default as WEB_ROUTES } from './web-routes';

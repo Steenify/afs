@@ -41,3 +41,15 @@
 		}
 	}
 }
+
+.gallery__page {
+	background-color: white;
+
+	.header__main {
+		border-bottom: 1px solid rgba(102, 113, 123, 0.21);
+	}
+	.fake__link {
+		color: #337fd7;
+		cursor: pointer;
+	}
+}

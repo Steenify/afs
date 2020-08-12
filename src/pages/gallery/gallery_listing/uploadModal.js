@@ -1,23 +1,50 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, Fragment } from 'react';
+import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-
+import Button from 'components/common/button';
 import Dropbox from 'components/common/dropbox';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
+import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
+import SelectCreatable from 'react-select/creatable';
 
-import { ReactComponent as Close } from 'assets/img/close.svg';
+const WrapperRow = ({ label = '', children }) => (
+  <div className='row pb-3'>
+    <div className='col-3 form_label'>{label}</div>
+    <div className='col-9'>{children}</div>
+  </div>
+);
 
-const UploadModal = ({ onClose, onConfirm, orderNumber }) => {
-  const [value, setValue] = useState('');
+const UploadModal = ({ onClose, onConfirm, orderNumber, item = 1, tagItems = [], isLoading = false }) => {
+  const [name, setName] = useState('');
+  const [tags, setTags] = useState([]);
   const dropbox = useRef(null);
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const toggle = () => {
+    onClose();
   };
 
+  // useEffect(() => {
+  //   console.log('====================================');
+  //   console.log(tags);
+  //   console.log('====================================');
+  // }, [tags]);
+
   const onSave = (e) => {
-    e.preventDefault();
-
+    // e.preventDefault();
     if (dropbox.current) {
-      const files = dropbox.current.getFiles();
+      const files = dropbox.current.getFiles() || [];
+      if (!name) {
+        toast.warn('Name is required field!');
+        return;
+      }
+      if (!files.length) {
+        toast.warn('Please chose one file!');
+        return;
+      }
 
+      if (files.length !== 1) {
+        toast.warn('Please select only one file!');
+        return;
+      }
       let isDoneUpload = true;
       files.forEach((file) => {
         if (!file.isUploaded || !file.id) {
@@ -30,49 +57,62 @@ const UploadModal = ({ onClose, onConfirm, orderNumber }) => {
       }
 
       const data = {
-        content: value,
-        attachments: files.map((file) => ({
-          id: file.id,
-          thumbnailLink: file?.thumbnailLink,
-          url: file?.url,
-          external: file?.external,
-        })),
+        title: name,
+        tags: tags.map(({ value, label, __isNew__ }) => {
+          if (__isNew__) {
+            return { name: label };
+          } else {
+            return { name: label, id: value };
+          }
+        }),
+        attachmentId: files?.[0]?.id || undefined,
       };
-
-      onConfirm(data);
+      onConfirm(data, onClose);
     }
   };
 
   return (
     <form action='' onSubmit={onSave}>
-      <div className='comfirm_cus'>
-        <div className='comfirm_cus__header'>
-          <div className='comfirm_cus__titl'>Upload Gallery</div>
-          <button type='button' onClick={onClose} className='comfirm_cus__close'>
-            <div className='icon'>
-              <Close />
-            </div>
-          </button>
-        </div>
-        <div className='comfirm_cus__body'>
-          {/* <p>Are you sure you want to reject this work?</p>
-          <p>
-            <textarea type='text' className='form-control' value={value} onChange={onChange} rows='4' placeholder='Reject Reason' />
-          </p> */}
+      <Modal isOpen={item !== null} toggle={toggle} fade={false} size='md' className='modal-dialog-centered  modal-no-border'>
+        <div className='order_detail__email gallery'>
+          <ModalHeader toggle={toggle}>
+            Upload Gallery
+            <button type='button' className='modal-close' onClick={toggle}>
+              <CloseIcon width='25px' height='25px' />
+            </button>
+          </ModalHeader>
+          <ModalBody>
+            {isLoading ? (
+              <div className={` mb-5`}>
+                <div className={`in-page-loading`}>
+                  <Spinner /> <span className='text'>Uploading</span>
+                </div>
+              </div>
+            ) : (
+              <Fragment>
+                <WrapperRow label='Name:'>
+                  <input type='text' className='form-control' value={name} onChange={(e) => setName(e.target.value)} />
+                </WrapperRow>
+                <WrapperRow label='Tags:'>
+                  <SelectCreatable isMulti options={tagItems} value={tags} onChange={(items) => setTags(items)} formatCreateLabel={(input) => `Add tag "${input}"`} />
+                </WrapperRow>
+                <WrapperRow label='Upload File:'>
+                  <Dropbox className='upload' ref={dropbox} id={`Gallery__upload`} quality='low' orderNumber='artwork' />
+                </WrapperRow>
+              </Fragment>
+            )}
+          </ModalBody>
+          <ModalFooter className='justify-content-between'>
+            <Button color='secondary' type='button' onClick={onClose}>
+              Cancel
+            </Button>
 
-          <div>
-            <Dropbox className='upload' ref={dropbox} id={`Gallery__upload`} />
-          </div>
+            <Button color='primary' type='submit' disabled={isLoading} onClick={onSave} style={{ width: 210 }}>
+              Upload
+            </Button>
+          </ModalFooter>
         </div>
-        <div className='comfirm_cus__footer text-right'>
-          <button className='comfirm_cus__cancel comfirm_cus__control' type='button' onClick={onClose}>
-            Cancel
-          </button>
-          <button className='comfirm_cus__accept comfirm_cus__control' onClick={onSave}>
-            Reject
-          </button>
-        </div>
-      </div>
+      </Modal>
     </form>
   );
 };

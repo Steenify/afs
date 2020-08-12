@@ -15,17 +15,19 @@ class OrderFilterDate extends PureComponent {
     super();
     this.state = {
       dropdownOpen: false,
+      dropdownLabel: 'Filter by Date',
     };
   }
 
-  toggle = () => {
+  toggle = (label) => {
     this.setState((prevState) => ({
       dropdownOpen: !prevState.dropdownOpen,
+      dropdownLabel: label,
     }));
   };
 
-  handleChange = ({ startDate, endDate }) => {
-    this.toggle();
+  handleChange = ({ startDate, endDate, label }) => {
+    this.toggle(label);
     const { updatePayoutFilter, getPayoutList } = this.props;
     updatePayoutFilter({
       from: startDate.format(),
@@ -36,7 +38,7 @@ class OrderFilterDate extends PureComponent {
 
   handleClear = () => {
     const { updatePayoutFilter, getPayoutList } = this.props;
-    this.toggle();
+    this.toggle('Filter by Date');
     updatePayoutFilter({
       from: null,
       to: null,
@@ -45,35 +47,18 @@ class OrderFilterDate extends PureComponent {
   };
 
   render() {
-    const { dropdownOpen } = this.state;
+    const { dropdownOpen, dropdownLabel } = this.state;
     const { from, to } = this.props;
-    const hasFilter = from && to;
-
     return (
-      <Dropdown
-        className='filter__dropdown'
-        isOpen={dropdownOpen}
-        toggle={this.toggle}>
+      <Dropdown className='filter__dropdown' isOpen={dropdownOpen} toggle={() => this.toggle(dropdownLabel)}>
         <DropdownToggle className='filter__toggle filter__dropdown_toggle'>
-          <span className='dispaly_name'>
-            {hasFilter ? (
-              <span>
-                {dateStringFromDate(from)} - {dateStringFromDate(to)}
-              </span>
-            ) : (
-              'Filter by Date'
-            )}
-          </span>
+          <span className='dispaly_name'>{dropdownLabel}</span>
           <span className='icon mb-2 ml-2'>
             <Cavet />
           </span>
         </DropdownToggle>
-        <DropdownMenu right className='filter__dropdown_menu'>
-          <DateRangePicker
-            className='filter__date'
-            onChange={this.handleChange}
-            onClear={this.handleClear}
-          />
+        <DropdownMenu left='true' className='filter__dropdown_menu' persist>
+          <DateRangePicker className='filter__date' startDate={from} endDate={to} onChange={this.handleChange} onClear={this.handleClear} />
         </DropdownMenu>
       </Dropdown>
     );

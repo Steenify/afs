@@ -43,6 +43,7 @@ export const CustomStyles = {
     // width: state.selectProps.width,
     borderBottom: '1px dotted pink',
     color: '#000000',
+    zIndex: 3,
   }),
 };
 
@@ -74,8 +75,7 @@ export class SelectInput extends Component {
 
   multiChange(values) {
     const { input } = this.props;
-    const value =
-      values && values.length ? values.map((item) => item.value) : '';
+    const value = values && values.length ? values.map((item) => item.value) : '';
 
     if (value) {
       this.setState({ value });
@@ -106,25 +106,18 @@ export class SelectInput extends Component {
         });
       }
     } else {
-      selected = options
-        ? options.filter((option) => option.value === input.value)[0]
-        : '';
+      selected = options ? options.filter((option) => option.value === input.value)[0] : '';
     }
 
     return (
-      <FormGroup
-        className={`${className} form-group--select form-group ${
-          multi ? 'form-group--select-multi' : ''
-        }`}>
+      <FormGroup className={`${className} form-group--select form-group ${multi ? 'form-group--select-multi' : ''}`}>
         <label>{label}</label>
         <Select
           {...this.props}
           className=''
           options={options}
           onBlur={(event) => event.preventDefault()}
-          onChange={
-            multi ? (values) => this.multiChange(values) : this.singleChange
-          }
+          onChange={multi ? (values) => this.multiChange(values) : this.singleChange}
           isMulti={multi}
           value={selected || null}
           styles={CustomStyles}

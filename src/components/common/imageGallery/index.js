@@ -1,6 +1,11 @@
-import React, { Component } from 'react';
+import React, { useCallback, useRef, PureComponent, useState, useEffect } from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import { isObject } from 'lodash';
+import { saveAs } from 'file-saver';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload, faSearchMinus, faSearchPlus } from '@fortawesome/free-solid-svg-icons';
+
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 import ImageLoadAble from '../imageLoadAble';
 
@@ -8,7 +13,32 @@ import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
 import './style.scss';
 
-class ImageGallery extends Component {
+const ClickableImageView = React.memo((props) => {
+  const {
+    currentView: { source, alt, caption },
+  } = props;
+
+  return (
+    <div className='react-images__view react-images__view--isModal' style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
+      <TransformWrapper wheel={{ step: 70 }}>
+        {({ zoomIn, zoomOut }) => (
+          <>
+            <TransformComponent>
+              <img className='react-images__view-image--isModal' src={source.regular || source} alt={alt} style={{ width: '100vw', height: 'calc(100vh - 50px)', objectFit: 'contain' }} />
+            </TransformComponent>
+            <div>
+              <FontAwesomeIcon icon={faSearchPlus} size='2x' color='grey' className='cursor-pointer m-3' onClick={zoomIn} />
+              <FontAwesomeIcon icon={faSearchMinus} size='2x' color='grey' className='cursor-pointer m-3' onClick={zoomOut} />
+              <FontAwesomeIcon icon={faDownload} size='2x' color='grey' className='cursor-pointer m-3' onClick={() => saveAs(source.download, caption)} />
+            </div>
+          </>
+        )}
+      </TransformWrapper>
+    </div>
+  );
+});
+
+class ImageGallery extends PureComponent {
   constructor() {
     super();
     this.state = { modalIsOpen: false, currentIndex: 0 };
@@ -24,7 +54,6 @@ class ImageGallery extends Component {
   render() {
     const { modalIsOpen, currentIndex } = this.state;
     const { images, alt, title, canDelete, onDelete, renderItem } = this.props;
-
     const list = images.map((source) => ({
       caption: source?.fileName || title,
       alt: alt,
@@ -70,11 +99,16 @@ class ImageGallery extends Component {
               <Carousel
                 views={list}
                 currentIndex={currentIndex}
+                trackProps={{
+                  onViewChange: (view) => console.log(view),
+                }}
+                components={{ View: ClickableImageView }}
                 styles={{
                   container: (base) => ({
                     ...base,
                     height: '100vh',
                   }),
+                  header: (base) => ({ ...base, zIndex: 3 }),
                   view: (base) => ({
                     ...base,
                     alignItems: 'center',

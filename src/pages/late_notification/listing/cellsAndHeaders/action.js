@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { setCurrentItemAction } from '../action';
 
 import Button from 'components/common/button';
+import CanShow from 'components/layout/canshow';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 const ActionCell = ({ item, setCurrentItemAction }) => {
   const { sentDate } = item;
@@ -10,9 +12,11 @@ const ActionCell = ({ item, setCurrentItemAction }) => {
     setCurrentItemAction(item);
   };
   return sentDate || !item?.lateBookings?.length ? null : (
-    <Button className='btn-create ml-auto pl-4 pr-4' color='primary' onClick={handleClick}>
-      Send Notification
-    </Button>
+    <CanShow permission={PERMITTIONS_CONFIG.NOTIFY_LATE_BOOKING_TO_CUSTOMER}>
+      <Button className='btn-create ml-auto pl-4 pr-4' color='primary' onClick={handleClick}>
+        Send Notification
+      </Button>
+    </CanShow>
   );
 };
 

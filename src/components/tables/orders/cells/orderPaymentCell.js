@@ -6,7 +6,7 @@ import { mapStatusPayment, statusPayments } from 'configs';
 
 const OrderPaymentCell = ({ artistPaymentStatus, goToDetail, code }) => {
   return (
-    <div onClick={() => goToDetail(code)} className={`order__status ${artistPaymentStatus || statusPayments[1]}`}>
+    <div onClick={() => goToDetail(code)} className={`order__status cursor-pointer ${artistPaymentStatus || statusPayments[1]}`}>
       {mapStatusPayment[artistPaymentStatus] || mapStatusPayment.UNPAID}
     </div>
   );
