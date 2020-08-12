@@ -106,9 +106,20 @@ const FireBaseApp = (props) => {
     rejectWorkLogAction,
     history,
   } = props;
+
+  console.log('FireBaseApp -> history', history);
+
   const goToOrder = (payload) => {
-    payload.data?.code && history.push(WEB_ROUTES.ORDERS_DETAIL.path.replace(':id', payload.data?.code));
+    if (payload.data?.code) {
+      const newPath = WEB_ROUTES.ORDERS_DETAIL.path.replace(':id', payload.data?.code);
+      if (newPath === history.location.pathname) {
+        history.replace(newPath);
+      } else {
+        history.push(newPath);
+      }
+    }
   };
+
   useEffect(() => {
     if (isSupportedMessage) {
       const subscriber = Messaging.onMessage((payload) => {
