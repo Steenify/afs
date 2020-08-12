@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
+import React, { useCallback, useRef, PureComponent, useState, useEffect } from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import { isObject } from 'lodash';
 import { saveAs } from 'file-saver';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload, faSearchMinus, faSearchPlus } from '@fortawesome/free-solid-svg-icons';
+
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 import ImageLoadAble from '../imageLoadAble';
 
@@ -9,21 +13,32 @@ import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
 import './style.scss';
 
-const ClickableImageView = (props) => {
+const ClickableImageView = React.memo((props) => {
   const {
     currentView: { source, alt, caption },
   } = props;
+
   return (
     <div className='react-images__view react-images__view--isModal' style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
-      <img className='react-images__view-image--isModal' src={source.regular || source} alt={alt} style={{ height: 'auto', maxHeight: 'calc(100vh - 100px)' }} />
-      <span className='text-white cursor-pointer m-2 font-weight-bold' onClick={() => saveAs(source.download, caption)}>
-        Download
-      </span>
+      <TransformWrapper wheel={{ step: 70 }}>
+        {({ zoomIn, zoomOut }) => (
+          <>
+            <TransformComponent>
+              <img className='react-images__view-image--isModal' src={source.regular || source} alt={alt} style={{ width: '100vw', height: 'calc(100vh - 50px)', objectFit: 'contain' }} />
+            </TransformComponent>
+            <div>
+              <FontAwesomeIcon icon={faSearchPlus} size='2x' color='grey' className='cursor-pointer m-3' onClick={zoomIn} />
+              <FontAwesomeIcon icon={faSearchMinus} size='2x' color='grey' className='cursor-pointer m-3' onClick={zoomOut} />
+              <FontAwesomeIcon icon={faDownload} size='2x' color='grey' className='cursor-pointer m-3' onClick={() => saveAs(source.download, caption)} />
+            </div>
+          </>
+        )}
+      </TransformWrapper>
     </div>
   );
-};
+});
 
-class ImageGallery extends Component {
+class ImageGallery extends PureComponent {
   constructor() {
     super();
     this.state = { modalIsOpen: false, currentIndex: 0 };
@@ -68,7 +83,11 @@ class ImageGallery extends Component {
                 )}
 
                 <div className='images_gallerry__img' onClick={() => this.toggleModal(index)}>
-                  {isObject(img.source) ? <ImageLoadAble type={img.source.type} url={img.source.thumbnail || img.source.thumbnailLink} fileName={img.source.fileName} /> : <ImageLoadAble url={img.source} />}
+                  {isObject(img.source) ? (
+                    <ImageLoadAble type={img.source.type} url={img.source.thumbnail || img.source.thumbnailLink} fileName={img.source.fileName} />
+                  ) : (
+                    <ImageLoadAble url={img.source} />
+                  )}
                 </div>
               </div>
             );
@@ -80,13 +99,16 @@ class ImageGallery extends Component {
               <Carousel
                 views={list}
                 currentIndex={currentIndex}
+                trackProps={{
+                  onViewChange: (view) => console.log(view),
+                }}
                 components={{ View: ClickableImageView }}
                 styles={{
                   container: (base) => ({
                     ...base,
                     height: '100vh',
                   }),
-                  pager: (base) => ({ ...base, zIndex: 9999 }),
+                  header: (base) => ({ ...base, zIndex: 3 }),
                   view: (base) => ({
                     ...base,
                     alignItems: 'center',
