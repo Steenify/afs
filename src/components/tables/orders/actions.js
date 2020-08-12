@@ -62,7 +62,7 @@ export const getOrderTableStatusAction = ({ payload, reducer }) => (dispatch) =>
 };
 
 export const ORDER_TABLE_GET_LIST_ACTION = actionCreator('ORDER_TABLE_GET_LIST_ACTION');
-export const getListAction = ({ payload, reducer = 'orders' }) => (dispatch, getState) => {
+export const getOrderTableListAction = ({ payload = {}, reducer = 'orders' }) => (dispatch, getState) => {
   const state = getState();
   const { filter } = state.orderTable[reducer] || {};
 
@@ -85,7 +85,7 @@ export const getListAction = ({ payload, reducer = 'orders' }) => (dispatch, get
     dispatch({ type: ORDER_TABLE_GET_LIST_ACTION.SUCCESS, payload: { data, headers }, reducer });
   };
   const onError = (error) => {
-    console.log('getListAction => onError -> error', JSON.stringify(error));
+    console.log('getOrderTableListAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: ORDER_TABLE_GET_LIST_ACTION.ERROR,
       payload: error.response,
@@ -108,7 +108,7 @@ export const updateOrderTableFilterAction = ({ payload, reducer }) => (dispatch)
     payload,
     reducer,
   });
-  dispatch(getListAction({ reducer }));
+  dispatch(getOrderTableListAction({ reducer }));
 };
 
 export const ORDER_TABLE_UPDATE_ITEM_ACTION = 'ORDER_TABLE_UPDATE_ITEM_ACTION';

@@ -121,9 +121,8 @@ const App = ({ getOrderTableCountByStatusAction, accountInfo }) => {
 
           <Route component={NotFound} />
         </Switch>
+        <FirerBaseApp />
       </Router>
-
-      <FirerBaseApp />
 
       <ToastContainer position='bottom-left' transition={Flip} autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover={false} />
 
