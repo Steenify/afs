@@ -76,7 +76,7 @@ const Listing = ({
     <Layout className='order__container' documentTitle={t(WEB_ROUTES.GALLERY_LISTING.title)} container fluid>
       <Title onClickUpload={handleUpload} />
       <div className='gallery gallery__wrapper'>
-        <Filter onChange={updateFilterAction} />
+        <Filter onChange={updateFilterAction} text={filterData.text} />
         <Tags currentTag={filterData.tag} tags={data?.tags} onClickTag={updateFilterAction} />
       </div>
       {ui.loading ? (
