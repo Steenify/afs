@@ -1,12 +1,16 @@
 import update from 'react-addons-update';
 import {
-  GET_USERS,
+  GET_USER_LIST_ACTION,
+  UPDATE_USER_FILTER_ACTION,
+  UPDATE_USER_ALL_SELECTED_ROW_ACTION,
+  UPDATE_USER_ITEM_ACTION,
+  //
   GET_USER_DETAIL,
   UPDATE_USER,
   CREATE_USER,
   GET_USERROLES,
-  UPDATE_SORT_USER,
 } from './actions';
+import { mapDataList, mapDataByIds, isMobile } from 'utils';
 
 const initialState = {
   ui: {
@@ -19,42 +23,94 @@ const initialState = {
   error: {
     create: {},
   },
-  data: {
-    users: [],
-    userRoles: [],
-    totalItems: 0,
-    sortColumns: [],
-  },
   detail: {},
+  list: {
+    users: [],
+    ids: [],
+    items: {},
+    totalItems: 0,
+    totalPage: 0,
+  },
+  userRoles: [],
+  filter: {
+    page: 0,
+    size: 100,
+    sizeMobile: 100,
+    sort: [],
+    name: '',
+    role: null,
+    from: null,
+    to: null,
+  },
 };
 
 const reducer = (state = initialState, action) => {
   const { type, payload, message } = action;
 
   switch (type) {
-    case GET_USERS.PENDING:
+    case UPDATE_USER_ITEM_ACTION: {
+      return update(state, {
+        list: {
+          items: {
+            [payload.id]: {
+              [payload.field]: {
+                $set: payload.value,
+              },
+            },
+          },
+        },
+      });
+    }
+    case UPDATE_USER_ALL_SELECTED_ROW_ACTION: {
+      return update(state, {
+        list: {
+          items: {
+            $apply: (items) => {
+              const res = mapDataList(items, 'selected', payload);
+              return res;
+            },
+          },
+        },
+      });
+    }
+    case UPDATE_USER_FILTER_ACTION: {
+      return update(state, {
+        filter: {
+          $merge: payload,
+        },
+      });
+    }
+    case GET_USER_LIST_ACTION.PENDING: {
       return update(state, {
         ui: {
           list: { loading: { $set: true } },
         },
       });
-    case GET_USERS.SUCCESS:
+    }
+    case GET_USER_LIST_ACTION.ERROR: {
       return update(state, {
         ui: {
           list: { loading: { $set: false } },
-        },
-        data: {
-          users: { $set: payload.data },
-          totalItems: { $set: payload.headers['x-total-count'] },
         },
       });
-    case GET_USERS.ERROR:
+    }
+    case GET_USER_LIST_ACTION.SUCCESS:
+      const { ids, items } = mapDataByIds(mapDataList(payload.data, 'selected', false), 'id');
+      const totalItems = parseInt(payload.headers['x-total-count'], 10);
+      const { size, sizeMobile } = state.filter;
+      const currSize = isMobile() ? sizeMobile : size;
+      const totalPage = Math.ceil(totalItems / currSize);
+
       return update(state, {
         ui: {
           list: { loading: { $set: false } },
         },
-        error: {
-          message: { $set: 'Something went wrong.' },
+        list: {
+          users: { $set: payload.data },
+          ids: { $set: ids },
+          items: { $set: items },
+          totalItems: { $set: payload.headers['x-total-count'] },
+          totalPage: { $set: totalPage },
         },
       });
 
@@ -86,17 +142,13 @@ const reducer = (state = initialState, action) => {
         },
       });
     case UPDATE_USER.SUCCESS:
-      const newUsers = [...state.data.users];
-      const index = newUsers.findIndex(
-        (item) => item.login === payload.data.login,
-      );
       return update(state, {
         ui: {
           edit: { loading: { $set: false } },
         },
-        data: {
-          users: {
-            $splice: [[index, 1, payload.data]],
+        list: {
+          items: {
+            [payload.data.id]: { $set: payload.data },
           },
         },
       });
@@ -145,21 +197,12 @@ const reducer = (state = initialState, action) => {
         ui: {
           roles: { loading: { $set: false } },
         },
-        data: {
-          userRoles: { $set: payload.data },
-        },
+        userRoles: { $set: payload.data },
       });
     case GET_USERROLES.ERROR:
       return update(state, {
         ui: {
           roles: { loading: { $set: false } },
-        },
-      });
-
-    case UPDATE_SORT_USER.SUCCESS:
-      return update(state, {
-        data: {
-          sortColumns: { $set: payload },
         },
       });
     default:
