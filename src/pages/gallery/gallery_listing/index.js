@@ -5,6 +5,7 @@ import { debounce } from 'lodash';
 import Masonry from 'react-masonry-component';
 import { useHistory } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import Layout from 'components/common/Layout';
 import { getAllTagsAction, getArtworksAction, updateFilterAction, addArtworksAction } from './action';
@@ -19,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { uniqIdCreator } from 'utils';
 import UploadModal from './uploadModal';
 import { toast } from 'react-toastify';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const masonryOptions = {
   transitionDuration: 0,
@@ -60,6 +62,7 @@ const Listing = ({
     addArtworksAction(data, () => {
       const { page, size, tag, text } = filterData;
       debounceGetArtworks({ page, size, tag, text });
+      getAllTagsAction();
       callback && callback();
     });
   };
@@ -91,7 +94,7 @@ const Listing = ({
             {data.artworks.map((artwork) => (
               <div className='gallery__artwork' key={`artwork_${artwork.bookingNumber}_${uniqIdCreator()}`}>
                 <div className='cursor-pointer' onClick={() => history.push(`/gallery/${artwork.id}`)}>
-                  <img src={artwork.attachment.url} alt={artwork.attachment.fileName} />
+                  <LazyLoadImage effect='blur' src={artwork.attachment.url} alt={artwork.attachment.fileName} width={255} />
                 </div>
                 <div className='gallery__artwork__title pl-3'>{artwork.title}</div>
 
