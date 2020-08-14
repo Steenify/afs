@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, PureComponent, useState, useEffect } from 'react';
+import React, { PureComponent } from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import { isObject } from 'lodash';
 import { saveAs } from 'file-saver';
@@ -20,7 +20,7 @@ const ClickableImageView = React.memo((props) => {
 
   return (
     <div className='react-images__view react-images__view--isModal' style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
-      <TransformWrapper wheel={{ step: 70 }}>
+      <TransformWrapper wheel={{ step: 70 }} options={{ maxScale: 2.5 }}>
         {({ zoomIn, zoomOut }) => (
           <>
             <TransformComponent>
