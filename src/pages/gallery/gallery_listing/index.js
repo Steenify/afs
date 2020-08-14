@@ -94,7 +94,8 @@ const Listing = ({
             {data.artworks.map((artwork) => (
               <div className='gallery__artwork' key={`artwork_${artwork.bookingNumber}_${uniqIdCreator()}`}>
                 <div className='cursor-pointer' onClick={() => history.push(`/gallery/${artwork.id}`)}>
-                  <LazyLoadImage effect='blur' src={artwork.attachment.url} alt={artwork.attachment.fileName} width={255} />
+                  <LazyLoadImage effect='opacity' src={artwork.attachment.url} alt={artwork.attachment.fileName} width={255} wrapperClassName='gallery__artwork__lazy' />
+                  {/* <img src={artwork.attachment.url} alt={artwork.attachment.fileName} /> */}
                 </div>
                 <div className='gallery__artwork__title pl-3'>{artwork.title}</div>
 

@@ -24,6 +24,14 @@
 			width: 255px;
 			border-radius: 5px;
 		}
+
+		&__lazy {
+			display: flex !important;
+			min-height: 255px;
+			img {
+				align-self: center;
+			}
+		}
 	}
 	&__artwork__title {
 		flex: 1;
