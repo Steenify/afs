@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import NotificationList from './notificationList';
+import NotificationList from './NotificationList';
 
 import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';

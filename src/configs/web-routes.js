@@ -153,6 +153,11 @@ const WEB_ROUTES = {
     title: 'Late Notification', // 'baseApp.sidebar.galleryListing',
     permission: 'VIEW_LATE_NOTIFICATION_LIST',
   },
+  NOTIFICATION_SETTINGS: {
+    path: '/notification-settings',
+    title: 'Notification Settings', // 'baseApp.sidebar.galleryListing',
+    // permission: 'VIEW_LATE_NOTIFICATION_LIST',
+  },
 };
 
 export default WEB_ROUTES;
