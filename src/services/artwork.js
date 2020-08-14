@@ -20,3 +20,9 @@ export const addArtworkService = (data) =>
     method: 'POST',
     data,
   });
+
+export const deleteArtworkDetailService = (id) =>
+  request({
+    url: `${ARTWORK_API}/${id}`,
+    method: 'DELETE',
+  });

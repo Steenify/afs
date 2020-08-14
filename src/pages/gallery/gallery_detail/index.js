@@ -10,10 +10,14 @@ import Tags from '../gallery_listing/tags';
 import { ReactComponent as BackArrow } from 'assets/img/left_arrow.svg';
 import { ReactComponent as Close } from 'assets/img/close.svg';
 import { saveAs } from 'file-saver';
-import { getArtworkDetailAction } from './action';
+import { getArtworkDetailAction, deleteArtworkDetailAction } from './action';
 import { showConfirmAlert } from 'utils/index';
+import MeatBallDropdown from 'components/common/meatball-dropdown';
 
+import CanShow from 'components/layout/canshow';
 import './style.scss';
+import { PERMITTIONS_CONFIG } from 'configs';
+import { toast } from 'react-toastify';
 // import { avatarGenerator } from 'utils';
 
 const GalleryDetail = (props) => {
@@ -27,6 +31,7 @@ const GalleryDetail = (props) => {
       data: { gallery },
     },
     getArtworkDetailAction,
+    deleteArtworkDetailAction,
   } = props;
 
   const { id } = match.params;
@@ -50,9 +55,10 @@ const GalleryDetail = (props) => {
       confirmText: 'Delete',
       text: 'Are you sure you want to delete this art work?',
       onConfirm: () => {
-        console.log('====================================');
-        console.log('DELETE IT');
-        console.log('====================================');
+        deleteArtworkDetailAction(id, () => {
+          toast.dark('Art work is deleted!');
+          history.goBack();
+        });
       },
     });
   };
@@ -75,8 +81,17 @@ const GalleryDetail = (props) => {
         <div className='col col-6'>
           <div className='d-flex justify-content-between align-items-start'>
             <h1>{gallery?.title}</h1>
-
-            {/* <Button onClick={onConfirmDelete}>Delete</Button> */}
+            <CanShow permission={PERMITTIONS_CONFIG.DELETE_ARTWORK}>
+              <MeatBallDropdown
+                className='mr-3'
+                actions={[
+                  {
+                    title: 'Delete',
+                    onClick: onConfirmDelete,
+                  },
+                ]}
+              />
+            </CanShow>
           </div>
 
           {/* <p>
@@ -119,6 +134,7 @@ const mapStateToProps = ({ auth, gallery: { detail } }, ownProps) => ({
 
 const mapDispatchToProps = {
   getArtworkDetailAction,
+  deleteArtworkDetailAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GalleryDetail);
