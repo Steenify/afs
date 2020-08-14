@@ -18,6 +18,7 @@
       "login": "Tên đăng nhập",
       "firstName": "Tên",
       "lastName": "Họ",
+      "name": "Họ Tên",
       "email": "Email",
       "activated": "Kích hoạt",
       "deactivated": "Khóa",
