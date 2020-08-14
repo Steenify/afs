@@ -4,8 +4,6 @@ import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
 import OrderTable from 'components/tables/orders';
 
-import './style.scss';
-
 import { WEB_ROUTES } from 'configs';
 import { useTranslation } from 'react-i18next';
 
