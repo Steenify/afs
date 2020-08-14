@@ -8,6 +8,7 @@ import {
   getOrderCountByStatusService,
   getOrderBulkMarkAsDoneService,
 } from 'services/order';
+import { getAllTagsService } from 'services/tag';
 import { getAllStatusService } from 'services/status';
 import { createPayoutService, confirmPayoutService } from 'services/payout';
 
@@ -27,6 +28,13 @@ const buildSearchParam = (input = {}) => {
     input.sort.forEach((item) => {
       const textSort = item.id + ',' + (item.desc ? 'desc' : 'asc');
       params.append('sort', textSort);
+    });
+  }
+
+  //TODO: change it when api change
+  if (input.tags && input.tags.length) {
+    input.tags.forEach((item) => {
+      params.append('tag', item?.value || '');
     });
   }
 
@@ -268,5 +276,25 @@ export const updateOrderTableStatusDoneBulkAction = ({ payload, reducer, onSucce
         reducer,
       });
     },
+  });
+};
+
+//TODO: Change service to get all order tag when api available
+export const GET_TAGS = actionCreator('ORDER_TABLE_GET_ALL_TAG');
+export const getAllTagsAction = () => (dispatch, getState) => {
+  const onPending = () => {
+    dispatch({ type: GET_TAGS.PENDING });
+  };
+  const onSuccess = (payload) => {
+    dispatch({ type: GET_TAGS.SUCCESS, payload });
+  };
+  const onError = (error) => {
+    dispatch({ type: GET_TAGS.ERROR, payload: error.response });
+  };
+  actionTryCatchCreator({
+    service: getAllTagsService(),
+    onPending,
+    onSuccess,
+    onError,
   });
 };

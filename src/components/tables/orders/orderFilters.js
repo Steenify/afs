@@ -7,6 +7,7 @@ import { PERMITTIONS_CONFIG } from 'configs';
 import { updateOrderTableFilterAction, getOrderTableCountByStatusAction } from './actions';
 
 import OrderFilterAssignee from './orderFilterAssignee';
+import Select from 'react-select';
 
 class OrderFilters extends Component {
   constructor() {
@@ -44,9 +45,16 @@ class OrderFilters extends Component {
       reducer,
     });
   };
+  handleSelectTags = (value) => {
+    const { updateOrderTableFilterAction, reducer } = this.props;
+    updateOrderTableFilterAction({
+      payload: { tags: value, page: 0 },
+      reducer,
+    });
+  };
 
   render() {
-    const { status, selectedStatus, orderStatusCount, text, accountInfo, reducer } = this.props;
+    const { status, selectedStatus, orderStatusCount, text, accountInfo, reducer, tagItems, tags } = this.props;
 
     const totalOrders = reduce(
       orderStatusCount,
@@ -81,6 +89,10 @@ class OrderFilters extends Component {
           </div>
           {canAssign && <OrderFilterAssignee reducer={reducer} />}
         </div>
+
+        {/* <div className='mt-3'>
+          <Select isMulti options={tagItems} value={tags} onChange={this.handleSelectTags} formatCreateLabel={(input) => `Add tag "${input}"`} />
+        </div> */}
       </div>
     );
   }
@@ -95,6 +107,8 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
     selectedStatus: table.filter.selectedStatus,
     orderStatusCount: table.orderStatusCount,
     accountInfo: auth.data.accountInfo,
+    tagItems: table.tags.map(({ id = '', name = '' }) => ({ label: name, value: id })),
+    tags: table.filter.tags,
   };
 };
 

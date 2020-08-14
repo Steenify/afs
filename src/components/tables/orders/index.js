@@ -26,12 +26,13 @@ import OrderSubTotalCell from 'components/tables/orders/cells/orderSubTotalCell'
 import OrderStatusCell from 'components/tables/orders/cells/orderStatusCell';
 import OrderLastUpdateDateCell from 'components/tables/orders/cells/orderLastUpdateCell';
 
-import { getOrderTableStatusAction, getListAction } from './actions';
+import { getOrderTableStatusAction, getListAction, getAllTagsAction } from './actions';
 
 class OrderTable extends PureComponent {
   componentDidMount() {
-    const { getOrderTableStatusAction, reducer, getListAction, filter } = this.props;
+    const { getOrderTableStatusAction, reducer, getListAction, filter, getAllTagsAction } = this.props;
     getOrderTableStatusAction({ reducer });
+    getAllTagsAction();
     getListAction({ payload: filter, reducer });
   }
 
@@ -171,6 +172,6 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
   };
 };
 
-const mapDispatchToProps = { getOrderTableStatusAction, getListAction };
+const mapDispatchToProps = { getOrderTableStatusAction, getListAction, getAllTagsAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderTable));

@@ -8,6 +8,7 @@ import {
   ORDER_TABLE_UPDATE_FILTER_ACTION,
   ORDER_TABLE_GET_STATUS_ACTION,
   ORDER_TABLE_GET_COUNT_BY_STATUS_ACTION,
+  GET_TAGS,
 } from './actions';
 
 const templateState = {
@@ -16,6 +17,7 @@ const templateState = {
     size: 100,
     sizeMobile: 100,
     sort: [{ id: 'number', desc: true }],
+    tags: [],
     text: '',
     assignee: '',
   },
@@ -29,6 +31,7 @@ const templateState = {
     loading: false,
   },
   status: [],
+  tags: [],
   orderStatusCount: {},
 };
 
@@ -122,6 +125,11 @@ const templateReducer = (state = templateState, action) => {
         },
       });
     }
+
+    case GET_TAGS.SUCCESS:
+      return update(state, {
+        tags: { $set: payload },
+      });
     default:
       return state;
   }
