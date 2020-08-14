@@ -308,7 +308,10 @@
 		}
 
 		&.DONE,
-		&.PAID {
+		&.PAID,
+		&.PRINT_PREVIEW,
+		&.PRINT_TRACKING,
+		&.PRINT_RECEIVED {
 			background: #ececec;
 
 			&::before {

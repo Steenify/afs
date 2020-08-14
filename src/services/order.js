@@ -67,6 +67,18 @@ export const getOrderWorkLogService = ({ id }) =>
     method: 'GET',
   });
 
+export const createOrderCanvasWorkLogService = ({ id }) =>
+  request({
+    url: `${ORDERS_API}/${id}/work-logs/canvas`,
+    method: 'POST',
+  });
+
+export const getOrderCanvasWorkLogService = ({ id }) =>
+  request({
+    url: `${ORDERS_API}/${id}/work-logs/canvas`,
+    method: 'GET',
+  });
+
 export const uploadOrderWorkLogService = ({ id, logId, data }) =>
   request({
     url: `${ORDERS_API}/${id}/work-logs/${logId}/upload`,

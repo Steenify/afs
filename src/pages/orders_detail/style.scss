@@ -5,6 +5,10 @@
 		position: relative;
 		margin-bottom: 20px;
 
+		&.canvas {
+			margin-top: 20px;
+		}
+
 		.number {
 			font-size: 27px;
 			line-height: 1;

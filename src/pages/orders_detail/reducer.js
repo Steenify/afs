@@ -6,6 +6,8 @@ import {
   UPDATE_ORDER_ITEM_FILES_ACTION,
   GET_ORDER_CUSTOMER_ACTION,
   UPDATE_ORDER_STATUS_ACTION,
+  CREATE_ORDER_CANVAS_WORK_LOG_ACTION,
+  GET_ORDER_CANVAS_WORK_LOG_ACTION,
   GET_ORDER_WORK_LOG_ACTION,
   UPLOAD_FILE_WORK_LOG_ACTION,
   APPROVED_WORK_LOG_ACTION,
@@ -29,6 +31,7 @@ const initialState = {
     loading: false,
     loadingUser: false,
     loadingWorkLog: false,
+    loadingCanvasWorkLog: false,
     isShowEmail: false,
     loadingEmail: false,
   },
@@ -36,6 +39,7 @@ const initialState = {
     order: {},
     customer: {},
     workLog: [],
+    canvasWorkLog: [],
     email: '',
     emailTitle: '',
     selectedEmailTemplate: 0,
@@ -47,6 +51,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
+  console.log('reducer -> payload', payload);
   switch (type) {
     case ORDER_DETAIL_ACTIONS.UPDATE_ORDER_ITEM_SUMARIZE:
       return update(state, {
@@ -97,6 +102,7 @@ const reducer = (state = initialState, action) => {
 
     case GET_ORDER_DETAIL_ACTION.PENDING:
     case UPDATE_ORDER_ITEM_FILES_ACTION.PENDING:
+    case CREATE_ORDER_CANVAS_WORK_LOG_ACTION.PENDING:
     case UPDATE_ORDER_STATUS_ACTION.PENDING:
     case UPLOAD_FILE_WORK_LOG_ACTION.PENDING:
     case UPLOAD_COMMENT_WORK_LOG_ACTION.PENDING:
@@ -120,6 +126,23 @@ const reducer = (state = initialState, action) => {
           order: { $set: payload.data },
         },
       });
+    case CREATE_ORDER_CANVAS_WORK_LOG_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+        data: {
+          order: {
+            statusForCanvas: {
+              $set: payload.status,
+            },
+          },
+          canvasWorkLog: {
+            $set: [payload.data],
+          },
+        },
+      });
+    }
     case UPDATE_ORDER_STATUS_ACTION.SUCCESS:
       return update(state, {
         ui: {
@@ -160,7 +183,7 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.index]: {
               attachments: {
                 $push: payload.data,
@@ -179,7 +202,7 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.index]: {
               comments: {
                 $push: [payload.data],
@@ -195,7 +218,7 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.logIndex]: {
               attachments: {
                 $splice: [[payload.attachmentIndex, 1]],
@@ -211,7 +234,7 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.logIndex]: {
               comments: {
                 $splice: [[payload.comIndex, 1]],
@@ -227,7 +250,7 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.logIndex]: {
               comments: {
                 [payload.comIndex]: {
@@ -251,7 +274,7 @@ const reducer = (state = initialState, action) => {
               $set: payload.data.status,
             },
           },
-          workLog: {
+          [payload.workLogType]: {
             [payload.index]: {
               state: {
                 $set: 'APPROVED',
@@ -276,7 +299,7 @@ const reducer = (state = initialState, action) => {
               $set: payload.data.status,
             },
           },
-          workLog: {
+          [payload.workLogType]: {
             [payload.index]: {
               state: {
                 $set: 'REJECTED',
@@ -314,7 +337,7 @@ const reducer = (state = initialState, action) => {
           isShowEmail: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [currentWorkLogIndex]: {
               activities: {
                 $push: payload.activives,
@@ -330,6 +353,7 @@ const reducer = (state = initialState, action) => {
     case UPDATE_ORDER_ITEM_SUMARIZE_ACTION.SUCCESS:
     case UPDATE_ORDER_ITEM_FILES_ACTION.ERROR:
     case UPDATE_ORDER_STATUS_ACTION.ERROR:
+    case CREATE_ORDER_CANVAS_WORK_LOG_ACTION.ERROR:
     case UPLOAD_FILE_WORK_LOG_ACTION.ERROR:
     case UPLOAD_COMMENT_WORK_LOG_ACTION.ERROR:
     case DELETE_COMMENT_WORK_LOG_ACTION.ERROR:
@@ -364,6 +388,28 @@ const reducer = (state = initialState, action) => {
       return update(state, {
         ui: {
           loadingUser: { $set: false },
+        },
+      });
+
+    case GET_ORDER_CANVAS_WORK_LOG_ACTION.PENDING:
+      return update(state, {
+        ui: {
+          loadingCanvasWorkLog: { $set: true },
+        },
+      });
+    case GET_ORDER_CANVAS_WORK_LOG_ACTION.SUCCESS:
+      return update(state, {
+        ui: {
+          loadingCanvasWorkLog: { $set: false },
+        },
+        data: {
+          canvasWorkLog: { $set: payload.data },
+        },
+      });
+    case GET_ORDER_CANVAS_WORK_LOG_ACTION.ERROR:
+      return update(state, {
+        ui: {
+          loadingCanvasWorkLog: { $set: false },
         },
       });
 
@@ -454,7 +500,7 @@ const reducer = (state = initialState, action) => {
     case DELETE_FILE_DELIVERY_ACTION.SUCCESS: {
       return update(state, {
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.logIndex]: {
               attachments: {
                 $splice: [[payload.fileIndex, 1]],

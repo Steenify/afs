@@ -23,7 +23,7 @@ import { mapStatusCanNotUpload } from 'configs';
 
 import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction } from './actions';
 
-const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, uploadCommentWorkLog, deleteCommentWorkLog, updateCommentWorkLog, deleteAttachmentWorkLog }) => {
+const OrderWorkLogItem = ({ workLogType, work, order, uploadFileWorkLog, isOpened, workLog, uploadCommentWorkLog, deleteCommentWorkLog, updateCommentWorkLog, deleteAttachmentWorkLog }) => {
   const [isOpenWork, setIsOpenWork] = useState(isOpened || false);
   const toggleWork = () => setIsOpenWork(!isOpenWork);
 
@@ -85,10 +85,18 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
         })),
       };
 
-      uploadFileWorkLog(order.id, work.id, data, workLogIndex, files, () => {
-        dropbox.current.clearFiles();
-        setIsEdit(false);
-      });
+      uploadFileWorkLog(
+        order.id,
+        work.id,
+        data,
+        workLogIndex,
+        files,
+        () => {
+          dropbox.current.clearFiles();
+          setIsEdit(false);
+        },
+        workLogType,
+      );
     }
   };
 
@@ -123,23 +131,39 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
       };
 
       if (isEdit) {
-        updateCommentWorkLog(order.id, work.id, editComment.id, data, workLogIndex, editCommentIndex, () => {
-          commentBox.current.clearFiles();
-          commentBox.current.setCommemt('');
-          setEditComment({});
-          setEditCommentIndex(0);
-        });
+        updateCommentWorkLog(
+          order.id,
+          work.id,
+          editComment.id,
+          data,
+          workLogIndex,
+          editCommentIndex,
+          () => {
+            commentBox.current.clearFiles();
+            commentBox.current.setCommemt('');
+            setEditComment({});
+            setEditCommentIndex(0);
+          },
+          workLogType,
+        );
       } else {
-        uploadCommentWorkLog(order.id, work.id, data, workLogIndex, () => {
-          commentBox.current.clearFiles();
-          commentBox.current.setCommemt('');
-        });
+        uploadCommentWorkLog(
+          order.id,
+          work.id,
+          data,
+          workLogIndex,
+          () => {
+            commentBox.current.clearFiles();
+            commentBox.current.setCommemt('');
+          },
+          workLogType,
+        );
       }
     }
   };
 
   const handleDeleteComment = (comId, comIndex) => {
-    deleteCommentWorkLog(order.id, work.id, comId, workLogIndex, comIndex);
+    deleteCommentWorkLog(order.id, work.id, comId, workLogIndex, comIndex, workLogType);
   };
 
   const handleCheckEdit = (com, index) => {
@@ -195,7 +219,7 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
 
   const handleDeleteFile = (file) => {
     const fileIndex = findIndex(work.attachments, (pho) => pho?.id === file?.source?.id);
-    deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'));
+    deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'), workLogType);
   };
 
   return (
@@ -374,9 +398,8 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
   );
 };
 
-const mapStateToProps = ({ orderDetail }) => ({
-  loading: orderDetail.ui.loadingWorkLog,
-  workLog: orderDetail.data.workLog,
+const mapStateToProps = ({ orderDetail }, ownProps) => ({
+  workLog: orderDetail.data[ownProps.workLogType || 'workLog'],
 });
 
 const mapDispatchToProps = {
