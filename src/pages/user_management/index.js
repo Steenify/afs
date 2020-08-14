@@ -2,7 +2,7 @@ import React from 'react';
 
 import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
-import UserList from './userList';
+import UserList from './UserList';
 import UserCreate from './UserCreate';
 
 import './style.scss';
