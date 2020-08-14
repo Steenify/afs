@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { forEach, filter } from 'lodash';
 import { confirmAlert } from 'react-confirm-alert';
 import { get } from 'lodash';
+import Sticky from 'react-stickynode';
 
 import { PERMITTIONS_CONFIG, statusPayments } from 'configs';
 
@@ -75,22 +76,26 @@ const OrderBulkAction = ({ selected, updateOrderTableStatusDoneBulkAction, updat
 
   return (
     <div className={`order__bulk ${isHide && 'd-none'}`}>
-      <div className='btn-group'>
-        <div className='btn btn-group__item'>
-          <div className='d-flex align-items-center order__bulk__selected'>
-            <OrderSelectedCell reducer={reducer} />
-            <span className='number'>{selected?.length} selected</span>
+      <Sticky enabled={process.env.REACT_APP_BUILD === 'DEV'} top={57}>
+        <div className='wrapper'>
+          <div className='btn-group'>
+            <div className='btn btn-group__item'>
+              <div className='d-flex align-items-center order__bulk__selected'>
+                <OrderSelectedCell reducer={reducer} />
+                <span className='number'>{selected?.length} selected</span>
+              </div>
+            </div>
+            <button type='button' className='btn btn-group__item' onClick={handleConfirmChangeStatus}>
+              Mark as Done
+            </button>
+            {canPayOut && (
+              <button type='button' className='btn btn-group__item' onClick={toggle}>
+                Paid
+              </button>
+            )}
           </div>
         </div>
-        <button type='button' className='btn btn-group__item' onClick={handleConfirmChangeStatus}>
-          Mark as Done
-        </button>
-        {canPayOut && (
-          <button type='button' className='btn btn-group__item' onClick={toggle}>
-            Paid
-          </button>
-        )}
-      </div>
+      </Sticky>
 
       <OrderPayoutModal isOpen={isOpen} toggle={toggle} reducer={reducer} />
     </div>

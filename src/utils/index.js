@@ -1,3 +1,4 @@
+import React from 'react';
 import moment from 'moment';
 // import numeral from 'numeral';
 import { toast } from 'react-toastify';
@@ -5,6 +6,8 @@ import { reduce, map, isObject, mapValues, omit } from 'lodash';
 import * as Sentry from '@sentry/react';
 
 import PSDFile from 'assets/img/psd__icon.jpg';
+import { ReactComponent as Close } from 'assets/img/close.svg';
+import { confirmAlert } from 'react-confirm-alert';
 
 export const storeData = (key, value) => {
   try {
@@ -381,3 +384,43 @@ export const getTotalPage = (headers = {}, size = 100, sizeMobile = 100) => {
 export const uniqIdCreator = () => Math.random().toString(36).slice(2);
 
 export const avatarGenerator = (url, name) => url || `https://ui-avatars.com/api/?name=${(name || 'Unknown').split(' ').join('+')}`;
+
+export const showConfirmAlert = ({ title = 'Confirm', text = '', confirmText = 'Confirm', cancelText = 'Cancel', onConfirm = () => {}, onCancel = () => {} }) => {
+  confirmAlert({
+    customUI: ({ onClose }) => {
+      return (
+        <div className='comfirm_cus'>
+          <div className='comfirm_cus__header'>
+            <div className='comfirm_cus__titl'>{title}</div>
+            <button type='button' onClick={onClose} className='comfirm_cus__close'>
+              <div className='icon'>
+                <Close />
+              </div>
+            </button>
+          </div>
+          <div className='comfirm_cus__body'>
+            <p>{text}</p>
+          </div>
+          <div className='comfirm_cus__footer text-right'>
+            <button
+              className='comfirm_cus__cancel comfirm_cus__control'
+              onClick={() => {
+                onCancel();
+                onClose();
+              }}>
+              {cancelText}
+            </button>
+            <button
+              className='comfirm_cus__accept comfirm_cus__control'
+              onClick={() => {
+                onConfirm();
+                onClose();
+              }}>
+              {confirmText}
+            </button>
+          </div>
+        </div>
+      );
+    },
+  });
+};

@@ -1,15 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { confirmAlert } from 'react-confirm-alert';
 
+import Button from 'components/common/button';
 import Layout from 'components/common/Layout';
 import WEB_ROUTES from 'configs/web-routes';
 import ImageLoadAble from 'components/common/imageLoadAble';
 import Tags from '../gallery_listing/tags';
 import { ReactComponent as BackArrow } from 'assets/img/left_arrow.svg';
+import { ReactComponent as Close } from 'assets/img/close.svg';
 import { saveAs } from 'file-saver';
-import { getArtworkDetailAction } from './action';
+import { getArtworkDetailAction, deleteArtworkDetailAction } from './action';
+import { showConfirmAlert } from 'utils/index';
+import MeatBallDropdown from 'components/common/meatball-dropdown';
 
+import CanShow from 'components/layout/canshow';
 import './style.scss';
+import { PERMITTIONS_CONFIG } from 'configs';
+import { toast } from 'react-toastify';
 // import { avatarGenerator } from 'utils';
 
 const GalleryDetail = (props) => {
@@ -23,10 +31,10 @@ const GalleryDetail = (props) => {
       data: { gallery },
     },
     getArtworkDetailAction,
+    deleteArtworkDetailAction,
   } = props;
 
   const { id } = match.params;
-
   useEffect(() => {
     if (!id) {
       history.goBack();
@@ -39,6 +47,20 @@ const GalleryDetail = (props) => {
     if (gallery?.attachment?.url) {
       saveAs(gallery?.attachment?.url, gallery?.attachment?.fileName || 'gallery image');
     }
+  };
+
+  const onConfirmDelete = () => {
+    showConfirmAlert({
+      title: 'Delete',
+      confirmText: 'Delete',
+      text: 'Are you sure you want to delete this art work?',
+      onConfirm: () => {
+        deleteArtworkDetailAction(id, () => {
+          toast.dark('Art work is deleted!');
+          history.goBack();
+        });
+      },
+    });
   };
 
   return (
@@ -57,7 +79,20 @@ const GalleryDetail = (props) => {
         </div>
 
         <div className='col col-6'>
-          <h1>{gallery?.title}</h1>
+          <div className='d-flex justify-content-between align-items-start'>
+            <h1>{gallery?.title}</h1>
+            <CanShow permission={PERMITTIONS_CONFIG.DELETE_ARTWORK}>
+              <MeatBallDropdown
+                className='mr-3'
+                actions={[
+                  {
+                    title: 'Delete',
+                    onClick: onConfirmDelete,
+                  },
+                ]}
+              />
+            </CanShow>
+          </div>
 
           {/* <p>
             Artist:{' '}
@@ -99,6 +134,7 @@ const mapStateToProps = ({ auth, gallery: { detail } }, ownProps) => ({
 
 const mapDispatchToProps = {
   getArtworkDetailAction,
+  deleteArtworkDetailAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GalleryDetail);

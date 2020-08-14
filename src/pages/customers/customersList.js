@@ -5,7 +5,7 @@ import CustomersFilters from './customersFilters';
 import CustomersListTable from './customersListTable';
 import CustomersPaging from './customersPaging';
 
-const CustomerList = (props) => {
+const CustomerList = () => {
   return (
     <div className='customers__page'>
       <div className='customers__header box'>

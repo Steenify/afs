@@ -18,7 +18,7 @@ import { actCreateUser, actGetUsers } from './actions';
 import { required, minValue, email } from 'utils/validation';
 const minValue4 = minValue(4);
 
-const UserCreate = ({ style, handleSubmit, ...props }) => {
+const UserCreate = ({ style, handleSubmit, containerClassName, ...props }) => {
   useEffect(() => {
     props.actGetAuthorities();
   }, []);
@@ -26,9 +26,7 @@ const UserCreate = ({ style, handleSubmit, ...props }) => {
   const { className, authorities, reset } = props;
   const { t } = useTranslation();
 
-  const selectAuthorities = authorities.filter(
-    (item) => item.name !== 'ROLE_CUSTOMER',
-  );
+  const selectAuthorities = authorities.filter((item) => item.name !== 'ROLE_CUSTOMER');
 
   const [modal, setModal] = useState(false);
 
@@ -40,9 +38,7 @@ const UserCreate = ({ style, handleSubmit, ...props }) => {
 
     if (phoneInfo) {
       params['phonePrefix'] = '+' + phoneInfo['countryCallingCode'];
-      params['phoneNumber'] = values['phoneNumber']
-        .replace(params['phonePrefix'], '')
-        .replace(/\s/g, '');
+      params['phoneNumber'] = values['phoneNumber'].replace(params['phonePrefix'], '').replace(/\s/g, '');
     }
 
     props.actCreateUser(params).then((res) => {
@@ -82,7 +78,7 @@ const UserCreate = ({ style, handleSubmit, ...props }) => {
   };
 
   return (
-    <div>
+    <div className={containerClassName}>
       <Button className='btn-create' color='primary' onClick={toggle}>
         {'+ ' + t('baseApp.userManagement.home.createLabel')}
       </Button>
@@ -95,46 +91,12 @@ const UserCreate = ({ style, handleSubmit, ...props }) => {
             </button>
           </ModalHeader>
           <ModalBody>
-            <Field
-              className='...'
-              component={Input}
-              name='login'
-              label={t('baseApp.userManagement.login')}
-              validate={[required, minValue4]}
-            />
-            <Field
-              className='...'
-              component={Input}
-              name='rawPassword'
-              label='Password'
-              type='password'
-              validate={[required, minValue4]}
-            />
-            <Field
-              className='...'
-              component={Input}
-              name='firstName'
-              label={t('baseApp.userManagement.firstName')}
-            />
-            <Field
-              className='...'
-              component={Input}
-              name='lastName'
-              label={t('baseApp.userManagement.lastName')}
-            />
-            <Field
-              className='...'
-              component={Input}
-              name='email'
-              label={t('baseApp.userManagement.email')}
-              validate={[required, email]}
-            />
-            <Field
-              className='...'
-              component={PhoneInput}
-              name='phoneNumber'
-              label={t('baseApp.userManagement.phoneNumber')}
-            />
+            <Field className='...' component={Input} name='login' label={t('baseApp.userManagement.login')} validate={[required, minValue4]} />
+            <Field className='...' component={Input} name='rawPassword' label='Password' type='password' validate={[required, minValue4]} />
+            <Field className='...' component={Input} name='firstName' label={t('baseApp.userManagement.firstName')} />
+            <Field className='...' component={Input} name='lastName' label={t('baseApp.userManagement.lastName')} />
+            <Field className='...' component={Input} name='email' label={t('baseApp.userManagement.email')} validate={[required, email]} />
+            <Field className='...' component={PhoneInput} name='phoneNumber' label={t('baseApp.userManagement.phoneNumber')} />
             <Field
               className='form-group--role'
               component={Select}

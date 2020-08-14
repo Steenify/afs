@@ -99,13 +99,13 @@ class ArtistListTable extends PureComponent {
         <div className={`payouts__loading ${!loading && 'd-none'}`}>
           <Spinner /> <span className='text'>Loading</span>
         </div>
-        {isCanPay && <ArtistsBulkAction />}
         <div className='table-responsive bg-light steenify-table bg-white payout__table'>
           <table className='table'>
             <TableHeader columns={columns} />
             <TableBody data={ids} columns={columns} />
           </table>
         </div>
+        {isCanPay && <ArtistsBulkAction />}
       </div>
     );
   }
