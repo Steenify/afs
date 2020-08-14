@@ -71,12 +71,7 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
         <div className='col-lg-8'>
           <div className={`order_detail__content ${tab === 'activity' && 'active'} `}>
             <div className='order_detail__work_items box'>
-              {isEmpty(order.assignedTo) && (
-                <Alert color='warning'>
-                  <h3 className='text-center'>Order not assigned to Artist</h3>
-                </Alert>
-              )}
-              {!isEmpty(order.assignedTo) &&
+              {order.status === 'DONE' &&
                 map(WorkGrouped, (works, key) => {
                   return <OrderCanvasWorkGroup isNewOrder={isNewOrder} works={works} order={order} group={key} key={`workGroup__item__${key}`} lastWorkLog={lastWorkLog} status={status} />;
                 })}

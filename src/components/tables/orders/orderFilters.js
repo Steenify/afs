@@ -60,6 +60,7 @@ class OrderFilters extends Component {
     );
 
     const canAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING);
+    const canShowPoster = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.SHOW_POSTER);
 
     return (
       <div className='order__filter'>
@@ -68,12 +69,16 @@ class OrderFilters extends Component {
             All
             <span className='number'>{totalOrders || 0}</span>
           </button>
-          {status.map((sta) => (
-            <button data={sta.name} onClick={this.handleChangeStatus} key={`list__status_option__${sta.name}`} className={`status  ${sta.name} ${selectedStatus === sta.name && 'active'}`}>
-              {sta.friendlyName}
-              {orderStatusCount[sta.name] && sta.name !== 'DONE' && <span className='number'>{orderStatusCount[sta.name]}</span>}
-            </button>
-          ))}
+          {status.map((sta) =>
+            sta.name.includes('PRINT_') && !canShowPoster ? (
+              <></>
+            ) : (
+              <button data={sta.name} onClick={this.handleChangeStatus} key={`list__status_option__${sta.name}`} className={`status  ${sta.name} ${selectedStatus === sta.name && 'active'}`}>
+                {sta.friendlyName}
+                {orderStatusCount[sta.name] && sta.name !== 'DONE' && <span className='number'>{orderStatusCount[sta.name]}</span>}
+              </button>
+            ),
+          )}
         </div>
         <div className='filter__main'>
           <div className='filter__text'>

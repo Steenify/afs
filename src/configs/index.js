@@ -47,7 +47,7 @@ export const PERMITTIONS_CONFIG = {
 
 export const listStatus = ['NEW_ORDER', 'SKETCH', 'SKETCH_REVIEW', 'SKETCH_EDIT', 'COLOR', 'COLOR_REVIEW', 'COLOR_EDIT', 'EXPORT_FILE', 'SEND_FILE', 'DONE'];
 
-export const mapStatusCanNotUpload = ['SKETCH_REVIEW', 'COLOR_REVIEW', 'SEND_FILE'];
+export const mapStatusCanNotUpload = ['SKETCH_REVIEW', 'COLOR_REVIEW', 'SEND_FILE', 'PRINT_TRACKING'];
 
 export const mapStatusOpen = {
   SKETCH: ['SKETCH', 'CUSTOMER_REVIEW_SKETCH', 'SKETCH_REVIEW', 'SKETCH_EDIT'],
@@ -60,7 +60,7 @@ export const mapStatusOpen = {
   PRINT_RECEIVED: ['PRINT_RECEIVED'],
 };
 
-export const mapStatusNotiy = ['CUSTOMER_REVIEW_COLOR', 'CUSTOMER_REVIEW_SKETCH', 'SEND_FILE', 'SKETCH_REVIEW', 'COLOR_REVIEW'];
+export const mapStatusNotiy = ['CUSTOMER_REVIEW_COLOR', 'CUSTOMER_REVIEW_SKETCH', 'SEND_FILE', 'SKETCH_REVIEW', 'COLOR_REVIEW', 'PRINT_PREVIEW', 'PRINT_TRACKING'];
 
 export const mapRoles = {
   ROLE_CUSTOMER_SERVICE: 'ROLE_CUSTOMER_SERVICE',

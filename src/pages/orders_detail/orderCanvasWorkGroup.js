@@ -33,7 +33,6 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
   };
 
   const isNotifyStatus = mapStatusNotiy.indexOf(order.statusForCanvas) !== -1;
-  const needCheckFile = mapStatusVerifyFile.indexOf(order.statusForCanvas) !== -1;
 
   const [isOpen, setIsOpen] = useState(isOpened || false);
   const toggle = () => setIsOpen(!isOpen);
@@ -185,14 +184,14 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
                           color='secondary'
                           onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex)}
                           className='cta cta2 mr-2 mb-3'
-                          disabled={!(work.attachments.length > 0) && needCheckFile}
+                          disabled={!(work.attachments.length > 0)}
                           type='button'>
                           Reject
                         </Button>
                       )}
 
                       {canAprroved && (
-                        <Button color='primary' onClick={() => handleApproveWorkLog(work.id)} className='cta cta2 mb-3' disabled={!(work.attachments.length > 0) && needCheckFile} type='button'>
+                        <Button color='primary' onClick={() => handleApproveWorkLog(work.id)} className='cta cta2 mb-3' disabled={!(work.attachments.length > 0)} type='button'>
                           Approved
                         </Button>
                       )}

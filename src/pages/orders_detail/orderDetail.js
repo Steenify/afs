@@ -116,7 +116,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
               </div>
             </div>
           ))}
-          <OrderCanvasWorkBox order={order} />
+          {order.status === 'DONE' && <OrderCanvasWorkBox order={order} />}
         </>
       )}
 

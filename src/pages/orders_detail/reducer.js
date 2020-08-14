@@ -270,7 +270,7 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           order: {
-            status: {
+            [payload.workLogType === 'workLog' ? 'status' : 'statusForCanvas']: {
               $set: payload.data.status,
             },
           },
