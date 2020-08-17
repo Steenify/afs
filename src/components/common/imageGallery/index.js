@@ -32,9 +32,36 @@ const ClickableImageView = React.memo((props) => {
               />
             </TransformComponent>
             <div>
-              <FontAwesomeIcon icon={faSearchPlus} size='2x' color='grey' className='cursor-pointer m-3' onClick={zoomIn} />
-              <FontAwesomeIcon icon={faSearchMinus} size='2x' color='grey' className='cursor-pointer m-3' onClick={zoomOut} />
-              <FontAwesomeIcon icon={faDownload} size='2x' color='grey' className='cursor-pointer m-3' onClick={() => saveAs(source.download, caption)} />
+              <FontAwesomeIcon
+                icon={faSearchPlus}
+                size='2x'
+                color='grey'
+                className='cursor-pointer m-3'
+                onClick={(e) => {
+                  zoomIn(e);
+                  e.stopPropagation();
+                }}
+              />
+              <FontAwesomeIcon
+                icon={faSearchMinus}
+                size='2x'
+                color='grey'
+                className='cursor-pointer m-3'
+                onClick={(e) => {
+                  zoomOut(e);
+                  e.stopPropagation();
+                }}
+              />
+              <FontAwesomeIcon
+                icon={faDownload}
+                size='2x'
+                color='grey'
+                className='cursor-pointer m-3'
+                onClick={(e) => {
+                  saveAs(source.download, caption);
+                  e.stopPropagation();
+                }}
+              />
             </div>
           </>
         )}
@@ -100,7 +127,7 @@ class ImageGallery extends PureComponent {
 
         <ModalGateway>
           {modalIsOpen ? (
-            <Modal onClose={() => this.toggleModal(0)}>
+            <Modal onClose={() => this.toggleModal(0)} allowFullscreen={false}>
               <Carousel
                 views={list}
                 currentIndex={currentIndex}
