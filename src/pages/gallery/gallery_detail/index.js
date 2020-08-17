@@ -83,6 +83,7 @@ const GalleryDetail = (props) => {
             <h1>{gallery?.title}</h1>
             <CanShow permission={PERMITTIONS_CONFIG.DELETE_ARTWORK}>
               <MeatBallDropdown
+                direction='left'
                 className='mr-3'
                 actions={[
                   {

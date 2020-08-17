@@ -6,7 +6,9 @@ import Masonry from 'react-masonry-component';
 import { useHistory } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { Link } from 'react-router-dom';
 
+import Button from 'components/common/button';
 import Layout from 'components/common/Layout';
 import { getAllTagsAction, getArtworksAction, updateFilterAction, addArtworksAction } from './action';
 import { WEB_ROUTES } from 'configs/index';
@@ -75,6 +77,10 @@ const Listing = ({
     });
   };
 
+  const goToDetail = (id) => {
+    history.push(`/gallery/${id}`);
+  };
+
   return (
     <Layout className='order__container' documentTitle={t(WEB_ROUTES.GALLERY_LISTING.title)} container fluid>
       <Title onClickUpload={handleUpload} />
@@ -93,11 +99,12 @@ const Listing = ({
           <Masonry ref={masonryRef} className={'gallery__wrapper mt-0'} options={masonryOptions} imagesLoadedOptions={imagesLoadedOptions} enableResizableChildren={true}>
             {data.artworks.map((artwork) => (
               <div className='gallery__artwork' key={`artwork_${artwork.bookingNumber}_${uniqIdCreator()}`}>
-                <div className='cursor-pointer' onClick={() => history.push(`/gallery/${artwork.id}`)}>
+                <div className='cursor-pointer' onClick={() => goToDetail(artwork.id)}>
                   <LazyLoadImage effect='opacity' src={artwork.attachment.url} alt={artwork.attachment.fileName} width={255} wrapperClassName='gallery__artwork__lazy' />
-                  {/* <img src={artwork.attachment.url} alt={artwork.attachment.fileName} /> */}
                 </div>
-                <div className='gallery__artwork__title pl-3'>{artwork.title}</div>
+                <Button tag={Link} className='w-100 justify-content-start gallery__artwork__title pl-3' to={`/gallery/${artwork.id}`} color='link'>
+                  {artwork.title}
+                </Button>
 
                 <div className='pl-3 gallery'>{<Tags tags={artwork.tags.map((item) => item?.name).filter((item) => item)} disable />}</div>
               </div>

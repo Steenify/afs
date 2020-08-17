@@ -24,7 +24,12 @@ const ClickableImageView = React.memo((props) => {
         {({ zoomIn, zoomOut }) => (
           <>
             <TransformComponent>
-              <img className='react-images__view-image--isModal' src={source.regular || source} alt={alt} style={{ width: '100vw', height: 'calc(100vh - 50px)', objectFit: 'contain' }} />
+              <img
+                className='react-images__view-image--isModal'
+                src={source.regular || source}
+                alt={alt}
+                style={{ width: '100vw', height: 'calc(100vh - 50px)', objectFit: 'contain', pointerEvents: 'auto' }}
+              />
             </TransformComponent>
             <div>
               <FontAwesomeIcon icon={faSearchPlus} size='2x' color='grey' className='cursor-pointer m-3' onClick={zoomIn} />

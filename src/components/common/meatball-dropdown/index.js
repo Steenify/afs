@@ -5,11 +5,11 @@ import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from
 import { ReactComponent as MeatballMenu } from 'assets/img/more_icon.svg';
 
 const MeatBallDropdown = (props) => {
-  const { actions, className } = props;
+  const { actions, className, direction = 'down' } = props;
 
   return (
     <div onClick={(e) => e.stopPropagation()}>
-      <UncontrolledDropdown className={className}>
+      <UncontrolledDropdown direction={direction} className={className}>
         <DropdownToggle tag='span'>
           <MeatballMenu height={32} />
         </DropdownToggle>
