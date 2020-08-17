@@ -13,6 +13,7 @@ class OrderFilters extends Component {
   constructor() {
     super();
     this.handleSearchTextAPI = debounce(this.handleSearchTextAPI, 1000);
+    this.handleSelectTags = debounce(this.handleSelectTags, 1000);
   }
 
   componentDidMount() {
@@ -55,6 +56,7 @@ class OrderFilters extends Component {
 
   render() {
     const { status, selectedStatus, orderStatusCount, text, accountInfo, reducer, tagItems, tags } = this.props;
+    console.log('OrderFilters -> render -> tagItems', tagItems);
 
     const totalOrders = reduce(
       orderStatusCount,
@@ -91,7 +93,7 @@ class OrderFilters extends Component {
         </div>
 
         {/* <div className='mt-3'>
-          <Select isMulti options={tagItems} value={tags} onChange={this.handleSelectTags} formatCreateLabel={(input) => `Add tag "${input}"`} />
+          <Select isMulti options={tagItems} defaultValue={tags} onChange={this.handleSelectTags} formatCreateLabel={(input) => `Add tag "${input}"`} />
         </div> */}
       </div>
     );
@@ -107,7 +109,7 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
     selectedStatus: table.filter.selectedStatus,
     orderStatusCount: table.orderStatusCount,
     accountInfo: auth.data.accountInfo,
-    tagItems: table.tags.map(({ id = '', name = '' }) => ({ label: name, value: id })),
+    tagItems: table.tags.map((name, index) => ({ label: name, value: `${name}_${index}` })),
     tags: table.filter.tags,
   };
 };

@@ -7,8 +7,9 @@ import {
   updateOrderArtistPaymentBulkService,
   getOrderCountByStatusService,
   getOrderBulkMarkAsDoneService,
+  getAllBookingTagsService,
 } from 'services/order';
-import { getAllTagsService } from 'services/tag';
+
 import { getAllStatusService } from 'services/status';
 import { createPayoutService, confirmPayoutService } from 'services/payout';
 
@@ -34,7 +35,7 @@ const buildSearchParam = (input = {}) => {
   //TODO: change it when api change
   if (input.tags && input.tags.length) {
     input.tags.forEach((item) => {
-      params.append('tag', item?.value || '');
+      params.append('tag', item?.label || '');
     });
   }
 
@@ -292,7 +293,7 @@ export const getAllTagsAction = () => (dispatch, getState) => {
     dispatch({ type: GET_TAGS.ERROR, payload: error.response });
   };
   actionTryCatchCreator({
-    service: getAllTagsService(),
+    service: getAllBookingTagsService(),
     onPending,
     onSuccess,
     onError,

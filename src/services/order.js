@@ -177,3 +177,10 @@ export const deleteFileSumaryService = (orderid, itemId, fileId) =>
     url: `${ORDERS_API}/${orderid}/items/${itemId}/attachments/${fileId}`,
     method: 'DELETE',
   });
+
+export const getAllBookingTagsService = (params) =>
+  request({
+    url: `${ORDERS_API}/tags`,
+    method: 'GET',
+    params,
+  });
