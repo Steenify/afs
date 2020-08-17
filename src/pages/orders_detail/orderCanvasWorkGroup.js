@@ -184,7 +184,7 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
                           color='secondary'
                           onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex)}
                           className='cta cta2 mr-2 mb-3'
-                          disabled={!(work.attachments.length > 0)}
+                          disabled={(work.attachments.length < 1 && !isTrackingStatus) || (isTrackingStatus && !order.printfulTrackingUrl)}
                           type='button'>
                           Reject
                         </Button>
@@ -195,7 +195,7 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
                           color='primary'
                           onClick={() => handleApproveWorkLog(work.id)}
                           className='cta cta2 mb-3'
-                          disabled={!(work.attachments.length > 0 || order.printfulTrackingCode)}
+                          disabled={(work.attachments.length < 1 && !isTrackingStatus) || (isTrackingStatus && !order.printfulTrackingUrl)}
                           type='button'>
                           Approved
                         </Button>

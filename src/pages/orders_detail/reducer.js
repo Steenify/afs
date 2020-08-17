@@ -135,7 +135,7 @@ const reducer = (state = initialState, action) => {
         data: {
           order: {
             statusForCanvas: {
-              $set: payload.status,
+              $set: payload.data.status,
             },
           },
           canvasWorkLog: {
@@ -252,7 +252,7 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           order: {
-            printfulTrackingCode: { $set: payload.trackingCode },
+            printfulTrackingUrl: { $set: payload.trackingCode },
           },
         },
       });

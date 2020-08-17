@@ -72,7 +72,7 @@ const OrderWorkLogItem = ({
   const handleUpdateTrackingCode = () => {
     const code = trackingNoteInput.current.value;
     updateTrackingCodeWorkLogAction(order.id, code, () => {
-      toast.dark('Tracking code is updated.');
+      toast.dark('Tracking url is updated.');
     });
   };
 
@@ -274,12 +274,12 @@ const OrderWorkLogItem = ({
       <Collapse isOpen={isOpenWork}>
         {isPrintTrackingStatus && (
           <div className='order_detail__tracking_code'>
-            <div className='box__header comments__header'>
-              <div className='box__title w-100'>Tracking Code</div>
+            <div className='box__header mb-0'>
+              <div className='box__title w-100'>Tracking URL</div>
             </div>
             {isWorking ? (
               <>
-                <input ref={trackingNoteInput} defaultValue={order.printfulTrackingCode} type='text' className='form-control' placeholder='Enter tracking Code' />
+                <input ref={trackingNoteInput} defaultValue={order.printfulTrackingUrl} type='text' className='form-control' placeholder='Enter tracking URL' />
                 <div className='order_detail__ctas text-right'>
                   <Button onClick={handleUpdateTrackingCode} color='primary' className='cta cta2' type='button'>
                     Update
@@ -287,12 +287,16 @@ const OrderWorkLogItem = ({
                 </div>
               </>
             ) : (
-              <p className='text-blue'>{order.printfulTrackingCode}</p>
+              <div className='mb-3'>
+                <a target='_blank' rel='noopener noreferrer' href={order.printfulTrackingUrl}>
+                  {order.printfulTrackingUrl}
+                </a>
+              </div>
             )}
           </div>
         )}
 
-        {(!work.attachments.length || isEdit) && !notUpload && (
+        {(!work.attachments.length || isEdit) && !notUpload && !isPrintTrackingStatus && (
           <div>
             {!isRejected && !isAproved && (
               <>
