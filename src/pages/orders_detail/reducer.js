@@ -22,6 +22,7 @@ import {
   DELETE_FILE_SUMMARY_ACTION,
   GET_FB_MESSAGE_TEMPLATE_ACTION,
   SENT_FB_MESSAGES_NOTIFY_ACTION,
+  UPDATE_TRACKING_CODE_WORK_LOG_ACTION,
 } from './actions';
 
 import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
@@ -51,7 +52,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
-  console.log('reducer -> payload', payload);
   switch (type) {
     case ORDER_DETAIL_ACTIONS.UPDATE_ORDER_ITEM_SUMARIZE:
       return update(state, {
@@ -106,6 +106,7 @@ const reducer = (state = initialState, action) => {
     case UPDATE_ORDER_STATUS_ACTION.PENDING:
     case UPLOAD_FILE_WORK_LOG_ACTION.PENDING:
     case UPLOAD_COMMENT_WORK_LOG_ACTION.PENDING:
+    case UPDATE_TRACKING_CODE_WORK_LOG_ACTION.PENDING:
     case DELETE_COMMENT_WORK_LOG_ACTION.PENDING:
     case DELETE_ATTACHMENT_WORK_LOG_ACTION.PENDING:
     case APPROVED_WORK_LOG_ACTION.PENDING:
@@ -244,6 +245,18 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
+    case UPDATE_TRACKING_CODE_WORK_LOG_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+        data: {
+          order: {
+            printfulTrackingCode: { $set: payload.trackingCode },
+          },
+        },
+      });
+    }
     case UPDATE_COMMENT_WORK_LOG_ACTION.SUCCESS: {
       return update(state, {
         ui: {
@@ -358,6 +371,7 @@ const reducer = (state = initialState, action) => {
     case UPLOAD_COMMENT_WORK_LOG_ACTION.ERROR:
     case DELETE_COMMENT_WORK_LOG_ACTION.ERROR:
     case DELETE_ATTACHMENT_WORK_LOG_ACTION.ERROR:
+    case UPDATE_TRACKING_CODE_WORK_LOG_ACTION.ERROR:
     case UPDATE_COMMENT_WORK_LOG_ACTION.ERROR:
     case APPROVED_WORK_LOG_ACTION.ERROR:
     case REJECTED_WORK_LOG_ACTION.ERROR:

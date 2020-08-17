@@ -191,7 +191,12 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
                       )}
 
                       {canAprroved && (
-                        <Button color='primary' onClick={() => handleApproveWorkLog(work.id)} className='cta cta2 mb-3' disabled={!(work.attachments.length > 0)} type='button'>
+                        <Button
+                          color='primary'
+                          onClick={() => handleApproveWorkLog(work.id)}
+                          className='cta cta2 mb-3'
+                          disabled={!(work.attachments.length > 0 || order.printfulTrackingCode)}
+                          type='button'>
                           Approved
                         </Button>
                       )}

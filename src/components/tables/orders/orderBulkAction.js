@@ -124,9 +124,11 @@ const OrderBulkAction = ({ selected, updateOrderTableStatusDoneBulkAction, updat
             <button type='button' className='btn btn-group__item' onClick={handleConfirmChangeStatus}>
               Mark as Done
             </button>
-            <button type='button' className='btn btn-group__item' onClick={handleConfirmRefund}>
-              Refund
-            </button>
+            {process.env.REACT_APP_BUILD === 'DEV' && (
+              <button type='button' className='btn btn-group__item' onClick={handleConfirmRefund}>
+                Refund
+              </button>
+            )}
             {canPayOut && (
               <button type='button' className='btn btn-group__item' onClick={toggle}>
                 Paid
