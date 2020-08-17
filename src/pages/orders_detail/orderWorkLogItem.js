@@ -22,9 +22,21 @@ import { ReactComponent as Message } from 'assets/img/message.svg';
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
 import { mapStatusCanNotUpload } from 'configs';
 
-import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction } from './actions';
+import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction, updateTrackingCodeWorkLogAction } from './actions';
 
-const OrderWorkLogItem = ({ workLogType, work, order, uploadFileWorkLog, isOpened, workLog, uploadCommentWorkLog, deleteCommentWorkLog, updateCommentWorkLog, deleteAttachmentWorkLog }) => {
+const OrderWorkLogItem = ({
+  workLogType,
+  work,
+  order,
+  uploadFileWorkLog,
+  isOpened,
+  workLog,
+  uploadCommentWorkLog,
+  deleteCommentWorkLog,
+  updateCommentWorkLog,
+  deleteAttachmentWorkLog,
+  updateTrackingCodeWorkLogAction,
+}) => {
   const [isOpenWork, setIsOpenWork] = useState(isOpened || false);
   const toggleWork = () => setIsOpenWork(!isOpenWork);
 
@@ -37,9 +49,12 @@ const OrderWorkLogItem = ({ workLogType, work, order, uploadFileWorkLog, isOpene
   const [isEdit, setIsEdit] = useState(false);
   const dropbox = useRef(null);
   const commentBox = useRef(null);
+  const trackingNoteInput = useRef(null);
 
   const [editComment, setEditComment] = useState({});
   const [editCommentIndex, setEditCommentIndex] = useState(0);
+
+  const isPrintTrackingStatus = work.status === 'PRINT_TRACKING';
 
   const isWorking = work.state === 'WORKING';
   const isReview = work.state === 'REVIEWING';
@@ -57,6 +72,13 @@ const OrderWorkLogItem = ({ workLogType, work, order, uploadFileWorkLog, isOpene
   const Act_APPROVED = activitiesGroup?.APPROVED || [];
   const Act_REJECTED = activitiesGroup?.REJECTED || [];
   const Act_NOTIFIED_CUSTOMER = activitiesGroup?.NOTIFIED_CUSTOMER || [];
+
+  const handleUpdateTrackingCode = () => {
+    const code = trackingNoteInput.current.value;
+    updateTrackingCodeWorkLogAction(order.id, code, () => {
+      toast.dark('Tracking url is updated.');
+    });
+  };
 
   const handleUploadSketch = () => {
     if (dropbox.current) {
@@ -254,7 +276,31 @@ const OrderWorkLogItem = ({ workLogType, work, order, uploadFileWorkLog, isOpene
       </div>
 
       <Collapse isOpen={isOpenWork}>
-        {(!work.attachments.length || isEdit) && !notUpload && (
+        {isPrintTrackingStatus && (
+          <div className='order_detail__tracking_code'>
+            <div className='box__header mb-0'>
+              <div className='box__title w-100'>Tracking URL</div>
+            </div>
+            {isWorking ? (
+              <>
+                <input ref={trackingNoteInput} defaultValue={order.printfulTrackingUrl} type='text' className='form-control' placeholder='Enter tracking URL' />
+                <div className='order_detail__ctas text-right'>
+                  <Button onClick={handleUpdateTrackingCode} color='primary' className='cta cta2' type='button'>
+                    Update
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <div className='mb-3'>
+                <a target='_blank' rel='noopener noreferrer' href={order.printfulTrackingUrl}>
+                  {order.printfulTrackingUrl}
+                </a>
+              </div>
+            )}
+          </div>
+        )}
+
+        {(!work.attachments.length || isEdit) && !notUpload && !isPrintTrackingStatus && (
           <div>
             {!isRejected && !isAproved && (
               <>
@@ -449,6 +495,7 @@ const mapDispatchToProps = {
   deleteCommentWorkLog: deleteCommentWorkLogAction,
   updateCommentWorkLog: updateCommentWorkLogAction,
   deleteAttachmentWorkLog: deleteAttachmentWorkLogAction,
+  updateTrackingCodeWorkLogAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderWorkLogItem);

@@ -5,14 +5,8 @@ import Paging from 'components/common/paging';
 
 import { updatePayoutFilterAction, getPayoutListAction } from './actions';
 
-const PayoutsPaging = ({
-  totalPage,
-  page,
-  updatePayoutFilter,
-  getPayoutList,
-}) => {
+const PayoutsPaging = ({ totalPage, page, updatePayoutFilter, getPayoutList }) => {
   const gotoPage = (page) => {
-    console.log('gotoPage -> page', page);
     updatePayoutFilter({ page: page - 1 });
     getPayoutList({});
   };

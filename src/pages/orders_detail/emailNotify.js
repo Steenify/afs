@@ -62,7 +62,7 @@ const EmaiNotify = (props) => {
     setCustomerEmail(value);
   };
 
-  const { emailTemplates, name } = getSelectedStatus(order.status, status);
+  const { emailTemplates, name } = getSelectedStatus(order.statusForCanvas || order.status, status);
 
   const toggle = () => {
     updateShowEmailNotify(!isShowEmail);

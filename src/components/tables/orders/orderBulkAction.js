@@ -23,13 +23,14 @@ const OrderBulkAction = ({ selected, updateOrderTableStatusDoneBulkAction, updat
 
   const canPayOut = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT) && selected.filter((s) => s.artistPaymentStatus === statusPayments[1]).length > 0;
 
-  const handleUpdateOrderStatusDone = () => {
+  const handleUpdateOrderStatusDone = (isRefund) => {
+    const ids = selected.map((s) => s.id);
     updateOrderTableStatusDoneBulkAction({
-      payload: { id: selected },
+      payload: { id: ids, isRefund },
       reducer,
       onSuccess: () => {
         toast.dark('Order Status Updated');
-        forEach(selected, (item) => {
+        forEach(ids, (item) => {
           updateOrderTableItemsAction({
             payload: { id: item, field: 'status', value: 'DONE' },
             reducer,
@@ -74,6 +75,41 @@ const OrderBulkAction = ({ selected, updateOrderTableStatusDoneBulkAction, updat
     });
   };
 
+  const handleConfirmRefund = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='comfirm_cus'>
+            <div className='comfirm_cus__header'>
+              <div className='comfirm_cus__titl'>Refund</div>
+              <button type='button' onClick={onClose} className='comfirm_cus__close'>
+                <div className='icon'>
+                  <Close />
+                </div>
+              </button>
+            </div>
+            <div className='comfirm_cus__body'>
+              <p>Are you sure you want to refund these orders?</p>
+            </div>
+            <div className='comfirm_cus__footer text-right'>
+              <button className='comfirm_cus__cancel comfirm_cus__control' onClick={onClose}>
+                Cancel
+              </button>
+              <button
+                className='comfirm_cus__accept comfirm_cus__control'
+                onClick={() => {
+                  handleUpdateOrderStatusDone(true);
+                  onClose();
+                }}>
+                Accept
+              </button>
+            </div>
+          </div>
+        );
+      },
+    });
+  };
+
   return (
     <div className={`order__bulk ${isHide && 'd-none'}`}>
       <Sticky enabled={process.env.REACT_APP_BUILD === 'DEV'} top={57}>
@@ -88,6 +124,11 @@ const OrderBulkAction = ({ selected, updateOrderTableStatusDoneBulkAction, updat
             <button type='button' className='btn btn-group__item' onClick={handleConfirmChangeStatus}>
               Mark as Done
             </button>
+            {process.env.REACT_APP_BUILD === 'DEV' && (
+              <button type='button' className='btn btn-group__item' onClick={handleConfirmRefund}>
+                Refund
+              </button>
+            )}
             {canPayOut && (
               <button type='button' className='btn btn-group__item' onClick={toggle}>
                 Paid
