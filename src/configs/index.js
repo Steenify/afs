@@ -98,6 +98,8 @@ alignleft aligncenter alignright | code | \
 bullist numlist outdent indent`,
 };
 
+export const FACEBOOK_APP_ID = 1171193606568391;
+
 export const filterOrderItems = ['Tip', 'Faster Processing', 'Enhanced Matte Paper Poster', 'Enhanced Matte Paper Poster '];
 export const filterOrderItemsAdmin = ['Tip', 'Faster Processing'];
 

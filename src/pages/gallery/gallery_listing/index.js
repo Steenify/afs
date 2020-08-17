@@ -96,7 +96,7 @@ const Listing = ({
         </div>
       ) : (
         <>
-          <Masonry ref={masonryRef} className={'gallery__wrapper mt-0'} options={masonryOptions} imagesLoadedOptions={imagesLoadedOptions} enableResizableChildren={true}>
+          <Masonry ref={masonryRef} className={'gallery gallery__wrapper mt-0'} options={masonryOptions} imagesLoadedOptions={imagesLoadedOptions} enableResizableChildren={true}>
             {data.artworks.map((artwork) => (
               <div className='gallery__artwork' key={`artwork_${artwork.bookingNumber}_${uniqIdCreator()}`}>
                 <div className='cursor-pointer' onClick={() => goToDetail(artwork.id)}>
@@ -105,8 +105,8 @@ const Listing = ({
                 <Button tag={Link} className='w-100 justify-content-start gallery__artwork__title pl-3' to={`/gallery/${artwork.id}`} color='link'>
                   {artwork.title}
                 </Button>
-
                 <div className='pl-3 gallery'>{<Tags tags={artwork.tags.map((item) => item?.name).filter((item) => item)} disable />}</div>
+                {artwork?.description && <div className='pl-3 description-clip'>{artwork?.description}</div>}
               </div>
             ))}
           </Masonry>
