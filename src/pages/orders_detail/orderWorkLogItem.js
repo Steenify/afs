@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Collapse } from 'reactstrap';
 import { findIndex, isEmpty, groupBy } from 'lodash';
+import moment from 'moment';
 import { confirmAlert } from 'react-confirm-alert';
 // import { Picker, Emoji } from 'emoji-mart';
 
@@ -29,6 +30,9 @@ const OrderWorkLogItem = ({ workLogType, work, order, uploadFileWorkLog, isOpene
 
   const [isOpenCom, setIsOpenCom] = useState(isOpened || false);
   const toggleCom = () => setIsOpenCom(!isOpenCom);
+
+  const [isOpenFeedback, setIsOpenFeedback] = useState(isOpened || false);
+  const toggleFeedback = () => setIsOpenFeedback(!isOpenFeedback);
 
   const [isEdit, setIsEdit] = useState(false);
   const dropbox = useRef(null);
@@ -342,6 +346,43 @@ const OrderWorkLogItem = ({ workLogType, work, order, uploadFileWorkLog, isOpene
                 <CommentBox ref={commentBox} onSubmit={handleUploadComment} />
               </div>
             )}
+          </Collapse>
+        </div>
+
+        <div className={`order_detail__comments comments ${!isWorking && !work.feedbacks.length ? 'd-none' : ''} ${work.comments.length && work.feedbacks.length ? 'ignore-top' : ''} `}>
+          <div className='box__header comments__header'>
+            <div onClick={toggleFeedback} className='box__icon com comments__icon'>
+              <div className='icon'>
+                <Message />
+              </div>
+            </div>
+            <div onClick={toggleFeedback} className='box__title w-100 comments__title'>
+              Feedback from customer
+            </div>
+          </div>
+          <Collapse isOpen={isOpenFeedback}>
+            <div className='comments__list'>
+              {work.feedbacks
+                .sort((a, b) => (moment(a.createdDate).isBefore(moment(b.createdDate)) ? 1 : -1))
+                .map((feedback, index) => (
+                  <div key={`feedback__item__${work.id}__${feedback.id}`} className='comments__item'>
+                    <div className='comments__author'>
+                      <div className='comments__wrapper'>
+                        <div className='comments__box'>
+                          <span className='comments__mess'>
+                            <P text={feedback.body} id={`feedback__item__${work.id}__${feedback.id}`} />
+                          </span>
+                        </div>
+                        <div className='d-flex justify-content-end'>
+                          <span className='work__last_update' style={{ fontStyle: 'normal' }}>
+                            {dateTimeFromNow(feedback.createdDate)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
           </Collapse>
         </div>
 
