@@ -145,6 +145,9 @@ const NotificationSettings = (props) => {
         }
 
         console.log('----- AFTER', data);
+
+        const action = actions[activeTab]?.name || '';
+        toast.success(`${action} ${action ? 'setting' : 'Setting'} is updated.`.trim());
       });
     }
   };
