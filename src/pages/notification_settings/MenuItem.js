@@ -11,20 +11,22 @@ export type Props = {
   description?: string,
 
   active?: boolean,
+
+  className?: string,
 };
 
 const MenuItem = (props: Props) => {
-  const { title, description, active } = props;
+  const { title, description, active, className } = props;
 
   return (
-    <div className='d-flex'>
+    <div className={['d-flex', className && className].filter(Boolean).join(' ').trim()}>
       {/* <div className='mr-3 mt-2'>{icon}</div> */}
 
       <div className='d-flex align-items-center w-100'>
         <div>
-          <h4 className='m-0'>{title}</h4>
+          <h4 className='m-0 title'>{title}</h4>
 
-          <p className='m-0'>{description}</p>
+          <p className='m-0 description'>{description}</p>
         </div>
 
         {active && (

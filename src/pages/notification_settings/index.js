@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Card, CardTitle, CardText, Row, Col, Badge, Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
-import { uniqBy } from 'lodash';
+import { uniqBy, debounce } from 'lodash';
 
 import Layout from 'components/common/Layout';
 import Breadcrumb from 'components/common/breadcrumb';
@@ -21,6 +21,8 @@ import { WEB_ROUTES } from 'configs';
 
 import { getNotificationActionsAction, updateNotificationActionAction, getRecipientsAction } from './action';
 
+import './style.scss';
+
 const NotificationSettings = (props) => {
   const {
     history,
@@ -35,38 +37,28 @@ const NotificationSettings = (props) => {
 
   const { t } = useTranslation();
 
-  const tabs = [
-    {
-      icon: <NSComments />,
-      title: 'Comments',
-      description: 'These are notifications for comments feedback on order.',
-    },
-    {
-      icon: <NSUpdateStatus />,
-      title: 'Update Status',
-      description: 'These are notifications for update status order.',
-    },
-    {
-      icon: <NSAssigned />,
-      title: 'Assigned',
-      description: 'These are notifications for assigned order for artist.',
-    },
-    {
-      icon: <NSUpload />,
-      title: 'Upload',
-      description: 'These are notifications for upload new image for artist.',
-    },
-  ];
-
   const [actions, setActions] = useState([]);
+
+  const [search, setSearch] = useState('');
 
   const [recipients, setRecipients] = useState([]);
 
+  const [selectedRecipients, setSelectedRecipients] = useState([]);
+
   const [activeTab, setActiveTab] = useState();
 
+  const [messageDefault, setMessageDefault] = useState('');
+
   const toggle = (tab) => {
-    if (activeTab !== tab) setActiveTab(tab);
+    if (activeTab !== tab) {
+      setActiveTab(tab);
+      setRecipients((old) => []);
+      setSelectedRecipients((old) => []);
+      setSearch('');
+    }
   };
+
+  const debounceGetRecipientsAction = useCallback(debounce(getRecipientsAction, 800), [getRecipientsAction]);
 
   useEffect(() => {
     getNotificationActionsAction(null, (e, data) => {
@@ -79,6 +71,74 @@ const NotificationSettings = (props) => {
       setActions((old) => uniqBy([...old, ...data], 'id').filter((a) => !a.disabled));
     });
   }, []);
+
+  useEffect(() => {
+    if (!search) {
+      setRecipients([]);
+
+      return;
+    }
+
+    debounceGetRecipientsAction(search, (e, data) => {
+      if (e) {
+        toast.error(e?.message);
+
+        return;
+      }
+
+      setRecipients((old) =>
+        [...data].map((d) => {
+          const hasEffected = selectedRecipients.find((r) => r.userId === d.userId);
+
+          if (hasEffected) return hasEffected;
+
+          return { ...d, checked: false };
+        }),
+      );
+    });
+  }, [search]);
+
+  useEffect(() => {
+    const followers = actions[activeTab]?.followers || [];
+
+    const cloneList = [...selectedRecipients];
+
+    const newList = followers
+      .map((f) => {
+        if (cloneList.find((r) => r.userId === f.userId)) {
+          return { ...f, checked: true };
+        }
+
+        return null;
+      })
+      .filter(Boolean);
+
+    setSelectedRecipients((old) => [...old, ...cloneList, ...newList]);
+
+    setMessageDefault(actions[activeTab]?.messageDefault || '');
+  }, [activeTab]);
+
+  const onSave = () => {
+    const action = actions[activeTab];
+
+    if (action) {
+      action.followers = selectedRecipients.filter((r) => r.checked);
+
+      action.messageDefault = messageDefault;
+
+      console.log('----- BEFORE', action);
+
+      updateNotificationActionAction(action.id, action, (e, data) => {
+        if (e) {
+          toast.error(e.message);
+
+          return;
+        }
+
+        console.log('----- AFTER', data);
+      });
+    }
+  };
 
   return (
     <Layout
@@ -98,25 +158,7 @@ const NotificationSettings = (props) => {
             marginTop: 24,
             justifyContent: 'center',
           }}
-          onClick={() => {
-            const action = actions[activeTab];
-
-            if (action) {
-              action.followers = recipients.filter((r) => r.checked);
-
-              console.log('----- BEFORE', action);
-
-              updateNotificationActionAction(action.id, action, (e, data) => {
-                if (e) {
-                  toast.error(e.message);
-
-                  return;
-                }
-
-                console.log('----- AFTER', data);
-              });
-            }
-          }}>
+          onClick={onSave}>
           &nbsp; {t('entity.action.save')} &nbsp;
           {isLoading && <Spinner size='sm' color='light' />}
         </Button>
@@ -137,18 +179,18 @@ const NotificationSettings = (props) => {
 
       <PageTitle {...WEB_ROUTES.NOTIFICATION_SETTINGS} />
 
-      <div className='row'>
+      <div className='row mt-3'>
         <div className='col col-12 col-md-5 col-lg-4'>
           {/* <div className='box'> */}
           <Nav className='nav-pills box'>
             {actions.map(({ icon, name, description }, i) => (
               <NavItem key={i} className='cursor-pointer w-100'>
                 <NavLink
-                  className={[activeTab === i ? 'active' : ''].join(' ').trim()}
+                  className={['notification-action', activeTab === i ? 'active' : ''].join(' ').trim()}
                   onClick={() => {
                     toggle(i);
                   }}>
-                  <MenuItem title={name} description={description} active={activeTab === `${i}`} />
+                  <MenuItem className='notification-action-item' title={name} description={description} active={activeTab === i} />
                 </NavLink>
               </NavItem>
             ))}
@@ -156,15 +198,29 @@ const NotificationSettings = (props) => {
           {/* </div> */}
         </div>
 
-        <div className='col col-12 col-md-7 col-lg-8'>
-          <div className='box h-100'>
-            <div className='row'>
-              <div className='col col-12 border-bottom'>
-                <h4 className='mb-3'>List of recipients</h4>
+        {actions[activeTab] && (
+          <div className='col col-12 col-md-7 col-lg-8'>
+            <div className='box h-100'>
+              <div className='row'>
+                <div className='col col-12 border-bottom'>
+                  <h4 className='mb-3'>Message Default</h4>
+                </div>
               </div>
-            </div>
 
-            {actions[activeTab] && (
+              <div className='row pt-3'>
+                <div className='col col-12 border-bottom'>
+                  <div className='form-group'>
+                    <input className='form-control' value={messageDefault} onChange={(e) => setMessageDefault(e.target.value)} />
+                  </div>
+                </div>
+              </div>
+
+              <div className='row mt-3'>
+                <div className='col col-12 border-bottom'>
+                  <h4 className='mb-3'>List of recipients</h4>
+                </div>
+              </div>
+
               <div className='row pt-3'>
                 <div className='col col-12 col-lg-6'>
                   <input
@@ -172,23 +228,8 @@ const NotificationSettings = (props) => {
                     placeholder='Search orders'
                     className='search__box form-control'
                     // value=''
-                    onChange={(e) => {
-                      if (!e.target.value) {
-                        setRecipients([]);
-
-                        return;
-                      }
-
-                      getRecipientsAction(e.target.value, (e, data) => {
-                        if (e) {
-                          toast.error(e?.message);
-
-                          return;
-                        }
-
-                        setRecipients((old) => [...data].map((d) => ({ ...d, checked: false })));
-                      });
-                    }}
+                    onChange={(e) => setSearch(e.target.value)}
+                    value={search}
                   />
 
                   <div
@@ -202,20 +243,35 @@ const NotificationSettings = (props) => {
                           <input
                             className='form-control sr-only'
                             type='checkbox'
-                            onChange={() => {
-                              const list = [...recipients];
+                            onChange={(e) => {
+                              const list = [...selectedRecipients];
 
-                              const index = list.findIndex((r) => r.id === recipient.id);
+                              const index = list.findIndex((r) => r.userId === recipient.userId);
 
                               if (index !== -1) {
                                 const item = list[index];
 
-                                item.checked = true;
+                                item.checked = e.target.checked;
 
                                 list[index] = item;
+                              } else {
+                                list.push({
+                                  ...recipient,
+                                  checked: e.target.checked,
+                                });
                               }
 
-                              setRecipients((old) => list);
+                              const newRecipients = [...recipients];
+                              const item = newRecipients[i];
+                              if (item) {
+                                item.checked = e.target.checked;
+
+                                newRecipients[i] = item;
+                              }
+
+                              setRecipients((old) => newRecipients);
+
+                              setSelectedRecipients((old) => list);
                             }}
                             checked={recipient.checked}
                           />
@@ -231,19 +287,22 @@ const NotificationSettings = (props) => {
                 </div>
 
                 <div className='col col-12 col-lg-6'>
-                  {(actions[activeTab]?.followers || []).map((follower, i) => (
-                    <Badge color='primary' className='d-inline-flex align-items-center mr-2 mb-2' key={i}>
-                      <div className='p-2' style={{ fontSize: 17, fontWeight: 400 }}>
-                        {`${follower.lastName || ''} ${follower.firstName || ''}`}
-                      </div>
-                      <CloseIcon />
-                    </Badge>
-                  ))}
+                  {selectedRecipients.map(
+                    (follower, i) =>
+                      follower.checked && (
+                        <Badge color='primary' className='d-inline-flex align-items-center mr-2 mb-2' key={i}>
+                          <div className='p-2' style={{ fontSize: 17, fontWeight: 400 }}>
+                            {`${follower.lastName || ''} ${follower.firstName || ''}`}
+                          </div>
+                          <CloseIcon />
+                        </Badge>
+                      ),
+                  )}
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </Layout>
   );

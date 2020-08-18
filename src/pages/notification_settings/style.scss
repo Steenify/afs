@@ -1,0 +1,24 @@
+.notification-action {
+	&.active {
+		background-color: #f5f6f8 !important;
+		color: black !important;
+	}
+
+	.notification-action-item {
+		.title {
+			font-weight: 600;
+			font-size: 18px;
+			line-height: 21px;
+
+			color: black;
+		}
+
+		.description {
+			font-weight: normal;
+			font-size: 14px;
+			line-height: 17px;
+
+			color: #767676;
+		}
+	}
+}
