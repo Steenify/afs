@@ -8,6 +8,9 @@ import { confirmAlert } from 'react-confirm-alert';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Link } from 'react-router-dom';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+
 import Button from 'components/common/button';
 import Layout from 'components/common/Layout';
 import { getAllTagsAction, getArtworksAction, updateFilterAction, addArtworksAction, resetAction } from './action';
@@ -122,6 +125,7 @@ const Listing = ({
                           e.stopPropagation();
                           onDownload(artwork?.destinationLink);
                         }}>
+                        <FontAwesomeIcon icon={faDownload} size='xs' color='white' className='cursor-pointer mr-2' />
                         Download
                       </Button>
                     )}

@@ -13,6 +13,8 @@ import { saveAs } from 'file-saver';
 import { getArtworkDetailAction, deleteArtworkDetailAction, resetArtworkAction } from './action';
 import { showConfirmAlert } from 'utils/index';
 import MeatBallDropdown from 'components/common/meatball-dropdown';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
 import { PERMITTIONS_CONFIG, FACEBOOK_APP_ID } from 'configs';
@@ -139,6 +141,7 @@ const GalleryDetail = (props) => {
             </div>
             {gallery?.destinationLink && (
               <Button color='primary' className='mt-3' onClick={onDownload}>
+                <FontAwesomeIcon icon={faDownload} size='xs' color='white' className='cursor-pointer mr-2' />
                 Download
               </Button>
             )}
