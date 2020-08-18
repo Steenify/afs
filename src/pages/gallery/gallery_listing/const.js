@@ -24,6 +24,7 @@ export const initialState = {
 
 export const ACTIONS = {
   UPDATE_FILTER_ACTION: 'GALLERY_UPDATE_FILTER_ACTION',
+  RESET_ART_WORK_LISTING: 'RESET_ART_WORK_LISTING',
 };
 export const GET_TAGS = actionCreator('GALLERY_GET_TAG');
 export const GET_ARTWORK = actionCreator('GALLERY_GET_ARTWORK');

@@ -1,7 +1,6 @@
 import React from 'react';
 
 const GalleryFilter = ({ onChange = () => {}, text = '' }) => {
-  console.log('GalleryFilter -> text', text);
   return (
     <div className='gallery__filter'>
       <input

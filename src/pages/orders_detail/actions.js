@@ -24,6 +24,7 @@ import {
   getOrderFBTemplateService,
   sentOrderFBTemplateNotifyService,
   deleteOrderWorkLogAttachmentService,
+  updateOrderCanvasTrackingCodeWorkLogService,
 } from 'services/order';
 
 export const ORDER_DETAIL_ACTIONS = {
@@ -449,6 +450,36 @@ export const deleteCommentWorkLogAction = (id, logId, comId, logIndex, comIndex,
 
   actionTryCatchCreator({
     service: deleteOrderWorkLogCommentService({ id, logId, comId }),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const UPDATE_TRACKING_CODE_WORK_LOG_ACTION = actionCreator('UPDATE_TRACKING_CODE_WORK_LOG_ACTION');
+export const updateTrackingCodeWorkLogAction = (id, trackingCode, cb) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: UPDATE_TRACKING_CODE_WORK_LOG_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: UPDATE_TRACKING_CODE_WORK_LOG_ACTION.SUCCESS,
+      payload: { id, trackingCode },
+    });
+    cb && cb();
+  };
+  const onError = (error) => {
+    console.log('updateTrackingCodeWorkLogAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: UPDATE_TRACKING_CODE_WORK_LOG_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: updateOrderCanvasTrackingCodeWorkLogService({ id, data: { trackingCode } }),
     onPending,
     onSuccess,
     onError,

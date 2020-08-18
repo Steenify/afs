@@ -61,3 +61,5 @@ export const addArtworksAction = (data, callback) => (dispatch) => {
     onError,
   });
 };
+
+export const resetAction = () => (dispatch) => dispatch({ type: ACTIONS.RESET_ART_WORK_LISTING });
