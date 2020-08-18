@@ -338,7 +338,7 @@ const OrderWorkLogItem = ({
         </div>
 
         <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_FEEDBACK}>
-          <div className={`order_detail__comments comments ${!isWorking && !work.feedbacks.length ? 'd-none' : ''} ${work.comments.length && work.feedbacks.length ? 'ignore-top' : ''} `}>
+          <div className={`order_detail__comments comments ${!isWorking && !work.feedbacks.length ? 'd-none' : ''}`}>
             <div className='box__header comments__header'>
               <div onClick={toggleFeedback} className='box__icon com comments__icon'>
                 <div className='icon'>
@@ -376,7 +376,7 @@ const OrderWorkLogItem = ({
           </div>
         </CanShow>
 
-        <div className={`order_detail__comments comments ${!isWorking && !work.comments.length && !isReview ? 'd-none' : ''}`}>
+        <div className={`order_detail__comments comments ${!isWorking && !work.comments.length && !isReview ? 'd-none' : ''} ${work.comments.length && work.feedbacks.length ? 'ignore-top' : ''}`}>
           <div className='box__header comments__header'>
             <div onClick={toggleCom} className='box__icon com comments__icon'>
               <div className='icon'>
