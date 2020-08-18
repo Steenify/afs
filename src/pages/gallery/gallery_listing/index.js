@@ -23,6 +23,7 @@ import { uniqIdCreator } from 'utils';
 import UploadModal from './uploadModal';
 import { toast } from 'react-toastify';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import ActionableImage from './preview';
 
 const masonryOptions = {
   transitionDuration: 0,
@@ -88,6 +89,11 @@ const Listing = ({
     history.push(`/gallery/${id}`);
   };
 
+  const onDownload = (destinationLink) => {
+    console.log('onDownload -> destinationLink', destinationLink);
+    destinationLink && window.open(destinationLink, '_blank');
+  };
+
   return (
     <Layout className='order__container' documentTitle={t(WEB_ROUTES.GALLERY_LISTING.title)} container fluid>
       <Title onClickUpload={handleUpload} />
@@ -107,7 +113,19 @@ const Listing = ({
             {data.artworks.map((artwork) => (
               <div className='gallery__artwork' key={`artwork_${artwork.bookingNumber}_${uniqIdCreator()}`}>
                 <div className='cursor-pointer' onClick={() => goToDetail(artwork.id)}>
-                  <LazyLoadImage effect='opacity' src={artwork.attachment.url} alt={artwork.attachment.fileName} width={255} wrapperClassName='gallery__artwork__lazy' />
+                  <ActionableImage effect='opacity' src={artwork.attachment.url} alt={artwork.attachment.fileName} width={255} wrapperClassName='gallery__artwork__lazy'>
+                    {artwork?.destinationLink && (
+                      <Button
+                        color='primary'
+                        className='button__hover'
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDownload(artwork?.destinationLink);
+                        }}>
+                        Download
+                      </Button>
+                    )}
+                  </ActionableImage>
                 </div>
                 <div className=' gallery mt-2'>{<Tags tags={artwork.tags.map((item) => item?.name).filter((item) => item)} disable />}</div>
                 <Button tag={Link} className='w-100 pl-0 justify-content-start gallery__artwork__title ' to={`/gallery/${artwork.id}`} color='link'>

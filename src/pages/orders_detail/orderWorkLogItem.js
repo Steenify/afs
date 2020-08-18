@@ -20,9 +20,10 @@ import { ReactComponent as PencilLine } from 'assets/img/pencil_line.svg';
 import { ReactComponent as Message } from 'assets/img/message.svg';
 
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
-import { mapStatusCanNotUpload } from 'configs';
+import { mapStatusCanNotUpload, PERMITTIONS_CONFIG } from 'configs';
 
 import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction, updateTrackingCodeWorkLogAction } from './actions';
+import CanShow from 'components/layout/canshow';
 
 const OrderWorkLogItem = ({
   workLogType,
@@ -336,42 +337,44 @@ const OrderWorkLogItem = ({
           </div>
         </div>
 
-        <div className={`order_detail__comments comments ${!isWorking && !work.feedbacks.length ? 'd-none' : ''} ${work.comments.length && work.feedbacks.length ? 'ignore-top' : ''} `}>
-          <div className='box__header comments__header'>
-            <div onClick={toggleFeedback} className='box__icon com comments__icon'>
-              <div className='icon'>
-                <Message />
+        <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_FEEDBACK}>
+          <div className={`order_detail__comments comments ${!isWorking && !work.feedbacks.length ? 'd-none' : ''} ${work.comments.length && work.feedbacks.length ? 'ignore-top' : ''} `}>
+            <div className='box__header comments__header'>
+              <div onClick={toggleFeedback} className='box__icon com comments__icon'>
+                <div className='icon'>
+                  <Message />
+                </div>
+              </div>
+              <div onClick={toggleFeedback} className='box__title w-100 comments__title'>
+                Feedback from customer
               </div>
             </div>
-            <div onClick={toggleFeedback} className='box__title w-100 comments__title'>
-              Feedback from customer
-            </div>
-          </div>
-          <Collapse isOpen={isOpenFeedback}>
-            <div className='comments__list'>
-              {work.feedbacks
-                .sort((a, b) => (moment(a.createdDate).isBefore(moment(b.createdDate)) ? 1 : -1))
-                .map((feedback, index) => (
-                  <div key={`feedback__item__${work.id}__${feedback.id}`} className='comments__item'>
-                    <div className='comments__author'>
-                      <div className='comments__wrapper'>
-                        <div className='comments__box'>
-                          <span className='comments__mess'>
-                            <P text={feedback.body} id={`feedback__item__${work.id}__${feedback.id}`} />
-                          </span>
-                        </div>
-                        <div className='d-flex justify-content-end'>
-                          <span className='work__last_update' style={{ fontStyle: 'normal' }}>
-                            {dateTimeFromNow(feedback.createdDate)}
-                          </span>
+            <Collapse isOpen={isOpenFeedback}>
+              <div className='comments__list'>
+                {work.feedbacks
+                  .sort((a, b) => (moment(a.createdDate).isBefore(moment(b.createdDate)) ? 1 : -1))
+                  .map((feedback, index) => (
+                    <div key={`feedback__item__${work.id}__${feedback.id}`} className='comments__item'>
+                      <div className='comments__author'>
+                        <div className='comments__wrapper'>
+                          <div className='comments__box'>
+                            <span className='comments__mess'>
+                              <P text={feedback.body} id={`feedback__item__${work.id}__${feedback.id}`} />
+                            </span>
+                          </div>
+                          <div className='d-flex justify-content-end'>
+                            <span className='work__last_update' style={{ fontStyle: 'normal' }}>
+                              {dateTimeFromNow(feedback.createdDate)}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-            </div>
-          </Collapse>
-        </div>
+                  ))}
+              </div>
+            </Collapse>
+          </div>
+        </CanShow>
 
         <div className={`order_detail__comments comments ${!isWorking && !work.comments.length && !isReview ? 'd-none' : ''}`}>
           <div className='box__header comments__header'>
