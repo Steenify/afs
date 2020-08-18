@@ -18,6 +18,7 @@ import CommentBox from 'components/common/commentBox';
 import { ReactComponent as Close } from 'assets/img/close.svg';
 import { ReactComponent as PencilLine } from 'assets/img/pencil_line.svg';
 import { ReactComponent as Message } from 'assets/img/message.svg';
+import { ReactComponent as Feedback } from 'assets/img/message__yellow.svg';
 
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
 import { mapStatusCanNotUpload, PERMITTIONS_CONFIG } from 'configs';
@@ -340,9 +341,9 @@ const OrderWorkLogItem = ({
         <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_FEEDBACK}>
           <div className={`order_detail__comments comments ${!isWorking && !work.feedbacks.length ? 'd-none' : ''}`}>
             <div className='box__header comments__header'>
-              <div onClick={toggleFeedback} className='box__icon com comments__icon'>
+              <div onClick={toggleFeedback} className='box__icon feedback comments__icon'>
                 <div className='icon'>
-                  <Message />
+                  <Feedback />
                 </div>
               </div>
               <div onClick={toggleFeedback} className='box__title w-100 comments__title'>
