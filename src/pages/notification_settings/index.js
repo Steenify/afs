@@ -320,7 +320,7 @@ const NotificationSettings = (props) => {
                   {selectedRecipients.map(
                     (follower, i) =>
                       follower.checked && (
-                        <Badge color='primary' className='d-inline-flex align-items-center mr-2 mb-2' key={i}>
+                        <Badge color='primary' className='d-inline-flex align-items-center mr-2 mb-2 bg-dodger_blue' key={i}>
                           <div className='p-2' style={{ fontSize: 17, fontWeight: 400 }}>
                             {`${follower.lastName || ''} ${follower.firstName || ''}`}
                           </div>
