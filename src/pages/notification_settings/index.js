@@ -70,6 +70,10 @@ const NotificationSettings = (props) => {
       }
 
       setActions((old) => uniqBy([...old, ...data], 'id').filter((a) => !a.disabled));
+
+      if (data && data.length !== 0) {
+        setActiveTab(0);
+      }
     });
   }, []);
 
