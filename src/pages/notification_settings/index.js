@@ -19,7 +19,7 @@ import { ReactComponent as CloseIcon } from 'assets/img/close_white.svg';
 
 import { WEB_ROUTES } from 'configs';
 
-import { getNotificationActionsAction, updateNotificationActionAction, getRecipientsAction } from './action';
+import { getNotificationActionsAction, getNotificationActionAction, updateNotificationActionAction, getRecipientsAction } from './action';
 
 import './style.scss';
 
@@ -31,6 +31,7 @@ const NotificationSettings = (props) => {
       data,
     },
     getNotificationActionsAction,
+    getNotificationActionAction,
     updateNotificationActionAction,
     getRecipientsAction,
   } = props;
@@ -99,23 +100,27 @@ const NotificationSettings = (props) => {
   }, [search]);
 
   useEffect(() => {
-    const followers = actions[activeTab]?.followers || [];
+    if (actions[activeTab]?.id) {
+      getNotificationActionAction(actions[activeTab]?.id, (e, data) => {
+        const followers = data.followers || [];
 
-    const cloneList = [...selectedRecipients];
+        const cloneList = [...selectedRecipients];
 
-    const newList = followers
-      .map((f) => {
-        if (cloneList.find((r) => r.userId === f.userId)) {
-          return { ...f, checked: true };
-        }
+        const newList = followers
+          .map((f) => {
+            if (cloneList.find((r) => r.userId === f.userId)) {
+              return null;
+            }
 
-        return null;
-      })
-      .filter(Boolean);
+            return { ...f, checked: true };
+          })
+          .filter(Boolean);
 
-    setSelectedRecipients((old) => [...old, ...cloneList, ...newList]);
+        setSelectedRecipients((old) => [...old, ...cloneList, ...newList]);
 
-    setMessageDefault(actions[activeTab]?.messageDefault || '');
+        setMessageDefault(actions[activeTab]?.messageDefault || '');
+      });
+    }
   }, [activeTab]);
 
   const onSave = () => {
@@ -138,6 +143,24 @@ const NotificationSettings = (props) => {
         console.log('----- AFTER', data);
       });
     }
+  };
+
+  const onRemoveRecipient = (recipient) => {
+    console.log('----- WILL REMOVE', recipient);
+
+    const list = [...selectedRecipients];
+
+    const index = list.findIndex((r) => r.userId === recipient.userId);
+
+    if (index !== -1) {
+      const item = list[index];
+
+      item.checked = false;
+
+      list[index] = item;
+    }
+
+    setSelectedRecipients((old) => list);
   };
 
   return (
@@ -203,7 +226,7 @@ const NotificationSettings = (props) => {
             <div className='box h-100'>
               <div className='row'>
                 <div className='col col-12 border-bottom'>
-                  <h4 className='mb-3'>Message Default</h4>
+                  <h4 className='mb-3'>Notification Content</h4>
                 </div>
               </div>
 
@@ -294,7 +317,7 @@ const NotificationSettings = (props) => {
                           <div className='p-2' style={{ fontSize: 17, fontWeight: 400 }}>
                             {`${follower.lastName || ''} ${follower.firstName || ''}`}
                           </div>
-                          <CloseIcon />
+                          <CloseIcon onClick={() => onRemoveRecipient(follower)} />
                         </Badge>
                       ),
                   )}
@@ -315,6 +338,7 @@ const mapStateToProps = ({ notificationSettings }, ownProps) => ({
 
 const mapDispatchToProps = {
   getNotificationActionsAction,
+  getNotificationActionAction,
   updateNotificationActionAction,
   getRecipientsAction,
 };

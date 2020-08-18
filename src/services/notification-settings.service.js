@@ -9,6 +9,12 @@ export const getNotificationActionsService = (params) =>
     params,
   });
 
+export const getNotificationActionService = (actionId) =>
+  request({
+    url: `${NOTIFICATION_API}/actions/${actionId}`,
+    method: 'GET',
+  });
+
 export const updateNotificationActionService = (actionId, data) =>
   request({
     url: `${NOTIFICATION_API}/actions/${actionId}`,
