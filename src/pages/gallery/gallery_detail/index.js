@@ -10,7 +10,7 @@ import Tags from '../gallery_listing/tags';
 import { ReactComponent as BackArrow } from 'assets/img/left_arrow.svg';
 import { ReactComponent as Close } from 'assets/img/close.svg';
 import { saveAs } from 'file-saver';
-import { getArtworkDetailAction, deleteArtworkDetailAction } from './action';
+import { getArtworkDetailAction, deleteArtworkDetailAction, resetArtworkAction } from './action';
 import { showConfirmAlert } from 'utils/index';
 import MeatBallDropdown from 'components/common/meatball-dropdown';
 
@@ -31,6 +31,7 @@ const GalleryDetail = (props) => {
     },
     getArtworkDetailAction,
     deleteArtworkDetailAction,
+    resetArtworkAction,
   } = props;
 
   const { id } = match.params;
@@ -59,6 +60,7 @@ const GalleryDetail = (props) => {
     document.body.appendChild(script);
 
     return () => {
+      resetArtworkAction();
       document.body.removeChild(script);
       document.body.removeChild(fbRoot);
       window?.FB && delete window.FB;
@@ -126,15 +128,15 @@ const GalleryDetail = (props) => {
 
         <div className='col-lg-6 col-md-12'>
           <div className='d-flex justify-content-between align-items-start'>
-            <h1>{gallery?.title}</h1>
+            <h1 className='mb-0'>{gallery?.title}</h1>
             {actions.length > 0 && <MeatBallDropdown direction='left' className='mr-3' actions={actions} />}
           </div>
 
           <div className='gallery mb-3'>
+            <div className='description'>{gallery?.description}</div>
             <div>
               <Tags tags={(gallery?.tags || []).map((item) => item?.name).filter((item) => item)} disable />
             </div>
-            <div className='description'>{gallery?.description}</div>
           </div>
 
           <div class='fb-comments' data-colorscheme='dark' data-numposts='5' data-width='100%'></div>
@@ -153,6 +155,7 @@ const mapStateToProps = ({ auth, gallery: { detail } }, ownProps) => ({
 const mapDispatchToProps = {
   getArtworkDetailAction,
   deleteArtworkDetailAction,
+  resetArtworkAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GalleryDetail);

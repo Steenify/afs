@@ -33,6 +33,10 @@ export const getArtworkDetailAction = (id) => (dispatch) => {
     onError,
   });
 };
+
+export const RESET_ART_WORK_DETAIL = 'RESET_ART_WORK_DETAIL';
+export const resetArtworkAction = () => (dispatch) => dispatch({ type: RESET_ART_WORK_DETAIL });
+
 export const deleteArtworkDetailAction = (id, callback) => (dispatch) => {
   const { PENDING, SUCCESS, ERROR } = DELETE_ARTWORK_DETAIL;
 

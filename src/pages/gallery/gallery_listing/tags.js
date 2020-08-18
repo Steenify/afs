@@ -3,12 +3,14 @@ import React from 'react';
 const GalleryTags = ({ tags = [], currentTag = null, onClickTag = () => {}, disable }) => {
   if (disable) {
     return (
-      <div className='tag_container mt-1'>
-        {tags.map((tag, index) => (
-          <div className='tag_item_small' key={`tag__item__small__${index}`} color='primary'>
-            {tag}
-          </div>
-        ))}
+      <div className='tag_gradient_container'>
+        <div className='tag_container mt-1'>
+          {tags.map((tag, index) => (
+            <div className='tag_item_small' key={`tag__item__small__${index}`} color='primary'>
+              {tag}
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

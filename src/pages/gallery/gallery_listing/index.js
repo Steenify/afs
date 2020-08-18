@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 import Button from 'components/common/button';
 import Layout from 'components/common/Layout';
-import { getAllTagsAction, getArtworksAction, updateFilterAction, addArtworksAction } from './action';
+import { getAllTagsAction, getArtworksAction, updateFilterAction, addArtworksAction, resetAction } from './action';
 import { WEB_ROUTES } from 'configs/index';
 import './style.scss';
 import { initialState } from './const';
@@ -41,6 +41,7 @@ const Listing = ({
   getArtworksAction,
   updateFilterAction,
   addArtworksAction,
+  resetAction,
 }) => {
   const debounceGetArtworks = useCallback(debounce(getArtworksAction, 500), [getArtworksAction]);
   const history = useHistory();
@@ -54,6 +55,12 @@ const Listing = ({
   useEffect(() => {
     setTimeout(() => masonryRef.current?.performLayout?.(), 200);
   }, [isMenuOpen]);
+
+  useEffect(() => {
+    return () => {
+      resetAction();
+    };
+  }, []);
 
   useEffect(() => {
     const { page, size, tag, text } = filterData;
@@ -102,11 +109,11 @@ const Listing = ({
                 <div className='cursor-pointer' onClick={() => goToDetail(artwork.id)}>
                   <LazyLoadImage effect='opacity' src={artwork.attachment.url} alt={artwork.attachment.fileName} width={255} wrapperClassName='gallery__artwork__lazy' />
                 </div>
-                <Button tag={Link} className='w-100 justify-content-start gallery__artwork__title pl-3' to={`/gallery/${artwork.id}`} color='link'>
+                <div className=' gallery mt-2'>{<Tags tags={artwork.tags.map((item) => item?.name).filter((item) => item)} disable />}</div>
+                <Button tag={Link} className='w-100 pl-0 justify-content-start gallery__artwork__title ' to={`/gallery/${artwork.id}`} color='link'>
                   {artwork.title}
                 </Button>
-                <div className='pl-3 gallery'>{<Tags tags={artwork.tags.map((item) => item?.name).filter((item) => item)} disable />}</div>
-                {artwork?.description && <div className='pl-3 description-clip'>{artwork?.description}</div>}
+                {artwork?.description && <div className=' description-clip'>{artwork?.description}</div>}
               </div>
             ))}
           </Masonry>
@@ -133,6 +140,7 @@ const mapDispatchToProps = {
   getArtworksAction,
   updateFilterAction,
   addArtworksAction,
+  resetAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Listing);

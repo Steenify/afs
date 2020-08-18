@@ -336,6 +336,43 @@ const OrderWorkLogItem = ({
           </div>
         </div>
 
+        <div className={`order_detail__comments comments ${!isWorking && !work.feedbacks.length ? 'd-none' : ''} ${work.comments.length && work.feedbacks.length ? 'ignore-top' : ''} `}>
+          <div className='box__header comments__header'>
+            <div onClick={toggleFeedback} className='box__icon com comments__icon'>
+              <div className='icon'>
+                <Message />
+              </div>
+            </div>
+            <div onClick={toggleFeedback} className='box__title w-100 comments__title'>
+              Feedback from customer
+            </div>
+          </div>
+          <Collapse isOpen={isOpenFeedback}>
+            <div className='comments__list'>
+              {work.feedbacks
+                .sort((a, b) => (moment(a.createdDate).isBefore(moment(b.createdDate)) ? 1 : -1))
+                .map((feedback, index) => (
+                  <div key={`feedback__item__${work.id}__${feedback.id}`} className='comments__item'>
+                    <div className='comments__author'>
+                      <div className='comments__wrapper'>
+                        <div className='comments__box'>
+                          <span className='comments__mess'>
+                            <P text={feedback.body} id={`feedback__item__${work.id}__${feedback.id}`} />
+                          </span>
+                        </div>
+                        <div className='d-flex justify-content-end'>
+                          <span className='work__last_update' style={{ fontStyle: 'normal' }}>
+                            {dateTimeFromNow(feedback.createdDate)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </Collapse>
+        </div>
+
         <div className={`order_detail__comments comments ${!isWorking && !work.comments.length && !isReview ? 'd-none' : ''}`}>
           <div className='box__header comments__header'>
             <div onClick={toggleCom} className='box__icon com comments__icon'>
@@ -392,43 +429,6 @@ const OrderWorkLogItem = ({
                 <CommentBox ref={commentBox} onSubmit={handleUploadComment} />
               </div>
             )}
-          </Collapse>
-        </div>
-
-        <div className={`order_detail__comments comments ${!isWorking && !work.feedbacks.length ? 'd-none' : ''} ${work.comments.length && work.feedbacks.length ? 'ignore-top' : ''} `}>
-          <div className='box__header comments__header'>
-            <div onClick={toggleFeedback} className='box__icon com comments__icon'>
-              <div className='icon'>
-                <Message />
-              </div>
-            </div>
-            <div onClick={toggleFeedback} className='box__title w-100 comments__title'>
-              Feedback from customer
-            </div>
-          </div>
-          <Collapse isOpen={isOpenFeedback}>
-            <div className='comments__list'>
-              {work.feedbacks
-                .sort((a, b) => (moment(a.createdDate).isBefore(moment(b.createdDate)) ? 1 : -1))
-                .map((feedback, index) => (
-                  <div key={`feedback__item__${work.id}__${feedback.id}`} className='comments__item'>
-                    <div className='comments__author'>
-                      <div className='comments__wrapper'>
-                        <div className='comments__box'>
-                          <span className='comments__mess'>
-                            <P text={feedback.body} id={`feedback__item__${work.id}__${feedback.id}`} />
-                          </span>
-                        </div>
-                        <div className='d-flex justify-content-end'>
-                          <span className='work__last_update' style={{ fontStyle: 'normal' }}>
-                            {dateTimeFromNow(feedback.createdDate)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
           </Collapse>
         </div>
 

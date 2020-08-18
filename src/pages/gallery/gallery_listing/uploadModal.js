@@ -74,7 +74,7 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isL
 
   return (
     <form action='' onSubmit={onSave}>
-      <Modal isOpen={item !== null} toggle={toggle} fade={false} size='md' className='modal-dialog-centered  modal-no-border'>
+      <Modal isOpen={item !== null} toggle={toggle} fade={false} size='lg' className='modal-dialog-centered  modal-no-border'>
         <div className='order_detail__email gallery'>
           <ModalHeader toggle={toggle}>
             Upload Gallery
