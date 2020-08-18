@@ -137,7 +137,7 @@ const GalleryDetail = (props) => {
             <div className='description'>{gallery?.description}</div>
           </div>
 
-          <div class='fb-comments' data-colorscheme='dark' data-href='https://test-ref.org.abc/3243234234/123131/' data-numposts='5' data-width='100%'></div>
+          <div class='fb-comments' data-colorscheme='dark' data-numposts='5' data-width='100%'></div>
         </div>
       </div>
     </Layout>
