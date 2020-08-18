@@ -321,7 +321,7 @@ const NotificationSettings = (props) => {
                           <div className='p-2' style={{ fontSize: 17, fontWeight: 400 }}>
                             {`${follower.lastName || ''} ${follower.firstName || ''}`}
                           </div>
-                          <CloseIcon onClick={() => onRemoveRecipient(follower)} />
+                          <CloseIcon className='cursor-pointer' onClick={() => onRemoveRecipient(follower)} />
                         </Badge>
                       ),
                   )}
