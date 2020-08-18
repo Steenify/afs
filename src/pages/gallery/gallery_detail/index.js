@@ -13,6 +13,8 @@ import { saveAs } from 'file-saver';
 import { getArtworkDetailAction, deleteArtworkDetailAction, resetArtworkAction } from './action';
 import { showConfirmAlert } from 'utils/index';
 import MeatBallDropdown from 'components/common/meatball-dropdown';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
 import { PERMITTIONS_CONFIG, FACEBOOK_APP_ID } from 'configs';
@@ -48,7 +50,7 @@ const GalleryDetail = (props) => {
     const fbRoot = document.createElement('div');
     fbRoot.id = 'fb-root';
     const script = document.createElement('script');
-    console.log('GalleryDetail -> script', script);
+
     script.async = true;
     script.defer = true;
     script.crossOrigin = 'anonymous';
@@ -97,11 +99,11 @@ const GalleryDetail = (props) => {
     });
   };
   const actions = [
-    {
-      title: 'Download',
-      onClick: onDownload,
-      show: gallery?.destinationLink,
-    },
+    // {
+    //   title: 'Download',
+    //   onClick: onDownload,
+    //   show: gallery?.destinationLink,
+    // },
     {
       title: 'Delete',
       onClick: onConfirmDelete,
@@ -137,6 +139,12 @@ const GalleryDetail = (props) => {
             <div>
               <Tags tags={(gallery?.tags || []).map((item) => item?.name).filter((item) => item)} disable />
             </div>
+            {gallery?.destinationLink && (
+              <Button color='primary' className='mt-3' onClick={onDownload}>
+                <FontAwesomeIcon icon={faDownload} size='xs' color='white' className='cursor-pointer mr-2' />
+                Download
+              </Button>
+            )}
           </div>
 
           <div class='fb-comments' data-colorscheme='dark' data-numposts='5' data-width='100%'></div>

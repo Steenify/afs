@@ -105,8 +105,11 @@ class NotiContent extends Component {
     const { onClose } = this.props;
     return (
       <div className='noti__content'>
-        <div className='noti__header'>
+        <div className='noti__header d-flex justify-content-between align-center'>
           <h3 className='noti__title'>Notifications</h3>
+          {/* <Button className='link' color='link' onClick={onClose}>
+            Read All
+          </Button> */}
         </div>
         <div className='noti__body'>
           {isLoading ? (
