@@ -229,6 +229,19 @@ export const getListImageUrl = (list = []) => {
   });
 };
 
+export const countTotalOrders = (orderStatus) => {
+  return reduce(
+    orderStatus,
+    (res, value, key) => {
+      if (key !== 'DONE' && key !== 'NO_ACTIVITY' && key !== 'LATE_WORK_LOG_DEADLINE') {
+        return (res += value);
+      }
+      return res;
+    },
+    0,
+  );
+};
+
 export const getSelectedStatus = (name, status) => {
   const StatusMap = {};
   status.forEach((sta) => {

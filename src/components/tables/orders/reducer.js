@@ -18,6 +18,7 @@ const templateState = {
     sort: [{ id: 'number', desc: true }],
     text: '',
     assignee: '',
+    alert: '',
   },
   table: {
     orders: [],

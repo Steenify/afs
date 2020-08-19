@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { reduce } from 'lodash';
 
 import { PERMITTIONS_CONFIG } from 'configs';
 
@@ -23,7 +22,7 @@ import { WEB_ROUTES } from 'configs/index';
 
 import { toggleMenu } from 'store/actions';
 
-import { isMobile } from 'utils';
+import { isMobile, countTotalOrders } from 'utils';
 
 const SideBar = (props) => {
   const { t } = useTranslation();
@@ -33,16 +32,7 @@ const SideBar = (props) => {
 
   const canSetting = permissions?.includes(PERMITTIONS_CONFIG.ACCESS_SETTING) || false;
 
-  const totalOrders = reduce(
-    orderStatus,
-    (res, value, key) => {
-      if (key !== 'DONE') {
-        return (res += value);
-      }
-      return res;
-    },
-    0,
-  );
+  const totalOrders = countTotalOrders(orderStatus);
 
   const handleClickNav = () => {
     toggleMenuAction(!isMobile());
@@ -67,6 +57,10 @@ const SideBar = (props) => {
           icon: <Payouts />,
         },
         {
+          ...WEB_ROUTES.GALLERY_LISTING,
+          icon: <Package />,
+        },
+        {
           ...WEB_ROUTES.USER_LIST,
           title: WEB_ROUTES.USER_LIST.title,
           icon: <UserIcon />,
@@ -84,10 +78,6 @@ const SideBar = (props) => {
         // {
         //   ...WEB_ROUTES.LATE_NOTIFICATION,
         //   icon: <LateNotification />,
-        // },
-        // {
-        //   ...WEB_ROUTES.GALLERY_LISTING,
-        //   icon: <Package />,
         // },
 
         // {
