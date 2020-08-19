@@ -45,6 +45,7 @@ const initialState = {
     emailTitle: '',
     selectedEmailTemplate: 0,
     currentWorkLogIndex: -1,
+    currentWorkLogType: 'workLog',
     fbTemplate: '',
     fbTemplateAttachments: [],
   },
@@ -343,14 +344,14 @@ const reducer = (state = initialState, action) => {
 
     case SENT_EMAIL_NOTIFY_ACTION.SUCCESS:
     case SENT_FB_MESSAGES_NOTIFY_ACTION.SUCCESS: {
-      const { currentWorkLogIndex } = state.data;
+      const { currentWorkLogIndex, currentWorkLogType = 'workLog' } = state.data;
       return update(state, {
         ui: {
           loading: { $set: false },
           isShowEmail: { $set: false },
         },
         data: {
-          [payload.workLogType]: {
+          [currentWorkLogType]: {
             [currentWorkLogIndex]: {
               activities: {
                 $push: payload.activives,
@@ -476,6 +477,9 @@ const reducer = (state = initialState, action) => {
           },
           currentWorkLogIndex: {
             $set: payload.workLogIndex,
+          },
+          currentWorkLogType: {
+            $set: payload.workLogType,
           },
         },
       });

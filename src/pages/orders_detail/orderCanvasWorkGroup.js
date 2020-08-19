@@ -82,7 +82,7 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
   const handleNotifyEmail = (workLogIndex) => {
     const currentStatus = getSelectedStatus(order.statusForCanvas, status);
     if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
-      getEmailTemplate(order.id, currentStatus.emailTemplates[0].id, workLogIndex);
+      getEmailTemplate(order.id, currentStatus.emailTemplates[0].id, workLogIndex, 'canvasWorkLog');
     } else {
       toast.warn('No Email template found!');
     }

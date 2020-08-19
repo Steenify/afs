@@ -250,6 +250,8 @@ const OrderWorkLogItem = ({
     deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'), workLogType);
   };
 
+  console.log(work.name, !isWorking, work.feedbacks.length < 1);
+
   return (
     <div className='order_detail__artwork'>
       <div className='box__header'>
@@ -339,7 +341,7 @@ const OrderWorkLogItem = ({
         </div>
 
         <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_FEEDBACK}>
-          <div className={`order_detail__comments comments ${!isWorking && !work.feedbacks.length ? 'd-none' : ''}`}>
+          <div className={`order_detail__comments comments ${!work.feedbacks.length ? 'd-none' : ''}`}>
             <div className='box__header comments__header'>
               <div onClick={toggleFeedback} className='box__icon feedback comments__icon'>
                 <div className='icon'>
