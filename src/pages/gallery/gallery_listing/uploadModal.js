@@ -14,22 +14,17 @@ const WrapperRow = ({ label = '', children }) => (
   </div>
 );
 
-const UploadModal = ({ onClose, onConfirm, orderNumber, item = 1, tagItems = [], isLoading = false }) => {
+const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isLoading = false }) => {
   const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [destinationLink, setDestinationLink] = useState('');
   const [tags, setTags] = useState([]);
   const dropbox = useRef(null);
   const toggle = () => {
     onClose();
   };
 
-  // useEffect(() => {
-  //   console.log('====================================');
-  //   console.log(tags);
-  //   console.log('====================================');
-  // }, [tags]);
-
   const onSave = (e) => {
-    // e.preventDefault();
     if (dropbox.current) {
       const files = dropbox.current.getFiles() || [];
       if (!name) {
@@ -43,6 +38,10 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item = 1, tagItems = [],
 
       if (files.length !== 1) {
         toast.warn('Please select only one file!');
+        return;
+      }
+      if (!destinationLink) {
+        toast.warn('Destination Link is required field!');
         return;
       }
       let isDoneUpload = true;
@@ -66,6 +65,8 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item = 1, tagItems = [],
           }
         }),
         attachmentId: files?.[0]?.id || undefined,
+        description,
+        destinationLink,
       };
       onConfirm(data, onClose);
     }
@@ -73,7 +74,7 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item = 1, tagItems = [],
 
   return (
     <form action='' onSubmit={onSave}>
-      <Modal isOpen={item !== null} toggle={toggle} fade={false} size='md' className='modal-dialog-centered  modal-no-border'>
+      <Modal isOpen={item !== null} toggle={toggle} fade={false} size='lg' className='modal-dialog-centered  modal-no-border'>
         <div className='order_detail__email gallery'>
           <ModalHeader toggle={toggle}>
             Upload Gallery
@@ -96,8 +97,14 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item = 1, tagItems = [],
                 <WrapperRow label='Tags:'>
                   <SelectCreatable isMulti options={tagItems} value={tags} onChange={(items) => setTags(items)} formatCreateLabel={(input) => `Add tag "${input}"`} />
                 </WrapperRow>
+                <WrapperRow label='Description:'>
+                  <textarea style={{ height: '150px' }} type='text' className='form-control' value={description} onChange={(e) => setDescription(e.target.value)} />
+                </WrapperRow>
                 <WrapperRow label='Upload File:'>
                   <Dropbox className='upload' ref={dropbox} id={`Gallery__upload`} quality='low' orderNumber='artwork' />
+                </WrapperRow>
+                <WrapperRow label='Destination Link:'>
+                  <input type='text' className='form-control' value={destinationLink} onChange={(e) => setDestinationLink(e.target.value)} />
                 </WrapperRow>
               </Fragment>
             )}

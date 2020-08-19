@@ -18,6 +18,7 @@
       "login": "Login",
       "firstName": "First name",
       "lastName": "Last name",
+      "name": "User name",
       "email": "Email",
       "activated": "Activated",
       "deactivated": "Deactivated",

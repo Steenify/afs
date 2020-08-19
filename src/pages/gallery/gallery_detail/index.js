@@ -1,15 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
+import { confirmAlert } from 'react-confirm-alert';
+import { Helmet } from 'react-helmet';
+import Button from 'components/common/button';
 import Layout from 'components/common/Layout';
 import WEB_ROUTES from 'configs/web-routes';
 import ImageLoadAble from 'components/common/imageLoadAble';
 import Tags from '../gallery_listing/tags';
 import { ReactComponent as BackArrow } from 'assets/img/left_arrow.svg';
+import { ReactComponent as Close } from 'assets/img/close.svg';
 import { saveAs } from 'file-saver';
-import { getArtworkDetailAction } from './action';
+import { getArtworkDetailAction, deleteArtworkDetailAction, resetArtworkAction } from './action';
+import { showConfirmAlert } from 'utils/index';
+import MeatBallDropdown from 'components/common/meatball-dropdown';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
+import { PERMITTIONS_CONFIG, FACEBOOK_APP_ID } from 'configs';
+import { toast } from 'react-toastify';
 // import { avatarGenerator } from 'utils';
 
 const GalleryDetail = (props) => {
@@ -23,9 +32,46 @@ const GalleryDetail = (props) => {
       data: { gallery },
     },
     getArtworkDetailAction,
+    deleteArtworkDetailAction,
+    resetArtworkAction,
   } = props;
 
   const { id } = match.params;
+
+  useEffect(() => {
+    window.fbAsyncInit = () => {
+      window.FB.init({
+        appId: FACEBOOK_APP_ID,
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: `v${8.0}`,
+      });
+    };
+    const fbRoot = document.createElement('div');
+    fbRoot.id = 'fb-root';
+    const script = document.createElement('script');
+
+    script.async = true;
+    script.defer = true;
+    script.crossOrigin = 'anonymous';
+    script.nonce = 'arO05les';
+    script.src = `https://connect.facebook.net/en_US/sdk.js#xfbml=1&autoLogAppEvents=1&version=v8.0&appId=${FACEBOOK_APP_ID}`;
+    // const metaAppId = document.createElement('meta')
+
+    document.body.appendChild(fbRoot);
+    document.body.appendChild(script);
+
+    return () => {
+      resetArtworkAction();
+      document.body.removeChild(script);
+      document.body.removeChild(fbRoot);
+      window?.FB && delete window.FB;
+    };
+  }, []);
+
+  useEffect(() => {
+    window?.FB?.XFBML?.parse && window.FB.XFBML.parse();
+  });
 
   useEffect(() => {
     if (!id) {
@@ -36,55 +82,72 @@ const GalleryDetail = (props) => {
   }, [id, history, getArtworkDetailAction]);
 
   const onDownload = () => {
-    if (gallery?.attachment?.url) {
-      saveAs(gallery?.attachment?.url, gallery?.attachment?.fileName || 'gallery image');
-    }
+    window.open(gallery?.destinationLink, '_blank');
   };
+
+  const onConfirmDelete = () => {
+    showConfirmAlert({
+      title: 'Delete',
+      confirmText: 'Delete',
+      text: 'Are you sure you want to delete this art work?',
+      onConfirm: () => {
+        deleteArtworkDetailAction(id, () => {
+          toast.dark('Art work is deleted!');
+          history.goBack();
+        });
+      },
+    });
+  };
+  const actions = [
+    // {
+    //   title: 'Download',
+    //   onClick: onDownload,
+    //   show: gallery?.destinationLink,
+    // },
+    {
+      title: 'Delete',
+      onClick: onConfirmDelete,
+      show: accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.DELETE_ARTWORK) || false,
+    },
+  ].filter(({ show }) => show);
 
   return (
     <Layout documentTitle={WEB_ROUTES.GALLERY_DETAIL.title} container fluid>
-      {/* <PageTitle {...WEB_ROUTES.GALLERY_DETAIL} /> */}
+      <Helmet>
+        <meta property='fb:app_id' content={FACEBOOK_APP_ID} />
+      </Helmet>
       <div className='row pb-3'>
         <div className='col-12'>
           <BackArrow className='cursor-pointer' onClick={() => history.goBack()} />
         </div>
       </div>
       <div className='row'>
-        <div className='col col-6'>
+        <div className='col-lg-6 col-md-12'>
           <div className='gallery__artwork detail'>
             {gallery?.attachment && <ImageLoadAble type={gallery?.attachment.type} url={gallery?.attachment?.url} fileName={gallery?.attachment.fileName} />}
           </div>
         </div>
 
-        <div className='col col-6'>
-          <h1>{gallery?.title}</h1>
+        <div className='col-lg-6 col-md-12'>
+          <div className='d-flex justify-content-between align-items-start'>
+            <h1 className='mb-0'>{gallery?.title}</h1>
+            {actions.length > 0 && <MeatBallDropdown direction='left' className='mr-3' actions={actions} />}
+          </div>
 
-          {/* <p>
-            Artist:{' '}
-            <Link className='ml-1' to={`/artists/${gallery?.artistLogin}`}>
-              {gallery?.artistFullName}
-            </Link>
-          </p> */}
-
-          <div className='gallery mb-3'>{<Tags tags={(gallery?.tags || []).map((item) => item?.name).filter((item) => item)} disable />}</div>
-
-          <div>Download:</div>
-
-          <p>
-            <div className='fake__link' onClick={onDownload}>
-              {gallery?.attachment?.url}
+          <div className='gallery mb-3'>
+            <div className='description'>{gallery?.description}</div>
+            <div>
+              <Tags tags={(gallery?.tags || []).map((item) => item?.name).filter((item) => item)} disable />
             </div>
-          </p>
+            {gallery?.destinationLink && (
+              <Button color='primary' className='mt-3' onClick={onDownload}>
+                <FontAwesomeIcon icon={faDownload} size='xs' color='white' className='cursor-pointer mr-2' />
+                Download
+              </Button>
+            )}
+          </div>
 
-          {/* <p>Share feedback, ask questions or leave a comment</p>
-
-          <div className='comment-box'>
-            <img className='rounded-circle' src={avatarGenerator(accountInfo?.imageUrl, accountInfo?.firstName)} alt={accountInfo?.firstName} />
-
-            <div className='form-group w-100'>
-              <input className='form-control' placeholder='Type a comment...' style={{ borderRadius: '25px' }} />
-            </div>
-          </div> */}
+          <div class='fb-comments' data-colorscheme='dark' data-numposts='5' data-width='100%'></div>
         </div>
       </div>
     </Layout>
@@ -99,6 +162,8 @@ const mapStateToProps = ({ auth, gallery: { detail } }, ownProps) => ({
 
 const mapDispatchToProps = {
   getArtworkDetailAction,
+  deleteArtworkDetailAction,
+  resetArtworkAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GalleryDetail);

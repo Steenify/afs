@@ -18,6 +18,22 @@ $title_color: #333333;
 $border_color: #e9f3f5;
 $place_holder: #494949;
 $web_bg: #eff3f9;
+$dodger_blue: #0095ff;
+
+$theme-colors: (
+	nocolor: $nocolor,
+	white: $white,
+	black: $black,
+	// web color
+		main_color: $main_color,
+	second_color: $second_color,
+	text_color: $text_color,
+	title_color: $title_color,
+	border_color: $border_color,
+	place_holder: $place_holder,
+	web_bg: $web_bg,
+	dodger_blue: $dodger_blue,
+) !default;
 
 $font_size: 14px;
 $font_size_sm: 13px;

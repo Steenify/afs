@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Collapse } from 'reactstrap';
 import { findIndex, isEmpty, groupBy } from 'lodash';
+import moment from 'moment';
 import { confirmAlert } from 'react-confirm-alert';
 // import { Picker, Emoji } from 'emoji-mart';
 
@@ -17,25 +18,45 @@ import CommentBox from 'components/common/commentBox';
 import { ReactComponent as Close } from 'assets/img/close.svg';
 import { ReactComponent as PencilLine } from 'assets/img/pencil_line.svg';
 import { ReactComponent as Message } from 'assets/img/message.svg';
+import { ReactComponent as Feedback } from 'assets/img/message__yellow.svg';
 
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
-import { mapStatusCanNotUpload } from 'configs';
+import { mapStatusCanNotUpload, PERMITTIONS_CONFIG } from 'configs';
 
-import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction } from './actions';
+import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction, updateTrackingCodeWorkLogAction } from './actions';
+import CanShow from 'components/layout/canshow';
 
-const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, uploadCommentWorkLog, deleteCommentWorkLog, updateCommentWorkLog, deleteAttachmentWorkLog }) => {
+const OrderWorkLogItem = ({
+  workLogType,
+  work,
+  order,
+  uploadFileWorkLog,
+  isOpened,
+  workLog,
+  uploadCommentWorkLog,
+  deleteCommentWorkLog,
+  updateCommentWorkLog,
+  deleteAttachmentWorkLog,
+  updateTrackingCodeWorkLogAction,
+}) => {
   const [isOpenWork, setIsOpenWork] = useState(isOpened || false);
   const toggleWork = () => setIsOpenWork(!isOpenWork);
 
   const [isOpenCom, setIsOpenCom] = useState(isOpened || false);
   const toggleCom = () => setIsOpenCom(!isOpenCom);
 
+  const [isOpenFeedback, setIsOpenFeedback] = useState(isOpened || false);
+  const toggleFeedback = () => setIsOpenFeedback(!isOpenFeedback);
+
   const [isEdit, setIsEdit] = useState(false);
   const dropbox = useRef(null);
   const commentBox = useRef(null);
+  const trackingNoteInput = useRef(null);
 
   const [editComment, setEditComment] = useState({});
   const [editCommentIndex, setEditCommentIndex] = useState(0);
+
+  const isPrintTrackingStatus = work.status === 'PRINT_TRACKING';
 
   const isWorking = work.state === 'WORKING';
   const isReview = work.state === 'REVIEWING';
@@ -53,6 +74,13 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
   const Act_APPROVED = activitiesGroup?.APPROVED || [];
   const Act_REJECTED = activitiesGroup?.REJECTED || [];
   const Act_NOTIFIED_CUSTOMER = activitiesGroup?.NOTIFIED_CUSTOMER || [];
+
+  const handleUpdateTrackingCode = () => {
+    const code = trackingNoteInput.current.value;
+    updateTrackingCodeWorkLogAction(order.id, code, () => {
+      toast.dark('Tracking url is updated.');
+    });
+  };
 
   const handleUploadSketch = () => {
     if (dropbox.current) {
@@ -85,10 +113,18 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
         })),
       };
 
-      uploadFileWorkLog(order.id, work.id, data, workLogIndex, files, () => {
-        dropbox.current.clearFiles();
-        setIsEdit(false);
-      });
+      uploadFileWorkLog(
+        order.id,
+        work.id,
+        data,
+        workLogIndex,
+        files,
+        () => {
+          dropbox.current.clearFiles();
+          setIsEdit(false);
+        },
+        workLogType,
+      );
     }
   };
 
@@ -126,23 +162,39 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
       };
 
       if (isEdit) {
-        updateCommentWorkLog(order.id, work.id, editComment.id, data, workLogIndex, editCommentIndex, () => {
-          commentBox.current.clearFiles();
-          commentBox.current.setComment({ content: '', attachments: [] });
-          setEditComment({});
-          setEditCommentIndex(0);
-        });
+        updateCommentWorkLog(
+          order.id,
+          work.id,
+          editComment.id,
+          data,
+          workLogIndex,
+          editCommentIndex,
+          () => {
+            commentBox.current.clearFiles();
+            commentBox.current.setComment({ content: '', attachments: [] });
+            setEditComment({});
+            setEditCommentIndex(0);
+          },
+          workLogType,
+        );
       } else {
-        uploadCommentWorkLog(order.id, work.id, data, workLogIndex, () => {
-          commentBox.current.clearFiles();
-          commentBox.current.setComment({ content: '', attachments: [] });
-        });
+        uploadCommentWorkLog(
+          order.id,
+          work.id,
+          data,
+          workLogIndex,
+          () => {
+            commentBox.current.clearFiles();
+            commentBox.current.setComment({ content: '', attachments: [] });
+          },
+          workLogType,
+        );
       }
     }
   };
 
   const handleDeleteComment = (comId, comIndex) => {
-    deleteCommentWorkLog(order.id, work.id, comId, workLogIndex, comIndex);
+    deleteCommentWorkLog(order.id, work.id, comId, workLogIndex, comIndex, workLogType);
   };
 
   const handleCheckEdit = (com, index) => {
@@ -198,7 +250,7 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
 
   const handleDeleteFile = (file) => {
     const fileIndex = findIndex(work.attachments, (pho) => pho?.id === file?.source?.id);
-    deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'));
+    deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'), workLogType);
   };
 
   return (
@@ -229,7 +281,31 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
       </div>
 
       <Collapse isOpen={isOpenWork}>
-        {(!work.attachments.length || isEdit) && !notUpload && (
+        {isPrintTrackingStatus && (
+          <div className='order_detail__tracking_code'>
+            <div className='box__header mb-0'>
+              <div className='box__title w-100'>Tracking URL</div>
+            </div>
+            {isWorking ? (
+              <>
+                <input ref={trackingNoteInput} defaultValue={order.printfulTrackingUrl} type='text' className='form-control' placeholder='Enter tracking URL' />
+                <div className='order_detail__ctas text-right'>
+                  <Button onClick={handleUpdateTrackingCode} color='primary' className='cta cta2' type='button'>
+                    Update
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <div className='mb-3'>
+                <a target='_blank' rel='noopener noreferrer' href={order.printfulTrackingUrl}>
+                  {order.printfulTrackingUrl}
+                </a>
+              </div>
+            )}
+          </div>
+        )}
+
+        {(!work.attachments.length || isEdit) && !notUpload && !isPrintTrackingStatus && (
           <div>
             {!isRejected && !isAproved && (
               <>
@@ -265,7 +341,46 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
           </div>
         </div>
 
-        <div className={`order_detail__comments comments ${!isWorking && !work.comments.length && !isReview ? 'd-none' : ''}`}>
+        <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_FEEDBACK}>
+          <div className={`order_detail__comments comments ${!work.feedbacks.length ? 'd-none' : ''}`}>
+            <div className='box__header comments__header'>
+              <div onClick={toggleFeedback} className='box__icon feedback comments__icon'>
+                <div className='icon'>
+                  <Feedback />
+                </div>
+              </div>
+              <div onClick={toggleFeedback} className='box__title w-100 comments__title'>
+                Feedback from customer
+              </div>
+            </div>
+            <Collapse isOpen={isOpenFeedback}>
+              <div className='comments__list'>
+                {work.feedbacks
+                  .sort((a, b) => (moment(a.createdDate).isBefore(moment(b.createdDate)) ? 1 : -1))
+                  .map((feedback, index) => (
+                    <div key={`feedback__item__${work.id}__${feedback.id}`} className='comments__item'>
+                      <div className='comments__author'>
+                        <div className='comments__wrapper'>
+                          <div className='comments__box'>
+                            <span className='comments__mess'>
+                              <P text={feedback.body} id={`feedback__item__${work.id}__${feedback.id}`} />
+                            </span>
+                          </div>
+                          <div className='d-flex justify-content-end'>
+                            <span className='work__last_update' style={{ fontStyle: 'normal' }}>
+                              {dateTimeFromNow(feedback.createdDate)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </Collapse>
+          </div>
+        </CanShow>
+
+        <div className={`order_detail__comments comments ${!isWorking && !work.comments.length && !isReview ? 'd-none' : ''} ${work.comments.length && work.feedbacks.length ? 'ignore-top' : ''}`}>
           <div className='box__header comments__header'>
             <div onClick={toggleCom} className='box__icon com comments__icon'>
               <div className='icon'>
@@ -381,9 +496,8 @@ const OrderWorkLogItem = ({ work, order, uploadFileWorkLog, isOpened, workLog, u
   );
 };
 
-const mapStateToProps = ({ orderDetail }) => ({
-  loading: orderDetail.ui.loadingWorkLog,
-  workLog: orderDetail.data.workLog,
+const mapStateToProps = ({ orderDetail }, ownProps) => ({
+  workLog: orderDetail.data[ownProps.workLogType || 'workLog'],
 });
 
 const mapDispatchToProps = {
@@ -392,6 +506,7 @@ const mapDispatchToProps = {
   deleteCommentWorkLog: deleteCommentWorkLogAction,
   updateCommentWorkLog: updateCommentWorkLogAction,
   deleteAttachmentWorkLog: deleteAttachmentWorkLogAction,
+  updateTrackingCodeWorkLogAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderWorkLogItem);

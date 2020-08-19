@@ -5,9 +5,15 @@ import { debounce } from 'lodash';
 import Masonry from 'react-masonry-component';
 import { useHistory } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { Link } from 'react-router-dom';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+
+import Button from 'components/common/button';
 import Layout from 'components/common/Layout';
-import { getAllTagsAction, getArtworksAction, updateFilterAction, addArtworksAction } from './action';
+import { getAllTagsAction, getArtworksAction, updateFilterAction, addArtworksAction, resetAction } from './action';
 import { WEB_ROUTES } from 'configs/index';
 import './style.scss';
 import { initialState } from './const';
@@ -19,6 +25,8 @@ import { useTranslation } from 'react-i18next';
 import { uniqIdCreator } from 'utils';
 import UploadModal from './uploadModal';
 import { toast } from 'react-toastify';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import ActionableImage from './preview';
 
 const masonryOptions = {
   transitionDuration: 0,
@@ -37,6 +45,7 @@ const Listing = ({
   getArtworksAction,
   updateFilterAction,
   addArtworksAction,
+  resetAction,
 }) => {
   const debounceGetArtworks = useCallback(debounce(getArtworksAction, 500), [getArtworksAction]);
   const history = useHistory();
@@ -52,6 +61,12 @@ const Listing = ({
   }, [isMenuOpen]);
 
   useEffect(() => {
+    return () => {
+      resetAction();
+    };
+  }, []);
+
+  useEffect(() => {
     const { page, size, tag, text } = filterData;
     debounceGetArtworks({ page, size, tag, text });
   }, [debounceGetArtworks, filterData]);
@@ -60,6 +75,7 @@ const Listing = ({
     addArtworksAction(data, () => {
       const { page, size, tag, text } = filterData;
       debounceGetArtworks({ page, size, tag, text });
+      getAllTagsAction();
       callback && callback();
     });
   };
@@ -72,11 +88,19 @@ const Listing = ({
     });
   };
 
+  const goToDetail = (id) => {
+    history.push(`/gallery/${id}`);
+  };
+
+  const onDownload = (destinationLink) => {
+    destinationLink && window.open(destinationLink, '_blank');
+  };
+
   return (
     <Layout className='order__container' documentTitle={t(WEB_ROUTES.GALLERY_LISTING.title)} container fluid>
       <Title onClickUpload={handleUpload} />
       <div className='gallery gallery__wrapper'>
-        <Filter onChange={updateFilterAction} />
+        <Filter onChange={updateFilterAction} text={filterData.text} />
         <Tags currentTag={filterData.tag} tags={data?.tags} onClickTag={updateFilterAction} />
       </div>
       {ui.loading ? (
@@ -87,15 +111,30 @@ const Listing = ({
         </div>
       ) : (
         <>
-          <Masonry ref={masonryRef} className={'gallery__wrapper mt-0'} options={masonryOptions} imagesLoadedOptions={imagesLoadedOptions} enableResizableChildren={true}>
+          <Masonry ref={masonryRef} className={'gallery gallery__wrapper mt-0'} options={masonryOptions} imagesLoadedOptions={imagesLoadedOptions} enableResizableChildren={true}>
             {data.artworks.map((artwork) => (
               <div className='gallery__artwork' key={`artwork_${artwork.bookingNumber}_${uniqIdCreator()}`}>
-                <div className='cursor-pointer' onClick={() => history.push(`/gallery/${artwork.id}`)}>
-                  <img src={artwork.attachment.url} alt={artwork.attachment.fileName} />
+                <div className='cursor-pointer' onClick={() => goToDetail(artwork.id)}>
+                  <ActionableImage effect='opacity' src={artwork.attachment.url} alt={artwork.attachment.fileName} width={255} wrapperClassName='gallery__artwork__lazy'>
+                    {artwork?.destinationLink && (
+                      <Button
+                        color='primary'
+                        className='button__hover'
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDownload(artwork?.destinationLink);
+                        }}>
+                        <FontAwesomeIcon icon={faDownload} size='xs' color='white' className='cursor-pointer mr-2' />
+                        Download
+                      </Button>
+                    )}
+                  </ActionableImage>
                 </div>
-                <div className='gallery__artwork__title pl-3'>{artwork.title}</div>
-
-                <div className='pl-3 gallery'>{<Tags tags={artwork.tags.map((item) => item?.name).filter((item) => item)} disable />}</div>
+                <div className=' gallery mt-2'>{<Tags tags={artwork.tags.map((item) => item?.name).filter((item) => item)} disable />}</div>
+                <Button tag={Link} className='w-100 pl-0 justify-content-start gallery__artwork__title ' to={`/gallery/${artwork.id}`} color='link'>
+                  {artwork.title}
+                </Button>
+                {artwork?.description && <div className=' description-clip'>{artwork?.description}</div>}
               </div>
             ))}
           </Masonry>
@@ -122,6 +161,7 @@ const mapDispatchToProps = {
   getArtworksAction,
   updateFilterAction,
   addArtworksAction,
+  resetAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Listing);

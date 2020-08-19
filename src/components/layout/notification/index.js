@@ -25,7 +25,7 @@ class Notification extends Component {
   }
 
   toggle = () => {
-    // const { readAllNotification } = this.props;
+    const { readAllNotification, count } = this.props;
     const { isPopoverOpen } = this.state;
 
     this.setState(
@@ -33,7 +33,9 @@ class Notification extends Component {
         isPopoverOpen: !isPopoverOpen,
       },
       () => {
-        // readAllNotification();
+        if (count > 0) {
+          readAllNotification();
+        }
       },
     );
   };

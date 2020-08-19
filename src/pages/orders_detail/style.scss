@@ -5,6 +5,10 @@
 		position: relative;
 		margin-bottom: 20px;
 
+		&.canvas {
+			margin-top: 20px;
+		}
+
 		.number {
 			font-size: 27px;
 			line-height: 1;
@@ -380,6 +384,11 @@
 				background: #c7f8d3;
 				color: #00ad0c;
 			}
+
+			&.feedback {
+				background: #ffddc1;
+				color: #ea7a00;
+			}
 		}
 
 		.work__last_update {
@@ -390,6 +399,16 @@
 			color: #767676;
 		}
 	}
+
+	.ignore-top {
+		margin-top: 0px;
+		border-top: 0px;
+		padding-top: 0px;
+	}
+	// &__tracking_code {
+	// 	border-bottom: 1px solid #e2e5ed;
+	// 	margin-bottom: 20px;
+	// }
 
 	&__comments {
 		margin-top: 20px;

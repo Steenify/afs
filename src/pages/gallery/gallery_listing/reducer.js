@@ -2,11 +2,13 @@ import update from 'react-addons-update';
 import { getTotalPage } from 'utils';
 import { initialState, desktopSize, mobileSize, GET_ARTWORK, GET_TAGS, ACTIONS, ADD_ARTWORK } from './const';
 
-const { UPDATE_FILTER_ACTION } = ACTIONS;
+const { UPDATE_FILTER_ACTION, RESET_ART_WORK_LISTING } = ACTIONS;
 
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case RESET_ART_WORK_LISTING:
+      return initialState;
     case UPDATE_FILTER_ACTION:
       return update(state, {
         filterData: { $merge: payload },
