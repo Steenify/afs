@@ -120,7 +120,27 @@ const NotificationSettings = (props) => {
           })
           .filter(Boolean);
 
-        setSelectedRecipients((old) => [...old, ...cloneList, ...newList]);
+        const finalList = [...cloneList, ...newList];
+
+        getRecipientsAction('', (e, data) => {
+          if (e) {
+            toast.error(e?.message);
+
+            return;
+          }
+
+          setRecipients((old) =>
+            [...data].map((d) => {
+              const hasEffected = finalList.find((r) => r.userId === d.userId);
+
+              if (hasEffected) return hasEffected;
+
+              return { ...d, checked: false };
+            }),
+          );
+        });
+
+        setSelectedRecipients((old) => [...old, ...finalList]);
 
         setMessageDefault(actions[activeTab]?.messageDefault || '');
       });
@@ -147,7 +167,7 @@ const NotificationSettings = (props) => {
         console.log('----- AFTER', data);
 
         const action = actions[activeTab]?.name || '';
-        toast.success(`${action} ${action ? 'setting' : 'Setting'} is updated.`.trim());
+        toast.dark(`${action} ${action ? 'setting' : 'Setting'} is updated.`.trim());
       });
     }
   };
@@ -210,9 +230,13 @@ const NotificationSettings = (props) => {
       <PageTitle {...WEB_ROUTES.NOTIFICATION_SETTINGS} />
 
       <div className='row mt-3'>
-        <div className='col col-12 col-md-5 col-lg-4'>
+        <div
+          className='col col-12 col-md-5 col-lg-4'
+          style={{
+            maxHeight: 'calc(60vh)',
+          }}>
           {/* <div className='box'> */}
-          <Nav className='nav-pills box'>
+          <Nav className='nav-pills box h-100' style={{ overflowY: 'auto' }}>
             {actions.map(({ icon, name, description }, i) => (
               <NavItem key={i} className='cursor-pointer w-100'>
                 <NavLink
@@ -252,21 +276,17 @@ const NotificationSettings = (props) => {
               </div>
 
               <div className='row pt-3'>
-                <div className='col col-12 col-lg-6'>
+                <div className='col col-12 col-lg-6' style={{ overflowY: 'auto', overflowX: 'hidden', maxHeight: 'calc(60vh - 236px)' }}>
                   <input
                     type='text'
-                    placeholder='Search orders'
+                    placeholder='Search recipients'
                     className='search__box form-control'
                     // value=''
                     onChange={(e) => setSearch(e.target.value)}
                     value={search}
                   />
 
-                  <div
-                    style={{
-                      overflowY: 'auto',
-                      // maxHeight: 'calc(100vh - 180px - 20rem)',
-                    }}>
+                  <div>
                     {recipients.map((recipient, i) => (
                       <div className={`d-flex my-4 align-items-center ml-0`} key={i}>
                         <label className='cus-checkbox'>
@@ -316,7 +336,7 @@ const NotificationSettings = (props) => {
                   </div>
                 </div>
 
-                <div className='col col-12 col-lg-6'>
+                <div className='col col-12 col-lg-6' style={{ overflowY: 'auto', overflowX: 'hidden', maxHeight: 'calc(60vh - 236px)' }}>
                   {selectedRecipients.map(
                     (follower, i) =>
                       follower.checked && (
