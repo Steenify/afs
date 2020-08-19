@@ -79,8 +79,12 @@ const buildSearchParamPayouts = (input = {}) => {
     params.append('to', input.to || '');
   }
   params.append('text', input.text || '');
-  params.append('page', input.page || 0);
-  params.append('size', (input.size && parseInt(input.size)) || 100);
+  if (input.page) {
+    params.append('page', input.page || 0);
+  }
+  if (input.size) {
+    params.append('size', (input.size && parseInt(input.size)) || 100);
+  }
 
   if (input.sort && input.sort.length) {
     input.sort.forEach((item) => {
@@ -131,13 +135,13 @@ export const getPayoutSummaryAction = (params) => async (dispatch, getState) => 
     filter: { assignee, text, from, to },
   } = getState().payouts;
 
-  const searchParams = {
+  const searchParams = buildSearchParamPayouts({
     assignee,
     text,
     from,
     to,
     ...params,
-  };
+  });
 
   const onPending = () => {
     dispatch({

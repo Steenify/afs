@@ -8,7 +8,7 @@ import DateRangePicker from 'components/common/datepicker/DateRangePicker';
 
 import { dateStringFromDate } from 'utils';
 
-import { getPayoutListAction, updatePayoutFilterAction } from './actions';
+import { getPayoutListAction, updatePayoutFilterAction, getPayoutSummaryAction } from './actions';
 
 class OrderFilterDate extends PureComponent {
   constructor() {
@@ -28,12 +28,13 @@ class OrderFilterDate extends PureComponent {
 
   handleChange = ({ startDate, endDate, label }) => {
     this.toggle(label);
-    const { updatePayoutFilter, getPayoutList } = this.props;
+    const { updatePayoutFilter, getPayoutList, getPayoutSummaryAction } = this.props;
     updatePayoutFilter({
       from: startDate.format(),
       to: endDate.format(),
     });
     getPayoutList({});
+    getPayoutSummaryAction({});
   };
 
   handleClear = () => {
@@ -76,6 +77,7 @@ const mapStateToProps = ({ payouts, auth }) => {
 const mapDispatchToProps = {
   getPayoutList: getPayoutListAction,
   updatePayoutFilter: updatePayoutFilterAction,
+  getPayoutSummaryAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderFilterDate);
