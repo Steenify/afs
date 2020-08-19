@@ -93,7 +93,6 @@ const Listing = ({
   };
 
   const onDownload = (destinationLink) => {
-    console.log('onDownload -> destinationLink', destinationLink);
     destinationLink && window.open(destinationLink, '_blank');
   };
 

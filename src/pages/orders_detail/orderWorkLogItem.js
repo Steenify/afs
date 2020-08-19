@@ -250,8 +250,6 @@ const OrderWorkLogItem = ({
     deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'), workLogType);
   };
 
-  console.log(work.name, !isWorking, work.feedbacks.length < 1);
-
   return (
     <div className='order_detail__artwork'>
       <div className='box__header'>

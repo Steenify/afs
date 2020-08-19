@@ -85,10 +85,10 @@ const SideBar = (props) => {
         //   ...WEB_ROUTES.LATE_NOTIFICATION,
         //   icon: <LateNotification />,
         // },
-        // {
-        //   ...WEB_ROUTES.GALLERY_LISTING,
-        //   icon: <Package />,
-        // },
+        {
+          ...WEB_ROUTES.GALLERY_LISTING,
+          icon: <Package />,
+        },
 
         // {
         //   ...WEB_ROUTES.CUSTOMER_GROUP_LIST,
