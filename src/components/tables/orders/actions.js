@@ -16,6 +16,9 @@ const buildSearchParam = (input = {}) => {
   if (input.status) {
     params.append('status', input.status || '');
   }
+  if (input.alert) {
+    params.append('alert', input.alert || '');
+  }
   if (input.assignee && input.assignee !== 'null') {
     params.append('assignee', input.assignee || '');
   }

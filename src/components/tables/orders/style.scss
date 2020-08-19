@@ -270,6 +270,7 @@
 			}
 		}
 
+		&.NO_ACTIVITY,
 		&.CUSTOMER_REVIEW_SKETCH,
 		&.SKETCH_REVIEW,
 		&.SKETCH_EDIT {
@@ -298,6 +299,7 @@
 			}
 		}
 
+		&.LATE_WORK_LOG_DEADLINE,
 		&.EXPORT_FILE,
 		&.SEND_FILE {
 			background: #ffe8e8;
@@ -581,6 +583,20 @@
 		margin-top: 15px;
 		background: $white;
 		padding: 15px;
+		&.inside_popover {
+			margin: 0px;
+			max-height: 400px;
+			border: 1px solid #e2e5ed;
+			box-sizing: border-box;
+			box-shadow: 0px 0px 20px rgba(194, 201, 204, 0.5);
+			border-radius: 4px;
+			overflow: auto;
+
+			.list_status {
+				display: flex;
+				flex-direction: column;
+			}
+		}
 
 		.list_status {
 			.status {
@@ -654,6 +670,7 @@
 					}
 				}
 
+				&.NO_ACTIVITY,
 				&.CUSTOMER_REVIEW_SKETCH,
 				&.SKETCH_REVIEW,
 				&.SKETCH_EDIT {
@@ -706,6 +723,7 @@
 					}
 				}
 
+				&.LATE_WORK_LOG_DEADLINE,
 				&.EXPORT_FILE,
 				&.SEND_FILE {
 					background: #ffe8e8;
@@ -769,6 +787,10 @@
 				border-bottom-left-radius: 0;
 				display: inline-flex;
 				align-items: center;
+
+				&.middle {
+					border-radius: 0;
+				}
 			}
 		}
 	}
