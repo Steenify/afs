@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import { getOrderTableCountByStatusAction } from 'components/tables/orders/actions';
 import { getNotificationsCountAction } from 'pages/notifications/actions';
 import { getOrderTableListAction } from 'components/tables/orders/actions';
 import { newCommentWorkLogAction, editCommentWorkLogAction, updateBookingItemSummaryAction, uploadFileWorkLogAction, rejectWorkLogAction } from './actions';
@@ -97,6 +98,7 @@ const FCMWorkLog = ({ payload }) => {
 
 const FireBaseApp = (props) => {
   const {
+    getOrderTableCountByStatusAction,
     getNotificationsCount,
     newCommentWorkLogAction,
     editCommentWorkLogAction,
@@ -106,8 +108,6 @@ const FireBaseApp = (props) => {
     rejectWorkLogAction,
     history,
   } = props;
-
-  console.log('FireBaseApp -> history', history);
 
   const goToOrder = (payload) => {
     if (payload.data?.code) {
@@ -129,6 +129,10 @@ const FireBaseApp = (props) => {
         getNotificationsCount();
         if (type === 'NOTIFICATION') {
           toast(<MsgFCM payload={payload} />);
+        }
+
+        if (action === 'booking.newBooking') {
+          getOrderTableCountByStatusAction({});
         }
 
         if (action === 'booking.assign') {
@@ -172,6 +176,7 @@ const FireBaseApp = (props) => {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
+  getOrderTableCountByStatusAction,
   getNotificationsCount: getNotificationsCountAction,
   newCommentWorkLogAction,
   editCommentWorkLogAction,
