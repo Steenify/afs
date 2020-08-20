@@ -1,8 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { ReactComponent as PencilIcon } from 'assets/img/pencil.svg';
 import Button from 'components/common/button';
+import P from 'components/common/parapraph';
+import ArtistWorkingSpeedCell from 'pages/artists/cells/artistWorkingSpeedCell';
 
 import { formatMoney } from 'utils';
 import { updateArtistDetailApiAction, updateArtistDetailAction } from '../artists/actions';
@@ -11,11 +13,25 @@ import { toast } from 'react-toastify';
 const ArtistDetailInfo = (props) => {
   const { artist, updateArtistDetailApiAction, updateArtistDetailAction } = props;
   const noteRef = useRef(null);
+  const [editingFields, setEditingFields] = useState(new Set());
+  console.log('ArtistDetailInfo -> editingFields', editingFields);
+
+  const onStartEditing = (field) => {
+    setEditingFields((prev) => new Set(prev).add(field));
+  };
+
+  const onEndEditing = (field) => {
+    setEditingFields((prev) => {
+      prev.delete(field);
+      return new Set(prev);
+    });
+  };
 
   const updateNoteAction = () => {
     const note = noteRef.current.value;
     updateArtistDetailApiAction({ id: artist?.id, login: artist?.login, artistExtension: { note } }, () => {
       updateArtistDetailAction({ note });
+      onEndEditing('note');
       toast.dark('Note is updated');
     });
   };
@@ -31,8 +47,27 @@ const ArtistDetailInfo = (props) => {
             {artist?.firstName} {artist?.lastName}
           </div>
           <div className='subText'>
-            Speed: <span className='text-black'>{artist?.workingSpeedScore}</span>, Quality: <span className='text-black'>{artist?.productQualityScore}</span>, Attitude:{' '}
-            <span className='text-black'>{artist?.workingAttitudeScore}</span>
+            Speed:{' '}
+            <span className='text-black cursor-pointer toggle'>
+              {artist?.workingSpeedScore}
+              <span className='icon ml-1'>
+                <PencilIcon width='14px' height='14px' />
+              </span>
+            </span>
+            , Quality:{' '}
+            <span className='text-black cursor-pointer toggle'>
+              {artist?.productQualityScore}
+              <span className='icon ml-1'>
+                <PencilIcon width='14px' height='14px' />
+              </span>
+            </span>
+            , Attitude:{' '}
+            <span className='text-black cursor-pointer toggle'>
+              {artist?.workingAttitudeScore}
+              <span className='icon ml-1'>
+                <PencilIcon width='14px' height='14px' />
+              </span>
+            </span>
           </div>
           <div>
             <span className='subText'>
@@ -54,13 +89,29 @@ const ArtistDetailInfo = (props) => {
         </div>
       </div>
       <div className='box__body'>
-        <div className='box__sub_title d-flex align-items-center mb-2'>
-          Artist Note <PencilIcon className='m-2' />
-          <Button color='primary' onClick={updateNoteAction} className='btn-create' containerClassName='ml-auto'>
-            Save
-          </Button>
+        <div className='box__sub_title mb-2'>
+          <div className='d-flex cursor-pointer toggle' onClick={() => onStartEditing('note')}>
+            Artist Note
+            <span className='icon ml-1'>
+              <PencilIcon width='14px' height='14px' />
+            </span>
+          </div>
         </div>
-        <textarea ref={noteRef} defaultValue={artist?.note} className='form-control' placeholder='Good Naruto, effect cool...' rows='2' />
+        {editingFields.has('note') ? (
+          <div>
+            <textarea ref={noteRef} defaultValue={artist?.note} className='form-control' placeholder='Good Naruto, effect cool...' rows='4' />
+            <div className='ctas'>
+              <Button onClick={() => onEndEditing('note')} className='cancel cta pl-0' type='button' color='link'>
+                Cancel
+              </Button>
+              <Button onClick={updateNoteAction} className='save cta pr-0' type='button' color='link'>
+                Save
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <P text={artist?.note || ''} id='ArtistNoteBox' />
+        )}
       </div>
     </div>
   );

@@ -256,3 +256,22 @@ $cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy, crossha
 .text-black {
 	color: #141414 !important;
 }
+
+.toggle {
+	.icon {
+		// opacity: 0;
+		display: none;
+	}
+
+	&:hover {
+		&::after {
+			// opacity: 1;
+			display: initial;
+		}
+
+		.icon {
+			// opacity: 1;
+			display: initial;
+		}
+	}
+}

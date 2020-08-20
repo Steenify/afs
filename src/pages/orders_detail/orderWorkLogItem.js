@@ -353,8 +353,8 @@ const OrderWorkLogItem = ({
             <Collapse isOpen={isOpenFeedback}>
               <div className='comments__list'>
                 {work.feedbacks
-                  .sort((a, b) => (moment(a.createdDate).isBefore(moment(b.createdDate)) ? 1 : -1))
-                  .map((feedback, index) => (
+                  .sort((a, b) => (moment(a.createdDate).isBefore(moment(b.createdDate)) ? -1 : 1))
+                  .map((feedback) => (
                     <div key={`feedback__item__${work.id}__${feedback.id}`} className='comments__item'>
                       <div className='comments__author'>
                         <div className='comments__wrapper'>
