@@ -23,6 +23,8 @@ import {
   GET_FB_MESSAGE_TEMPLATE_ACTION,
   SENT_FB_MESSAGES_NOTIFY_ACTION,
   UPDATE_TRACKING_CODE_WORK_LOG_ACTION,
+  GET_REMIND_EMAIL_TEMPLATE_ACTION,
+  GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION,
 } from './actions';
 
 import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
@@ -35,6 +37,10 @@ const initialState = {
     loadingCanvasWorkLog: false,
     isShowEmail: false,
     loadingEmail: false,
+    remind: {
+      isShowEmail: false,
+      loadingEmail: false,
+    },
   },
   data: {
     order: {},
@@ -48,6 +54,12 @@ const initialState = {
     currentWorkLogType: 'workLog',
     fbTemplate: '',
     fbTemplateAttachments: [],
+    remind: {
+      fbTemplate: '',
+      fbTemplateAttachments: [],
+      email: '',
+      emailTitle: '',
+    },
   },
 };
 
@@ -84,11 +96,29 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
+    case ORDER_DETAIL_ACTIONS.UPDATE_REMIND_TEMPLATE:
+      return update(state, {
+        data: {
+          remind: {
+            $merge: payload,
+          },
+        },
+      });
     case ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_NOTIFY:
       return update(state, {
         ui: {
           isShowEmail: {
             $set: payload,
+          },
+        },
+      });
+    case ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_REMIND:
+      return update(state, {
+        ui: {
+          remind: {
+            isShowEmail: {
+              $set: payload,
+            },
           },
         },
       });
@@ -484,6 +514,42 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
+
+    case GET_REMIND_EMAIL_TEMPLATE_ACTION.PENDING:
+    case GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.PENDING:
+      return update(state, {
+        ui: {
+          remind: { isShowEmail: { $set: true }, loadingEmail: { $set: true } },
+        },
+      });
+    case GET_REMIND_EMAIL_TEMPLATE_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          remind: {
+            loadingEmail: { $set: false },
+          },
+        },
+        data: {
+          remind: {
+            email: {
+              $set: payload.data.content,
+            },
+            emailTitle: {
+              $set: payload.data.title,
+            },
+          },
+          selectedEmailTemplate: {
+            $set: payload.templateId,
+          },
+          currentWorkLogIndex: {
+            $set: payload.workLogIndex,
+          },
+          currentWorkLogType: {
+            $set: payload.workLogType,
+          },
+        },
+      });
+    }
     case GET_FB_MESSAGE_TEMPLATE_ACTION.SUCCESS: {
       return update(state, {
         ui: {
@@ -505,6 +571,31 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
+    case GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          remind: {
+            loadingEmail: { $set: false },
+          },
+        },
+        data: {
+          remind: {
+            fbTemplate: {
+              $set: payload.data.content,
+            },
+            fbTemplateAttachments: {
+              $set: payload.data.attachments,
+            },
+          },
+          selectedEmailTemplate: {
+            $set: payload.templateId,
+          },
+          currentWorkLogIndex: {
+            $set: payload.workLogIndex,
+          },
+        },
+      });
+    }
 
     case GET_EMAIL_TEMPLATE_ACTION.ERROR:
     case GET_FB_MESSAGE_TEMPLATE_ACTION.ERROR:
@@ -512,6 +603,16 @@ const reducer = (state = initialState, action) => {
         ui: {
           isShowEmail: { $set: false },
           loadingEmail: { $set: false },
+        },
+      });
+    case GET_REMIND_EMAIL_TEMPLATE_ACTION.ERROR:
+    case GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.ERROR:
+      return update(state, {
+        ui: {
+          remind: {
+            isShowEmail: { $set: false },
+            loadingEmail: { $set: false },
+          },
         },
       });
 

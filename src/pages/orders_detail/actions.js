@@ -32,7 +32,9 @@ export const ORDER_DETAIL_ACTIONS = {
   UPDATE_SHOW_EMAIL_NOTIFY: 'UPDATE_SHOW_EMAIL_NOTIFY',
   UPDATE_EMAIL_NOTIFY: 'UPDATE_EMAIL_NOTIFY',
   UPDATE_FB_TEMPLATE_NOTIFY: 'UPDATE_FB_TEMPLATE_NOTIFY',
+  UPDATE_REMIND_TEMPLATE: 'UPDATE_REMIND_TEMPLATE',
   UPDATE_ORDER_CUSTOMER: 'UPDATE_ORDER_CUSTOMER',
+  UPDATE_SHOW_EMAIL_REMIND: 'UPDATE_SHOW_EMAIL_REMIND',
 };
 
 export const updateOrderItemSumarizeAction = (payload) => (dispatch) => {
@@ -47,6 +49,12 @@ export const updateShowEmailNotifyAction = (payload) => (dispatch) => {
     payload,
   });
 };
+export const updateShowEmailRemindAction = (payload) => (dispatch) => {
+  dispatch({
+    type: ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_REMIND,
+    payload,
+  });
+};
 
 export const updatOrderCustomerAction = (payload) => (dispatch) => {
   dispatch({
@@ -57,6 +65,19 @@ export const updatOrderCustomerAction = (payload) => (dispatch) => {
 export const updateEmailNotifyAction = (payload) => (dispatch) => {
   dispatch({
     type: ORDER_DETAIL_ACTIONS.UPDATE_EMAIL_NOTIFY,
+    payload,
+  });
+};
+export const updateRemindTemplateAction = (
+  payload = {
+    fbTemplate: '',
+    fbTemplateAttachments: [],
+    email: '',
+    emailTitle: '',
+  },
+) => (dispatch) => {
+  dispatch({
+    type: ORDER_DETAIL_ACTIONS.UPDATE_REMIND_TEMPLATE,
     payload,
   });
 };
@@ -645,6 +666,36 @@ export const getEmailTemplateAction = (id, templateId, workLogIndex, workLogType
   });
 };
 
+export const GET_REMIND_EMAIL_TEMPLATE_ACTION = actionCreator('GET_REMIND_EMAIL_TEMPLATE_ACTION');
+export const getRemindEmailTemplateAction = (id, templateId, workLogIndex, workLogType = 'workLog') => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: GET_REMIND_EMAIL_TEMPLATE_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: GET_REMIND_EMAIL_TEMPLATE_ACTION.SUCCESS,
+      payload: { data, templateId, workLogIndex, workLogType },
+    });
+  };
+  const onError = (error) => {
+    console.log('getRemindEmailTemplateAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: GET_REMIND_EMAIL_TEMPLATE_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  //TODO: create services for (getEmailTemplate, getFBTemplate, sendEmail, sendFB) for remind action when api available
+  actionTryCatchCreator({
+    service: getOrderEmailService({ id, templateId }),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
 export const SENT_EMAIL_NOTIFY_ACTION = actionCreator('SENT_EMAIL_NOTIFY_ACTION');
 export const sendEmailNotifyAction = (customerEmail = '', workLogType = 'workLog') => (dispatch, getState) => {
   const onPending = () => {
@@ -712,6 +763,35 @@ export const getFBMessageTemplateAction = (id, templateId, workLogIndex, workLog
     console.log('getFBMessageTemplateAction => onError -> error', JSON.stringify(error));
     dispatch({
       type: GET_FB_MESSAGE_TEMPLATE_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: getOrderFBTemplateService({ id, templateId }),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION = actionCreator('GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION');
+export const getRemindFBMessageTemplateAction = (id, templateId, workLogIndex, workLogType = 'workLog') => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.SUCCESS,
+      payload: { data, templateId, workLogIndex, workLogType },
+    });
+  };
+  const onError = (error) => {
+    console.log('getRemindFBMessageTemplateAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.ERROR,
       payload: error.response,
     });
   };

@@ -12,6 +12,7 @@ import OrderItemBox from './orderItemBox';
 import OrderArtWorkBox from './orderArtWorkBox';
 import OrderCanvasWorkBox from './orderCanvasWorkBox';
 import EmaiNotify from './emailNotify';
+import EmailRemind from './remindCustomer';
 import OrderBudget from './orderBudget';
 import OrderAssignedBox from './orderAssignedBox';
 
@@ -122,6 +123,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
 
       <InPageLoading isLoading={loading} />
       <EmaiNotify order={order} />
+      <EmailRemind order={order} />
     </div>
   );
 };
