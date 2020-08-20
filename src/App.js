@@ -76,6 +76,7 @@ const App = ({ getOrderTableCountByStatusAction, renewTokenAction, actGetAccount
       <Router>
         <Switch>
           <Route exact path='/signin' component={Signin} />
+          <Route exact isPrivate={true} path={WEB_ROUTES.ORDERS.path} role={WEB_ROUTES.ORDERS.permission} component={Orders} />
           {isTokenRenewed && (
             <>
               <Route exact path='/change-password' isPrivate={true} component={ChangePassword} />
@@ -108,7 +109,6 @@ const App = ({ getOrderTableCountByStatusAction, renewTokenAction, actGetAccount
           isPrivate={true}
         /> */}
 
-              <Route exact isPrivate={true} path={WEB_ROUTES.ORDERS.path} role={WEB_ROUTES.ORDERS.permission} component={Orders} />
               <Route exact path={WEB_ROUTES.ORDERS_DETAIL.path} component={OrderDetail} />
               <Route exact path={WEB_ROUTES.SETTINGS.path} component={Settings} isPrivate={true} role={WEB_ROUTES.SETTINGS.permission} />
               <Route exact path={WEB_ROUTES.ARTISTS.path} component={Artists} isPrivate={true} role={WEB_ROUTES.ARTISTS.permission} />
