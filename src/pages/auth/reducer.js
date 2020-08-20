@@ -1,13 +1,7 @@
 import update from 'react-addons-update';
 import { storeData } from 'utils';
 
-import {
-  SIGNIN,
-  GET_ACCOUNT,
-  SIGNOUT,
-  CHANGE_PASSWORD,
-  LOGOUT_ACTION,
-} from './actions';
+import { SIGNIN, GET_ACCOUNT, SIGNOUT, CHANGE_PASSWORD, LOGOUT_ACTION, RENEW_TOKEN_ACTION } from './actions';
 
 const initialState = {
   ui: {
@@ -20,6 +14,7 @@ const initialState = {
     idToken: '',
     isAuthUser: !!localStorage.getItem('token'),
     accountInfo: {},
+    isTokenRenewed: false,
   },
 };
 
@@ -59,8 +54,23 @@ const reducer = (state = initialState, action) => {
           message: { $set: message },
         },
       });
-
+    case RENEW_TOKEN_ACTION.SUCCESS:
+      storeData('token', payload.id_token);
+      return update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+        error: {
+          message: { $set: '' },
+        },
+        data: {
+          idToken: { $set: payload.id_token },
+          isAuthUser: { $set: true },
+          isTokenRenewed: { $set: true },
+        },
+      });
     case GET_ACCOUNT.PENDING:
+    case RENEW_TOKEN_ACTION.PENDING:
       return update(state, {
         ui: {
           loading: { $set: true },
@@ -83,6 +93,7 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
+    case RENEW_TOKEN_ACTION.ERROR:
     case GET_ACCOUNT.ERROR:
       return update(state, {
         ui: {
@@ -147,6 +158,7 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
+
     default:
       return state;
   }
