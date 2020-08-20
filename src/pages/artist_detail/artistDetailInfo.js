@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ReactComponent as PencilIcon } from 'assets/img/pencil.svg';
 import Button from 'components/common/button';
 import P from 'components/common/parapraph';
-import ArtistWorkingSpeedCell from 'pages/artists/cells/artistWorkingSpeedCell';
+import PopoverSelectField from 'components/common/popoverSelectField';
 
 import { formatMoney } from 'utils';
 import { updateArtistDetailApiAction, updateArtistDetailAction } from '../artists/actions';
@@ -36,8 +36,17 @@ const ArtistDetailInfo = (props) => {
     });
   };
 
+  const onUpdateScore = (field, title, value) => {
+    updateArtistDetailApiAction({ id: artist?.id, login: artist?.login, artistExtension: { [field]: value } }, () => {
+      updateArtistDetailAction({ [field]: value });
+      onEndEditing(field);
+      toast.dark(`${title} is updated`);
+    });
+  };
+
   const doingCount = artist?.numSketch + artist?.numSketchEdit + artist?.numColor + artist?.numColorEdit || 0;
   const reviewCount = artist?.numSketchReview + artist?.numColorReview + artist?.numExportFile || 0;
+  const scoreOptions = [...Array(11).keys()].map((item) => ({ label: item, value: item }));
 
   return (
     <div className='artist_detail__original artist_detail__box box'>
@@ -48,26 +57,32 @@ const ArtistDetailInfo = (props) => {
           </div>
           <div className='subText'>
             Speed:{' '}
-            <span className='text-black cursor-pointer toggle'>
-              {artist?.workingSpeedScore}
-              <span className='icon ml-1'>
-                <PencilIcon width='14px' height='14px' />
-              </span>
-            </span>
+            <PopoverSelectField
+              className='text-black'
+              id='workingSpeedScore'
+              options={scoreOptions}
+              value={artist?.workingSpeedScore}
+              title='Speed'
+              onSave={(value) => onUpdateScore('workingSpeedScore', 'Speed', value)}
+            />
             , Quality:{' '}
-            <span className='text-black cursor-pointer toggle'>
-              {artist?.productQualityScore}
-              <span className='icon ml-1'>
-                <PencilIcon width='14px' height='14px' />
-              </span>
-            </span>
+            <PopoverSelectField
+              className='text-black'
+              id='productQualityScore'
+              options={scoreOptions}
+              value={artist?.productQualityScore}
+              title='Quality'
+              onSave={(value) => onUpdateScore('productQualityScore', 'Quality', value)}
+            />
             , Attitude:{' '}
-            <span className='text-black cursor-pointer toggle'>
-              {artist?.workingAttitudeScore}
-              <span className='icon ml-1'>
-                <PencilIcon width='14px' height='14px' />
-              </span>
-            </span>
+            <PopoverSelectField
+              className='text-black'
+              id='workingAttitudeScore'
+              options={scoreOptions}
+              value={artist?.workingAttitudeScore}
+              title='Attitude'
+              onSave={(value) => onUpdateScore('workingAttitudeScore', 'Attitude', value)}
+            />
           </div>
           <div>
             <span className='subText'>

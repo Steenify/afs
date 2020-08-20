@@ -258,6 +258,7 @@ $cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy, crossha
 }
 
 .toggle {
+	cursor: pointer;
 	.icon {
 		// opacity: 0;
 		display: none;
