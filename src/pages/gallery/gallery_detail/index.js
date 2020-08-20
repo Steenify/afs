@@ -16,6 +16,9 @@ import MeatBallDropdown from 'components/common/meatball-dropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
+import UploadModal from '../gallery_listing/uploadModal';
+import { getAllTagsAction, addArtworksAction } from '../gallery_listing/action';
+
 import './style.scss';
 import { PERMITTIONS_CONFIG, FACEBOOK_APP_ID } from 'configs';
 import { toast } from 'react-toastify';
@@ -31,9 +34,13 @@ const GalleryDetail = (props) => {
     galleryDetailReducer: {
       data: { gallery },
     },
+    isUploading,
+    tagItems,
     getArtworkDetailAction,
     deleteArtworkDetailAction,
     resetArtworkAction,
+    getAllTagsAction,
+    addArtworksAction,
   } = props;
 
   const { id } = match.params;
@@ -73,11 +80,30 @@ const GalleryDetail = (props) => {
     window?.FB?.XFBML?.parse && window.FB.XFBML.parse();
   });
 
+  const uploadGalleryAction = (data, callback) => {
+    addArtworksAction(data, () => {
+      getArtworkDetailAction(id);
+      getAllTagsAction();
+      callback && callback();
+    });
+  };
+
+  const handleUpload = (item) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <UploadModal item={gallery} isLoading={isUploading} onClose={onClose} onConfirm={uploadGalleryAction} tagItems={tagItems.map(({ id = 0, name = '' }) => ({ label: name, value: id }))} />
+        );
+      },
+    });
+  };
+
   useEffect(() => {
     if (!id) {
       history.goBack();
     } else {
       getArtworkDetailAction(id);
+      getAllTagsAction();
     }
   }, [id, history, getArtworkDetailAction]);
 
@@ -99,11 +125,11 @@ const GalleryDetail = (props) => {
     });
   };
   const actions = [
-    // {
-    //   title: 'Download',
-    //   onClick: onDownload,
-    //   show: gallery?.destinationLink,
-    // },
+    {
+      title: 'Edit',
+      onClick: handleUpload,
+      show: accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_ARTWORK) && accountInfo?.login === gallery?.createdBy,
+    },
     {
       title: 'Delete',
       onClick: onConfirmDelete,
@@ -154,16 +180,20 @@ const GalleryDetail = (props) => {
   );
 };
 
-const mapStateToProps = ({ auth, gallery: { detail } }, ownProps) => ({
+const mapStateToProps = ({ auth, gallery: { detail, listing } }, ownProps) => ({
   ...ownProps,
   auth,
   galleryDetailReducer: detail,
+  isUploading: listing?.ui?.isUploading || false,
+  tagItems: listing?.data?.tagItems || [],
 });
 
 const mapDispatchToProps = {
   getArtworkDetailAction,
   deleteArtworkDetailAction,
   resetArtworkAction,
+  getAllTagsAction,
+  addArtworksAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GalleryDetail);

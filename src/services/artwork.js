@@ -17,7 +17,7 @@ export const getArtworkDetailService = (id) =>
 export const addArtworkService = (data) =>
   request({
     url: `${ARTWORK_API}`,
-    method: 'POST',
+    method: data?.id ? 'PUT' : 'POST',
     data,
   });
 
