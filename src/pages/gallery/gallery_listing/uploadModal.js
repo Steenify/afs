@@ -38,7 +38,7 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isL
         return;
       }
 
-      if (files.length !== 1) {
+      if (files.length > 1) {
         toast.warn('Please select only one file!');
         return;
       }
