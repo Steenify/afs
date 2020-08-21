@@ -36,19 +36,19 @@ const reducer = (state = initialState, action) => {
           tagItems: { $set: payload },
         },
       });
-    case GET_ARTWORK.SUCCESS: {
-      const { data, headers } = payload;
-      const totalPage = getTotalPage(headers, desktopSize, mobileSize);
+    case GET_ARTWORK.SUCCESS:
+      // const { data, headers } = payload;
+      const totalPage = getTotalPage(payload.headers, desktopSize, mobileSize);
       return update(state, {
         ui: {
           loading: { $set: false },
         },
         data: {
-          artworks: { $set: data },
+          artworks: { $set: payload.data },
           totalPage: { $set: totalPage },
         },
       });
-    }
+
     case ADD_ARTWORK.PENDING:
       return update(state, {
         ui: {
