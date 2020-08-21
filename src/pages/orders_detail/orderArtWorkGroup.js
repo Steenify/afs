@@ -189,7 +189,7 @@ const OrderArtWorkGroup = ({
                           Notify Customer
                         </Button>
                       )}
-                      {canNotifyCustomer && isNotifyStatus && (
+                      {canNotifyCustomer && isNotifyStatus && false && (
                         <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} className='cta cta2 mb-3 order_detail__remind' type='button'>
                           Remind Customer
                         </Button>
