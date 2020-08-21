@@ -23,6 +23,8 @@ import {
   sendFBMessageNotifyAction,
   updatOrderCustomerAction,
   updateRemindTemplateAction,
+  sentEmailRemindAction,
+  sentMessageRemindAction,
 } from './actions';
 
 const RemindCustomer = (props) => {
@@ -34,7 +36,6 @@ const RemindCustomer = (props) => {
     loadingEmail,
     status,
     order,
-    selectedEmailTemplate,
     getRemindEmailTemplate,
     emailTitle,
     fbTemplate,
@@ -45,6 +46,8 @@ const RemindCustomer = (props) => {
     sendFBMessageNotify,
     updatOrderCustomer,
     updateRemindTemplateAction,
+    sentEmailRemindAction,
+    sentMessageRemindAction,
   } = props;
 
   const [notifyType, setNotifyType] = useState('email');
@@ -59,8 +62,6 @@ const RemindCustomer = (props) => {
     const { value } = e.target;
     setCustomerEmail(value);
   };
-
-  const { emailTemplates, name } = getSelectedStatus(order.statusForCanvas || order.status, status);
 
   const toggle = () => {
     updateShowEmailRemind(!isShowEmail);
@@ -86,25 +87,43 @@ const RemindCustomer = (props) => {
     updateRemindTemplateAction({ fbTemplate: value });
   };
 
-  const handleGetNewTemplate = (templateId) => {
-    getRemindEmailTemplate(order.id, templateId, currentWorkLogIndex);
-    getRemindFBMessageTemplate(order.id, templateId, currentWorkLogIndex);
+  const handleGetNewTemplate = () => {
+    getRemindEmailTemplate(order.id, currentWorkLogIndex);
+    getRemindFBMessageTemplate(order.id, currentWorkLogIndex);
   };
 
   const handleChangeTabType = (e) => {
     const data = e.target.getAttribute('data');
     setNotifyType(data || 'email');
     if (data === 'facebook') {
-      const firstTemplate = (emailTemplates || [])[0] || {};
-      handleGetNewTemplate(firstTemplate?.id);
+      handleGetNewTemplate();
     }
   };
 
   const handleSentNotify = () => {
     if (notifyType === 'email') {
-      sendEmailNotify(customerEmail);
+      if (!customerEmail) {
+        toast.warn('Email is required');
+        return;
+      }
+      if (!email) {
+        toast.warn('Email content is required');
+        return;
+      }
+      const payload = {
+        to: customerEmail,
+        content: email,
+        title: emailTitle,
+      };
+      sentEmailRemindAction(payload, order?.id);
+      // sendEmailNotify(customerEmail);
     } else {
-      sendFBMessageNotify(customer?.contact?.psid);
+      const payload = {
+        content: fbTemplate,
+        attachments: fbTemplateAttachments || [],
+        psid: customer?.contact?.psid,
+      };
+      sentMessageRemindAction(payload, order?.id);
     }
   };
 
@@ -128,16 +147,6 @@ const RemindCustomer = (props) => {
               </button>
             </div>
           </div>
-
-          <ul className='nav nav-pills template__list'>
-            {map(emailTemplates, (template) => (
-              <li key={`template_email__item__${template.id}`} className='nav-item mr-2 mb-2'>
-                <button onClick={() => handleGetNewTemplate(template.id)} className={`nav-link btn btn-link ${name} ${template.id === selectedEmailTemplate && 'active'}`}>
-                  {template.name}
-                </button>
-              </li>
-            ))}
-          </ul>
 
           <div className={`template__content ${notifyType !== 'email' ? 'd-none' : ''}`}>
             {loadingEmail ? (
@@ -249,6 +258,8 @@ const mapDispatchToProps = {
   sendFBMessageNotify: sendFBMessageNotifyAction,
 
   updatOrderCustomer: updatOrderCustomerAction,
+  sentEmailRemindAction,
+  sentMessageRemindAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RemindCustomer);

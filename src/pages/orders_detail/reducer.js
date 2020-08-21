@@ -25,6 +25,8 @@ import {
   UPDATE_TRACKING_CODE_WORK_LOG_ACTION,
   GET_REMIND_EMAIL_TEMPLATE_ACTION,
   GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION,
+  SENT_EMAIL_REMIND_ACTION,
+  SENT_MESSAGE_REMIND_ACTION,
 } from './actions';
 
 import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
@@ -144,6 +146,8 @@ const reducer = (state = initialState, action) => {
     case REJECTED_WORK_LOG_ACTION.PENDING:
     case SENT_EMAIL_NOTIFY_ACTION.PENDING:
     case SENT_FB_MESSAGES_NOTIFY_ACTION.PENDING:
+    case SENT_EMAIL_REMIND_ACTION.PENDING:
+    case SENT_MESSAGE_REMIND_ACTION.PENDING:
       return update(state, {
         ui: {
           loading: { $set: true },
@@ -373,6 +377,8 @@ const reducer = (state = initialState, action) => {
     }
 
     case SENT_EMAIL_NOTIFY_ACTION.SUCCESS:
+    case SENT_EMAIL_REMIND_ACTION.SUCCESS:
+    case SENT_MESSAGE_REMIND_ACTION.SUCCESS:
     case SENT_FB_MESSAGES_NOTIFY_ACTION.SUCCESS: {
       const { currentWorkLogIndex, currentWorkLogType = 'workLog' } = state.data;
       return update(state, {
@@ -408,6 +414,8 @@ const reducer = (state = initialState, action) => {
     case REJECTED_WORK_LOG_ACTION.ERROR:
     case SENT_EMAIL_NOTIFY_ACTION.ERROR:
     case SENT_FB_MESSAGES_NOTIFY_ACTION.ERROR:
+    case SENT_EMAIL_REMIND_ACTION.ERROR:
+    case SENT_MESSAGE_REMIND_ACTION.ERROR:
       return update(state, {
         ui: {
           loading: { $set: false },
@@ -538,9 +546,6 @@ const reducer = (state = initialState, action) => {
               $set: payload.data.title,
             },
           },
-          selectedEmailTemplate: {
-            $set: payload.templateId,
-          },
           currentWorkLogIndex: {
             $set: payload.workLogIndex,
           },
@@ -561,9 +566,6 @@ const reducer = (state = initialState, action) => {
           },
           fbTemplateAttachments: {
             $set: payload.data.attachments,
-          },
-          selectedEmailTemplate: {
-            $set: payload.templateId,
           },
           currentWorkLogIndex: {
             $set: payload.workLogIndex,

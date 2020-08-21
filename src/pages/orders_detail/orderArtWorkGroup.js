@@ -99,12 +99,7 @@ const OrderArtWorkGroup = ({
   };
 
   const handleRemindEmail = (workLogIndex) => {
-    const currentStatus = getSelectedStatus(order.status, status);
-    if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
-      getRemindEmailTemplateAction(order.id, currentStatus.emailTemplates[0].id, workLogIndex);
-    } else {
-      toast.warn('No Email template found!');
-    }
+    getRemindEmailTemplateAction(order.id, workLogIndex);
   };
 
   const handleStartSketch = () => {

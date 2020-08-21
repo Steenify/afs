@@ -74,6 +74,7 @@ const OrderWorkLogItem = ({
   const Act_APPROVED = activitiesGroup?.APPROVED || [];
   const Act_REJECTED = activitiesGroup?.REJECTED || [];
   const Act_NOTIFIED_CUSTOMER = activitiesGroup?.NOTIFIED_CUSTOMER || [];
+  const Act_REMINDER_CUSTOMER = activitiesGroup?.REMINDER_CUSTOMER || [];
 
   const handleUpdateTrackingCode = () => {
     const code = trackingNoteInput.current.value;
@@ -452,6 +453,30 @@ const OrderWorkLogItem = ({
                   <div className='content'>
                     <strong>
                       [{act.actor}] notified customer {viaChanel}
+                    </strong>
+                    <span> {dateTimeFromNow(act.lastActionDate)}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className={`order_detail__activites activites ${!Act_REMINDER_CUSTOMER.length && 'd-none'}`}>
+          <div className='activites__list'>
+            {Act_REMINDER_CUSTOMER.map((act, index) => {
+              const { notificationChannel } = act;
+              const notiChanelMap = {
+                EMAIL: 'via email',
+                MESSENGER: 'via fb/ig',
+              };
+
+              const viaChanel = notiChanelMap[notificationChannel || 'EMAIL'];
+
+              return (
+                <div key={`order__worklog__${work.id}__act_REMINDER_CUSTOMERR_by_${act.actor}__${index.toString()}`} className='activites__item NOTIFIED_CUSTOMER'>
+                  <div className='content'>
+                    <strong>
+                      [{act.actor}] reminded customer {viaChanel}
                     </strong>
                     <span> {dateTimeFromNow(act.lastActionDate)}</span>
                   </div>

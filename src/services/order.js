@@ -196,3 +196,28 @@ export const deleteFileSumaryService = (orderid, itemId, fileId) =>
     url: `${ORDERS_API}/${orderid}/items/${itemId}/attachments/${fileId}`,
     method: 'DELETE',
   });
+
+export const getEmailRemindTemplateService = (orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/remind/email`,
+  });
+
+export const getMessageRemindTemplateService = (orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/remind/message`,
+  });
+
+export const sendEmailRemindService = (data, orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/remind/email`,
+    method: 'POST',
+    data,
+    host: 'https://612d18a13a76.ngrok.io',
+  });
+
+export const sendMessageRemindService = (data, orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/remind/message`,
+    method: 'POST',
+    data,
+  });

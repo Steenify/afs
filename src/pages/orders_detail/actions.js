@@ -25,6 +25,10 @@ import {
   sentOrderFBTemplateNotifyService,
   deleteOrderWorkLogAttachmentService,
   updateOrderCanvasTrackingCodeWorkLogService,
+  getEmailRemindTemplateService,
+  getMessageRemindTemplateService,
+  sendEmailRemindService,
+  sendMessageRemindService,
 } from 'services/order';
 
 export const ORDER_DETAIL_ACTIONS = {
@@ -667,7 +671,7 @@ export const getEmailTemplateAction = (id, templateId, workLogIndex, workLogType
 };
 
 export const GET_REMIND_EMAIL_TEMPLATE_ACTION = actionCreator('GET_REMIND_EMAIL_TEMPLATE_ACTION');
-export const getRemindEmailTemplateAction = (id, templateId, workLogIndex, workLogType = 'workLog') => (dispatch) => {
+export const getRemindEmailTemplateAction = (id, workLogIndex, workLogType = 'workLog') => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_REMIND_EMAIL_TEMPLATE_ACTION.PENDING,
@@ -676,7 +680,7 @@ export const getRemindEmailTemplateAction = (id, templateId, workLogIndex, workL
   const onSuccess = (data) => {
     dispatch({
       type: GET_REMIND_EMAIL_TEMPLATE_ACTION.SUCCESS,
-      payload: { data, templateId, workLogIndex, workLogType },
+      payload: { data, workLogIndex, workLogType },
     });
   };
   const onError = (error) => {
@@ -689,7 +693,7 @@ export const getRemindEmailTemplateAction = (id, templateId, workLogIndex, workL
 
   //TODO: create services for (getEmailTemplate, getFBTemplate, sendEmail, sendFB) for remind action when api available
   actionTryCatchCreator({
-    service: getOrderEmailService({ id, templateId }),
+    service: getEmailRemindTemplateService(id),
     onPending,
     onSuccess,
     onError,
@@ -776,7 +780,7 @@ export const getFBMessageTemplateAction = (id, templateId, workLogIndex, workLog
 };
 
 export const GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION = actionCreator('GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION');
-export const getRemindFBMessageTemplateAction = (id, templateId, workLogIndex, workLogType = 'workLog') => (dispatch) => {
+export const getRemindFBMessageTemplateAction = (id, workLogIndex, workLogType = 'workLog') => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.PENDING,
@@ -785,7 +789,7 @@ export const getRemindFBMessageTemplateAction = (id, templateId, workLogIndex, w
   const onSuccess = (data) => {
     dispatch({
       type: GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.SUCCESS,
-      payload: { data, templateId, workLogIndex, workLogType },
+      payload: { data, workLogIndex, workLogType },
     });
   };
   const onError = (error) => {
@@ -797,7 +801,7 @@ export const getRemindFBMessageTemplateAction = (id, templateId, workLogIndex, w
   };
 
   actionTryCatchCreator({
-    service: getOrderFBTemplateService({ id, templateId }),
+    service: getMessageRemindTemplateService(id),
     onPending,
     onSuccess,
     onError,
@@ -917,6 +921,94 @@ export const deleteFileSummaryAction = (id, itemId, fileId, itemIndex, fileIndex
 
   actionTryCatchCreator({
     service: deleteFileSumaryService(id, itemId, fileId),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const SENT_EMAIL_REMIND_ACTION = actionCreator('SENT_EMAIL_REMIND_ACTION');
+export const sentEmailRemindAction = (data, orderId, workLogType = 'workLog') => (dispatch, getState) => {
+  const onPending = () => {
+    dispatch({
+      type: SENT_EMAIL_REMIND_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    const { accountInfo } = getState().auth.data;
+    const actor = `${accountInfo?.firstName || ''} ${accountInfo?.lastName || ''}`;
+
+    const activives = [
+      {
+        activityType: 'REMINDER_CUSTOMER',
+        actor,
+        lastActionDate: new Date(),
+        notificationChannel: 'EMAIL',
+      },
+    ];
+    dispatch({
+      type: SENT_EMAIL_REMIND_ACTION.SUCCESS,
+      payload: {
+        activives,
+        workLogType,
+      },
+    });
+    toast.dark('Notified Customer!');
+  };
+  const onError = (error) => {
+    console.log('sendEmailNotifyAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: SENT_EMAIL_REMIND_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: sendEmailRemindService(data, orderId),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const SENT_MESSAGE_REMIND_ACTION = actionCreator('SENT_MESSAGE_REMIND_ACTION');
+export const sentMessageRemindAction = (data, orderId, workLogType = 'workLog') => (dispatch, getState) => {
+  const onPending = () => {
+    dispatch({
+      type: SENT_MESSAGE_REMIND_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    const { accountInfo } = getState().auth.data;
+    const actor = `${accountInfo?.firstName || ''} ${accountInfo?.lastName || ''}`;
+
+    const activives = [
+      {
+        activityType: 'REMINDER_CUSTOMER',
+        actor,
+        lastActionDate: new Date(),
+        notificationChannel: 'MESSENGER',
+      },
+    ];
+    dispatch({
+      type: SENT_MESSAGE_REMIND_ACTION.SUCCESS,
+      payload: {
+        activives,
+        workLogType,
+      },
+    });
+    toast.dark('Notified Customer!');
+  };
+  const onError = (error) => {
+    console.log('sendEmailNotifyAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: SENT_MESSAGE_REMIND_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: sendMessageRemindService(data, orderId),
     onPending,
     onSuccess,
     onError,
