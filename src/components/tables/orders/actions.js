@@ -22,6 +22,9 @@ const buildSearchParam = (input = {}) => {
   if (input.assignee && input.assignee !== 'null') {
     params.append('assignee', input.assignee || '');
   }
+  if (input.hasPoster) {
+    params.append('hasPoster', input.hasPoster || false);
+  }
   params.append('text', input.text || '');
   params.append('page', input.page || 0);
   params.append('size', (input.size && parseInt(input.size)) || 100);

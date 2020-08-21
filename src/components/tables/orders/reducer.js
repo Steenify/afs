@@ -19,6 +19,7 @@ const templateState = {
     text: '',
     assignee: '',
     alert: '',
+    hasPoster: false,
   },
   table: {
     orders: [],
