@@ -128,12 +128,12 @@ const GalleryDetail = (props) => {
     {
       title: 'Edit',
       onClick: handleUpload,
-      show: accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_ARTWORK) && accountInfo?.login === gallery?.createdBy,
+      show: accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_ARTWORK) || accountInfo?.login === gallery?.createdBy,
     },
     {
       title: 'Delete',
       onClick: onConfirmDelete,
-      show: accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.DELETE_ARTWORK) || false,
+      show: accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.DELETE_ARTWORK) || accountInfo?.login === gallery?.createdBy,
     },
   ].filter(({ show }) => show);
 

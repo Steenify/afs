@@ -119,7 +119,7 @@ const Listing = ({
               <div className='gallery__artwork' key={`artwork_${artwork.bookingNumber}_${uniqIdCreator()}`}>
                 <div className='cursor-pointer' onClick={() => goToDetail(artwork.id)}>
                   <ActionableImage effect='opacity' src={artwork.attachment.url} alt={artwork.attachment.fileName} width={255} wrapperClassName='gallery__artwork__lazy'>
-                    {artwork?.createdBy && artwork.createdBy === login && permissions.includes(PERMITTIONS_CONFIG.UPDATE_ARTWORK) && (
+                    {(permissions.includes(PERMITTIONS_CONFIG.UPDATE_ARTWORK) || artwork.createdBy === login) && (
                       <Button
                         color='primary'
                         className='button__edit'
