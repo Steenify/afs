@@ -82,8 +82,8 @@ const GalleryDetail = (props) => {
 
   const uploadGalleryAction = (data, callback) => {
     addArtworksAction(data, () => {
-      getArtworkDetailAction(id);
-      getAllTagsAction();
+      // getArtworkDetailAction(id);
+      // getAllTagsAction();
       callback && callback();
     });
   };

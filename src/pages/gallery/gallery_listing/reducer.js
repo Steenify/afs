@@ -36,7 +36,7 @@ const reducer = (state = initialState, action) => {
           tagItems: { $set: payload },
         },
       });
-    case GET_ARTWORK.SUCCESS:
+    case GET_ARTWORK.SUCCESS: {
       const { data, headers } = payload;
       const totalPage = getTotalPage(headers, desktopSize, mobileSize);
       return update(state, {
@@ -48,6 +48,7 @@ const reducer = (state = initialState, action) => {
           totalPage: { $set: totalPage },
         },
       });
+    }
     case ADD_ARTWORK.PENDING:
       return update(state, {
         ui: {
@@ -61,11 +62,24 @@ const reducer = (state = initialState, action) => {
         },
       });
     case ADD_ARTWORK.SUCCESS:
-      return update(state, {
-        ui: {
-          isUploading: { $set: false },
-        },
-      });
+      const { data, type } = payload;
+      return type === 'EDIT'
+        ? update(state, {
+            ui: {
+              isUploading: { $set: false },
+            },
+            data: {
+              artworks: { $set: state.data.artworks.map((art) => (art.id === data.id ? data : art)) },
+            },
+          })
+        : update(state, {
+            ui: {
+              isUploading: { $set: false },
+            },
+            data: {
+              artworks: { $set: [...state.data.artworks, data] },
+            },
+          });
     default:
       return state;
   }

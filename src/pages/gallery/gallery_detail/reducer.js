@@ -1,6 +1,7 @@
 import update from 'immutability-helper';
 
 import { GET_ARTWORK_DETAIL, RESET_ART_WORK_DETAIL } from './action';
+import { ADD_ARTWORK } from '../gallery_listing/const';
 
 const initialState = {
   ui: {
@@ -21,6 +22,15 @@ const reducer = (state = initialState, { type, payload }) => {
         data: { gallery: { $set: payload } },
       });
     }
+    case ADD_ARTWORK.SUCCESS:
+      const { data, type } = payload;
+      return type === 'EDIT'
+        ? update(state, {
+            data: {
+              gallery: { $set: data },
+            },
+          })
+        : state;
     default:
       return state;
   }

@@ -74,8 +74,8 @@ const Listing = ({
 
   const uploadGalleryAction = (data, callback) => {
     addArtworksAction(data, () => {
-      const { page, size, tag, text } = filterData;
-      debounceGetArtworks({ page, size, tag, text });
+      // const { page, size, tag, text } = filterData;
+      // debounceGetArtworks({ page, size, tag, text });
       getAllTagsAction();
       callback && callback();
     });
