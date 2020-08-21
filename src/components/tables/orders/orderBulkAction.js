@@ -111,11 +111,11 @@ const OrderBulkAction = ({ selected, updateOrderTableStatusDoneBulkAction, updat
   };
 
   return (
-    <div className={`order__bulk ${isHide && 'd-none'}`}>
-      <Sticky enabled={process.env.REACT_APP_BUILD === 'DEV'} top={57}>
+    <div className={`order__bulk`} style={{ opacity: isHide ? 0 : 1 }}>
+      <Sticky top={57}>
         <div className='wrapper'>
           <div className='btn-group'>
-            <div className='btn btn-group__item'>
+            <div className='btn btn-group__item d-flex align-items-center'>
               <div className='d-flex align-items-center order__bulk__selected'>
                 <OrderSelectedCell reducer={reducer} />
                 <span className='number'>{selected?.length} selected</span>
@@ -124,11 +124,9 @@ const OrderBulkAction = ({ selected, updateOrderTableStatusDoneBulkAction, updat
             <button type='button' className='btn btn-group__item' onClick={handleConfirmChangeStatus}>
               Mark as Done
             </button>
-            {process.env.REACT_APP_BUILD === 'DEV' && (
-              <button type='button' className='btn btn-group__item' onClick={handleConfirmRefund}>
-                Refund
-              </button>
-            )}
+            <button type='button' className='btn btn-group__item' onClick={handleConfirmRefund}>
+              Refund
+            </button>
             {canPayOut && (
               <button type='button' className='btn btn-group__item' onClick={toggle}>
                 Paid

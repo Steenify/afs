@@ -19,11 +19,11 @@ const ArtistBulkAction = (props) => {
   const canPayOut = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT) && selected.filter((s) => s.numUnpaid > 0).length > 0;
 
   return (
-    <div className={`order__bulk ${isHide && 'd-none'}`}>
-      <Sticky enabled={process.env.REACT_APP_BUILD === 'DEV'} top={57}>
+    <div className={`order__bulk`} style={{ opacity: isHide ? 0 : 1 }}>
+      <Sticky top={57}>
         <div className='wrapper'>
           <div className='btn-group'>
-            <div className='btn btn-group__item'>
+            <div className='btn btn-group__item d-flex align-items-center '>
               <div className='d-flex align-items-center order__bulk__selected'>
                 <ArtistSelectedAllCell />
                 <span className='number'>{selected?.length} selected</span>

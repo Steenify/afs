@@ -211,6 +211,7 @@ $cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy, crossha
 	width: 20px;
 	height: 20px;
 	position: relative;
+	z-index: 1;
 	cursor: pointer;
 	user-select: none;
 	margin-bottom: 0;
@@ -255,4 +256,27 @@ $cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy, crossha
 
 .text-black {
 	color: #141414 !important;
+}
+
+.toggle {
+	.icon {
+		// opacity: 0;
+		cursor: pointer;
+		display: none;
+	}
+
+	&:hover {
+		&::after {
+			// opacity: 1;
+			display: initial;
+		}
+
+		.icon {
+			// opacity: 1;
+			display: initial;
+		}
+	}
+}
+.z-index-999 {
+	z-index: 999;
 }

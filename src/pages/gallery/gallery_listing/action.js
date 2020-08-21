@@ -47,9 +47,9 @@ export const addArtworksAction = (data, callback) => (dispatch) => {
   const onPending = () => {
     dispatch({ type: ADD_ARTWORK.PENDING });
   };
-  const onSuccess = (data, headers) => {
+  const onSuccess = (res, headers) => {
     callback && callback();
-    dispatch({ type: ADD_ARTWORK.SUCCESS, payload: { data, headers } });
+    dispatch({ type: ADD_ARTWORK.SUCCESS, payload: { data: res, headers, type: data?.id ? 'EDIT' : 'ADD' } });
   };
   const onError = (error) => {
     dispatch({ type: ADD_ARTWORK.ERROR, payload: error.response });

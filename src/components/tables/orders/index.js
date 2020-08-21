@@ -148,13 +148,13 @@ class OrderTable extends PureComponent {
           <div className={`order__loading ${!loading && 'd-none'}`}>
             <Spinner /> <span className='text'>Loading</span>
           </div>
+          {isCanPay && <OrderBulkAction reducer={reducer} />}
           <div className='table-responsive bg-light steenify-table bg-white order__table'>
             <table className='table'>
               <TableHeader columns={columnsOrder} />
               <TableBody cellProps={{ goToDetail: this.goToDetail, reducer }} getRowProps={this.getRowProps} reducer={reducer} data={ids} columns={columnsOrder} rowName='TableRowOrder' />
             </table>
           </div>
-          {isCanPay && <OrderBulkAction reducer={reducer} />}
         </div>
         <OrderPaging reducer={reducer} />
       </>

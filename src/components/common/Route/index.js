@@ -10,15 +10,15 @@ import { actGetAccount, actSignout } from 'pages/auth/actions';
 const RouteWrapper = ({ component: Component, isPrivate, role, layout, className, ...rest }) => {
   const { isAuthUser, accountInfo } = rest;
 
-  useEffect(() => {
-    if (isAuthUser) {
-      rest.actGetAccount().then((res) => {
-        if (res?.status === 401) {
-          rest.actSignout();
-        }
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isAuthUser) {
+  //     rest.actGetAccount().then((res) => {
+  //       if (res?.status === 401) {
+  //         rest.actSignout();
+  //       }
+  //     });
+  //   }
+  // }, []);
 
   if (isPrivate && !isAuthUser) {
     return <Redirect to='/signin' />;

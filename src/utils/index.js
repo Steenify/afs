@@ -233,7 +233,8 @@ export const countTotalOrders = (orderStatus) => {
   return reduce(
     orderStatus,
     (res, value, key) => {
-      if (key !== 'DONE' && key !== 'NO_ACTIVITY' && key !== 'LATE_WORK_LOG_DEADLINE') {
+      const validStatus = ['COLOR_EDIT', 'SKETCH_EDIT', 'NEW_ORDER', 'SKETCH', 'EXPORT_FILE', 'COLOR', 'COLOR_REVIEW', 'SEND_FILE'];
+      if (validStatus.includes(key)) {
         return (res += value);
       }
       return res;

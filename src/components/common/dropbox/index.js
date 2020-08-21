@@ -104,6 +104,7 @@ class DropBox extends Component {
   };
 
   handleChangeFiles = (e) => {
+    const { handleChangeFiles } = this.props;
     e.preventDefault();
     const newFiles = Array.from(e.target.files).map((fi) => {
       return {
@@ -117,6 +118,7 @@ class DropBox extends Component {
       };
     });
     this.handleFiles(newFiles);
+    handleChangeFiles && handleChangeFiles(newFiles);
   };
 
   handleFiles = (newFiles) => {

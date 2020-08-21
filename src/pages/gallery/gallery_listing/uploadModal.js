@@ -6,6 +6,7 @@ import Dropbox from 'components/common/dropbox';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 import SelectCreatable from 'react-select/creatable';
+import ImageFile from 'components/common/imageFile';
 
 const WrapperRow = ({ label = '', children }) => (
   <div className='row pb-3'>
@@ -15,10 +16,11 @@ const WrapperRow = ({ label = '', children }) => (
 );
 
 const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isLoading = false }) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [destinationLink, setDestinationLink] = useState('');
-  const [tags, setTags] = useState([]);
+  const [name, setName] = useState(item?.title || '');
+  const [description, setDescription] = useState(item?.description || '');
+  const [destinationLink, setDestinationLink] = useState(item?.destinationLink || '');
+  const [tags, setTags] = useState(item?.tags?.map((tag) => ({ value: tag?.id, label: tag?.name })) || []);
+  const [attachment, setAttachment] = useState(item?.attachment || null);
   const dropbox = useRef(null);
   const toggle = () => {
     onClose();
@@ -31,12 +33,12 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isL
         toast.warn('Name is required field!');
         return;
       }
-      if (!files.length) {
+      if (!files.length && !attachment) {
         toast.warn('Please chose one file!');
         return;
       }
 
-      if (files.length !== 1) {
+      if (files.length > 1) {
         toast.warn('Please select only one file!');
         return;
       }
@@ -64,9 +66,10 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isL
             return { name: label, id: value };
           }
         }),
-        attachmentId: files?.[0]?.id || undefined,
+        attachmentId: files?.[0]?.id || attachment?.id || undefined,
         description,
         destinationLink,
+        id: item?.id,
       };
       onConfirm(data, onClose);
     }
@@ -101,7 +104,16 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isL
                   <textarea style={{ height: '150px' }} type='text' className='form-control' value={description} onChange={(e) => setDescription(e.target.value)} />
                 </WrapperRow>
                 <WrapperRow label='Upload File:'>
-                  <Dropbox className='upload' ref={dropbox} id={`Gallery__upload`} quality='low' orderNumber='artwork' />
+                  <div className={`${!attachment && 'd-none'}`}>
+                    <div className='upload-file__list p-0'>
+                      <div className='upload-file__items'>
+                        <div className='file-item'>
+                          <div className={`image__file file-item__img`}>{attachment && <img src={attachment?.url} alt={attachment?.fileName} />}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Dropbox className='upload' ref={dropbox} id={`Gallery__upload`} quality='low' orderNumber='artwork' handleChangeFiles={() => setAttachment(null)} />
                 </WrapperRow>
                 <WrapperRow label='Destination Link:'>
                   <input type='text' className='form-control' value={destinationLink} onChange={(e) => setDestinationLink(e.target.value)} />
@@ -115,7 +127,7 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isL
             </Button>
 
             <Button color='primary' type='submit' disabled={isLoading} onClick={onSave} style={{ width: 210 }}>
-              Upload
+              {item ? 'Save' : 'Upload'}
             </Button>
           </ModalFooter>
         </div>

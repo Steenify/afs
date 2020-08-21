@@ -257,4 +257,27 @@
 			}
 		}
 	}
+
+	.ctas {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: -15px;
+
+		.cta {
+			font-size: 15px;
+			line-height: 22px;
+			letter-spacing: 0.5px;
+		}
+
+		.cancel {
+			justify-content: flex-start;
+			color: #767676;
+		}
+
+		.save {
+			justify-content: flex-end;
+			color: #337fd7;
+		}
+	}
 }

@@ -1,0 +1,46 @@
+@import 'styles/var.scss';
+
+.popover {
+	&__container {
+		max-width: 400px;
+		background: $white;
+		border: 1px solid #e2e5ed;
+		box-sizing: border-box;
+		box-shadow: 0px 0px 20px rgba(194, 201, 204, 0.5);
+		border-radius: 4px;
+		.title {
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 22px;
+			letter-spacing: 0.533333px;
+			color: #141414;
+		}
+
+		.select {
+			display: flex;
+			align-items: center;
+		}
+		.ctas {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: -15px;
+
+			.cta {
+				font-size: 15px;
+				line-height: 22px;
+				letter-spacing: 0.5px;
+			}
+		}
+
+		.cancel {
+			justify-content: flex-start;
+			color: #767676;
+		}
+
+		.save {
+			justify-content: flex-end;
+			color: #337fd7;
+		}
+	}
+}
