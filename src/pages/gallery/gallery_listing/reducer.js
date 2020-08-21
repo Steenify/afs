@@ -62,14 +62,14 @@ const reducer = (state = initialState, action) => {
         },
       });
     case ADD_ARTWORK.SUCCESS:
-      const { data, type } = payload;
-      return type === 'EDIT'
+      // const { data, type } = payload;
+      return payload.type === 'EDIT'
         ? update(state, {
             ui: {
               isUploading: { $set: false },
             },
             data: {
-              artworks: { $set: state.data.artworks.map((art) => (art.id === data.id ? data : art)) },
+              artworks: { $set: state.data.artworks.map((art) => (art.id === payload.data.id ? payload.data : art)) },
             },
           })
         : update(state, {
@@ -77,7 +77,7 @@ const reducer = (state = initialState, action) => {
               isUploading: { $set: false },
             },
             data: {
-              artworks: { $set: [...state.data.artworks, data] },
+              artworks: { $set: [...state.data.artworks, payload.data] },
             },
           });
     default:

@@ -23,11 +23,11 @@ const reducer = (state = initialState, { type, payload }) => {
       });
     }
     case ADD_ARTWORK.SUCCESS:
-      const { data, type } = payload;
-      return type === 'EDIT'
+      // const { data, type } = payload;
+      return payload.type === 'EDIT'
         ? update(state, {
             data: {
-              gallery: { $set: data },
+              gallery: { $set: payload.data },
             },
           })
         : state;
