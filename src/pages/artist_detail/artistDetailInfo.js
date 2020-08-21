@@ -5,6 +5,7 @@ import { ReactComponent as PencilIcon } from 'assets/img/pencil.svg';
 import Button from 'components/common/button';
 import P from 'components/common/parapraph';
 import PopoverSelectField from 'components/common/popoverSelectField';
+import PopoverInputField from 'components/common/popoverInputField';
 
 import { formatMoney } from 'utils';
 import { updateArtistDetailApiAction, updateArtistDetailAction } from '../artists/actions';
@@ -14,7 +15,6 @@ const ArtistDetailInfo = (props) => {
   const { artist, updateArtistDetailApiAction, updateArtistDetailAction } = props;
   const noteRef = useRef(null);
   const [editingFields, setEditingFields] = useState(new Set());
-  console.log('ArtistDetailInfo -> editingFields', editingFields);
 
   const onStartEditing = (field) => {
     setEditingFields((prev) => new Set(prev).add(field));
@@ -29,15 +29,19 @@ const ArtistDetailInfo = (props) => {
 
   const updateNoteAction = () => {
     const note = noteRef.current.value;
-    updateArtistDetailApiAction({ id: artist?.id, login: artist?.login, artistExtension: { note } }, () => {
-      updateArtistDetailAction({ note });
-      onEndEditing('note');
-      toast.dark('Note is updated');
+    onUpdateExtension('note', 'Note', note);
+  };
+
+  const onUpdateExtension = (field, title, value) => {
+    updateArtistDetailApiAction({ id: artist?.id, login: artist?.login, artistExtension: { [field]: value } }, () => {
+      updateArtistDetailAction({ [field]: value });
+      onEndEditing(field);
+      toast.dark(`${title} is updated`);
     });
   };
 
-  const onUpdateScore = (field, title, value) => {
-    updateArtistDetailApiAction({ id: artist?.id, login: artist?.login, artistExtension: { [field]: value } }, () => {
+  const onUpdateInfo = (field, title, value) => {
+    updateArtistDetailApiAction({ ...artist, [field]: value }, () => {
       updateArtistDetailAction({ [field]: value });
       onEndEditing(field);
       toast.dark(`${title} is updated`);
@@ -53,7 +57,8 @@ const ArtistDetailInfo = (props) => {
       <div className='box__header'>
         <div>
           <div className='box__title'>
-            {artist?.firstName} {artist?.lastName}
+            <PopoverInputField value={artist?.firstName} title='First Name' onSave={(value) => onUpdateInfo('firstName', 'First Name', value)} />{' '}
+            <PopoverInputField value={artist?.lastName} title='Last Name' onSave={(value) => onUpdateInfo('lastName', 'Last Name', value)} />
           </div>
           <div className='subText'>
             Speed:{' '}
@@ -63,7 +68,7 @@ const ArtistDetailInfo = (props) => {
               options={scoreOptions}
               value={artist?.workingSpeedScore}
               title='Speed'
-              onSave={(value) => onUpdateScore('workingSpeedScore', 'Speed', value)}
+              onSave={(value) => onUpdateExtension('workingSpeedScore', 'Speed', value)}
             />
             , Quality:{' '}
             <PopoverSelectField
@@ -72,7 +77,7 @@ const ArtistDetailInfo = (props) => {
               options={scoreOptions}
               value={artist?.productQualityScore}
               title='Quality'
-              onSave={(value) => onUpdateScore('productQualityScore', 'Quality', value)}
+              onSave={(value) => onUpdateExtension('productQualityScore', 'Quality', value)}
             />
             , Attitude:{' '}
             <PopoverSelectField
@@ -81,7 +86,7 @@ const ArtistDetailInfo = (props) => {
               options={scoreOptions}
               value={artist?.workingAttitudeScore}
               title='Attitude'
-              onSave={(value) => onUpdateScore('workingAttitudeScore', 'Attitude', value)}
+              onSave={(value) => onUpdateExtension('workingAttitudeScore', 'Attitude', value)}
             />
           </div>
           <div>
@@ -105,12 +110,12 @@ const ArtistDetailInfo = (props) => {
       </div>
       <div className='box__body'>
         <div className='box__sub_title mb-2'>
-          <div className='d-flex cursor-pointer toggle' onClick={() => onStartEditing('note')}>
-            Artist Note
-            <span className='icon ml-1'>
+          <span className='cursor-pointer toggle' onClick={() => onStartEditing('note')}>
+            <span className='icon mr-1'>
               <PencilIcon width='14px' height='14px' />
             </span>
-          </div>
+            Artist Note
+          </span>
         </div>
         {editingFields.has('note') ? (
           <div>

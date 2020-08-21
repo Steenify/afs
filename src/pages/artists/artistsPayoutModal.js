@@ -39,6 +39,8 @@ const ArtistPayoutModal = (props) => {
           });
           setData({ orders: data, loading: false, totalBudget });
           setNote(`Payment for orders: ${notes.join(' + ')}`);
+          setExtra(0);
+          setNoteItem({});
         },
       });
     }

@@ -5,9 +5,9 @@ import Button from 'components/common/button';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 
-import './styles.scss';
+import 'components/common/popoverSelectField/styles.scss';
 
-const PopoverSelectField = ({ value, options, title, id, onSave, className }) => {
+const PopoverInputField = ({ value, title, onSave, className, showTitle = false, showValue = true }) => {
   const [_value, setValue] = useState(value || '');
 
   const [isOpen, setIsOpen] = useState(false);
@@ -40,17 +40,9 @@ const PopoverSelectField = ({ value, options, title, id, onSave, className }) =>
         <div className='popover__container p-3'>
           <form action='' onSubmit={_onSave}>
             <div className=''>
-              <div className='select'>
+              <div className='input'>
                 <strong className='title mr-3'>{title}</strong>
-                <select className='form-control' value={_value} onChange={_onChange}>
-                  {options.map((op) => {
-                    return (
-                      <option key={`popover__${id}__select__${op.value}`} value={op.value}>
-                        {op.label}
-                      </option>
-                    );
-                  })}
-                </select>
+                <input type='text' className='form-control' value={_value} onChange={_onChange} />
               </div>
               <div className='ctas'>
                 <Button onClick={toggle} className='cancel cta pl-0' type='button' color='link'>
@@ -64,14 +56,17 @@ const PopoverSelectField = ({ value, options, title, id, onSave, className }) =>
           </form>
         </div>
       )}>
-      <span className={`toggle ${className}`} onClick={() => setIsOpen(!isOpen)}>
-        <span className='icon mr-1'>
-          <Pencil width='14px' height='14px' />
+      <span className={`toggle ${className}`}>
+        <span className='cursor-pointer' onClick={() => setIsOpen(!isOpen)}>
+          <span className='icon mr-1'>
+            <Pencil width='14px' height='14px' />
+          </span>
+          {showTitle && `${title}: `}
         </span>
-        {value || '__'}
+        {showValue && value}
       </span>
     </Popover>
   );
 };
 
-export default PopoverSelectField;
+export default PopoverInputField;
