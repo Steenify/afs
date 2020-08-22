@@ -4,6 +4,8 @@ import { debounce, get } from 'lodash';
 
 import { PERMITTIONS_CONFIG } from 'configs';
 
+import CanShow from 'components/layout/canshow';
+
 import { updateOrderTableFilterAction } from './actions';
 
 import OrderFilterAssignee from './orderFilterAssignee';
@@ -34,6 +36,14 @@ class OrderFilters extends Component {
     this.handleSearchTextAPI(value);
   };
 
+  handleCheckPoster = () => {
+    const { updateOrderTableFilterAction, reducer, hasPoster } = this.props;
+    updateOrderTableFilterAction({
+      payload: { hasPoster: !hasPoster, page: 0 },
+      reducer,
+    });
+  };
+
   handleSearchTextAPI = (value) => {
     const { updateOrderTableFilterAction, reducer } = this.props;
     updateOrderTableFilterAction({
@@ -43,7 +53,7 @@ class OrderFilters extends Component {
   };
 
   render() {
-    const { text, accountInfo, reducer, selectedAlertType, orderStatusCount } = this.props;
+    const { text, accountInfo, reducer, selectedAlertType, orderStatusCount, hasPoster } = this.props;
 
     const canAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING);
     const totalOrders = countTotalOrders(orderStatusCount);
@@ -67,6 +77,11 @@ class OrderFilters extends Component {
             No Sketch in 3 days
             <span className='number'>{orderStatusCount['LATE_WORK_LOG_DEADLINE'] || 0}</span>
           </button>
+          <CanShow permission={PERMITTIONS_CONFIG.SHOW_POSTER}>
+            <button onClick={this.handleCheckPoster} key={`list__alert_option__has_poster`} className={`status ${hasPoster === true && 'active'}`}>
+              Has Poster
+            </button>
+          </CanShow>
         </div>
         <div className='filter__main'>
           <div className='filter__text'>
@@ -88,6 +103,7 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
     accountInfo: auth.data.accountInfo,
     selectedAlertType: table.filter.alert,
     orderStatusCount: table.orderStatusCount,
+    hasPoster: table.filter.hasPoster,
   };
 };
 
