@@ -87,41 +87,39 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
       ))}
       <OrderArtWorkBox order={order} />
 
-      {
-        /*process.env.REACT_APP_BUILD === 'DEV' &&*/ canvasItems.length > 0 && (
-          <>
-            <div className='order_detail__header canvas'>
-              <div className='row no-gutters align-items-center'>
-                <div className='col-lg-6 col-xl-7'>
-                  <div className='info__left'>
-                    <div className='number'>Canvas</div>
-                    {order.statusForCanvas && (
-                      <div className='status'>
-                        <span className={`order__status ${getSelectedStatus(order.statusForCanvas, status).name}`}>{getSelectedStatus(order.statusForCanvas, status).friendlyName}</span>
-                      </div>
-                    )}
-                  </div>
+      {SHOW_POSTER && canvasItems.length > 0 && (
+        <>
+          <div className='order_detail__header canvas'>
+            <div className='row no-gutters align-items-center'>
+              <div className='col-lg-6 col-xl-7'>
+                <div className='info__left'>
+                  <div className='number'>Canvas</div>
+                  {order.statusForCanvas && (
+                    <div className='status'>
+                      <span className={`order__status ${getSelectedStatus(order.statusForCanvas, status).name}`}>{getSelectedStatus(order.statusForCanvas, status).friendlyName}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-            {canvasItems.map((item) => (
-              <div className='row' key={`order_list_item_${item.id}`}>
-                <div className='col-lg-6'>
-                  <div className='order_detail__wrapper'>
-                    <OrderItemBox hasFaster={hasFaster} item={item} order={order} />
-                  </div>
-                </div>
-                <div className='col-lg-6'>
-                  <div className='order_detail__wrapper'>
-                    <OrderSumaryBox item={item} order={order} />
-                  </div>
+          </div>
+          {canvasItems.map((item) => (
+            <div className='row' key={`order_list_item_${item.id}`}>
+              <div className='col-lg-6'>
+                <div className='order_detail__wrapper'>
+                  <OrderItemBox hasFaster={hasFaster} item={item} order={order} />
                 </div>
               </div>
-            ))}
-            {order.status === 'DONE' && <OrderCanvasWorkBox order={order} />}
-          </>
-        )
-      }
+              <div className='col-lg-6'>
+                <div className='order_detail__wrapper'>
+                  <OrderSumaryBox item={item} order={order} />
+                </div>
+              </div>
+            </div>
+          ))}
+          {order.status === 'DONE' && <OrderCanvasWorkBox order={order} />}
+        </>
+      )}
 
       <InPageLoading isLoading={loading} />
       <EmaiNotify order={order} />
