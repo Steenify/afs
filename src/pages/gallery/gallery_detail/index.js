@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 import Button from 'components/common/button';
 import Layout from 'components/common/Layout';
 import WEB_ROUTES from 'configs/web-routes';
+
 import ImageLoadAble from 'components/common/imageLoadAble';
 import Tags from '../gallery_listing/tags';
 import { ReactComponent as BackArrow } from 'assets/img/left_arrow.svg';
@@ -22,6 +23,7 @@ import { getAllTagsAction, addArtworksAction } from '../gallery_listing/action';
 import './style.scss';
 import { PERMITTIONS_CONFIG, FACEBOOK_APP_ID } from 'configs';
 import { toast } from 'react-toastify';
+import { Redirect } from 'react-router-dom';
 // import { avatarGenerator } from 'utils';
 
 const GalleryDetail = (props) => {
@@ -44,6 +46,7 @@ const GalleryDetail = (props) => {
   } = props;
 
   const { id } = match.params;
+  const [isRedirect, setRedirect] = useState(false);
 
   useEffect(() => {
     window.fbAsyncInit = () => {
@@ -102,7 +105,9 @@ const GalleryDetail = (props) => {
     if (!id) {
       history.goBack();
     } else {
-      getArtworkDetailAction(id);
+      getArtworkDetailAction(id, () => {
+        setRedirect(true);
+      });
       getAllTagsAction();
     }
   }, [id, history, getArtworkDetailAction]);
@@ -136,6 +141,10 @@ const GalleryDetail = (props) => {
       show: accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.DELETE_ARTWORK) || accountInfo?.login === gallery?.createdBy,
     },
   ].filter(({ show }) => show);
+
+  if (isRedirect) {
+    return <Redirect to={WEB_ROUTES.GALLERY_LISTING.path} />;
+  }
 
   return (
     <Layout documentTitle={WEB_ROUTES.GALLERY_DETAIL.title} container fluid>
