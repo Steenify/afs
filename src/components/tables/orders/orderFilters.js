@@ -80,6 +80,7 @@ class OrderFilters extends Component {
           <CanShow permission={PERMITTIONS_CONFIG.SHOW_POSTER}>
             <button onClick={this.handleCheckPoster} key={`list__alert_option__has_poster`} className={`status ${hasPoster === true && 'active'}`}>
               Has Poster
+              <span className='number'>{orderStatusCount['CANVAS'] || 0}</span>
             </button>
           </CanShow>
         </div>
