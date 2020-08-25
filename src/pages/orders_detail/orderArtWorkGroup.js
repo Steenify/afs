@@ -21,7 +21,7 @@ import {
   getNotifyTemplatesAction,
   updateOrderStatusAction,
   uploadCommentWorkLogAction,
-  getRemindEmailTemplateAction,
+  getRemindTemplatesAction,
   createOrderCanvasWorkLogAction,
 } from './actions';
 
@@ -33,7 +33,7 @@ const OrderArtWorkGroup = ({
   approvedWorkLog,
   rejectedWorkLog,
   getNotifyTemplatesAction,
-  getRemindEmailTemplateAction,
+  getRemindTemplatesAction,
   accountInfo,
   updateOrderStatus,
   isNewOrder,
@@ -114,7 +114,7 @@ const OrderArtWorkGroup = ({
   };
 
   const handleRemindEmail = (workLogIndex) => {
-    getRemindEmailTemplateAction(order.id, workLogIndex);
+    getRemindTemplatesAction(order.id, workLogIndex);
   };
 
   const handleStartSketch = () => {
@@ -263,7 +263,7 @@ const mapDispatchToProps = {
   getNotifyTemplatesAction,
   updateOrderStatus: updateOrderStatusAction,
   uploadCommentWorkLog: uploadCommentWorkLogAction,
-  getRemindEmailTemplateAction,
+  getRemindTemplatesAction,
   createOrderCanvasWorkLogAction,
 };
 

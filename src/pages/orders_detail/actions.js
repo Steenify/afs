@@ -663,6 +663,11 @@ export const getNotifyTemplatesAction = (id, templateId, workLogIndex, workLogTy
   dispatch(getFBMessageTemplateAction(id, templateId, workLogIndex, workLogType));
 };
 
+export const getRemindTemplatesAction = (id, templateId, workLogIndex, workLogType = 'workLog') => (dispatch) => {
+  dispatch(getRemindEmailTemplateAction(id, templateId, workLogIndex, workLogType));
+  dispatch(getRemindFBMessageTemplateAction(id, templateId, workLogIndex, workLogType));
+};
+
 export const GET_EMAIL_TEMPLATE_ACTION = actionCreator('GET_EMAIL_TEMPLATE_ACTION');
 export const getEmailTemplateAction = (id, templateId, workLogIndex, workLogType = 'workLog') => (dispatch) => {
   const onPending = () => {

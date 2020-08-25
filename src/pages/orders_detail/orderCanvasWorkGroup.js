@@ -15,7 +15,7 @@ import Button from 'components/common/button';
 import OrderWorkLogItem from './orderWorkLogItem';
 import OrderRejectModal from './orderRejectModal';
 
-import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction, createOrderCanvasWorkLogAction } from './actions';
+import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction, createOrderCanvasWorkLogAction, getRemindTemplatesAction } from './actions';
 
 const OrderCanvasWorkGroup = ({
   order,
@@ -25,6 +25,7 @@ const OrderCanvasWorkGroup = ({
   approvedWorkLog,
   rejectedWorkLog,
   getNotifyTemplatesAction,
+  getRemindTemplatesAction,
   accountInfo,
   createOrderCanvasWorkLogAction,
   isNewOrder,
@@ -98,6 +99,10 @@ const OrderCanvasWorkGroup = ({
     } else {
       toast.warn('No Email template found!');
     }
+  };
+
+  const handleRemindEmail = (workLogIndex) => {
+    getRemindTemplatesAction(order.id, workLogIndex, 'canvasWorkLog');
   };
 
   const handleConfirmRejectWorkLog = (LogId, workLogIndex) => {
@@ -188,6 +193,11 @@ const OrderCanvasWorkGroup = ({
                           Notify Customer
                         </Button>
                       )}
+                      {canNotifyCustomer && isNotifyStatus && (
+                        <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} className='cta cta2 mb-3 order_detail__remind' type='button'>
+                          Remind Customer
+                        </Button>
+                      )}
                     </div>
 
                     <div className='d-flex'>
@@ -239,6 +249,7 @@ const mapDispatchToProps = {
   approvedWorkLog: approvedWorkLogAction,
   rejectedWorkLog: rejectedWorkLogAction,
   getNotifyTemplatesAction,
+  getRemindTemplatesAction,
   createOrderCanvasWorkLogAction,
 };
 
