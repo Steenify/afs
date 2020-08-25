@@ -1,30 +1,57 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import { merge } from 'lodash';
 
 import Button from 'components/common/button';
 import { ReactComponent as PencilIcon } from 'assets/img/pencil.svg';
+import PopoverInputField from 'components/common/popoverInputField';
+import P from 'components/common/parapraph';
 
-import { updateCustomerAction } from 'pages/customers/actions';
+import { updateCustomerDetailAction } from 'pages/customers_detail/actions';
 import { toast } from 'react-toastify';
 
 import { formatMoney } from 'utils';
 
 const CustomerDetailInfo = (props) => {
-  const { customer, updateCustomerAction } = props;
+  const { customer, updateCustomerDetailAction } = props;
   const noteRef = useRef(null);
+  const [editingFields, setEditingFields] = useState(new Set());
+
+  const onStartEditing = (field) => {
+    setEditingFields((prev) => new Set(prev).add(field));
+  };
+
+  const onEndEditing = (field) => {
+    setEditingFields((prev) => {
+      prev.delete(field);
+      return new Set(prev);
+    });
+  };
 
   const updateCustomerNoteAction = () => {
     const note = noteRef.current.value;
-    const params = merge({}, customer, { customerExtension: { note } });
-    updateCustomerAction(params, () => toast.dark('Customer note is updated'));
+    onUpdateExtension('note', 'Note', note);
+  };
+
+  const onUpdateExtension = (field, title, value) => {
+    updateCustomerDetailAction({ ...customer, customerExtension: { [field]: value } }, () => {
+      toast.dark(`${title} is updated`);
+      onEndEditing(field);
+    });
+  };
+
+  const onUpdateInfo = (field, title, value) => {
+    updateCustomerDetailAction({ ...customer, [field]: value }, () => {
+      toast.dark(`${title} is updated`);
+      onEndEditing(field);
+    });
   };
 
   return (
     <div className='customer_detail__original customer_detail__box box'>
       <div className='box__header'>
         <div className='box__title'>
-          {customer?.firstName} {customer?.lastName}
+          <PopoverInputField value={customer?.firstName} title='First Name' onSave={(value) => onUpdateInfo('firstName', 'First Name', value)} />{' '}
+          <PopoverInputField value={customer?.lastName} title='Last Name' onSave={(value) => onUpdateInfo('lastName', 'Last Name', value)} />
           <div className='subText'>{[customer?.customerExtension?.city, customer?.customerExtension?.province, customer?.customerExtension?.country].filter((item) => item).join(', ')}</div>
           <div className='subText'>{customer?.customerExtension?.totalOrder} order(s)</div>
         </div>
@@ -34,75 +61,113 @@ const CustomerDetailInfo = (props) => {
         </div>
       </div>
       <div className='box__body'>
-        <div className='box__sub_title d-flex align-items-center mb-2'>
-          Customer Note <PencilIcon className='m-2' />
-          <Button color='primary' onClick={updateCustomerNoteAction} className='btn-create' containerClassName='ml-auto'>
-            Save
-          </Button>
+        <div className='box__sub_title mb-2'>
+          <span className='cursor-pointer toggle' onClick={() => onStartEditing('note')}>
+            <span className='icon mr-1'>
+              <PencilIcon width='14px' height='14px' />
+            </span>
+            Customer Note
+          </span>
         </div>
-        <textarea ref={noteRef} defaultValue={customer?.customerExtension?.note} className='form-control' placeholder='Add a note' rows='2' />
+        {editingFields.has('note') ? (
+          <div>
+            <textarea ref={noteRef} defaultValue={customer?.customerExtension?.note} className='form-control' placeholder='...' rows='4' />
+            <div className='ctas'>
+              <Button onClick={() => onEndEditing('note')} className='cancel cta pl-0' type='button' color='link'>
+                Cancel
+              </Button>
+              <Button onClick={updateCustomerNoteAction} className='save cta pr-0' type='button' color='link'>
+                Save
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <P text={customer?.customerExtension?.note || ''} id='CustomerNoteBox' />
+        )}
         <div className='box__device' />
         <div className='row'>
           <div className='col-6'>
             <div className='box__sub_title mb-2'>Contact</div>
-            {customer?.email && <p className='mb-1'>Email: {customer?.email}</p>}
-            {customer?.phoneNumber && <p className='mb-1'>Phone: {customer?.phoneNumber}</p>}
-            {customer?.customerExtension?.fbChat && (
-              <p className='mb-1'>
-                Facebook Chat: &nbsp;
+            <p className='mb-1'>
+              <PopoverInputField value={customer?.email} title='Email' showTitle onSave={(value) => onUpdateInfo('email', 'Email', value)} />
+            </p>
+            <p className='mb-1'>
+              <PopoverInputField value={customer?.phoneNumber} title='Phone' showTitle onSave={(value) => onUpdateInfo('phoneNumber', 'Phone', value)} />
+            </p>
+            <p className='mb-1'>
+              <PopoverInputField
+                value={customer?.customerExtension?.fbChat}
+                title='Facebook Chat'
+                showTitle
+                showValue={false}
+                onSave={(value) => onUpdateExtension('fbChat', 'Facebook Chat', value)}
+              />
+              {customer?.customerExtension?.fbChat && (
                 <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.fbChat}`}>
                   Link
                 </a>
-              </p>
-            )}
-            {customer?.customerExtension?.mailChain && (
-              <p className='mb-1'>
-                Mail Chain: &nbsp;
+              )}
+            </p>
+            <p className='mb-1'>
+              <PopoverInputField
+                value={customer?.customerExtension?.mailChain}
+                title='Mail Chain'
+                showTitle
+                showValue={false}
+                onSave={(value) => onUpdateExtension('mailChain', 'Mail Chain', value)}
+              />
+              {customer?.customerExtension?.mailChain && (
                 <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.mailChain}`}>
                   Link
                 </a>
-              </p>
-            )}
-            {customer?.customerExtension?.fbUrl && (
-              <p className='mb-1'>
-                Facebook: &nbsp;
+              )}
+            </p>
+            <p className='mb-1'>
+              <PopoverInputField value={customer?.customerExtension?.fbUrl} title='Facebook' showTitle showValue={false} onSave={(value) => onUpdateExtension('fbUrl', 'Facebook', value)} />
+              {customer?.customerExtension?.fbUrl && (
                 <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.fbUrl}`}>
                   Link
                 </a>
-              </p>
-            )}
-            {customer?.customerExtension?.igUrl && (
-              <p className='mb-1'>
-                Instagram: &nbsp;
+              )}
+            </p>
+            <p className='mb-1'>
+              <PopoverInputField value={customer?.customerExtension?.igUrl} title='Instagram' showTitle showValue={false} onSave={(value) => onUpdateExtension('igUrl', 'Instagram', value)} />
+              {customer?.customerExtension?.igUrl && (
                 <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.igUrl}`}>
                   Link
                 </a>
-              </p>
-            )}
-            {customer?.customerExtension?.snapChatUrl && (
-              <p className='mb-1'>
-                SnapChat: &nbsp;
+              )}
+            </p>
+            <p className='mb-1'>
+              <PopoverInputField
+                value={customer?.customerExtension?.snapChatUrl}
+                title='SnapChat'
+                showTitle
+                showValue={false}
+                onSave={(value) => onUpdateExtension('snapChatUrl', 'SnapChat', value)}
+              />
+              {customer?.customerExtension?.snapChatUrl && (
                 <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.snapChatUrl}`}>
                   Link
                 </a>
-              </p>
-            )}
-            {customer?.customerExtension?.linkedUrl && (
-              <p className='mb-1'>
-                LinkedIn: &nbsp;
+              )}
+            </p>
+            <p className='mb-1'>
+              <PopoverInputField value={customer?.customerExtension?.linkedUrl} title='LinkedIn' showTitle showValue={false} onSave={(value) => onUpdateExtension('linkedUrl', 'LinkedIn', value)} />
+              {customer?.customerExtension?.linkedUrl && (
                 <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.linkedUrl}`}>
                   Link
                 </a>
-              </p>
-            )}
-            {customer?.customerExtension?.twitterUrl && (
-              <p className='mb-1'>
-                Twitter: &nbsp;
+              )}
+            </p>
+            <p className='mb-1'>
+              <PopoverInputField value={customer?.customerExtension?.twitterUrl} title='Twitter' showTitle showValue={false} onSave={(value) => onUpdateExtension('twitterUrl', 'Twitter', value)} />
+              {customer?.customerExtension?.twitterUrl && (
                 <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.twitterUrl}`}>
                   Link
                 </a>
-              </p>
-            )}
+              )}
+            </p>
           </div>
           <div className='col-6'>
             <div className='box__sub_title mb-2'>Address</div>
@@ -145,7 +210,7 @@ const CustomerDetailInfo = (props) => {
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
-  updateCustomerAction,
+  updateCustomerDetailAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetailInfo);

@@ -287,7 +287,10 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           order: {
-            printfulTrackingUrl: { $set: payload.trackingCode },
+            printfulTrackingUrl: { $set: payload.data.printfulTrackingUrl },
+            printfulTrackingCode: { $set: payload.data.printfulTrackingCode },
+            printfulEstimatedDeliveryTo: { $set: payload.data.printfulEstimatedDeliveryTo },
+            printfulEstimatedDeliveryFrom: { $set: payload.data.printfulEstimatedDeliveryFrom },
           },
         },
       });

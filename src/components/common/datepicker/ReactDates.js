@@ -4,12 +4,7 @@ import { SingleDatePicker } from 'react-dates';
 
 import './style.scss';
 
-export const ReactDates = ({
-  date,
-  onChange,
-  placeholder,
-  displayFormat = 'DD-MM-YYYY',
-}) => {
+export const ReactDates = ({ date, onChange, placeholder, displayFormat = 'DD-MM-YYYY', isOutsideRange }) => {
   const [focused, setFocused] = useState(false);
   const [initDate, setInitDate] = useState(date);
 
@@ -29,6 +24,7 @@ export const ReactDates = ({
       numberOfMonths={1}
       displayFormat={displayFormat}
       placeholder={placeholder}
+      isOutsideRange={isOutsideRange}
     />
   );
 };

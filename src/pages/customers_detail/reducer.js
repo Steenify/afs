@@ -2,7 +2,7 @@ import update from 'react-addons-update';
 
 // import { mapDataList, mapDataByIds, mapDataByDate, isMobile } from 'utils';
 
-import { GET_CUSTOMER_DETAIL_ACTION, GET_CUSTOMER_ORDERS_ACTION, RESET_CUSTOMER_DETAIL_ACTION } from './actions';
+import { GET_CUSTOMER_DETAIL_ACTION, GET_CUSTOMER_ORDERS_ACTION, RESET_CUSTOMER_DETAIL_ACTION, UPDATE_CUSTOMER_DETAIL_ACTION } from './actions';
 
 const initialState = {
   ui: {
@@ -28,6 +28,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case UPDATE_CUSTOMER_DETAIL_ACTION.PENDING:
     case GET_CUSTOMER_ORDERS_ACTION.PENDING:
     case GET_CUSTOMER_DETAIL_ACTION.PENDING: {
       return update(state, {
@@ -56,6 +57,7 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
+    case UPDATE_CUSTOMER_DETAIL_ACTION.ERROR:
     case GET_CUSTOMER_ORDERS_ACTION.ERROR:
     case GET_CUSTOMER_DETAIL_ACTION.ERROR: {
       return update(state, {
@@ -66,6 +68,12 @@ const reducer = (state = initialState, action) => {
     }
     case RESET_CUSTOMER_DETAIL_ACTION: {
       return { ...initialState };
+    }
+    case UPDATE_CUSTOMER_DETAIL_ACTION.SUCCESS: {
+      return update(state, {
+        ui: { loading: { $set: false } },
+        data: { customer: { $merge: payload } },
+      });
     }
     default:
       return state;

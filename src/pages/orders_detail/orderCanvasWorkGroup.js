@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import { findIndex } from 'lodash';
 import { getSelectedStatus, dateTimeStringFromDate } from 'utils';
-import { PERMITTIONS_CONFIG, mapStatusOpen, mapStatusNotiy, mapStatusVerifyFile } from 'configs';
+import { PERMITTIONS_CONFIG, mapStatusOpen, mapStatusNotiy, mapStatusRemind } from 'configs';
 
 import { ReactComponent as Toggle } from 'assets/img/toggle.svg';
 import { ReactComponent as Close } from 'assets/img/close.svg';
@@ -46,6 +46,7 @@ const OrderCanvasWorkGroup = ({
   // };
 
   const isNotifyStatus = mapStatusNotiy.indexOf(order.statusForCanvas) !== -1;
+  const isRemindStatus = mapStatusRemind.indexOf(order.statusForCanvas) !== -1;
 
   const [isOpen, setIsOpen] = useState(isOpened || false);
   const toggle = () => setIsOpen(!isOpen);
@@ -160,6 +161,8 @@ const OrderCanvasWorkGroup = ({
             const isReceivedStatus = work.status === 'PRINT_RECEIVED';
             const isDoneStatus = work.status === 'DONE';
 
+            const isPassTrackingStatus = order.printfulTrackingUrl && order.printfulTrackingCode && order.printfulEstimatedDeliveryTo && order.printfulEstimatedDeliveryFrom;
+
             const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
 
             if (isDoneStatus) {
@@ -185,15 +188,15 @@ const OrderCanvasWorkGroup = ({
               <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                 <OrderWorkLogItem workLogType='canvasWorkLog' work={work} isOpened={showActionState} order={order} />
 
-                {showActionState && showActionPermitions && (
+                {showActionState && showActionPermitions && order.status !== 'DONE' && (
                   <div className='order_detail__ctas d-flex flex-wrap justify-content-between'>
                     <div className='d-flex'>
                       {canNotifyCustomer && isNotifyStatus && (
                         <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} className='cta cta2 mb-3 mr-2 order_detail__notify' type='button'>
-                          Notify Customer
+                          {isRemindStatus ? 'Notify Customer' : 'Check With Customer'}
                         </Button>
                       )}
-                      {canNotifyCustomer && isNotifyStatus && (
+                      {canNotifyCustomer && isRemindStatus && (
                         <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} className='cta cta2 mb-3 order_detail__remind' type='button'>
                           Remind Customer
                         </Button>
@@ -206,7 +209,7 @@ const OrderCanvasWorkGroup = ({
                           color='secondary'
                           onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex)}
                           className='cta cta2 mr-2 mb-3'
-                          disabled={(work.attachments?.length < 1 && !isTrackingStatus) || (isTrackingStatus && !order.printfulTrackingUrl)}
+                          disabled={(work.attachments?.length < 1 && !isTrackingStatus) || (isTrackingStatus && !isPassTrackingStatus)}
                           type='button'>
                           Reject
                         </Button>
@@ -217,13 +220,13 @@ const OrderCanvasWorkGroup = ({
                           color='primary'
                           onClick={() => handleApproveWorkLog(work.id)}
                           className='cta cta2 mb-3'
-                          disabled={(work.attachments?.length < 1 && !isTrackingStatus) || (isTrackingStatus && !order.printfulTrackingUrl)}
+                          disabled={(work.attachments?.length < 1 && !isTrackingStatus) || (isTrackingStatus && !isPassTrackingStatus)}
                           type='button'>
                           Approved
                         </Button>
                       )}
 
-                      {isReceivedStatus && order.status !== 'DONE' && (
+                      {isReceivedStatus && (
                         <Button color='primary' onClick={() => handleApproveWorkLog(work.id, true)} className='cta cta2 mb-3' type='button'>
                           Mark as Done
                         </Button>

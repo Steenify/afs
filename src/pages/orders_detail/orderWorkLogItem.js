@@ -25,6 +25,7 @@ import { mapStatusCanNotUpload, PERMITTIONS_CONFIG } from 'configs';
 
 import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction, updateTrackingCodeWorkLogAction } from './actions';
 import CanShow from 'components/layout/canshow';
+import { ReactDates } from 'components/common/datepicker';
 
 const OrderWorkLogItem = ({
   workLogType,
@@ -51,7 +52,11 @@ const OrderWorkLogItem = ({
   const [isEdit, setIsEdit] = useState(false);
   const dropbox = useRef(null);
   const commentBox = useRef(null);
-  const trackingNoteInput = useRef(null);
+
+  const trackingURLInput = useRef(null);
+  const trackingCodeInput = useRef(null);
+  const [trackingDeliveryFromDate, setTrackingDeliveryFromDate] = useState(moment(order.printfulEstimatedDeliveryFrom));
+  const [trackingDeliveryToDate, setTrackingDeliveryToDate] = useState(moment(order.printfulEstimatedDeliveryTo));
 
   const [editComment, setEditComment] = useState({});
   const [editCommentIndex, setEditCommentIndex] = useState(0);
@@ -76,10 +81,13 @@ const OrderWorkLogItem = ({
   const Act_NOTIFIED_CUSTOMER = activitiesGroup?.NOTIFIED_CUSTOMER || [];
   const Act_REMINDER_CUSTOMER = activitiesGroup?.REMINDER_CUSTOMER || [];
 
-  const handleUpdateTrackingCode = () => {
-    const code = trackingNoteInput.current.value;
-    updateTrackingCodeWorkLogAction(order.id, code, () => {
-      toast.dark('Tracking url is updated.');
+  const handleUpdateTrackingInfo = () => {
+    const printfulTrackingUrl = trackingURLInput.current.value;
+    const printfulTrackingCode = trackingCodeInput.current.value;
+    const printfulEstimatedDeliveryFrom = moment(trackingDeliveryFromDate).toISOString();
+    const printfulEstimatedDeliveryTo = moment(trackingDeliveryToDate).toISOString();
+    updateTrackingCodeWorkLogAction(order.id, { printfulTrackingCode, printfulTrackingUrl, printfulEstimatedDeliveryFrom, printfulEstimatedDeliveryTo }, () => {
+      toast.dark('Tracking info is updated.');
     });
   };
 
@@ -282,19 +290,38 @@ const OrderWorkLogItem = ({
         {isPrintTrackingStatus && (
           <div className='order_detail__tracking_code'>
             <div className='box__header mb-0'>
-              <div className='box__title w-100'>Tracking URL</div>
+              <div className='box__title w-100'>Tracking Info</div>
             </div>
             {isWorking ? (
               <>
-                <input ref={trackingNoteInput} defaultValue={order.printfulTrackingUrl} type='text' className='form-control' placeholder='Enter tracking URL' />
+                <div className='m-2'>
+                  <span>URL</span>
+                  <input ref={trackingURLInput} defaultValue={order.printfulTrackingUrl} type='text' className='form-control' placeholder='Enter tracking URL' />
+                </div>
+                <div className='m-2'>
+                  <span>Code</span>
+                  <input ref={trackingCodeInput} defaultValue={order.printfulTrackingCode} type='text' className='form-control' placeholder='Enter tracking Code' />
+                </div>
+                <div className='d-flex align-items-center mb-2'>
+                  <div className='m-2'>
+                    <span>Estimated Delivery From</span>
+                    <ReactDates date={trackingDeliveryFromDate} onChange={setTrackingDeliveryFromDate} />
+                  </div>
+                  <div className='m-2'>
+                    <span>Estimated Delivery To</span>
+                    <ReactDates date={trackingDeliveryToDate} onChange={setTrackingDeliveryToDate} />
+                  </div>
+                </div>
+
                 <div className='order_detail__ctas text-right'>
-                  <Button onClick={handleUpdateTrackingCode} color='primary' className='cta cta2' type='button'>
+                  <Button onClick={handleUpdateTrackingInfo} color='primary' className='cta cta2' type='button'>
                     Update
                   </Button>
                 </div>
               </>
             ) : (
               <div className='mb-3'>
+                <p>Tracking URL</p>
                 <a target='_blank' rel='noopener noreferrer' href={order.printfulTrackingUrl}>
                   {order.printfulTrackingUrl}
                 </a>

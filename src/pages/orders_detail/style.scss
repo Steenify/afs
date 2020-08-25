@@ -405,10 +405,12 @@
 		border-top: 0px;
 		padding-top: 0px;
 	}
-	// &__tracking_code {
-	// 	border-bottom: 1px solid #e2e5ed;
-	// 	margin-bottom: 20px;
-	// }
+
+	&__tracking_code {
+		input {
+			height: 40px;
+		}
+	}
 
 	&__comments {
 		margin-top: 20px;

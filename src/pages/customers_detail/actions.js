@@ -1,5 +1,5 @@
 import { actionCreator, actionTryCatchCreator } from 'utils';
-import { getCustomerDetailService } from 'services/customers';
+import { getCustomerDetailService, updateCustomerService } from 'services/customers';
 import { getAllOrdersService } from 'services/order';
 
 export const GET_CUSTOMER_DETAIL_ACTION = actionCreator('GET_CUSTOMER_DETAIL_ACTION');
@@ -58,5 +58,27 @@ export const RESET_CUSTOMER_DETAIL_ACTION = 'RESET_CUSTOMER_DETAIL_ACTION';
 export const resetCustomerDetailAction = () => async (dispatch) => {
   dispatch({
     type: RESET_CUSTOMER_DETAIL_ACTION,
+  });
+};
+
+export const UPDATE_CUSTOMER_DETAIL_ACTION = actionCreator('UPDATE_CUSTOMER_DETAIL_ACTION');
+export const updateCustomerDetailAction = (params, onSuccess, onError) => async (dispatch) => {
+  await actionTryCatchCreator({
+    service: updateCustomerService(params),
+    onPending: () => dispatch({ type: UPDATE_CUSTOMER_DETAIL_ACTION.PENDING }),
+    onSuccess: (data) => {
+      dispatch({
+        type: UPDATE_CUSTOMER_DETAIL_ACTION.SUCCESS,
+        payload: data,
+      });
+      if (onSuccess) onSuccess(data);
+    },
+    onError: (error) => {
+      dispatch({
+        type: UPDATE_CUSTOMER_DETAIL_ACTION.ERROR,
+        payload: error.response,
+      });
+      if (onError) onError(error.response);
+    },
   });
 };

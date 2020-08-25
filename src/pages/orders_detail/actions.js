@@ -499,16 +499,16 @@ export const deleteCommentWorkLogAction = (id, logId, comId, logIndex, comIndex,
 };
 
 export const UPDATE_TRACKING_CODE_WORK_LOG_ACTION = actionCreator('UPDATE_TRACKING_CODE_WORK_LOG_ACTION');
-export const updateTrackingCodeWorkLogAction = (id, trackingCode, cb) => (dispatch) => {
+export const updateTrackingCodeWorkLogAction = (id, data, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_TRACKING_CODE_WORK_LOG_ACTION.PENDING,
     });
   };
-  const onSuccess = (data) => {
+  const onSuccess = () => {
     dispatch({
       type: UPDATE_TRACKING_CODE_WORK_LOG_ACTION.SUCCESS,
-      payload: { id, trackingCode },
+      payload: { id, data },
     });
     cb && cb();
   };
@@ -521,7 +521,7 @@ export const updateTrackingCodeWorkLogAction = (id, trackingCode, cb) => (dispat
   };
 
   actionTryCatchCreator({
-    service: updateOrderCanvasTrackingCodeWorkLogService({ id, data: { trackingCode } }),
+    service: updateOrderCanvasTrackingCodeWorkLogService({ id, data }),
     onPending,
     onSuccess,
     onError,
