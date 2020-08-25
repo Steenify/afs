@@ -455,7 +455,7 @@ const OrderWorkLogItem = ({
                 <div key={`order__worklog__${work.id}__act_NOTIFIED_CUSTOMER_by_${act.actor}__${index.toString()}`} className='activites__item NOTIFIED_CUSTOMER'>
                   <div className='content'>
                     <strong>
-                      [{act.actor}] notified customer {viaChanel}
+                      [{act.actor}] notified the customer {viaChanel} at
                     </strong>
                     <span> {dateTimeFromNow(act.lastActionDate)}</span>
                   </div>
@@ -475,7 +475,7 @@ const OrderWorkLogItem = ({
                 <div key={`order__worklog__${work.id}__act_REMINDER_CUSTOMERR_by_${act.actor}__${index.toString()}`} className='activites__item NOTIFIED_CUSTOMER'>
                   <div className='content'>
                     <strong>
-                      [{act.actor}] reminded customer {viaChanel}
+                      [{act.actor}] reminded the customer {viaChanel} at
                     </strong>
                     <span> {dateTimeFromNow(act.lastActionDate)}</span>
                   </div>

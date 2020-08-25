@@ -85,13 +85,15 @@ class OrderFilters extends Component {
             </button>
           </CanShow>
         </div>
-        <div className='filter__main'>
+        <div className='filter__main flex-wrap'>
           <div className='filter__text'>
             <input type='text' defaultValue={text} placeholder='Search orders' className='search__box form-control' onChange={this.handleChangeText} />
           </div>
-          <OrderFilterTag reducer={reducer} />
-          <OrderFilterStatus reducer={reducer} />
-          {canAssign && <OrderFilterAssignee reducer={reducer} />}
+          <div>
+            <OrderFilterTag reducer={reducer} />
+            <OrderFilterStatus reducer={reducer} />
+            {canAssign && <OrderFilterAssignee reducer={reducer} />}
+          </div>
         </div>
       </div>
     );
