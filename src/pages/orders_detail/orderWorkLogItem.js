@@ -437,7 +437,7 @@ const OrderWorkLogItem = ({
           </Collapse>
         </div>
 
-        <div className={`order_detail__activites activites ${!Act_NOTIFIED_CUSTOMER.length && 'd-none'}`}>
+        <div className={`order_detail__activites activites ${!Act_NOTIFIED_CUSTOMER.length && !Act_REMINDER_CUSTOMER.length && 'd-none'}`}>
           <div className='activites__list'>
             {Act_NOTIFIED_CUSTOMER.map((act, index) => {
               const { notificationChannel } = act;
@@ -459,10 +459,6 @@ const OrderWorkLogItem = ({
                 </div>
               );
             })}
-          </div>
-        </div>
-        <div className={`order_detail__activites activites ${!Act_REMINDER_CUSTOMER.length && 'd-none'}`}>
-          <div className='activites__list'>
             {Act_REMINDER_CUSTOMER.map((act, index) => {
               const { notificationChannel } = act;
               const notiChanelMap = {
