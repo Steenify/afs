@@ -9,15 +9,14 @@ import CanShow from 'components/layout/canshow';
 import { updateOrderTableFilterAction } from './actions';
 
 import OrderFilterAssignee from './orderFilterAssignee';
-import Select from 'react-select';
 import OrderFilterStatus from './orderFilterStatus';
+import OrderFilterTag from './orderFilterTag';
 import { countTotalOrders } from 'utils';
 
 class OrderFilters extends Component {
   constructor() {
     super();
     this.handleSearchTextAPI = debounce(this.handleSearchTextAPI, 1000);
-    this.handleSelectTags = debounce(this.handleSelectTags, 1000);
   }
 
   handleChangeStatus = (event) => {
@@ -50,13 +49,6 @@ class OrderFilters extends Component {
     const { updateOrderTableFilterAction, reducer } = this.props;
     updateOrderTableFilterAction({
       payload: { text: value, page: 0 },
-      reducer,
-    });
-  };
-  handleSelectTags = (value) => {
-    const { updateOrderTableFilterAction, reducer } = this.props;
-    updateOrderTableFilterAction({
-      payload: { tags: value, page: 0 },
       reducer,
     });
   };
@@ -97,13 +89,10 @@ class OrderFilters extends Component {
           <div className='filter__text'>
             <input type='text' defaultValue={text} placeholder='Search orders' className='search__box form-control' onChange={this.handleChangeText} />
           </div>
+          <OrderFilterTag reducer={reducer} />
           <OrderFilterStatus reducer={reducer} />
           {canAssign && <OrderFilterAssignee reducer={reducer} />}
         </div>
-
-        {/* <div className='mt-3'>
-          <Select isMulti options={tagItems} defaultValue={tags} onChange={this.handleSelectTags} formatCreateLabel={(input) => `Add tag "${input}"`} />
-        </div> */}
       </div>
     );
   }
@@ -118,8 +107,6 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
     selectedAlertType: table.filter.alert,
     orderStatusCount: table.orderStatusCount,
     hasPoster: table.filter.hasPoster,
-    tagItems: table.tags.map((name, index) => ({ label: name, value: `${name}_${index}` })),
-    tags: table.filter.tags,
   };
 };
 

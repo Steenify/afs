@@ -38,10 +38,9 @@ const buildSearchParam = (input = {}) => {
     });
   }
 
-  //TODO: change it when api change
   if (input.tags && input.tags.length) {
     input.tags.forEach((item) => {
-      params.append('tag', item?.label || '');
+      params.append('tag', item || '');
     });
   }
 
@@ -286,13 +285,14 @@ export const updateOrderTableStatusDoneBulkAction = ({ payload, reducer, onSucce
   });
 };
 
-//TODO: Change service to get all order tag when api available
 export const GET_TAGS = actionCreator('ORDER_TABLE_GET_ALL_TAG');
 export const getAllTagsAction = () => (dispatch, getState) => {
   const onPending = () => {
     dispatch({ type: GET_TAGS.PENDING });
   };
-  const onSuccess = (payload) => {
+  const onSuccess = (data) => {
+    const filterOutArray = ['ENHANCED MATTE PAPER POSTER', 'FASTER PROCESSING'];
+    const payload = data?.filter((item) => !filterOutArray.includes(item?.value));
     dispatch({ type: GET_TAGS.SUCCESS, payload });
   };
   const onError = (error) => {
