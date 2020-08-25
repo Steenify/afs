@@ -113,7 +113,7 @@ const RemindCustomer = (props) => {
       const payload = {
         to: customerEmail,
         content: email,
-        title: emailTitle,
+        // title: emailTitle,
       };
       sentEmailRemindAction(payload, order?.id);
       // sendEmailNotify(customerEmail);
@@ -174,7 +174,8 @@ const RemindCustomer = (props) => {
                     type='text'
                     className='form-control clipboad__input'
                     value={emailTitle || ''}
-                    onChange={(e) => updateRemindTemplateAction({ emailTitle: e.target.value })}
+                    // onChange={(e) => updateRemindTemplateAction({ emailTitle: e.target.value })}
+                    onChange={() => {}}
                     placeholder='Email Title'
                   />
                   <CopyToClipboard text={emailTitle || ''} onCopy={() => toast.dark('Copied')}>

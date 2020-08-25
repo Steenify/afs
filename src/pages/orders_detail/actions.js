@@ -953,7 +953,7 @@ export const sentEmailRemindAction = (data, orderId, workLogType = 'workLog') =>
         workLogType,
       },
     });
-    toast.dark('Notified Customer!');
+    toast.dark('Reminded Customer via email!');
   };
   const onError = (error) => {
     console.log('sendEmailNotifyAction => onError -> error', JSON.stringify(error));
@@ -997,7 +997,7 @@ export const sentMessageRemindAction = (data, orderId, workLogType = 'workLog') 
         workLogType,
       },
     });
-    toast.dark('Notified Customer!');
+    toast.dark('Reminded Customer via fb/ig!');
   };
   const onError = (error) => {
     console.log('sendEmailNotifyAction => onError -> error', JSON.stringify(error));

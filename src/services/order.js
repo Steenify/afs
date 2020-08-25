@@ -212,7 +212,6 @@ export const sendEmailRemindService = (data, orderId) =>
     url: `${ORDERS_API}/${orderId}/remind/email`,
     method: 'POST',
     data,
-    host: 'https://612d18a13a76.ngrok.io',
   });
 
 export const sendMessageRemindService = (data, orderId) =>
