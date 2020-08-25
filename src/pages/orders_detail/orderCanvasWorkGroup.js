@@ -187,9 +187,9 @@ const OrderCanvasWorkGroup = ({
 
                 {showActionState && showActionPermitions && (
                   <div className='order_detail__ctas d-flex flex-wrap justify-content-between'>
-                    <div className=''>
+                    <div className='d-flex'>
                       {canNotifyCustomer && isNotifyStatus && (
-                        <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} className='cta cta2 mb-3 order_detail__notify' type='button'>
+                        <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} className='cta cta2 mb-3 mr-2 order_detail__notify' type='button'>
                           Notify Customer
                         </Button>
                       )}
