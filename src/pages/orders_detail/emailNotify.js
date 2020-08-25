@@ -52,6 +52,7 @@ const EmaiNotify = (props) => {
   const [notifyType, setNotifyType] = useState('email');
   const defailtEmail = customer?.contact?.email || '';
   const [customerEmail, setCustomerEmail] = useState(defailtEmail);
+  console.log('EmaiNotify -> customerEmail', customerEmail);
 
   useEffect(() => {
     setCustomerEmail(defailtEmail);
@@ -62,7 +63,7 @@ const EmaiNotify = (props) => {
     setCustomerEmail(value);
   };
 
-  const { emailTemplates, name } = getSelectedStatus(order.status, status);
+  const { emailTemplates, name } = getSelectedStatus(order.statusForCanvas || order.status, status);
 
   const toggle = () => {
     updateShowEmailNotify(!isShowEmail);

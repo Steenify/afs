@@ -2,11 +2,13 @@ import update from 'react-addons-update';
 import { getTotalPage } from 'utils';
 import { initialState, desktopSize, mobileSize, GET_ARTWORK, GET_TAGS, ACTIONS, ADD_ARTWORK } from './const';
 
-const { UPDATE_FILTER_ACTION } = ACTIONS;
+const { UPDATE_FILTER_ACTION, RESET_ART_WORK_LISTING } = ACTIONS;
 
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case RESET_ART_WORK_LISTING:
+      return initialState;
     case UPDATE_FILTER_ACTION:
       return update(state, {
         filterData: { $merge: payload },
@@ -35,17 +37,18 @@ const reducer = (state = initialState, action) => {
         },
       });
     case GET_ARTWORK.SUCCESS:
-      const { data, headers } = payload;
-      const totalPage = getTotalPage(headers, desktopSize, mobileSize);
+      // const { data, headers } = payload;
+      const totalPage = getTotalPage(payload.headers, desktopSize, mobileSize);
       return update(state, {
         ui: {
           loading: { $set: false },
         },
         data: {
-          artworks: { $set: data },
+          artworks: { $set: payload.data },
           totalPage: { $set: totalPage },
         },
       });
+
     case ADD_ARTWORK.PENDING:
       return update(state, {
         ui: {
@@ -59,11 +62,24 @@ const reducer = (state = initialState, action) => {
         },
       });
     case ADD_ARTWORK.SUCCESS:
-      return update(state, {
-        ui: {
-          isUploading: { $set: false },
-        },
-      });
+      // const { data, type } = payload;
+      return payload.type === 'EDIT'
+        ? update(state, {
+            ui: {
+              isUploading: { $set: false },
+            },
+            data: {
+              artworks: { $set: state.data.artworks.map((art) => (art.id === payload.data.id ? payload.data : art)) },
+            },
+          })
+        : update(state, {
+            ui: {
+              isUploading: { $set: false },
+            },
+            data: {
+              artworks: { $set: [...state.data.artworks, payload.data] },
+            },
+          });
     default:
       return state;
   }

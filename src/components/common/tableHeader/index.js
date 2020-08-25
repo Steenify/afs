@@ -1,5 +1,6 @@
 import React from 'react';
 import { isString } from 'lodash';
+import Sticky from 'react-stickynode';
 
 const TableHeader = (props) => {
   return (
@@ -13,7 +14,9 @@ const TableHeader = (props) => {
 
           return (
             <th className={column.className || ''} style={style} key={`table__header__item__${column.accessor}`}>
-              {isString(Header) ? Header : <Header {...headerProps} />}
+              <Sticky innerClass='z-index-999' top={57}>
+                <div className='th_content'>{isString(Header) ? Header : <Header {...headerProps} />}</div>
+              </Sticky>
             </th>
           );
         })}

@@ -56,6 +56,12 @@ const SettingsPage = (props) => {
       icon: <LateNotificationIcon />,
       des: 'Late Notification',
     },
+    {
+      ...WEB_ROUTES.NOTIFICATION_SETTINGS,
+      // title: t(WEB_ROUTES.CUSTOMER_LIST.title),
+      icon: <LateNotificationIcon />,
+      des: 'Notification Settings',
+    },
   ];
 
   const handleNavigate = (item) => {

@@ -25,7 +25,6 @@ const Listing = ({ filterData = initialState.filterData, data = initialState.dat
     const { page, size, tag, text } = filterData;
     getLateNotificationAction({ page, size, tag, text });
     const temp = moment(null);
-    console.log('Listing -> temp', temp);
   }, [getLateNotificationAction, filterData]);
 
   return (

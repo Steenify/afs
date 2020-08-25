@@ -20,6 +20,8 @@ const templateState = {
     tags: [],
     text: '',
     assignee: '',
+    alert: '',
+    hasPoster: false,
   },
   table: {
     orders: [],

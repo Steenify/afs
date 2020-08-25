@@ -6,6 +6,8 @@ import {
   UPDATE_ORDER_ITEM_FILES_ACTION,
   GET_ORDER_CUSTOMER_ACTION,
   UPDATE_ORDER_STATUS_ACTION,
+  CREATE_ORDER_CANVAS_WORK_LOG_ACTION,
+  GET_ORDER_CANVAS_WORK_LOG_ACTION,
   GET_ORDER_WORK_LOG_ACTION,
   UPLOAD_FILE_WORK_LOG_ACTION,
   APPROVED_WORK_LOG_ACTION,
@@ -20,6 +22,11 @@ import {
   DELETE_FILE_SUMMARY_ACTION,
   GET_FB_MESSAGE_TEMPLATE_ACTION,
   SENT_FB_MESSAGES_NOTIFY_ACTION,
+  UPDATE_TRACKING_CODE_WORK_LOG_ACTION,
+  GET_REMIND_EMAIL_TEMPLATE_ACTION,
+  GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION,
+  SENT_EMAIL_REMIND_ACTION,
+  SENT_MESSAGE_REMIND_ACTION,
 } from './actions';
 
 import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
@@ -29,19 +36,32 @@ const initialState = {
     loading: false,
     loadingUser: false,
     loadingWorkLog: false,
+    loadingCanvasWorkLog: false,
     isShowEmail: false,
     loadingEmail: false,
+    remind: {
+      isShowEmail: false,
+      loadingEmail: false,
+    },
   },
   data: {
     order: {},
     customer: {},
     workLog: [],
+    canvasWorkLog: [],
     email: '',
     emailTitle: '',
     selectedEmailTemplate: 0,
     currentWorkLogIndex: -1,
+    currentWorkLogType: 'workLog',
     fbTemplate: '',
     fbTemplateAttachments: [],
+    remind: {
+      fbTemplate: '',
+      fbTemplateAttachments: [],
+      email: '',
+      emailTitle: '',
+    },
   },
 };
 
@@ -78,11 +98,29 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
+    case ORDER_DETAIL_ACTIONS.UPDATE_REMIND_TEMPLATE:
+      return update(state, {
+        data: {
+          remind: {
+            $merge: payload,
+          },
+        },
+      });
     case ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_NOTIFY:
       return update(state, {
         ui: {
           isShowEmail: {
             $set: payload,
+          },
+        },
+      });
+    case ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_REMIND:
+      return update(state, {
+        ui: {
+          remind: {
+            isShowEmail: {
+              $set: payload,
+            },
           },
         },
       });
@@ -97,15 +135,19 @@ const reducer = (state = initialState, action) => {
 
     case GET_ORDER_DETAIL_ACTION.PENDING:
     case UPDATE_ORDER_ITEM_FILES_ACTION.PENDING:
+    case CREATE_ORDER_CANVAS_WORK_LOG_ACTION.PENDING:
     case UPDATE_ORDER_STATUS_ACTION.PENDING:
     case UPLOAD_FILE_WORK_LOG_ACTION.PENDING:
     case UPLOAD_COMMENT_WORK_LOG_ACTION.PENDING:
+    case UPDATE_TRACKING_CODE_WORK_LOG_ACTION.PENDING:
     case DELETE_COMMENT_WORK_LOG_ACTION.PENDING:
     case DELETE_ATTACHMENT_WORK_LOG_ACTION.PENDING:
     case APPROVED_WORK_LOG_ACTION.PENDING:
     case REJECTED_WORK_LOG_ACTION.PENDING:
     case SENT_EMAIL_NOTIFY_ACTION.PENDING:
     case SENT_FB_MESSAGES_NOTIFY_ACTION.PENDING:
+    case SENT_EMAIL_REMIND_ACTION.PENDING:
+    case SENT_MESSAGE_REMIND_ACTION.PENDING:
       return update(state, {
         ui: {
           loading: { $set: true },
@@ -120,6 +162,23 @@ const reducer = (state = initialState, action) => {
           order: { $set: payload.data },
         },
       });
+    case CREATE_ORDER_CANVAS_WORK_LOG_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+        data: {
+          order: {
+            statusForCanvas: {
+              $set: payload.data.status,
+            },
+          },
+          canvasWorkLog: {
+            $set: [payload.data],
+          },
+        },
+      });
+    }
     case UPDATE_ORDER_STATUS_ACTION.SUCCESS:
       return update(state, {
         ui: {
@@ -160,7 +219,7 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.index]: {
               attachments: {
                 $push: payload.data,
@@ -179,7 +238,7 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.index]: {
               comments: {
                 $push: [payload.data],
@@ -195,7 +254,7 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.logIndex]: {
               attachments: {
                 $splice: [[payload.attachmentIndex, 1]],
@@ -211,12 +270,24 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.logIndex]: {
               comments: {
                 $splice: [[payload.comIndex, 1]],
               },
             },
+          },
+        },
+      });
+    }
+    case UPDATE_TRACKING_CODE_WORK_LOG_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+        data: {
+          order: {
+            printfulTrackingUrl: { $set: payload.trackingCode },
           },
         },
       });
@@ -227,7 +298,7 @@ const reducer = (state = initialState, action) => {
           loading: { $set: false },
         },
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.logIndex]: {
               comments: {
                 [payload.comIndex]: {
@@ -247,11 +318,11 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           order: {
-            status: {
+            [payload.workLogType === 'workLog' ? 'status' : 'statusForCanvas']: {
               $set: payload.data.status,
             },
           },
-          workLog: {
+          [payload.workLogType]: {
             [payload.index]: {
               state: {
                 $set: 'APPROVED',
@@ -276,7 +347,7 @@ const reducer = (state = initialState, action) => {
               $set: payload.data.status,
             },
           },
-          workLog: {
+          [payload.workLogType]: {
             [payload.index]: {
               state: {
                 $set: 'REJECTED',
@@ -306,15 +377,17 @@ const reducer = (state = initialState, action) => {
     }
 
     case SENT_EMAIL_NOTIFY_ACTION.SUCCESS:
+    case SENT_EMAIL_REMIND_ACTION.SUCCESS:
+    case SENT_MESSAGE_REMIND_ACTION.SUCCESS:
     case SENT_FB_MESSAGES_NOTIFY_ACTION.SUCCESS: {
-      const { currentWorkLogIndex } = state.data;
+      const { currentWorkLogIndex, currentWorkLogType = 'workLog' } = state.data;
       return update(state, {
         ui: {
           loading: { $set: false },
           isShowEmail: { $set: false },
         },
         data: {
-          workLog: {
+          [currentWorkLogType]: {
             [currentWorkLogIndex]: {
               activities: {
                 $push: payload.activives,
@@ -330,15 +403,19 @@ const reducer = (state = initialState, action) => {
     case UPDATE_ORDER_ITEM_SUMARIZE_ACTION.SUCCESS:
     case UPDATE_ORDER_ITEM_FILES_ACTION.ERROR:
     case UPDATE_ORDER_STATUS_ACTION.ERROR:
+    case CREATE_ORDER_CANVAS_WORK_LOG_ACTION.ERROR:
     case UPLOAD_FILE_WORK_LOG_ACTION.ERROR:
     case UPLOAD_COMMENT_WORK_LOG_ACTION.ERROR:
     case DELETE_COMMENT_WORK_LOG_ACTION.ERROR:
     case DELETE_ATTACHMENT_WORK_LOG_ACTION.ERROR:
+    case UPDATE_TRACKING_CODE_WORK_LOG_ACTION.ERROR:
     case UPDATE_COMMENT_WORK_LOG_ACTION.ERROR:
     case APPROVED_WORK_LOG_ACTION.ERROR:
     case REJECTED_WORK_LOG_ACTION.ERROR:
     case SENT_EMAIL_NOTIFY_ACTION.ERROR:
     case SENT_FB_MESSAGES_NOTIFY_ACTION.ERROR:
+    case SENT_EMAIL_REMIND_ACTION.ERROR:
+    case SENT_MESSAGE_REMIND_ACTION.ERROR:
       return update(state, {
         ui: {
           loading: { $set: false },
@@ -364,6 +441,28 @@ const reducer = (state = initialState, action) => {
       return update(state, {
         ui: {
           loadingUser: { $set: false },
+        },
+      });
+
+    case GET_ORDER_CANVAS_WORK_LOG_ACTION.PENDING:
+      return update(state, {
+        ui: {
+          loadingCanvasWorkLog: { $set: true },
+        },
+      });
+    case GET_ORDER_CANVAS_WORK_LOG_ACTION.SUCCESS:
+      return update(state, {
+        ui: {
+          loadingCanvasWorkLog: { $set: false },
+        },
+        data: {
+          canvasWorkLog: { $set: payload.data },
+        },
+      });
+    case GET_ORDER_CANVAS_WORK_LOG_ACTION.ERROR:
+      return update(state, {
+        ui: {
+          loadingCanvasWorkLog: { $set: false },
         },
       });
 
@@ -417,6 +516,42 @@ const reducer = (state = initialState, action) => {
           currentWorkLogIndex: {
             $set: payload.workLogIndex,
           },
+          currentWorkLogType: {
+            $set: payload.workLogType,
+          },
+        },
+      });
+    }
+
+    case GET_REMIND_EMAIL_TEMPLATE_ACTION.PENDING:
+    case GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.PENDING:
+      return update(state, {
+        ui: {
+          remind: { isShowEmail: { $set: true }, loadingEmail: { $set: true } },
+        },
+      });
+    case GET_REMIND_EMAIL_TEMPLATE_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          remind: {
+            loadingEmail: { $set: false },
+          },
+        },
+        data: {
+          remind: {
+            email: {
+              $set: payload.data.content,
+            },
+            emailTitle: {
+              $set: payload.data.title,
+            },
+          },
+          currentWorkLogIndex: {
+            $set: payload.workLogIndex,
+          },
+          currentWorkLogType: {
+            $set: payload.workLogType,
+          },
         },
       });
     }
@@ -431,6 +566,28 @@ const reducer = (state = initialState, action) => {
           },
           fbTemplateAttachments: {
             $set: payload.data.attachments,
+          },
+          currentWorkLogIndex: {
+            $set: payload.workLogIndex,
+          },
+        },
+      });
+    }
+    case GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          remind: {
+            loadingEmail: { $set: false },
+          },
+        },
+        data: {
+          remind: {
+            fbTemplate: {
+              $set: payload.data.content,
+            },
+            fbTemplateAttachments: {
+              $set: payload.data.attachments,
+            },
           },
           selectedEmailTemplate: {
             $set: payload.templateId,
@@ -450,11 +607,21 @@ const reducer = (state = initialState, action) => {
           loadingEmail: { $set: false },
         },
       });
+    case GET_REMIND_EMAIL_TEMPLATE_ACTION.ERROR:
+    case GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.ERROR:
+      return update(state, {
+        ui: {
+          remind: {
+            isShowEmail: { $set: false },
+            loadingEmail: { $set: false },
+          },
+        },
+      });
 
     case DELETE_FILE_DELIVERY_ACTION.SUCCESS: {
       return update(state, {
         data: {
-          workLog: {
+          [payload.workLogType]: {
             [payload.logIndex]: {
               attachments: {
                 $splice: [[payload.fileIndex, 1]],

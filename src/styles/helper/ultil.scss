@@ -1,5 +1,6 @@
 @import 'node_modules/bootstrap/scss/functions';
 @import 'node_modules/bootstrap/scss/variables';
+@import '../var';
 
 @each $key, $value in $theme-colors {
 	.color-#{$key} {
@@ -7,7 +8,14 @@
 	}
 }
 
-$cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy, crosshair, default, e-resize, ew-resize, grab, grabbing, help, move, n-resize, ne-resize, nesw-resize, ns-resize, nw-resize, nwse-resize, no-drop, none, not-allowed, pointer, progress, row-resize, s-resize, se-resize, sw-resize, text, w-resize, wait, zoom-in, zoom-out;
+@each $key, $value in $theme-colors {
+	.bg-#{$key} {
+		background-color: $value !important;
+	}
+}
+
+$cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy, crosshair, default, e-resize, ew-resize, grab, grabbing, help, move, n-resize, ne-resize, nesw-resize, ns-resize, nw-resize,
+	nwse-resize, no-drop, none, not-allowed, pointer, progress, row-resize, s-resize, se-resize, sw-resize, text, w-resize, wait, zoom-in, zoom-out;
 
 @each $cur in $cursors {
 	.cursor-#{$cur} {
@@ -203,6 +211,7 @@ $cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy, crossha
 	width: 20px;
 	height: 20px;
 	position: relative;
+	z-index: 1;
 	cursor: pointer;
 	user-select: none;
 	margin-bottom: 0;
@@ -247,4 +256,27 @@ $cursors: alias, all-scroll, auto, cell, context-menu, col-resize, copy, crossha
 
 .text-black {
 	color: #141414 !important;
+}
+
+.toggle {
+	.icon {
+		// opacity: 0;
+		cursor: pointer;
+		display: none;
+	}
+
+	&:hover {
+		&::after {
+			// opacity: 1;
+			display: initial;
+		}
+
+		.icon {
+			// opacity: 1;
+			display: initial;
+		}
+	}
+}
+.z-index-999 {
+	z-index: 999;
 }

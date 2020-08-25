@@ -44,6 +44,7 @@ import PayoutsDetail from 'pages/payouts/payoutsDetail';
 import GalleryListing from 'pages/gallery/gallery_listing';
 import GalleryDetail from 'pages/gallery/gallery_detail';
 import LateNotificationList from 'pages/late_notification/listing';
+import NotificationSettings from 'pages/notification_settings';
 
 import head from 'utils/head';
 
@@ -51,22 +52,31 @@ import { WEB_ROUTES, mapRoles } from 'configs';
 
 import CustomerChat from 'vendor/facebookChat';
 
-const App = ({ getOrderTableCountByStatusAction, accountInfo }) => {
+import { actGetAccount, renewTokenAction } from 'pages/auth/actions';
+
+const App = ({ getOrderTableCountByStatusAction, renewTokenAction, actGetAccount, accountInfo, isTokenRenewed, isAuthUser }) => {
   const isLogged = !isEmpty(accountInfo);
 
   const isArtist = accountInfo?.authorities?.includes(mapRoles.ROLE_ARTIST) || false;
 
   useEffect(() => {
-    if (isLogged) {
+    isAuthUser && renewTokenAction();
+  }, [renewTokenAction, isAuthUser]);
+
+  useEffect(() => {
+    if (isTokenRenewed) {
       getOrderTableCountByStatusAction({});
+      actGetAccount();
     }
-  }, [getOrderTableCountByStatusAction, isLogged]);
+  }, [getOrderTableCountByStatusAction, isTokenRenewed, actGetAccount]);
+
   return (
     <>
       <Helmet {...head}></Helmet>
       <Router>
         <Switch>
           <Route exact path='/signin' component={Signin} />
+          <Route exact isPrivate={true} path={WEB_ROUTES.ORDERS.path} role={WEB_ROUTES.ORDERS.permission} component={Orders} />
           <Route exact path='/change-password' isPrivate={true} component={ChangePassword} />
           <Route exact path={WEB_ROUTES.USER_LIST.path} component={UserManagement} isPrivate={true} role={WEB_ROUTES.USER_LIST.permission} />
           <Route exact path='/user/detail/:login' component={UserDetail} isPrivate={true} role={WEB_ROUTES.USER_DETAIL.permission} />
@@ -97,7 +107,6 @@ const App = ({ getOrderTableCountByStatusAction, accountInfo }) => {
           isPrivate={true}
         /> */}
 
-          <Route exact isPrivate={true} path={WEB_ROUTES.ORDERS.path} role={WEB_ROUTES.ORDERS.permission} component={Orders} />
           <Route exact path={WEB_ROUTES.ORDERS_DETAIL.path} component={OrderDetail} />
           <Route exact path={WEB_ROUTES.SETTINGS.path} component={Settings} isPrivate={true} role={WEB_ROUTES.SETTINGS.permission} />
           <Route exact path={WEB_ROUTES.ARTISTS.path} component={Artists} isPrivate={true} role={WEB_ROUTES.ARTISTS.permission} />
@@ -111,7 +120,9 @@ const App = ({ getOrderTableCountByStatusAction, accountInfo }) => {
           <Route exact path={WEB_ROUTES.PAYOUTS_DETAIL.path} component={PayoutsDetail} isPrivate={true} role={WEB_ROUTES.PAYOUTS_DETAIL.permission} />
           <Route exact path={WEB_ROUTES.GALLERY_LISTING.path} component={GalleryListing} isPrivate={true} role={WEB_ROUTES.GALLERY_LISTING.permission} />
           <Route exact path={WEB_ROUTES.LATE_NOTIFICATION.path} component={LateNotificationList} isPrivate={true} role={WEB_ROUTES.LATE_NOTIFICATION.permission} />
+          <Route exact path={WEB_ROUTES.NOTIFICATION_SETTINGS.path} component={NotificationSettings} isPrivate={true} role={WEB_ROUTES.NOTIFICATION_SETTINGS.permission} />
           <Route exact path={WEB_ROUTES.GALLERY_DETAIL.path} component={GalleryDetail} isPrivate={true} role={WEB_ROUTES.GALLERY_DETAIL.permission} className='gallery__page' />
+          {isTokenRenewed && <></>}
           <PublicRoute exact path={WEB_ROUTES.POLICY.path}>
             <PrivacyPolicy />
           </PublicRoute>
@@ -134,9 +145,13 @@ const App = ({ getOrderTableCountByStatusAction, accountInfo }) => {
 
 const mapStateToProps = ({ auth }) => ({
   accountInfo: auth.data.accountInfo,
+  isTokenRenewed: auth.data.isTokenRenewed,
+  isAuthUser: auth.data.isAuthUser,
 });
 const mapDispatchToProps = {
   getOrderTableCountByStatusAction,
+  renewTokenAction,
+  actGetAccount,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

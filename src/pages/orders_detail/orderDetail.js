@@ -10,7 +10,9 @@ import { dateTimeStringFromDate, getSelectedStatus, getOrderItem } from 'utils';
 import OrderSumaryBox from './orderSumaryBox';
 import OrderItemBox from './orderItemBox';
 import OrderArtWorkBox from './orderArtWorkBox';
+import OrderCanvasWorkBox from './orderCanvasWorkBox';
 import EmaiNotify from './emailNotify';
+import EmailRemind from './remindCustomer';
 import OrderBudget from './orderBudget';
 import OrderAssignedBox from './orderAssignedBox';
 
@@ -26,12 +28,23 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
   const itemsToFilter = SHOW_POSTER ? filterOrderItemsAdmin : filterOrderItems;
 
   let hasFaster = false;
-  const filteredItems = filter(order.items, (item) => {
+  let artworkItems = [],
+    canvasItems = [];
+  order.items.forEach((item) => {
     if (getOrderItem(item.name) === filterOrderItems[1] || getOrderItem(item.name) === filterOrderItems[0]) {
       hasFaster = true;
     }
-    return !includes(itemsToFilter, getOrderItem(item.name));
+    if (!includes(itemsToFilter, getOrderItem(item.name))) {
+      if (item.productType === 'CANVAS') canvasItems.push(item);
+      else artworkItems.push(item);
+    }
   });
+  // const filteredItems = filter(order.items, (item) => {
+  //   if (getOrderItem(item.name) === filterOrderItems[1] || getOrderItem(item.name) === filterOrderItems[0]) {
+  //     hasFaster = true;
+  //   }
+  //   return !includes(itemsToFilter, getOrderItem(item.name));
+  // });
 
   return (
     <div className='order_detail'>
@@ -58,7 +71,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
         </div>
       </div>
 
-      {filteredItems.map((item) => (
+      {artworkItems.map((item) => (
         <div className='row' key={`order_list_item_${item.id}`}>
           <div className='col-lg-6'>
             <div className='order_detail__wrapper'>
@@ -74,8 +87,43 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
       ))}
       <OrderArtWorkBox order={order} />
 
+      {SHOW_POSTER && canvasItems.length > 0 && (
+        <>
+          <div className='order_detail__header canvas'>
+            <div className='row no-gutters align-items-center'>
+              <div className='col-lg-6 col-xl-7'>
+                <div className='info__left'>
+                  <div className='number'>Canvas</div>
+                  {order.statusForCanvas && (
+                    <div className='status'>
+                      <span className={`order__status ${getSelectedStatus(order.statusForCanvas, status).name}`}>{getSelectedStatus(order.statusForCanvas, status).friendlyName}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          {canvasItems.map((item) => (
+            <div className='row' key={`order_list_item_${item.id}`}>
+              <div className='col-lg-6'>
+                <div className='order_detail__wrapper'>
+                  <OrderItemBox hasFaster={hasFaster} item={item} order={order} />
+                </div>
+              </div>
+              <div className='col-lg-6'>
+                <div className='order_detail__wrapper'>
+                  <OrderSumaryBox item={item} order={order} />
+                </div>
+              </div>
+            </div>
+          ))}
+          {order.status === 'DONE' && <OrderCanvasWorkBox order={order} />}
+        </>
+      )}
+
       <InPageLoading isLoading={loading} />
       <EmaiNotify order={order} />
+      <EmailRemind order={order} />
     </div>
   );
 };

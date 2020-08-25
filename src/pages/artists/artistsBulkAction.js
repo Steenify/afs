@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { filter } from 'lodash';
+import Sticky from 'react-stickynode';
 
 import { PERMITTIONS_CONFIG } from 'configs';
 
@@ -18,20 +19,24 @@ const ArtistBulkAction = (props) => {
   const canPayOut = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT) && selected.filter((s) => s.numUnpaid > 0).length > 0;
 
   return (
-    <div className={`order__bulk ${isHide && 'd-none'}`}>
-      <div className='btn-group'>
-        <div className='btn btn-group__item'>
-          <div className='d-flex align-items-center order__bulk__selected'>
-            <ArtistSelectedAllCell />
-            <span className='number'>{selected?.length} selected</span>
+    <div className={`order__bulk`} style={{ opacity: isHide ? 0 : 1 }}>
+      <Sticky top={57}>
+        <div className='wrapper'>
+          <div className='btn-group'>
+            <div className='btn btn-group__item d-flex align-items-center '>
+              <div className='d-flex align-items-center order__bulk__selected'>
+                <ArtistSelectedAllCell />
+                <span className='number'>{selected?.length} selected</span>
+              </div>
+            </div>
+            {canPayOut && (
+              <button type='button' className='btn btn-group__item' onClick={toggle}>
+                Paid
+              </button>
+            )}
           </div>
         </div>
-        {canPayOut && (
-          <button type='button' className='btn btn-group__item' onClick={toggle}>
-            Paid
-          </button>
-        )}
-      </div>
+      </Sticky>
 
       <ArtistPayoutModal isOpen={isOpen} toggle={toggle} />
     </div>

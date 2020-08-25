@@ -42,7 +42,7 @@ class PayoutFilters extends Component {
         <div className='filter__main'>
           {canAssign && <PayoutsFilterDate />}
           <div className='filter__text'>
-            <input type='text' value={text} placeholder='Search orders' className='search__box form-control' onChange={this.handleChangeText} />
+            <input style={{ borderRadius: canAssign ? 0 : undefined }} type='text' value={text} placeholder='Search orders' className='search__box form-control' onChange={this.handleChangeText} />
           </div>
           {canAssign && <PayoutsFilterAssignee />}
         </div>

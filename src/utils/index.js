@@ -229,6 +229,20 @@ export const getListImageUrl = (list = []) => {
   });
 };
 
+export const countTotalOrders = (orderStatus) => {
+  return reduce(
+    orderStatus,
+    (res, value, key) => {
+      const validStatus = ['COLOR_EDIT', 'SKETCH_EDIT', 'NEW_ORDER', 'SKETCH', 'EXPORT_FILE', 'COLOR', 'COLOR_REVIEW', 'SEND_FILE'];
+      if (validStatus.includes(key)) {
+        return (res += value);
+      }
+      return res;
+    },
+    0,
+  );
+};
+
 export const getSelectedStatus = (name, status) => {
   const StatusMap = {};
   status.forEach((sta) => {

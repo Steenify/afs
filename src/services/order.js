@@ -67,6 +67,25 @@ export const getOrderWorkLogService = ({ id }) =>
     method: 'GET',
   });
 
+export const createOrderCanvasWorkLogService = ({ id }) =>
+  request({
+    url: `${ORDERS_API}/${id}/work-logs/canvas`,
+    method: 'POST',
+  });
+
+export const getOrderCanvasWorkLogService = ({ id }) =>
+  request({
+    url: `${ORDERS_API}/${id}/work-logs/canvas`,
+    method: 'GET',
+  });
+
+export const updateOrderCanvasTrackingCodeWorkLogService = ({ id, data }) =>
+  request({
+    url: `${ORDERS_API}/${id}/work-logs/canvas/tracking`,
+    method: 'POST',
+    data,
+  });
+
 export const uploadOrderWorkLogService = ({ id, logId, data }) =>
   request({
     url: `${ORDERS_API}/${id}/work-logs/${logId}/upload`,
@@ -176,6 +195,30 @@ export const deleteFileSumaryService = (orderid, itemId, fileId) =>
   request({
     url: `${ORDERS_API}/${orderid}/items/${itemId}/attachments/${fileId}`,
     method: 'DELETE',
+  });
+
+export const getEmailRemindTemplateService = (orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/remind/email`,
+  });
+
+export const getMessageRemindTemplateService = (orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/remind/message`,
+  });
+
+export const sendEmailRemindService = (data, orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/remind/email`,
+    method: 'POST',
+    data,
+  });
+
+export const sendMessageRemindService = (data, orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/remind/message`,
+    method: 'POST',
+    data,
   });
 
 export const getAllBookingTagsService = (params) =>

@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useState } from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import { isObject } from 'lodash';
 import { saveAs } from 'file-saver';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faSearchMinus, faSearchPlus } from '@fortawesome/free-solid-svg-icons';
+import { debounce } from 'lodash';
 
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
@@ -18,22 +19,79 @@ const ClickableImageView = React.memo((props) => {
     currentView: { source, alt, caption },
   } = props;
 
+  const [isMaxZoomed, setIsMaxZoomed] = useState(false);
+  const onZoomChange = debounce((e) => setIsMaxZoomed(e.scale === 2.5), 500);
+
   return (
     <div className='react-images__view react-images__view--isModal' style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
-      <TransformWrapper wheel={{ step: 70 }} options={{ maxScale: 2.5 }}>
-        {({ zoomIn, zoomOut }) => (
-          <>
-            <TransformComponent>
-              <img className='react-images__view-image--isModal' src={source.regular || source} alt={alt} style={{ width: '100vw', height: 'calc(100vh - 50px)', objectFit: 'contain' }} />
-            </TransformComponent>
-            <div>
-              <FontAwesomeIcon icon={faSearchPlus} size='2x' color='grey' className='cursor-pointer m-3' onClick={zoomIn} />
-              <FontAwesomeIcon icon={faSearchMinus} size='2x' color='grey' className='cursor-pointer m-3' onClick={zoomOut} />
-              <FontAwesomeIcon icon={faDownload} size='2x' color='grey' className='cursor-pointer m-3' onClick={() => saveAs(source.download, caption)} />
-            </div>
-          </>
-        )}
-      </TransformWrapper>
+      {process.env.REACT_APP_BUILD === 'PROD' && (
+        <>
+          <img className='react-images__view-image--isModal' src={source.regular || source} alt={alt} style={{ width: '100vw', height: 'calc(100vh - 50px)', objectFit: 'contain' }} />
+          <FontAwesomeIcon
+            icon={faDownload}
+            size='2x'
+            color='grey'
+            className='cursor-pointer m-3'
+            onClick={(e) => {
+              saveAs(source.download, caption);
+              e.stopPropagation();
+            }}
+          />
+        </>
+      )}
+      {process.env.REACT_APP_BUILD === 'DEV' && (
+        <TransformWrapper wheel={{ step: 70 }} doubleClick={{ mode: !isMaxZoomed ? 'zoomIn' : 'reset' }} options={{ maxScale: 2.5 }} onZoomChange={onZoomChange}>
+          {({ zoomIn, zoomOut }) => (
+            <>
+              <TransformComponent>
+                <img
+                  className='react-images__view-image--isModal'
+                  src={source.regular || source}
+                  alt={alt}
+                  draggable={false}
+                  style={{ width: '100vw', height: 'calc(100vh - 50px)', objectFit: 'contain', pointerEvents: 'auto' }}
+                  onDragStart={(e) => {
+                    e.preventDefault();
+                    return false;
+                  }}
+                />
+              </TransformComponent>
+              <div>
+                <FontAwesomeIcon
+                  icon={faSearchPlus}
+                  size='2x'
+                  color='grey'
+                  className='cursor-pointer m-3'
+                  onClick={(e) => {
+                    zoomIn(e);
+                    e.stopPropagation();
+                  }}
+                />
+                <FontAwesomeIcon
+                  icon={faSearchMinus}
+                  size='2x'
+                  color='grey'
+                  className='cursor-pointer m-3'
+                  onClick={(e) => {
+                    zoomOut(e);
+                    e.stopPropagation();
+                  }}
+                />
+                <FontAwesomeIcon
+                  icon={faDownload}
+                  size='2x'
+                  color='grey'
+                  className='cursor-pointer m-3'
+                  onClick={(e) => {
+                    saveAs(source.download, caption);
+                    e.stopPropagation();
+                  }}
+                />
+              </div>
+            </>
+          )}
+        </TransformWrapper>
+      )}
     </div>
   );
 });
@@ -95,7 +153,7 @@ class ImageGallery extends PureComponent {
 
         <ModalGateway>
           {modalIsOpen ? (
-            <Modal onClose={() => this.toggleModal(0)}>
+            <Modal onClose={() => this.toggleModal(0)} allowFullscreen={false}>
               <Carousel
                 views={list}
                 currentIndex={currentIndex}

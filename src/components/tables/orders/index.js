@@ -28,6 +28,8 @@ import OrderLastUpdateDateCell from 'components/tables/orders/cells/orderLastUpd
 
 import { getOrderTableStatusAction, getListAction, getAllTagsAction } from './actions';
 
+import './style.scss';
+
 class OrderTable extends PureComponent {
   componentDidMount() {
     const { getOrderTableStatusAction, reducer, getListAction, filter, getAllTagsAction } = this.props;

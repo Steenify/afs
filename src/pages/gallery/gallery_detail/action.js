@@ -3,7 +3,7 @@ import { actionCreator, actionTryCatchCreator } from 'utils';
 
 export const GET_ARTWORK_DETAIL = actionCreator('GET_ARTWORK_DETAIL');
 export const DELETE_ARTWORK_DETAIL = actionCreator('DELETE_ARTWORK_DETAIL');
-export const getArtworkDetailAction = (id) => (dispatch) => {
+export const getArtworkDetailAction = (id, onErrorCallBack) => (dispatch) => {
   const { PENDING, SUCCESS, ERROR } = GET_ARTWORK_DETAIL;
 
   const onPending = () => {
@@ -24,6 +24,7 @@ export const getArtworkDetailAction = (id) => (dispatch) => {
       type: ERROR,
       payload: error.response,
     });
+    onErrorCallBack && onErrorCallBack();
   };
 
   actionTryCatchCreator({
@@ -33,6 +34,10 @@ export const getArtworkDetailAction = (id) => (dispatch) => {
     onError,
   });
 };
+
+export const RESET_ART_WORK_DETAIL = 'RESET_ART_WORK_DETAIL';
+export const resetArtworkAction = () => (dispatch) => dispatch({ type: RESET_ART_WORK_DETAIL });
+
 export const deleteArtworkDetailAction = (id, callback) => (dispatch) => {
   const { PENDING, SUCCESS, ERROR } = DELETE_ARTWORK_DETAIL;
 

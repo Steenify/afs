@@ -13,7 +13,19 @@ import { statusPayments } from 'configs';
 
 import { createOrderTablePayoutsBulkAction, updateOrderTableItemsAction, confirmOrderTablePayoutsBulkAction } from './actions';
 
-const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defaultNote, createOrderTablePayoutsBulkAction, confirmOrderTablePayoutsBulkAction, artist, updateOrderTableItemsAction, reducer }) => {
+const OrderPayoutModal = ({
+  isOpen,
+  className,
+  toggle,
+  orders,
+  totalBudget,
+  defaultNote,
+  createOrderTablePayoutsBulkAction,
+  confirmOrderTablePayoutsBulkAction,
+  artist,
+  updateOrderTableItemsAction,
+  reducer,
+}) => {
   const hasArtist = !isEmpty(artist);
   const canPay = hasArtist && orders.length > 0;
 
@@ -27,6 +39,13 @@ const OrderPayoutModal = ({ isOpen, className, toggle, orders, totalBudget, defa
   };
 
   const [note, setNote] = useState(defaultNote);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setNoteItem({});
+      setExtra(0);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     setNote(defaultNote);

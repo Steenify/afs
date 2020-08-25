@@ -1,10 +1,5 @@
 import { actionCreator, actionTryCatchCreator } from 'utils';
-import {
-  signin,
-  getAccount,
-  changePassword,
-  logoutService,
-} from 'services/auth.service';
+import { signin, getAccount, changePassword, logoutService, renewTokenService } from 'services/auth.service';
 
 export const SIGNIN = actionCreator('SIGNIN');
 export const actSignin = (params) => async (dispatch) => {
@@ -109,5 +104,18 @@ export const logOutAction = (payload, cb) => async (dispatch) => {
     onPending,
     onSuccess,
     onError,
+  });
+};
+
+export const RENEW_TOKEN_ACTION = actionCreator('RENEW_TOKEN_ACTION');
+export const renewTokenAction = (payload, cb) => async (dispatch) => {
+  actionTryCatchCreator({
+    service: renewTokenService(payload),
+    onPending: () => dispatch({ type: RENEW_TOKEN_ACTION.PENDING }),
+    onError: (error) => dispatch({ type: RENEW_TOKEN_ACTION.ERROR, payload: error.response }),
+    onSuccess: (data) => {
+      dispatch({ type: RENEW_TOKEN_ACTION.SUCCESS, payload: data });
+      cb && cb();
+    },
   });
 };
