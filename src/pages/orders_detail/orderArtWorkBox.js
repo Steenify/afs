@@ -8,7 +8,7 @@ import OrderCustomerBox from './orderCustomerBox';
 import OrderArtDelivery from './orderArtDelivery';
 import { getOrderWorkLogAction } from './actions';
 
-const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog }) => {
+const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, hasPoster }) => {
   useEffect(() => {
     if (order.id) {
       getOrderWorkLog(order.id);
@@ -93,7 +93,18 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog }) =
 
               {!isEmpty(order.assignedTo) &&
                 map(WorkGrouped, (works, key) => {
-                  return <OrderArtWorkGroup isNewOrder={isNewOrder} works={works} order={order} group={key} key={`workGroup__item__${key}`} lastWorkLog={lastWorkLog} status={status} />;
+                  return (
+                    <OrderArtWorkGroup
+                      hasPoster={hasPoster}
+                      isNewOrder={isNewOrder}
+                      works={works}
+                      order={order}
+                      group={key}
+                      key={`workGroup__item__${key}`}
+                      lastWorkLog={lastWorkLog}
+                      status={status}
+                    />
+                  );
                 })}
             </div>
           </div>

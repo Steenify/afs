@@ -15,22 +15,34 @@ import Button from 'components/common/button';
 import OrderWorkLogItem from './orderWorkLogItem';
 import OrderRejectModal from './orderRejectModal';
 
-import { approvedWorkLogAction, rejectedWorkLogAction, getEmailTemplateAction, createOrderCanvasWorkLogAction } from './actions';
+import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction, createOrderCanvasWorkLogAction } from './actions';
 
-const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, rejectedWorkLog, getEmailTemplate, accountInfo, createOrderCanvasWorkLogAction, isNewOrder, workLog, lastWorkLog }) => {
+const OrderCanvasWorkGroup = ({
+  order,
+  group,
+  works,
+  status,
+  approvedWorkLog,
+  rejectedWorkLog,
+  getNotifyTemplatesAction,
+  accountInfo,
+  createOrderCanvasWorkLogAction,
+  isNewOrder,
+  workLog,
+  lastWorkLog,
+}) => {
   let isOpened = false;
 
   if (mapStatusOpen[group].indexOf(order.statusForCanvas) !== -1 || isNewOrder) {
     isOpened = true;
   }
 
-  const canCreateWorkLogForCanvas = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_WORK_LOG_FOR_CANVAS) || false;
-
-  const handleStartPrintting = () => {
-    if (status.length) {
-      createOrderCanvasWorkLogAction(order.id);
-    }
-  };
+  // const canCreateWorkLogForCanvas = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_WORK_LOG_FOR_CANVAS) || false;
+  // const handleStartPrintting = () => {
+  //   if (status.length) {
+  //     createOrderCanvasWorkLogAction(order.id);
+  //   }
+  // };
 
   const isNotifyStatus = mapStatusNotiy.indexOf(order.statusForCanvas) !== -1;
 
@@ -44,7 +56,7 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
   const canAprroved = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) || false;
   const canRejected = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.REJECT_WORK_LOG) || false;
 
-  const handleApproveWorkLog = (LogId) => {
+  const handleApproveWorkLog = (LogId, isMarkAsDone) => {
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
@@ -67,7 +79,7 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
               <button
                 className='comfirm_cus__accept comfirm_cus__control'
                 onClick={() => {
-                  approvedWorkLog(order.id, LogId, 'canvasWorkLog');
+                  approvedWorkLog(order.id, LogId, 'canvasWorkLog', isMarkAsDone);
                   onClose();
                 }}>
                 Accept
@@ -82,7 +94,7 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
   const handleNotifyEmail = (workLogIndex) => {
     const currentStatus = getSelectedStatus(order.statusForCanvas, status);
     if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
-      getEmailTemplate(order.id, currentStatus.emailTemplates[0].id, workLogIndex, 'canvasWorkLog');
+      getNotifyTemplatesAction(order.id, currentStatus.emailTemplates[0].id, workLogIndex, 'canvasWorkLog');
     } else {
       toast.warn('No Email template found!');
     }
@@ -141,28 +153,28 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
             const isPreviewStatus = work.status === 'PRINT_PREVIEW';
             const isTrackingStatus = work.status === 'PRINT_TRACKING';
             const isReceivedStatus = work.status === 'PRINT_RECEIVED';
+            const isDoneStatus = work.status === 'DONE';
 
             const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
 
-            if (isReceivedStatus) {
+            if (isDoneStatus) {
               return null;
             }
-
-            if (isNewStatus) {
-              if (isNewOrder) {
-                return (
-                  <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
-                    {canCreateWorkLogForCanvas && (
-                      <div className='order_detail__ctas text-center'>
-                        <Button onClick={handleStartPrintting} color='primary' className='cta' type='button'>
-                          Start Printing
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                );
-              } else return null;
-            }
+            // if (isNewStatus) {
+            //   if (isNewOrder) {
+            //     return (
+            //       <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
+            //         {canCreateWorkLogForCanvas && (
+            //           <div className='order_detail__ctas text-center'>
+            //             <Button onClick={handleStartPrintting} color='primary' className='cta' type='button'>
+            //               Start Printing
+            //             </Button>
+            //           </div>
+            //         )}
+            //       </div>
+            //     );
+            //   } else return null;
+            // }
 
             return (
               <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
@@ -179,25 +191,31 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
                     </div>
 
                     <div className='d-flex'>
-                      {canRejected && (
+                      {canRejected && !isReceivedStatus && (
                         <Button
                           color='secondary'
                           onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex)}
                           className='cta cta2 mr-2 mb-3'
-                          disabled={(work.attachments.length < 1 && !isTrackingStatus) || (isTrackingStatus && !order.printfulTrackingUrl)}
+                          disabled={(work.attachments?.length < 1 && !isTrackingStatus) || (isTrackingStatus && !order.printfulTrackingUrl)}
                           type='button'>
                           Reject
                         </Button>
                       )}
 
-                      {canAprroved && (
+                      {canAprroved && !isReceivedStatus && (
                         <Button
                           color='primary'
                           onClick={() => handleApproveWorkLog(work.id)}
                           className='cta cta2 mb-3'
-                          disabled={(work.attachments.length < 1 && !isTrackingStatus) || (isTrackingStatus && !order.printfulTrackingUrl)}
+                          disabled={(work.attachments?.length < 1 && !isTrackingStatus) || (isTrackingStatus && !order.printfulTrackingUrl)}
                           type='button'>
                           Approved
+                        </Button>
+                      )}
+
+                      {isReceivedStatus && order.status !== 'DONE' && (
+                        <Button color='primary' onClick={() => handleApproveWorkLog(work.id, true)} className='cta cta2 mb-3' type='button'>
+                          Mark as Done
                         </Button>
                       )}
                     </div>
@@ -220,7 +238,7 @@ const mapStateToProps = ({ auth, orderDetail }) => ({
 const mapDispatchToProps = {
   approvedWorkLog: approvedWorkLogAction,
   rejectedWorkLog: rejectedWorkLogAction,
-  getEmailTemplate: getEmailTemplateAction,
+  getNotifyTemplatesAction,
   createOrderCanvasWorkLogAction,
 };
 

@@ -32,12 +32,14 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
   const PRINT_PREVIEW = sortBy([...(worklogGroup.PRINT_PREVIEW || [])], (item) => new Date(item.createdDate));
   const PRINT_TRACKING = sortBy([...(worklogGroup.PRINT_TRACKING || [])], (item) => new Date(item.createdDate));
   const PRINT_RECEIVED = sortBy([...(worklogGroup.PRINT_RECEIVED || [])], (item) => new Date(item.createdDate));
+  const DONE = [...(worklogGroup.DONE || [])];
 
   const WorkGrouped = {
     NEW_ORDER,
     PRINT_PREVIEW,
     PRINT_TRACKING,
     PRINT_RECEIVED,
+    DONE,
   };
 
   if (!NEW_ORDER.length) {
@@ -52,6 +54,9 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
   }
   if (!PRINT_RECEIVED.length) {
     delete WorkGrouped.PRINT_RECEIVED;
+  }
+  if (!DONE.length) {
+    delete WorkGrouped.DONE;
   }
 
   return (
@@ -68,16 +73,17 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
           </div>
         </div>
 
-        <div className='col-lg-8'>
-          <div className={`order_detail__content ${tab === 'activity' && 'active'} `}>
-            <div className='order_detail__work_items box'>
-              {order.status === 'DONE' &&
-                map(WorkGrouped, (works, key) => {
+        {(order.status === 'SEND_FILE' || order.status === 'DONE') && Object.keys(WorkGrouped).length > 0 && (
+          <div className='col-lg-8'>
+            <div className={`order_detail__content ${tab === 'activity' && 'active'} `}>
+              <div className='order_detail__work_items box'>
+                {map(WorkGrouped, (works, key) => {
                   return <OrderCanvasWorkGroup isNewOrder={isNewOrder} works={works} order={order} group={key} key={`workGroup__item__${key}`} lastWorkLog={lastWorkLog} status={status} />;
                 })}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -85,9 +91,6 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
 
 const mapStateToProps = ({ orderTable, orderDetail, auth }) => {
   const workLog = [...orderDetail.data.canvasWorkLog];
-  if (workLog.length === 0) {
-    workLog.push({ status: 'NEW_ORDER' });
-  }
   return {
     status: orderTable.orders.status,
     loading: orderDetail.ui.loadingCanvasWorkLog,

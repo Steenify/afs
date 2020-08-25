@@ -254,7 +254,10 @@ export const updateOrderStatusAction = (id, to) => (dispatch, getState) => {
 };
 
 export const CREATE_ORDER_CANVAS_WORK_LOG_ACTION = actionCreator('CREATE_ORDER_CANVAS_WORK_LOG_ACTION');
-export const createOrderCanvasWorkLogAction = (id) => (dispatch) => {
+export const createOrderCanvasWorkLogAction = (id, logId, workLogType = 'workLog') => (dispatch, getState) => {
+  const workLog = getState().orderDetail.data[workLogType];
+  const workLogIndex = findIndex(workLog, (log) => log.id === logId);
+
   const onPending = () => {
     dispatch({
       type: CREATE_ORDER_CANVAS_WORK_LOG_ACTION.PENDING,
@@ -262,6 +265,20 @@ export const createOrderCanvasWorkLogAction = (id) => (dispatch) => {
   };
 
   const onSuccess = (data) => {
+    const { accountInfo } = getState().auth.data;
+    const actor = `${accountInfo?.firstName || ''} ${accountInfo?.lastName || ''}`;
+
+    const activives = [
+      {
+        activityType: 'APPROVED',
+        actor,
+        lastActionDate: new Date(),
+      },
+    ];
+    dispatch({
+      type: APPROVED_WORK_LOG_ACTION.SUCCESS,
+      payload: { index: workLogIndex, activives, isStartingCanvas: true, workLogType },
+    });
     dispatch({
       type: CREATE_ORDER_CANVAS_WORK_LOG_ACTION.SUCCESS,
       payload: { data },
@@ -547,7 +564,7 @@ export const updateCommentWorkLogAction = (id, logId, comId, payload, logIndex, 
 };
 
 export const APPROVED_WORK_LOG_ACTION = actionCreator('APPROVED_WORK_LOG_ACTION');
-export const approvedWorkLogAction = (id, logId, workLogType = 'workLog') => (dispatch, getState) => {
+export const approvedWorkLogAction = (id, logId, workLogType = 'workLog', isMarkAsDone = false) => (dispatch, getState) => {
   const workLog = getState().orderDetail.data[workLogType];
   const workLogIndex = findIndex(workLog, (log) => log.id === logId);
 
@@ -569,7 +586,7 @@ export const approvedWorkLogAction = (id, logId, workLogType = 'workLog') => (di
     ];
     dispatch({
       type: APPROVED_WORK_LOG_ACTION.SUCCESS,
-      payload: { data, index: workLogIndex, activives, workLogType },
+      payload: { data, index: workLogIndex, activives, workLogType, isMarkAsDone },
     });
   };
   const onError = (error) => {
@@ -639,6 +656,11 @@ export const rejectedWorkLogAction = (id, logId, payload, index, cb, workLogType
     onSuccess,
     onError,
   });
+};
+
+export const getNotifyTemplatesAction = (id, templateId, workLogIndex, workLogType = 'workLog') => (dispatch) => {
+  dispatch(getEmailTemplateAction(id, templateId, workLogIndex, workLogType));
+  dispatch(getFBMessageTemplateAction(id, templateId, workLogIndex, workLogType));
 };
 
 export const GET_EMAIL_TEMPLATE_ACTION = actionCreator('GET_EMAIL_TEMPLATE_ACTION');

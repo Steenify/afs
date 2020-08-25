@@ -11,9 +11,9 @@ import Button from 'components/common/button';
 import { getListImageUrl, getSelectedStatus } from 'utils';
 import { PERMITTIONS_CONFIG } from 'configs';
 
-import { uploadFileWorkLogAction, deleteFileDeliveryAction, getEmailTemplateAction } from './actions';
+import { uploadFileWorkLogAction, deleteFileDeliveryAction, getNotifyTemplatesAction } from './actions';
 
-const OrderCanvasDelivery = ({ order, images, works, workLog, uploadFileWorkLog, deleteFileDelivery, accountInfo, status, getEmailTemplate }) => {
+const OrderCanvasDelivery = ({ order, images, works, workLog, uploadFileWorkLog, deleteFileDelivery, accountInfo, status, getNotifyTemplatesAction }) => {
   const dropbox = useRef(null);
 
   const lastExport = works[works.length - 1];
@@ -68,7 +68,7 @@ const OrderCanvasDelivery = ({ order, images, works, workLog, uploadFileWorkLog,
   const handleNotifyEmail = () => {
     const currentStatus = getSelectedStatus('SEND_FILE', status);
     if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
-      getEmailTemplate(order.id, currentStatus.emailTemplates[0].id);
+      getNotifyTemplatesAction(order.id, currentStatus.emailTemplates[0].id);
     } else {
       toast.warn('No Email template found!');
     }
@@ -125,7 +125,7 @@ const mapStateToProps = ({ orderDetail, auth, orderTable }) => ({
 const mapDispatchToProps = {
   uploadFileWorkLog: uploadFileWorkLogAction,
   deleteFileDelivery: deleteFileDeliveryAction,
-  getEmailTemplate: getEmailTemplateAction,
+  getNotifyTemplatesAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderCanvasDelivery);

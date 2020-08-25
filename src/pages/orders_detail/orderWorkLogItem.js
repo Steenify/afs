@@ -65,7 +65,7 @@ const OrderWorkLogItem = ({
   const isExported = order.status === 'EXPORT_FILE';
   const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
 
-  const notUpload = mapStatusCanNotUpload.indexOf(order.status) !== -1;
+  const notUpload = mapStatusCanNotUpload.indexOf(order.statusForCanvas || order.status) !== -1;
 
   const activities = work?.activities || [];
   const activitiesGroup = groupBy(activities, 'activityType');
@@ -303,7 +303,7 @@ const OrderWorkLogItem = ({
           </div>
         )}
 
-        {(!work.attachments.length || isEdit) && !notUpload && !isPrintTrackingStatus && (
+        {(!work.attachments?.length || isEdit) && !notUpload && !isPrintTrackingStatus && (
           <div>
             {!isRejected && !isAproved && (
               <>
@@ -320,7 +320,7 @@ const OrderWorkLogItem = ({
           </div>
         )}
 
-        {work.attachments.length > 0 && (
+        {work.attachments?.length > 0 && (
           <div className='photos'>
             <ImageGallery images={getListImageUrl(work.attachments)} alt={work.status} caption={work.status} canDelete={isEdit} onDelete={handleDeleteFile} />
           </div>
@@ -340,7 +340,7 @@ const OrderWorkLogItem = ({
         </div>
 
         <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_FEEDBACK}>
-          <div className={`order_detail__comments comments ${!work.feedbacks.length ? 'd-none' : ''}`}>
+          <div className={`order_detail__comments comments ${!work.feedbacks?.length ? 'd-none' : ''}`}>
             <div className='box__header comments__header'>
               <div onClick={toggleFeedback} className='box__icon feedback comments__icon'>
                 <div className='icon'>
@@ -354,7 +354,7 @@ const OrderWorkLogItem = ({
             <Collapse isOpen={isOpenFeedback}>
               <div className='comments__list'>
                 {work.feedbacks
-                  .sort((a, b) => (moment(a.createdDate).isBefore(moment(b.createdDate)) ? -1 : 1))
+                  ?.sort((a, b) => (moment(a.createdDate).isBefore(moment(b.createdDate)) ? -1 : 1))
                   .map((feedback) => (
                     <div key={`feedback__item__${work.id}__${feedback.id}`} className='comments__item'>
                       <div className='comments__author'>
@@ -379,8 +379,8 @@ const OrderWorkLogItem = ({
         </CanShow>
 
         <div
-          className={`order_detail__comments comments ${!isWorking && !work.comments.length && !isReview ? 'd-none' : ''} ${
-            (isReview || isWorking || work.comments.length) && work.feedbacks.length ? 'ignore-top' : ''
+          className={`order_detail__comments comments ${!isWorking && !work.comments?.length && !isReview ? 'd-none' : ''} ${
+            (isReview || isWorking || work.comments?.length) && work.feedbacks?.length ? 'ignore-top' : ''
           }`}>
           <div className='box__header comments__header'>
             <div onClick={toggleCom} className='box__icon com comments__icon'>
@@ -394,7 +394,7 @@ const OrderWorkLogItem = ({
           </div>
           <Collapse isOpen={isOpenCom}>
             <div className='comments__list'>
-              {work.comments.map((com, index) => (
+              {work.comments?.map((com, index) => (
                 <div key={`comment__item__${work.id}__${com.id}`} className='comments__item'>
                   <div className='comments__author'>
                     <div className='left'>

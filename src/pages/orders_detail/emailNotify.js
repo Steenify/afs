@@ -52,7 +52,6 @@ const EmaiNotify = (props) => {
   const [notifyType, setNotifyType] = useState('email');
   const defailtEmail = customer?.contact?.email || '';
   const [customerEmail, setCustomerEmail] = useState(defailtEmail);
-  console.log('EmaiNotify -> customerEmail', customerEmail);
 
   useEffect(() => {
     setCustomerEmail(defailtEmail);

@@ -312,6 +312,52 @@ const reducer = (state = initialState, action) => {
     }
 
     case APPROVED_WORK_LOG_ACTION.SUCCESS: {
+      if (payload.isStartingCanvas) {
+        return update(state, {
+          ui: {
+            loading: { $set: false },
+          },
+          data: {
+            [payload.workLogType]: {
+              [payload.index]: {
+                state: {
+                  $set: 'APPROVED',
+                },
+                activities: {
+                  $push: payload.activives,
+                },
+              },
+            },
+          },
+        });
+      }
+      if (payload.isMarkAsDone) {
+        return update(state, {
+          ui: {
+            loading: { $set: false },
+          },
+          data: {
+            order: {
+              status: {
+                $set: payload.data.status,
+              },
+            },
+            workLog: {
+              $push: [payload.data],
+            },
+            canvasWorkLog: {
+              [payload.index]: {
+                state: {
+                  $set: 'APPROVED',
+                },
+                activities: {
+                  $push: payload.activives,
+                },
+              },
+            },
+          },
+        });
+      }
       return update(state, {
         ui: {
           loading: { $set: false },

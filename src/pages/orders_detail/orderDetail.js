@@ -85,7 +85,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
           </div>
         </div>
       ))}
-      <OrderArtWorkBox order={order} />
+      <OrderArtWorkBox order={order} hasPoster={canvasItems.length > 0} />
 
       {SHOW_POSTER && canvasItems.length > 0 && (
         <>
@@ -117,7 +117,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
               </div>
             </div>
           ))}
-          {order.status === 'DONE' && <OrderCanvasWorkBox order={order} />}
+          {(order.status === 'SEND_FILE' || order.status === 'DONE') && <OrderCanvasWorkBox order={order} />}
         </>
       )}
 

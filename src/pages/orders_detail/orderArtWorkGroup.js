@@ -15,7 +15,15 @@ import Button from 'components/common/button';
 import OrderWorkLogItem from './orderWorkLogItem';
 import OrderRejectModal from './orderRejectModal';
 
-import { approvedWorkLogAction, rejectedWorkLogAction, getEmailTemplateAction, updateOrderStatusAction, uploadCommentWorkLogAction, getRemindEmailTemplateAction } from './actions';
+import {
+  approvedWorkLogAction,
+  rejectedWorkLogAction,
+  getNotifyTemplatesAction,
+  updateOrderStatusAction,
+  uploadCommentWorkLogAction,
+  getRemindEmailTemplateAction,
+  createOrderCanvasWorkLogAction,
+} from './actions';
 
 const OrderArtWorkGroup = ({
   order,
@@ -24,14 +32,16 @@ const OrderArtWorkGroup = ({
   status,
   approvedWorkLog,
   rejectedWorkLog,
-  getEmailTemplate,
+  getNotifyTemplatesAction,
   getRemindEmailTemplateAction,
   accountInfo,
   updateOrderStatus,
   isNewOrder,
   uploadCommentWorkLog,
+  createOrderCanvasWorkLogAction,
   workLog,
   lastWorkLog,
+  hasPoster,
 }) => {
   let isOpened = false;
 
@@ -52,9 +62,10 @@ const OrderArtWorkGroup = ({
   const canAprroved = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) || false;
   const canRejected = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.REJECT_WORK_LOG) || false;
 
+  const canCreateWorkLogForCanvas = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_WORK_LOG_FOR_CANVAS) || false;
   const canChangeStatus = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_STATUS_BOOKING) || false;
 
-  const handleApproveWorkLog = (LogId) => {
+  const handleApproveWorkLog = (LogId, isSendFile) => {
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
@@ -77,7 +88,11 @@ const OrderArtWorkGroup = ({
               <button
                 className='comfirm_cus__accept comfirm_cus__control'
                 onClick={() => {
-                  approvedWorkLog(order.id, LogId);
+                  if (canCreateWorkLogForCanvas && isSendFile && hasPoster) {
+                    createOrderCanvasWorkLogAction(order.id, LogId);
+                  } else {
+                    approvedWorkLog(order.id, LogId);
+                  }
                   onClose();
                 }}>
                 Accept
@@ -92,7 +107,7 @@ const OrderArtWorkGroup = ({
   const handleNotifyEmail = (workLogIndex) => {
     const currentStatus = getSelectedStatus(order.status, status);
     if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
-      getEmailTemplate(order.id, currentStatus.emailTemplates[0].id, workLogIndex);
+      getNotifyTemplatesAction(order.id, currentStatus.emailTemplates[0].id, workLogIndex);
     } else {
       toast.warn('No Email template found!');
     }
@@ -181,46 +196,52 @@ const OrderArtWorkGroup = ({
               <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                 <OrderWorkLogItem work={work} isOpened={showActionState} order={order} />
 
-                {showActionState && showActionPermitions && (
-                  <div className='order_detail__ctas d-flex flex-wrap justify-content-between'>
-                    <div className='d-flex'>
-                      {canNotifyCustomer && isNotifyStatus && (
-                        <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} className='cta cta2 mr-2 mb-3 order_detail__notify' type='button'>
-                          Notify Customer
-                        </Button>
-                      )}
-                      {canNotifyCustomer && isNotifyStatus && (
-                        <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} className='cta cta2 mb-3 order_detail__remind' type='button'>
-                          Remind Customer
-                        </Button>
-                      )}
-                    </div>
+                {isSendFile && order.statusForCanvas ? (
+                  <></>
+                ) : (
+                  <>
+                    {showActionState && showActionPermitions && (
+                      <div className='order_detail__ctas d-flex flex-wrap justify-content-between'>
+                        <div className='d-flex'>
+                          {canNotifyCustomer && isNotifyStatus && (
+                            <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} className='cta cta2 mr-2 mb-3 order_detail__notify' type='button'>
+                              Notify Customer
+                            </Button>
+                          )}
+                          {canNotifyCustomer && isNotifyStatus && (
+                            <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} className='cta cta2 mb-3 order_detail__remind' type='button'>
+                              Remind Customer
+                            </Button>
+                          )}
+                        </div>
 
-                    <div className='d-flex'>
-                      {canRejected && !isExportFile && !isSendFile && (
-                        <Button
-                          color='secondary'
-                          onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex)}
-                          className='cta cta2 mr-2 mb-3'
-                          disabled={!(work.attachments.length > 0) && needCheckFile}
-                          type='button'>
-                          Reject
-                        </Button>
-                      )}
+                        <div className='d-flex'>
+                          {canRejected && !isExportFile && !isSendFile && (
+                            <Button
+                              color='secondary'
+                              onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex)}
+                              className='cta cta2 mr-2 mb-3'
+                              disabled={!(work.attachments.length > 0) && needCheckFile}
+                              type='button'>
+                              Reject
+                            </Button>
+                          )}
 
-                      {canAprroved && !isSendFile && (
-                        <Button color='primary' onClick={() => handleApproveWorkLog(work.id)} className='cta cta2 mb-3' disabled={!(work.attachments.length > 0) && needCheckFile} type='button'>
-                          Approved
-                        </Button>
-                      )}
+                          {canAprroved && !isSendFile && (
+                            <Button color='primary' onClick={() => handleApproveWorkLog(work.id)} className='cta cta2 mb-3' disabled={!(work.attachments.length > 0) && needCheckFile} type='button'>
+                              Approved
+                            </Button>
+                          )}
 
-                      {isSendFile && (
-                        <Button color='primary' onClick={() => handleApproveWorkLog(work.id)} className='cta cta2 mb-3' type='button'>
-                          Mark as Done
-                        </Button>
-                      )}
-                    </div>
-                  </div>
+                          {isSendFile && (
+                            <Button color='primary' onClick={() => handleApproveWorkLog(work.id, isSendFile)} className='cta cta2 mb-3' type='button'>
+                              {hasPoster ? 'Start Printing' : 'Mark as Done'}
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             );
@@ -239,10 +260,11 @@ const mapStateToProps = ({ auth, orderDetail }) => ({
 const mapDispatchToProps = {
   approvedWorkLog: approvedWorkLogAction,
   rejectedWorkLog: rejectedWorkLogAction,
-  getEmailTemplate: getEmailTemplateAction,
+  getNotifyTemplatesAction,
   updateOrderStatus: updateOrderStatusAction,
   uploadCommentWorkLog: uploadCommentWorkLogAction,
   getRemindEmailTemplateAction,
+  createOrderCanvasWorkLogAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderArtWorkGroup);

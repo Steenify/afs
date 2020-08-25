@@ -49,7 +49,7 @@ export const PERMITTIONS_CONFIG = {
 
 export const listStatus = ['NEW_ORDER', 'SKETCH', 'SKETCH_REVIEW', 'SKETCH_EDIT', 'COLOR', 'COLOR_REVIEW', 'COLOR_EDIT', 'EXPORT_FILE', 'SEND_FILE', 'DONE'];
 
-export const mapStatusCanNotUpload = ['SKETCH_REVIEW', 'COLOR_REVIEW', 'SEND_FILE', 'PRINT_TRACKING'];
+export const mapStatusCanNotUpload = ['SKETCH_REVIEW', 'COLOR_REVIEW', 'SEND_FILE', 'PRINT_TRACKING', 'PRINT_RECEIVED'];
 
 export const mapStatusOpen = {
   SKETCH: ['SKETCH', 'CUSTOMER_REVIEW_SKETCH', 'SKETCH_REVIEW', 'SKETCH_EDIT'],
