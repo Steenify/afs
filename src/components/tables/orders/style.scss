@@ -764,6 +764,17 @@
 			&__main {
 				display: flex;
 				align-items: center;
+
+				@include max-md {
+					display: unset;
+				}
+			}
+
+			&__filters {
+				display: flex;
+				align-items: center;
+				// justify-content: end;
+				flex-wrap: wrap;
 			}
 
 			&__text {

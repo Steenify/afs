@@ -89,7 +89,7 @@ class OrderFilters extends Component {
           <div className='filter__text'>
             <input type='text' defaultValue={text} placeholder='Search orders' className='search__box form-control' onChange={this.handleChangeText} />
           </div>
-          <div>
+          <div className='filter__filters'>
             <OrderFilterTag reducer={reducer} />
             <OrderFilterStatus reducer={reducer} />
             {canAssign && <OrderFilterAssignee reducer={reducer} />}

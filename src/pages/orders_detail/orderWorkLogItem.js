@@ -324,7 +324,7 @@ const OrderWorkLogItem = ({
                 <div className='m-2'>
                   <span>URL: </span>
                   <a target='_blank' rel='noopener noreferrer' href={order.printfulTrackingUrl}>
-                    {order.printfulTrackingUrl}
+                    Link
                   </a>
                 </div>
                 <div className='m-2'>
@@ -523,8 +523,8 @@ const OrderWorkLogItem = ({
         </div>
         <div className={`order_detail__activites activites ${!Act_REJECTED.length && 'd-none'}`}>
           <div className='activites__list'>
-            {Act_REJECTED.map((act) => (
-              <div key={`order__worklog__${work.id}__act_REJECTED_by_${act.actor}`} className='activites__item REJECTED'>
+            {Act_REJECTED.map((act, index) => (
+              <div key={`order__worklog__${work.id}__act_REJECTED_by_${act.actor}__${index.toString()}`} className='activites__item REJECTED'>
                 <div className='content'>
                   <strong>{act.actor} rejected</strong>
                   <span> {dateTimeFromNow(act.lastActionDate)}</span>
@@ -535,8 +535,8 @@ const OrderWorkLogItem = ({
         </div>
         <div className={`order_detail__activites activites ${!Act_APPROVED.length && 'd-none'}`}>
           <div className='activites__list'>
-            {Act_APPROVED.map((act) => (
-              <div key={`order__worklog__${work.id}__act_APPROVED_by_${act.actor}`} className='activites__item APPROVED'>
+            {Act_APPROVED.map((act, index) => (
+              <div key={`order__worklog__${work.id}__act_APPROVED_by_${act.actor}__${index.toString()}`} className='activites__item APPROVED'>
                 <div className='content'>
                   <strong>{act.actor} approved</strong>
                   <span> {dateTimeFromNow(act.lastActionDate)}</span>
