@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import { findIndex } from 'lodash';
 import { getSelectedStatus, dateTimeStringFromDate } from 'utils';
-import { PERMITTIONS_CONFIG, mapStatusOpen, mapStatusNotiy, mapStatusRemind } from 'configs';
+import { PERMITTIONS_CONFIG, mapStatusOpen, mapStatusNotiy } from 'configs';
 
 import { ReactComponent as Toggle } from 'assets/img/toggle.svg';
 import { ReactComponent as Close } from 'assets/img/close.svg';
@@ -15,7 +15,7 @@ import Button from 'components/common/button';
 import OrderWorkLogItem from './orderWorkLogItem';
 import OrderRejectModal from './orderRejectModal';
 
-import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction, createOrderCanvasWorkLogAction, getRemindTemplatesAction } from './actions';
+import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction, createOrderCanvasWorkLogAction } from './actions';
 
 const OrderCanvasWorkGroup = ({
   order,
@@ -25,7 +25,6 @@ const OrderCanvasWorkGroup = ({
   approvedWorkLog,
   rejectedWorkLog,
   getNotifyTemplatesAction,
-  getRemindTemplatesAction,
   accountInfo,
   createOrderCanvasWorkLogAction,
   isNewOrder,
@@ -46,7 +45,6 @@ const OrderCanvasWorkGroup = ({
   // };
 
   const isNotifyStatus = mapStatusNotiy.indexOf(order.statusForCanvas) !== -1;
-  const isRemindStatus = mapStatusRemind.indexOf(order.statusForCanvas) !== -1;
 
   const [isOpen, setIsOpen] = useState(isOpened || false);
   const toggle = () => setIsOpen(!isOpen);
@@ -100,10 +98,6 @@ const OrderCanvasWorkGroup = ({
     } else {
       toast.warn('No Email template found!');
     }
-  };
-
-  const handleRemindEmail = (workLogIndex) => {
-    getRemindTemplatesAction(order.id, workLogIndex, 'canvasWorkLog');
   };
 
   const handleConfirmRejectWorkLog = (LogId, workLogIndex) => {
@@ -193,12 +187,7 @@ const OrderCanvasWorkGroup = ({
                     <div className='d-flex'>
                       {canNotifyCustomer && isNotifyStatus && (
                         <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} className='cta cta2 mb-3 mr-2 order_detail__notify' type='button'>
-                          {isRemindStatus ? 'Notify Customer' : 'Check With Customer'}
-                        </Button>
-                      )}
-                      {canNotifyCustomer && isRemindStatus && (
-                        <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} className='cta cta2 mb-3 order_detail__remind' type='button'>
-                          Remind Customer
+                          {order.statusForCanvas !== 'PRINT_RECEIVED' ? 'Notify Customer' : 'Check With Customer'}
                         </Button>
                       )}
                     </div>
@@ -252,7 +241,6 @@ const mapDispatchToProps = {
   approvedWorkLog: approvedWorkLogAction,
   rejectedWorkLog: rejectedWorkLogAction,
   getNotifyTemplatesAction,
-  getRemindTemplatesAction,
   createOrderCanvasWorkLogAction,
 };
 

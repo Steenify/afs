@@ -11,6 +11,7 @@ const MapAlert = {
   NO_ACTIVITY: 'Over 1 day no activity. Follow up?',
   LATE_WORK_LOG_DEADLINE: 'No activity. Follow up?',
   LATE_FINAL_DEADLINE: 'Late deadline. Follow up?',
+  PRINT_RECEIVED: 'Print received. Follow up?',
 };
 
 const OrderLastUpdateDateCell = ({ lastModifiedDate, goToDetail, code, alert, status }) => {

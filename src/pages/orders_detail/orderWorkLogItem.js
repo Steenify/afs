@@ -55,8 +55,8 @@ const OrderWorkLogItem = ({
 
   const trackingURLInput = useRef(null);
   const trackingCodeInput = useRef(null);
-  const [trackingDeliveryFromDate, setTrackingDeliveryFromDate] = useState(moment(order.printfulEstimatedDeliveryFrom));
-  const [trackingDeliveryToDate, setTrackingDeliveryToDate] = useState(moment(order.printfulEstimatedDeliveryTo));
+  const [trackingDeliveryFromDate, setTrackingDeliveryFromDate] = useState(moment(order.printfulEstimatedDeliveryFrom || moment()));
+  const [trackingDeliveryToDate, setTrackingDeliveryToDate] = useState(moment(order.printfulEstimatedDeliveryTo || moment()));
 
   const [editComment, setEditComment] = useState({});
   const [editCommentIndex, setEditCommentIndex] = useState(0);
@@ -320,12 +320,22 @@ const OrderWorkLogItem = ({
                 </div>
               </>
             ) : (
-              <div className='mb-3'>
-                <p>Tracking URL</p>
-                <a target='_blank' rel='noopener noreferrer' href={order.printfulTrackingUrl}>
-                  {order.printfulTrackingUrl}
-                </a>
-              </div>
+              <>
+                <div className='m-2'>
+                  <span>URL: </span>
+                  <a target='_blank' rel='noopener noreferrer' href={order.printfulTrackingUrl}>
+                    {order.printfulTrackingUrl}
+                  </a>
+                </div>
+                <div className='m-2'>
+                  <span>Code: {order.printfulTrackingCode}</span>
+                </div>
+                <div className='m-2'>
+                  <span>
+                    Estimated Delivery: {moment(order.printfulEstimatedDeliveryFrom).format('DD/MM/YYYY')} - {moment(order.printfulEstimatedDeliveryTo).format('DD/MM/YYYY')}
+                  </span>
+                </div>
+              </>
             )}
           </div>
         )}
