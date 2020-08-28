@@ -123,7 +123,7 @@ const CustomerDetailInfo = (props) => {
               )}
             </p>
             <p className='mb-1'>
-              <PopoverInputField value={customer?.customerExtension?.fbUrl} title='Facebook' showTitle showValue={false} onSave={(value) => onUpdateExtension('fbUrl', 'Facebook', value)} />
+              <PopoverInputField value={customer?.customerExtension?.fbUrl} title='Facebook 1' showTitle showValue={false} onSave={(value) => onUpdateExtension('fbUrl', 'Facebook 1', value)} />
               {customer?.customerExtension?.fbUrl && (
                 <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.fbUrl}`}>
                   Link
@@ -131,9 +131,25 @@ const CustomerDetailInfo = (props) => {
               )}
             </p>
             <p className='mb-1'>
-              <PopoverInputField value={customer?.customerExtension?.igUrl} title='Instagram' showTitle showValue={false} onSave={(value) => onUpdateExtension('igUrl', 'Instagram', value)} />
+              <PopoverInputField value={customer?.customerExtension?.fbUrl2} title='Facebook 2' showTitle showValue={false} onSave={(value) => onUpdateExtension('fbUrl2', 'Facebook 2', value)} />
+              {customer?.customerExtension?.fbUrl2 && (
+                <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.fbUrl2}`}>
+                  Link
+                </a>
+              )}
+            </p>
+            <p className='mb-1'>
+              <PopoverInputField value={customer?.customerExtension?.igUrl} title='Instagram 1' showTitle showValue={false} onSave={(value) => onUpdateExtension('igUrl', 'Instagram 1', value)} />
               {customer?.customerExtension?.igUrl && (
                 <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.igUrl}`}>
+                  Link
+                </a>
+              )}
+            </p>
+            <p className='mb-1'>
+              <PopoverInputField value={customer?.customerExtension?.igUrl2} title='Instagram 2' showTitle showValue={false} onSave={(value) => onUpdateExtension('igUrl2', 'Instagram 2', value)} />
+              {customer?.customerExtension?.igUrl2 && (
+                <a target='_blank' rel='noopener noreferrer' href={`${customer?.customerExtension?.igUrl2}`}>
                   Link
                 </a>
               )}
