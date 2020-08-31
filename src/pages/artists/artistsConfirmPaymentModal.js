@@ -79,6 +79,7 @@ const ArtistsConfirmPaymentModal = (props) => {
       onSuccess: () => {
         onChangeLoading(false);
         toast.dark(`Confirmation sent to ${selectedArtists.map((item) => item?.login || '').join(', ')}`);
+        isOpen && toggle && toggle();
       },
     });
   };
