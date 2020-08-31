@@ -43,7 +43,7 @@ export const CustomStyles = {
     // width: state.selectProps.width,
     borderBottom: '1px dotted pink',
     color: '#000000',
-    zIndex: 3,
+    zIndex: 1111,
   }),
 };
 

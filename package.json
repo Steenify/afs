@@ -76,6 +76,7 @@
     "start": "node server.js",
     "local": "env-cmd -f .env.local react-app-rewired start",
     "dev": "env-cmd -f .env.development react-app-rewired start",
+    "prod": "env-cmd -f .env.production react-app-rewired start",
     "build-dev": "env-cmd -f .env.development react-app-rewired build && cp build/index.html build/404.html",
     "build": "env-cmd -f .env.production react-app-rewired build && cp build/index.html build/404.html && npm run cp-locale",
     "cp-locale": "cpx \"public/locales/*.json\" build/locales",

@@ -32,9 +32,9 @@ const PopoverSelectField = ({ value, options, title, id, onSave, className }) =>
     <Popover
       isOpen={isOpen}
       transitionDuration={0.000001}
-      position={'bottom'}
+      position={['bottom', 'right']}
       padding={10}
-      disableReposition
+      // disableReposition
       onClickOutside={toggle}
       content={() => (
         <div className='popover__container p-3'>
