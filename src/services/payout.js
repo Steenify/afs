@@ -36,3 +36,10 @@ export const confirmPayoutService = (data) =>
     method: 'POST',
     data,
   });
+
+export const getPayoutInfoByArtists = (params) =>
+  request({
+    url: PAYOUT_CONFIRMATION_API,
+    method: 'get',
+    params,
+  });

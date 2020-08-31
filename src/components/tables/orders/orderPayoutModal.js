@@ -64,13 +64,17 @@ const OrderPayoutModal = ({
   };
 
   const handleArtistConfirmation = () => {
-    const payload = {
-      artistId: artist.id,
-      payout: map(orders, (or) => ({
-        bookingNumber: or.number,
-        paid: or?.budget,
-      })),
-    };
+    const payload = [
+      {
+        artistId: artist.id,
+        payout: map(orders, (or) => ({
+          bookingNumber: or.number,
+          paid: or?.budget,
+        })),
+        extraPayment: parseInt(extra, 10) || 0,
+        note: noteItem['extra'] || '',
+      },
+    ];
     confirmOrderTablePayoutsBulkAction({
       payload,
       reducer,
@@ -194,7 +198,7 @@ const OrderPayoutModal = ({
             <NumberFormat prefix={'$  '} thousandSeparator={true} className='form-control payout__extra money' value={extra} onValueChange={onChangeExtra} />
           </div>
         </div>
-        <textarea rows='2' placeholder={`extra paymen note`} number={'extra'} value={noteItem['extra'] || ''} onChange={handleChangeNoteItems} className='form-control payout__note mb-3' />
+        <textarea rows='2' placeholder={`Extra payment note`} number={'extra'} value={noteItem['extra'] || ''} onChange={handleChangeNoteItems} className='form-control payout__note mb-3' />
 
         <div className='payout__divider'></div>
 

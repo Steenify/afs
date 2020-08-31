@@ -12,12 +12,12 @@ import Button from 'components/common/button';
 import { getOrderItem, getOrderOption, formatMoney, actionTryCatchCreator } from 'utils';
 import { statusPayments } from 'configs';
 
-import { createOrderTablePayoutsBulkAction, confirmOrderTablePayoutsBulkAction } from 'components/tables/orders/actions';
+import { createOrderTablePayoutsBulkAction } from 'components/tables/orders/actions';
 import { getArtistsListAction } from './actions';
 import { getAllOrdersService } from 'services/order';
 
 const ArtistPayoutModal = (props) => {
-  const { isOpen, className, toggle, artist, createOrderTablePayoutsBulkAction, getArtistsListAction, confirmOrderTablePayoutsBulkAction } = props;
+  const { isOpen, className, toggle, artist, createOrderTablePayoutsBulkAction, getArtistsListAction } = props;
 
   const dropbox = useRef(null);
   const [extra, setExtra] = useState(0);
@@ -60,23 +60,6 @@ const ArtistPayoutModal = (props) => {
     const number = e.target.getAttribute('number');
 
     setNoteItem({ ...noteItem, [number]: value });
-  };
-
-  const handleArtistConfirmation = () => {
-    const payload = {
-      artistId: artist.id,
-      payout: map(data?.orders || [], (or) => ({
-        bookingNumber: or.number,
-        paid: or?.budget,
-      })),
-    };
-    confirmOrderTablePayoutsBulkAction({
-      payload,
-      reducer: 'orders',
-      onSuccess: () => {
-        toast.dark(`Confirmation sent to ${artist?.firstName || ''} ${artist?.lastName || ''}`);
-      },
-    });
   };
 
   const handleSubmit = () => {
@@ -189,7 +172,7 @@ const ArtistPayoutModal = (props) => {
               <NumberFormat prefix={'$  '} thousandSeparator={true} className='form-control payout__extra money' value={extra} onValueChange={onChangeExtra} />
             </div>
           </div>
-          <textarea rows='2' placeholder={`extra paymen note`} number={'extra'} value={noteItem['extra'] || ''} onChange={handleChangeNoteItems} className='form-control payout__note mb-3' />
+          <textarea rows='2' placeholder={`Extra payment note`} number={'extra'} value={noteItem['extra'] || ''} onChange={handleChangeNoteItems} className='form-control payout__note mb-3' />
 
           <div className='payout__divider' />
 
@@ -222,14 +205,6 @@ const ArtistPayoutModal = (props) => {
             </div>
           </div>
           <div className='payout__item action'>
-            <div className='left' />
-            <div className='right'>
-              <Button onClick={handleArtistConfirmation} disabled={!canPay} color='confirm' className='payout__submit payout__action' type='button'>
-                Confirm Payment
-              </Button>
-            </div>
-          </div>
-          <div className='payout__item action'>
             <div className='left'>
               <Button color='normal' onClick={toggle} className='payout__cancel payout__action' type='button'>
                 Cancel
@@ -256,6 +231,6 @@ const mapStateToProps = ({ artists, auth }) => {
   };
 };
 
-const mapDispatchToProps = { createOrderTablePayoutsBulkAction, getArtistsListAction, confirmOrderTablePayoutsBulkAction };
+const mapDispatchToProps = { createOrderTablePayoutsBulkAction, getArtistsListAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArtistPayoutModal);

@@ -172,6 +172,36 @@
 				width: 200px;
 			}
 		}
+		.payout__list {
+			border-top: 2px solid rgb(226, 229, 238);
+		}
+		.content_left {
+			display: flex;
+			flex-direction: column;
+
+			overflow: auto;
+		}
+		.content_right {
+			display: flex;
+			flex-direction: column;
+			border-left: 2px dashed rgb(226, 229, 238);
+			overflow: auto;
+		}
+
+		.artist_selected {
+			color: rgb(255, 255, 255);
+			background-color: rgb(51, 127, 215);
+		}
+
+		.artist_item {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-bottom: 5px;
+			font-size: 18px;
+			cursor: pointer;
+			border-radius: 15px;
+		}
 	}
 }
 
