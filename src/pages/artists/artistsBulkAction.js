@@ -24,7 +24,7 @@ const ArtistBulkAction = (props) => {
 
   return (
     <div className={`order__bulk`} style={{ opacity: isHide ? 0 : 1 }}>
-      <Sticky top={57}>
+      <Sticky innerClass='overflow-auto' top={57}>
         <div className='wrapper'>
           <div className='btn-group'>
             <div className='btn btn-group__item d-flex align-items-center '>
