@@ -101,15 +101,15 @@ const ArtistsConfirmPaymentModal = (props) => {
         </div>
       ) : (
         <div className='payout__list row'>
-          <div className='col-lg-2 col-md-4 content_left'>
+          <div className='col-md-4 content_left'>
             <div className='payout__label mt-4 mb-4'>Artist:</div>
-            {selectedArtists?.map(({ login, id }) => (
+            {selectedArtists?.map(({ lastName, firstName, id }) => (
               <div key={`aritst_select_item_${id}`} className={`artist_item ${id === data.currentArtistId && 'artist_selected'}`} onClick={() => selectArtist(id)}>
-                {login}
+                {`${firstName || ''} ${lastName}`}
               </div>
             ))}
           </div>
-          <div className='col-lg-10 col-md-8 content_right'>
+          <div className=' col-md-8 content_right'>
             <div className='mt-4' />
             {current?.bookings?.map((order) => {
               const filteredItems = filter(order.items, (item) => getOrderItem(item.name) !== 'Faster Processing');
