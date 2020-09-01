@@ -178,14 +178,22 @@
 		.content_left {
 			display: flex;
 			flex-direction: column;
-
 			overflow: auto;
+
+			@media (max-width: 768px) {
+				margin-bottom: 10px;
+			}
 		}
 		.content_right {
 			display: flex;
 			flex-direction: column;
-			border-left: 2px dashed rgb(226, 229, 238);
 			overflow: auto;
+
+			border-top: 1px solid rgb(226, 229, 238);
+			@media (min-width: 768px) {
+				border-left: 2px dashed rgb(226, 229, 238);
+				border-top-width: 0;
+			}
 		}
 
 		.artist_selected {
