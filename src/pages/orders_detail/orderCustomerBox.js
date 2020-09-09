@@ -105,10 +105,26 @@ const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, acco
                 </a>
               </p>
             )}
+            {contact?.fbUrl2 && (
+              <p className='mb-1'>
+                Facebook 2: &nbsp;
+                <a target='_blank' rel='noopener noreferrer' href={`${contact?.fbUrl2}`}>
+                  Link
+                </a>
+              </p>
+            )}
             {contact?.igUrl && (
               <p className='mb-1'>
                 Instagram: &nbsp;
                 <a target='_blank' rel='noopener noreferrer' href={`${contact?.igUrl}`}>
+                  Link
+                </a>
+              </p>
+            )}
+            {contact?.igUrl2 && (
+              <p className='mb-1'>
+                Instagram 2: &nbsp;
+                <a target='_blank' rel='noopener noreferrer' href={`${contact?.igUrl2}`}>
                   Link
                 </a>
               </p>
