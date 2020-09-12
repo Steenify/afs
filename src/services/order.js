@@ -61,6 +61,13 @@ export const getOrderCustomerService = (id) =>
     method: 'GET',
   });
 
+export const setOrderCustomerService = (data, id) =>
+  request({
+    url: `${ORDERS_API}/${id}/customer`,
+    method: 'PUT',
+    data,
+  });
+
 export const getOrderWorkLogService = ({ id }) =>
   request({
     url: `${ORDERS_API}/${id}/work-logs`,

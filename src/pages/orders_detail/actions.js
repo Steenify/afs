@@ -29,6 +29,7 @@ import {
   getMessageRemindTemplateService,
   sendEmailRemindService,
   sendMessageRemindService,
+  setOrderCustomerService,
 } from 'services/order';
 
 export const ORDER_DETAIL_ACTIONS = {
@@ -1036,6 +1037,24 @@ export const sentMessageRemindAction = (data, orderId, workLogType = 'workLog') 
 
   actionTryCatchCreator({
     service: sendMessageRemindService(data, orderId),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const setOrderCustomerBookingAction = (payload, orderId, cb) => (dispatch, getState) => {
+  const onPending = () => {};
+  const onSuccess = (data) => {
+    cb && cb();
+    getOrderCustomerAction(orderId)(dispatch, getState);
+  };
+  const onError = (error) => {
+    console.log('setOrderCustomerBookingAction -> onError -> error', JSON.stringify(error));
+  };
+
+  actionTryCatchCreator({
+    service: setOrderCustomerService(payload, orderId),
     onPending,
     onSuccess,
     onError,
