@@ -305,11 +305,11 @@ const OrderWorkLogItem = ({
                 <div className='d-flex align-items-center mb-2'>
                   <div className='m-2'>
                     <span>Estimated Delivery From</span>
-                    <ReactDates date={trackingDeliveryFromDate} onChange={setTrackingDeliveryFromDate} />
+                    <ReactDates date={trackingDeliveryFromDate} isOutsideRange={() => false} onChange={setTrackingDeliveryFromDate} />
                   </div>
                   <div className='m-2'>
                     <span>Estimated Delivery To</span>
-                    <ReactDates date={trackingDeliveryToDate} onChange={setTrackingDeliveryToDate} />
+                    <ReactDates date={trackingDeliveryToDate} isOutsideRange={() => false} onChange={setTrackingDeliveryToDate} />
                   </div>
                 </div>
 
