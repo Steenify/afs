@@ -1,11 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-  FormGroup,
-  InputGroup,
-  Label,
-  InputGroupAddon,
-  Input,
-} from 'reactstrap';
+import { FormGroup, InputGroup, Label, InputGroupAddon, Input } from 'reactstrap';
 
 import './style.scss';
 
@@ -27,9 +21,7 @@ class RFInput extends PureComponent {
       type,
     } = this.props;
     return (
-      <FormGroup
-        className={`${className || ''} form-group--input`}
-        style={groupStyle}>
+      <FormGroup className={`${className || ''} form-group--input`} style={groupStyle}>
         {label && (
           <Label>
             {required && <span style={{ color: '#c50000' }}>* </span>}
@@ -38,29 +30,11 @@ class RFInput extends PureComponent {
         )}
         {isInputGroup ? (
           <InputGroup className='input-group--custom'>
-            <InputGroupAddon addonType='prepend'>
-              {iconInputGroup}
-            </InputGroupAddon>
-            <Input
-              {...input}
-              onChange={input.onChange}
-              id={id}
-              placeholder={placeholder}
-              style={inputStyle}
-              type={type || 'text'}
-              checked={input.value}
-            />
+            <InputGroupAddon addonType='prepend'>{iconInputGroup}</InputGroupAddon>
+            <Input {...input} onChange={input.onChange} id={id} placeholder={placeholder} style={inputStyle} type={type || 'text'} checked={input.value} />
           </InputGroup>
         ) : (
-          <Input
-            disabled={disabled}
-            {...input}
-            onChange={input.onChange}
-            id={id}
-            placeholder={placeholder}
-            type={type || 'text'}
-            checked={input.value}
-          />
+          <Input disabled={disabled} {...input} onChange={input.onChange} id={id} placeholder={placeholder} type={type || 'text'} checked={input.value} />
         )}
         {touched && error && (
           <span className='error mt-1 d-block small' style={{ color: 'red' }}>

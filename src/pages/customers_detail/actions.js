@@ -62,9 +62,9 @@ export const resetCustomerDetailAction = () => async (dispatch) => {
 };
 
 export const UPDATE_CUSTOMER_DETAIL_ACTION = actionCreator('UPDATE_CUSTOMER_DETAIL_ACTION');
-export const updateCustomerDetailAction = (params, onSuccess, onError) => async (dispatch) => {
-  await actionTryCatchCreator({
-    service: updateCustomerService(params),
+export const updateCustomerDetailAction = (payload, onSuccess, onError) => (dispatch) => {
+  actionTryCatchCreator({
+    service: updateCustomerService(payload),
     onPending: () => dispatch({ type: UPDATE_CUSTOMER_DETAIL_ACTION.PENDING }),
     onSuccess: (data) => {
       dispatch({
