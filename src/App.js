@@ -33,7 +33,7 @@ import Orders from 'pages/orders';
 import OrderDetail from 'pages/orders_detail';
 import Settings from 'pages/settings';
 import Artists from 'pages/artists';
-import ArtistDetail from 'pages/artist_detail/artistDetail';
+import ArtistDetail from 'pages/artist_detail';
 import ArtistDetailForm from 'pages/artists/artistDetailForm';
 import CS from 'pages/customer_service';
 import CSDetail from 'pages/customer_service/customerServiceDetail';

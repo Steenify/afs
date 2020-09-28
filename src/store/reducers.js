@@ -13,6 +13,7 @@ import orderTable from 'components/tables/orders/reducer';
 import order from 'pages/orders/reducer';
 import orderDetail from 'pages/orders_detail/reducer';
 import artists from 'pages/artists/reducer';
+import artistDetail from 'pages/artist_detail/reducer';
 import payouts from 'pages/payouts/reducer';
 import gallery from 'pages/gallery/reducer';
 import lateNotification from 'pages/late_notification/reducer';
@@ -100,6 +101,7 @@ export default combineReducers({
   order,
   orderDetail,
   artists,
+  artistDetail,
   payouts,
   gallery,
   lateNotification,

@@ -1,74 +1,47 @@
-import React, { useEffect } from 'react';
-// import { useHistory } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { isEmpty } from 'lodash';
 
-import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
-// import Button from 'components/common/button';
-import Breadcrumb from 'components/common/breadcrumb';
-
-import { WEB_ROUTES } from 'configs';
 
 import ArtistDetailInfo from './artistDetailInfo';
 import ArtistDetailContact from './artistDetailContact';
 
 import OrderTable from 'components/tables/orders';
 
-import { getArtistAction } from '../artists/actions';
-
 const reducerName = 'artistDetail';
 
-const ArtistDetail = ({ getArtist, artist }) => {
-  const { login } = useParams();
-  // const history = useHistory();
-
-  useEffect(() => {
-    getArtist(login);
-  }, [getArtist, login]);
-
-  // const goToEdit = () => {
-  //   const url = WEB_ROUTES.ARTISTS_DETAIL_FORM.path.replace(':login', artist.login);
-  //   history.push(url);
-  // };
+const ArtistDetail = ({ artist }) => {
+  if (isEmpty(artist)) {
+    return null;
+  }
 
   return (
-    <Layout documentTitle={WEB_ROUTES.ARTISTS_DETAIL.title} container fluid>
-      <Breadcrumb data={[{ title: WEB_ROUTES.ARTISTS.title, isBack: true }]} />
-      <div className='artist_detail'>
-        <PageTitle title={`${artist.firstName || ''} ${artist.lastName || ''}`} className='artist_detail__header'>
-          {/* <div className='ml-auto'>
-            <Button color='primary' onClick={goToEdit} className='btn-create'>
-              Edit
-            </Button>
-          </div> */}
-        </PageTitle>
-        <div className='row'>
-          <div className='col-lg-6'>
-            <div className='artist_detail__wrapper'>
-              <ArtistDetailInfo artist={artist} />
-            </div>
-          </div>
-          <div className='col-lg-6'>
-            <div className='artist_detail__wrapper'>
-              <ArtistDetailContact artist={artist} />
-            </div>
+    <div className='artist_detail'>
+      <PageTitle title={`${artist?.firstName || ''} ${artist?.lastName || ''}`} className='artist_detail__header'></PageTitle>
+      <div className='row'>
+        <div className='col-lg-6'>
+          <div className='artist_detail__wrapper'>
+            <ArtistDetailInfo />
           </div>
         </div>
-        <div>
-          <OrderTable reducer={reducerName} showFilter={false} filter={{ assignee: login }} />
+        <div className='col-lg-6'>
+          <div className='artist_detail__wrapper'>
+            <ArtistDetailContact />
+          </div>
         </div>
       </div>
-    </Layout>
+      <div>
+        <OrderTable reducer={reducerName} showFilter={false} filter={{ assignee: artist?.login }} />
+      </div>
+    </div>
   );
 };
 
-const mapStateToProps = ({ artists }) => ({
-  artist: artists.artist,
+const mapStateToProps = ({ artistDetail }) => ({
+  artist: artistDetail.data.artist,
 });
 
-const mapDispatchToProps = {
-  getArtist: getArtistAction,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArtistDetail);

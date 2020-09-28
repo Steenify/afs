@@ -101,44 +101,45 @@ const SideBar = (props) => {
   ];
 
   return (
-    <div className={`sidebar ${props.isMenuOpen ? 'open' : ''}`}>
-      <div className='sidebar__menu'>
-        <NavLink exact={true} to='/' style={{ color: '#ffffff' }}>
-          <Logo className='logo' width='60px' height='60px' />
-        </NavLink>
+    <>
+      <div className={`sidebar ${props.isMenuOpen ? 'open' : ''}`}>
+        <div className='sidebar__menu'>
+          <NavLink exact={true} to='/' style={{ color: '#ffffff' }}>
+            <Logo className='logo' width='60px' height='60px' />
+          </NavLink>
 
-        {menus.map((item) => (
-          <div key={item.group} className='sidebar__group'>
-            {item.group && item.group !== 'Main' && <div className='sidebar__heading'>{item.group}</div>}
-            <ul className='sidebar__links'>
-              <li className='item'>
-                {item.links.map((link) => {
-                  if (link.isExternal) {
-                    return (
-                      <a key={link.path} className='link link--icon' href={link.path} target='_blank' rel='noreferrer'>
-                        <span className='icon'>{link.icon}</span>
-                        <span className='text'>{link.title}</span>
-                      </a>
-                    );
-                  }
-                  if (!link.permission || (link.permission && permissions && permissions.indexOf(link.permission) !== -1)) {
-                    return (
-                      <NavLink exact={true} onClick={handleClickNav} to={link.path} className={`link ${link.icon ? 'link--icon' : ''}`} key={link.path}>
-                        <span className='icon'>{link.icon}</span>
-                        <span className='text'>{link.title}</span>
-                      </NavLink>
-                    );
-                  }
-                  return null;
-                })}
-              </li>
-            </ul>
-          </div>
-        ))}
-
+          {menus.map((item) => (
+            <div key={item.group} className='sidebar__group'>
+              {item.group && item.group !== 'Main' && <div className='sidebar__heading'>{item.group}</div>}
+              <ul className='sidebar__links'>
+                <li className='item'>
+                  {item.links.map((link) => {
+                    if (link.isExternal) {
+                      return (
+                        <a key={link.path} className='link link--icon' href={link.path} target='_blank' rel='noreferrer'>
+                          <span className='icon'>{link.icon}</span>
+                          <span className='text'>{link.title}</span>
+                        </a>
+                      );
+                    }
+                    if (!link.permission || (link.permission && permissions && permissions.indexOf(link.permission) !== -1)) {
+                      return (
+                        <NavLink exact={true} onClick={handleClickNav} to={link.path} className={`link ${link.icon ? 'link--icon' : ''}`} key={link.path}>
+                          <span className='icon'>{link.icon}</span>
+                          <span className='text'>{link.title}</span>
+                        </NavLink>
+                      );
+                    }
+                    return null;
+                  })}
+                </li>
+              </ul>
+            </div>
+          ))}
+        </div>
         {canSetting && (
           <div className='sidebar__settings'>
-            <NavLink exact={true} to={WEB_ROUTES.SETTINGS.path} className='link link--icon'>
+            <NavLink onClick={handleClickNav} exact={true} to={WEB_ROUTES.SETTINGS.path} className='link link--icon'>
               <span className='icon'>
                 <Settings />
               </span>
@@ -147,7 +148,8 @@ const SideBar = (props) => {
           </div>
         )}
       </div>
-    </div>
+      <button type='button' onClick={() => toggleMenuAction(false)} className={`sidebar__overlay ${props.isMenuOpen ? 'open' : ''}`}></button>
+    </>
   );
 };
 

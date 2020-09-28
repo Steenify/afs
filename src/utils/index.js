@@ -386,7 +386,7 @@ export const truncates = (string, maxLength = 50) => {
 };
 
 export const isMobile = () => {
-  return window.innerWidth < 780;
+  return window.innerWidth <= 991;
 };
 
 export const getTotalPage = (headers = {}, size = 100, sizeMobile = 100) => {

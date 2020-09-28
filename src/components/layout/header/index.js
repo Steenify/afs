@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Nav } from 'reactstrap';
-// import i18next from 'i18next';
-import { debounce } from 'lodash';
 import { useHistory } from 'react-router-dom';
 
 import { appToken } from 'vendor/firebase';
@@ -20,43 +18,15 @@ import { logOutAction } from 'pages/auth/actions';
 import { changeLanguage, toggleMenu } from 'store/actions';
 
 const Header = (props) => {
-  const { className, accountInfo, lang, toggleMenu, logOutAction } = props;
-
-  const [isShowInfo, setIsShowInfo] = useState(true);
+  const { className, accountInfo, toggleMenu, logOutAction, isMenuOpen } = props;
 
   const history = useHistory();
-
-  // const changeLanguage = (lang) => {
-  //   i18next.changeLanguage(lang);
-  //   props.changeLanguage(lang);
-  // };
-
   useEffect(() => {
-    const listener = debounce(() => {
-      toggleMenu(!isMobile());
-    }, 1000);
-
-    listener();
-
-    // window.addEventListener('resize', listener);
-
-    // return () => {
-    //   window.removeEventListener('resize', listener);
-    // };
+    toggleMenu(!isMobile());
   }, [toggleMenu]);
 
   const handleToggle = () => {
-    props.toggleMenu(!props.isMenuOpen);
-    if (!isMobile()) {
-      setIsShowInfo(true);
-      return;
-    }
-
-    if (!props.isMenuOpen) {
-      setIsShowInfo(false);
-      return;
-    }
-    setIsShowInfo(true);
+    props.toggleMenu(!isMenuOpen);
   };
 
   const handleSignOut = () => {
@@ -82,25 +52,10 @@ const Header = (props) => {
             </button>
           </Nav>
 
-          {isShowInfo && (
-            <Nav navbar className='flex-row align-items-center'>
-              {/* <div className='lang'>
-                <button
-                  onClick={() => changeLanguage('en')}
-                  className={`item ${lang == 'en' ? 'item--active' : ''}`}>
-                  English
-                </button>
-                <button
-                  onClick={() => changeLanguage('vi')}
-                  className={`item ${lang == 'vi' ? 'item--active' : ''}`}>
-                  Vietnamese
-                </button>
-              </div> */}
-
-              <Notification />
-              <AccountInfo account={accountInfo} onSignout={handleSignOut} />
-            </Nav>
-          )}
+          <Nav navbar className={`flex-row align-items-center header__nav ${isMenuOpen ? 'opening' : ''}`}>
+            <Notification />
+            <AccountInfo account={accountInfo} onSignout={handleSignOut} />
+          </Nav>
         </Navbar>
       </div>
     </header>

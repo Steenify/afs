@@ -208,3 +208,16 @@
 .app-main {
 	min-height: calc(100vh - 80px);
 }
+
+@include max-lg() {
+	.header__nav {
+		&.opening {
+			display: none;
+		}
+	}
+	.app-body {
+		&.open {
+			padding-left: 0;
+		}
+	}
+}
