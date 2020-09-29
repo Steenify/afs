@@ -27,7 +27,7 @@ const ArtistDetailInfoEdit = (props) => {
   };
 
   return (
-    <div className='customer_detail__original customer_detail__box customer_detail__form form box'>
+    <div className='customer_detail__original customer_detail__form form box'>
       <div className='box__body'>
         <Form onSubmit={handleSubmit(onSubmit)}>
           {errorRequest && errorRequest.message && <Alert color='danger'>{errorRequest.message}</Alert>}
@@ -54,7 +54,7 @@ const ArtistDetailInfoEdit = (props) => {
                 minWidth: 110,
                 justifyContent: 'center',
               }}>
-              &nbsp; {'save'} &nbsp;
+              &nbsp; {'Save'} &nbsp;
               {ui && ui.loading && <Spinner size='sm' color='light' />}
             </Button>
           </div>
@@ -98,7 +98,7 @@ const ArtistDetailInfoEdit = (props) => {
                 minWidth: 110,
                 justifyContent: 'center',
               }}>
-              &nbsp; {'save'} &nbsp;
+              &nbsp; {'Save'} &nbsp;
               {ui && ui.loading && <Spinner size='sm' color='light' />}
             </Button>
           </div>

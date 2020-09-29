@@ -102,4 +102,12 @@
 			color: #337fd7;
 		}
 	}
+
+	@include max-sm() {
+		&__wrapper,
+		&__orders {
+			margin-left: -15px;
+			margin-right: -15px;
+		}
+	}
 }

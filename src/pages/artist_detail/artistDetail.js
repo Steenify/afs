@@ -31,7 +31,7 @@ const ArtistDetail = ({ artist }) => {
           </div>
         </div>
       </div>
-      <div>
+      <div className='artist_detail__orders'>
         <OrderTable reducer={reducerName} showFilter={false} filter={{ assignee: artist?.login }} />
       </div>
     </div>
