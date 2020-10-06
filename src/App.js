@@ -22,7 +22,7 @@ import PermissionManagement from 'pages/role_management/PermissionManagement';
 import PermissionDetails from 'pages/role_management/PermissionDetails';
 import CustomerManagement from 'pages/customers';
 import CustomerDetail from 'pages/customers_detail/index';
-import CustomerDetailEdit from 'pages/customers_detail/customersDetailEdit';
+// import CustomerDetailEdit from 'pages/customers_detail/customersDetailEdit';
 import CustomerGroupDetail from 'pages/customer_group/CustomerGroupDetail';
 import AdminNotifications from 'pages/admin_notifications';
 import Notifications from 'pages/notifications';
@@ -86,7 +86,7 @@ const App = ({ getOrderTableCountByStatusAction, renewTokenAction, actGetAccount
           <Route exact path='/user/permission/detail/:id' component={PermissionDetails} isPrivate={true} role={WEB_ROUTES.USER_PERMISSION.permission} />
           <Route exact path={WEB_ROUTES.CUSTOMER_LIST.path} component={CustomerManagement} isPrivate={true} role={WEB_ROUTES.CUSTOMER_LIST.permission} />
           <Route exact path={WEB_ROUTES.CUSTOMER_DETAIL.path} component={CustomerDetail} isPrivate={true} role={WEB_ROUTES.CUSTOMER_DETAIL.permission} />
-          <Route exact path={WEB_ROUTES.CUSTOMER_DETAIL_EDIT.path} component={CustomerDetailEdit} isPrivate={true} role={WEB_ROUTES.CUSTOMER_DETAIL_EDIT.permission} />
+          {/* <Route exact path={WEB_ROUTES.CUSTOMER_DETAIL_EDIT.path} component={CustomerDetailEdit} isPrivate={true} role={WEB_ROUTES.CUSTOMER_DETAIL_EDIT.permission} /> */}
           {/* <Route
             exact
             path={WEB_ROUTES.CUSTOMER_GROUP_LIST.path}

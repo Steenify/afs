@@ -64,11 +64,13 @@ const ArtistDetailInfoEdit = (props) => {
             <span className=''>Artist Contact:</span>
           </div>
           <Field className='form__item' component={Input} name='email' placeholder={'Email'} validate={[email]} />
-          <Field className='form__item' component={Input} name='phonePrefix' placeholder={'Phone Prefix'} />
+          <Field className='form__item' component={Input} name='phonePrefix' placeholder={'Country Phone Code'} />
           <Field className='form__item' component={Input} name='phoneNumber' placeholder={'Phone Number'} />
           <Field className='form__item' component={Input} name='fbUrl' placeholder={'Facebook'} />
           <Field className='form__item' component={Input} name='igUrl' placeholder={'Instagram'} />
           <Field className='form__item' component={Input} name='uid' placeholder={'Facebook UID'} />
+          <Field className='form__item' component={Input} name='country' placeholder={'Country'} />
+          <Field className='form__item' component={Input} name='countryCode' placeholder={'Country Code'} />
 
           <div className='box__sub_title mb-2'>
             <span className=''>Payment Info:</span>

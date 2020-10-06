@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Button from 'components/common/button';
 import P from 'components/common/parapraph';
 
-import { formatMoney } from 'utils';
+import { formatMoney, dateStringFromDate } from 'utils';
 
 const CustomerDetailInfoDisplay = (props) => {
   const { customer, setUpdating } = props;
@@ -138,7 +138,7 @@ const CustomerDetailInfoDisplay = (props) => {
             {customer?.customerExtension?.dob && (
               <div>
                 <span className='subText'>Day of Birth: </span>
-                {customer?.customerExtension?.dob}
+                {dateStringFromDate(customer?.customerExtension?.dob)}
               </div>
             )}
 

@@ -38,6 +38,8 @@ export const updateArtistDetailAction = (values, onSuccess, onError) => (dispatc
       workingSpeedScore: values?.workingSpeedScore,
       workingAttitudeScore: values?.workingAttitudeScore,
       paymentInfo: values?.paymentInfo,
+      country: values?.country,
+      countryCode: values?.countryCode,
     },
     login: values?.login,
     email: values?.email,

@@ -7,6 +7,7 @@ import { Form, Spinner, Alert } from 'reactstrap';
 import Input from 'components/common/input';
 import Button from 'components/common/button';
 import { Select } from 'components/common/select';
+import { FieldDatePicker } from 'components/common/datepicker';
 
 import { updateCustomerDetailAction } from 'pages/customers_detail/actions';
 
@@ -56,7 +57,7 @@ const CustomerDetailEditForm = (props) => {
                 minWidth: 110,
                 justifyContent: 'center',
               }}>
-              &nbsp; {'save'} &nbsp;
+              &nbsp; {'Save'} &nbsp;
               {ui && ui.loading && <Spinner size='sm' color='light' />}
             </Button>
           </div>
@@ -118,7 +119,8 @@ const CustomerDetailEditForm = (props) => {
               { label: 'FEMALE', value: 'FEMALE', desc: '' },
             ]}
           />
-          <Field className='form__item' component={Input} name='customerExtension.dob' placeholder={'Day of Birth'} />
+          <FieldDatePicker className='form__item' name='customerExtension.dob' placeholder={'Day of Birth'} />
+
           <Field className='form__item' component={Input} name='customerExtension.age' placeholder={'Age'} />
 
           <div className='d-flex justify-content-between mt-4'>
@@ -144,7 +146,7 @@ const CustomerDetailEditForm = (props) => {
                 minWidth: 110,
                 justifyContent: 'center',
               }}>
-              &nbsp; {'save'} &nbsp;
+              &nbsp; {'Save'} &nbsp;
               {ui && ui.loading && <Spinner size='sm' color='light' />}
             </Button>
           </div>

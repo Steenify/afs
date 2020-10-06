@@ -42,6 +42,11 @@ const ArtistDetailContact = (props) => {
             </p>
           )}
           {artist?.igUrl && <p className='mb-1'>Facebook UID: {artist?.uid}</p>}
+          {artist?.country && (
+            <p className='mb-1'>
+              Country: {artist?.country} {artist?.countryCode ? `- ${artist?.countryCode}` : ''}
+            </p>
+          )}
         </div>
         <div className='box__sub_title mb-2 mt-4'>Payment Info:</div>
         <div className='subText mb-4'>

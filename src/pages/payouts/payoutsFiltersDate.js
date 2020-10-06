@@ -6,8 +6,6 @@ import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 
 import DateRangePicker from 'components/common/datepicker/DateRangePicker';
 
-import { dateStringFromDate } from 'utils';
-
 import { getPayoutListAction, updatePayoutFilterAction, getPayoutSummaryAction } from './actions';
 
 class OrderFilterDate extends PureComponent {

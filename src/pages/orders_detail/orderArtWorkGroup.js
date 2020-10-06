@@ -201,26 +201,27 @@ const OrderArtWorkGroup = ({
                 ) : (
                   <>
                     {showActionState && showActionPermitions && (
-                      <div className='order_detail__ctas d-flex flex-wrap justify-content-between'>
-                        <div className='d-flex'>
+                      <div className='order_detail__ctas ctas d-flex flex-wrap justify-content-between'>
+                        <div className='ctas__group'>
                           {canNotifyCustomer && isNotifyStatus && (
-                            <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} className='cta cta2 mr-2 mb-3 order_detail__notify' type='button'>
+                            <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} containerClassName='ctas__item' className='ctas__button mb-3 order_detail__notify' type='button'>
                               Notify Customer
                             </Button>
                           )}
                           {canNotifyCustomer && isNotifyStatus && (
-                            <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} className='cta cta2 mb-3 order_detail__remind' type='button'>
+                            <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} containerClassName='ctas__item' className='ctas__button mb-3 order_detail__remind' type='button'>
                               Remind Customer
                             </Button>
                           )}
                         </div>
 
-                        <div className='d-flex'>
+                        <div className='ctas__group'>
                           {canRejected && !isExportFile && !isSendFile && (
                             <Button
                               color='secondary'
+                              containerClassName='ctas__item'
                               onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex)}
-                              className='cta cta2 mr-2 mb-3'
+                              className='ctas__button mb-3'
                               disabled={!(work.attachments.length > 0) && needCheckFile}
                               type='button'>
                               Reject
@@ -228,13 +229,19 @@ const OrderArtWorkGroup = ({
                           )}
 
                           {canAprroved && !isSendFile && (
-                            <Button color='primary' onClick={() => handleApproveWorkLog(work.id)} className='cta cta2 mb-3' disabled={!(work.attachments.length > 0) && needCheckFile} type='button'>
+                            <Button
+                              color='primary'
+                              onClick={() => handleApproveWorkLog(work.id)}
+                              containerClassName='ctas__item'
+                              className='ctas__button mb-3'
+                              disabled={!(work.attachments.length > 0) && needCheckFile}
+                              type='button'>
                               Approved
                             </Button>
                           )}
 
                           {isSendFile && (
-                            <Button color='primary' onClick={() => handleApproveWorkLog(work.id, isSendFile)} className='cta cta2 mb-3' type='button'>
+                            <Button color='primary' onClick={() => handleApproveWorkLog(work.id, isSendFile)} containerClassName='ctas__item' className='mb-3 ctas__button' type='button'>
                               {hasPoster ? 'Start Printing' : 'Mark as Done'}
                             </Button>
                           )}

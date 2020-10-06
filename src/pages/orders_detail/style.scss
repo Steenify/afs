@@ -221,8 +221,22 @@
 			border-radius: 4px;
 		}
 
-		.cta2 {
-			min-width: 160px;
+		.ctas {
+			&__group {
+				display: flex;
+				flex-wrap: wrap;
+				width: 100%;
+			}
+
+			&__item {
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+
+			&__button {
+				width: 100%;
+				min-width: 160px;
+			}
 		}
 	}
 

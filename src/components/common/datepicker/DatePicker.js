@@ -4,14 +4,7 @@ import { FormGroup, Label } from 'reactstrap';
 
 import './style.scss';
 
-export const DatePicker = ({
-  label,
-  placeholder,
-  required,
-  onChange,
-  touched,
-  error,
-}) => {
+export const DatePicker = ({ label, placeholder, required, onChange, touched, error, value }) => {
   const [focused, setFocused] = useState(false);
   const [date, setDate] = useState();
 
