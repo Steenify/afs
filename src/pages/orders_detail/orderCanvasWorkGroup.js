@@ -146,21 +146,22 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
                 <OrderWorkLogItem workLogType='canvasWorkLog' work={work} isOpened={showActionState} order={order} />
 
                 {showActionState && showActionPermitions && order.status !== 'DONE' && (
-                  <div className='order_detail__ctas d-flex flex-wrap justify-content-between'>
-                    <div className='d-flex'>
+                  <div className='order_detail__ctas ctas d-flex flex-wrap justify-content-between'>
+                    <div className='ctas__group'>
                       {canNotifyCustomer && isNotifyStatus && (
-                        <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} className='cta cta2 mb-3 mr-2 order_detail__notify' type='button'>
+                        <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} containerClassName='ctas__item' className='ctas__button mb-3 ctas__notify' type='button'>
                           {order.statusForCanvas !== 'PRINT_RECEIVED' ? 'Notify Customer' : 'Check With Customer'}
                         </Button>
                       )}
                     </div>
 
-                    <div className='d-flex'>
+                    <div className='ctas__group'>
                       {canRejected && !isReceivedStatus && (
                         <Button
                           color='secondary'
                           onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex)}
-                          className='cta cta2 mr-2 mb-3'
+                          containerClassName='ctas__item'
+                          className='ctas__button mb-3'
                           disabled={(work.attachments?.length < 1 && !isTrackingStatus) || (isTrackingStatus && !isPassTrackingStatus)}
                           type='button'>
                           Reject
@@ -171,7 +172,8 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
                         <Button
                           color='primary'
                           onClick={() => handleApproveWorkLog(work.id)}
-                          className='cta cta2 mb-3'
+                          containerClassName='ctas__item'
+                          className='ctas__button mb-3'
                           disabled={(work.attachments?.length < 1 && !isTrackingStatus) || (isTrackingStatus && !isPassTrackingStatus)}
                           type='button'>
                           Approved
@@ -179,7 +181,7 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
                       )}
 
                       {isReceivedStatus && (
-                        <Button color='primary' onClick={() => handleApproveWorkLog(work.id, true)} className='cta cta2 mb-3' type='button'>
+                        <Button color='primary' onClick={() => handleApproveWorkLog(work.id, true)} containerClassName='ctas__item' className='cta cta2 mb-3' type='button'>
                           Mark as Done
                         </Button>
                       )}
