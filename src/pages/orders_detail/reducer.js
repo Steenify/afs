@@ -1,4 +1,4 @@
-import update from 'react-addons-update';
+import update from 'immutability-helper';
 import {
   GET_ORDER_DETAIL_ACTION,
   ORDER_DETAIL_ACTIONS,
@@ -27,6 +27,7 @@ import {
   GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION,
   SENT_EMAIL_REMIND_ACTION,
   SENT_MESSAGE_REMIND_ACTION,
+  CANCELED_WORK_LOG_ACTION,
 } from './actions';
 
 import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
@@ -144,6 +145,7 @@ const reducer = (state = initialState, action) => {
     case DELETE_ATTACHMENT_WORK_LOG_ACTION.PENDING:
     case APPROVED_WORK_LOG_ACTION.PENDING:
     case REJECTED_WORK_LOG_ACTION.PENDING:
+    case CANCELED_WORK_LOG_ACTION.PENDING:
     case SENT_EMAIL_NOTIFY_ACTION.PENDING:
     case SENT_FB_MESSAGES_NOTIFY_ACTION.PENDING:
     case SENT_EMAIL_REMIND_ACTION.PENDING:
@@ -410,6 +412,27 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
+    case CANCELED_WORK_LOG_ACTION.SUCCESS: {
+      console.log('reducer -> payload', payload);
+      const newState = update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+        data: {
+          order: {
+            status: {
+              $set: payload?.orderStatus || '',
+            },
+          },
+          [payload.workLogType]: {
+            $splice: [[payload?.index, 1]],
+          },
+        },
+      });
+
+      console.log('reducer -> newState', newState);
+      return newState;
+    }
     case ORDER_TABLE_UPDATE_BUDGET_ACTION.SUCCESS: {
       return update(state, {
         data: {
@@ -461,6 +484,7 @@ const reducer = (state = initialState, action) => {
     case UPDATE_COMMENT_WORK_LOG_ACTION.ERROR:
     case APPROVED_WORK_LOG_ACTION.ERROR:
     case REJECTED_WORK_LOG_ACTION.ERROR:
+    case CANCELED_WORK_LOG_ACTION.ERROR:
     case SENT_EMAIL_NOTIFY_ACTION.ERROR:
     case SENT_FB_MESSAGES_NOTIFY_ACTION.ERROR:
     case SENT_EMAIL_REMIND_ACTION.ERROR:

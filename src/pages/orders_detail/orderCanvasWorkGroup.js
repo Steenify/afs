@@ -15,34 +15,14 @@ import Button from 'components/common/button';
 import OrderWorkLogItem from './orderWorkLogItem';
 import OrderRejectModal from './orderRejectModal';
 
-import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction, createOrderCanvasWorkLogAction } from './actions';
+import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction } from './actions';
 
-const OrderCanvasWorkGroup = ({
-  order,
-  group,
-  works,
-  status,
-  approvedWorkLog,
-  rejectedWorkLog,
-  getNotifyTemplatesAction,
-  accountInfo,
-  createOrderCanvasWorkLogAction,
-  isNewOrder,
-  workLog,
-  lastWorkLog,
-}) => {
+const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, rejectedWorkLog, getNotifyTemplatesAction, accountInfo, isNewOrder, workLog, lastWorkLog }) => {
   let isOpened = false;
 
   if (mapStatusOpen[group].indexOf(order.statusForCanvas) !== -1 || isNewOrder) {
     isOpened = true;
   }
-
-  // const canCreateWorkLogForCanvas = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_WORK_LOG_FOR_CANVAS) || false;
-  // const handleStartPrintting = () => {
-  //   if (status.length) {
-  //     createOrderCanvasWorkLogAction(order.id);
-  //   }
-  // };
 
   const isNotifyStatus = mapStatusNotiy.indexOf(order.statusForCanvas) !== -1;
 
@@ -149,8 +129,6 @@ const OrderCanvasWorkGroup = ({
             const showActionState = lastWorkLog.id === work.id;
             const showActionPermitions = canNotifyCustomer || canAprroved || canRejected;
 
-            const isNewStatus = work.status === 'NEW_ORDER';
-            const isPreviewStatus = work.status === 'PRINT_PREVIEW';
             const isTrackingStatus = work.status === 'PRINT_TRACKING';
             const isReceivedStatus = work.status === 'PRINT_RECEIVED';
             const isDoneStatus = work.status === 'DONE';
@@ -162,21 +140,6 @@ const OrderCanvasWorkGroup = ({
             if (isDoneStatus) {
               return null;
             }
-            // if (isNewStatus) {
-            //   if (isNewOrder) {
-            //     return (
-            //       <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
-            //         {canCreateWorkLogForCanvas && (
-            //           <div className='order_detail__ctas text-center'>
-            //             <Button onClick={handleStartPrintting} color='primary' className='cta' type='button'>
-            //               Start Printing
-            //             </Button>
-            //           </div>
-            //         )}
-            //       </div>
-            //     );
-            //   } else return null;
-            // }
 
             return (
               <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
@@ -241,7 +204,6 @@ const mapDispatchToProps = {
   approvedWorkLog: approvedWorkLogAction,
   rejectedWorkLog: rejectedWorkLogAction,
   getNotifyTemplatesAction,
-  createOrderCanvasWorkLogAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderCanvasWorkGroup);

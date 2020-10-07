@@ -6,7 +6,7 @@ import Button from 'components/common/button';
 
 const CustomersFullNameCell = ({ login, firstName, lastName, fullName }) => {
   return (
-    <Button tag={Link} className='w-100 justify-content-start customers__name pl-0' to={`/customer/detail/${login}`} color='link'>
+    <Button tag={Link} className='w-100 justify-content-start table__link customers__name pl-0' to={`/customer/detail/${login}`} color='link'>
       {fullName || `${firstName} ${lastName}`}
     </Button>
   );

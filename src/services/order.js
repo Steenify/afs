@@ -113,6 +113,12 @@ export const rejectedOrderWorkLogService = ({ id, logId, data }) =>
     data,
   });
 
+export const canceledOrderWorkLogService = ({ id, logId }) =>
+  request({
+    url: `${ORDERS_API}/${id}/work-logs/${logId}/cancel`,
+    method: 'PUT',
+  });
+
 export const getOrderEmailService = ({ id, templateId }) =>
   request({
     url: `${ORDERS_API}/${id}/email/${templateId}`,

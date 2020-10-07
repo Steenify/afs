@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { isEmpty, filter, includes } from 'lodash';
+import { isEmpty, includes } from 'lodash';
 
 import InPageLoading from 'components/common/inPageLoading';
 
@@ -39,12 +39,6 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
       else artworkItems.push(item);
     }
   });
-  // const filteredItems = filter(order.items, (item) => {
-  //   if (getOrderItem(item.name) === filterOrderItems[1] || getOrderItem(item.name) === filterOrderItems[0]) {
-  //     hasFaster = true;
-  //   }
-  //   return !includes(itemsToFilter, getOrderItem(item.name));
-  // });
 
   return (
     <div className='order_detail'>

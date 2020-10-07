@@ -3,10 +3,10 @@
 .customers {
 	&__name {
 		font-weight: 500;
-		font-size: 15px;
-		line-height: 18px;
+		font-size: 15px !important;
+		line-height: 18px !important;
 		letter-spacing: 0.5px;
-		color: #000000;
+		color: #212529;
 	}
 
 	&__address {
@@ -14,7 +14,7 @@
 		font-size: 15px;
 		line-height: 18px;
 		letter-spacing: 0.5px;
-		color: #767676;
+		color: #212529;
 	}
 
 	&__page {
@@ -229,6 +229,19 @@
 
 	&__body {
 		margin-bottom: 20px;
+	}
+
+	&__table {
+		.table {
+			&__text {
+				font-size: 15px;
+				color: #000000;
+			}
+			&__link {
+				font-size: 15px !important;
+				color: #337fd7 !important;
+			}
+		}
 	}
 
 	@include max-sm() {

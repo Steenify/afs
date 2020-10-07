@@ -14,8 +14,6 @@ import Detail from './orderDetail';
 
 import './style.scss';
 
-// import { useTranslation } from 'react-i18next';
-
 const OrderDetail = ({ getOrderDetail, getOrderTableStatusAction }) => {
   let { id } = useParams();
 

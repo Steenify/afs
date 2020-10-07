@@ -117,6 +117,12 @@
 			color: $white;
 		}
 
+		&__delete {
+			background-color: #dc3545;
+			border-color: #dc3545;
+			color: $white;
+		}
+
 		@include max-md() {
 			&__body {
 				.form-control {

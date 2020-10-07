@@ -20,9 +20,9 @@ import {
   rejectedWorkLogAction,
   getNotifyTemplatesAction,
   updateOrderStatusAction,
-  uploadCommentWorkLogAction,
   getRemindTemplatesAction,
   createOrderCanvasWorkLogAction,
+  canceledWorkLogAction,
 } from './actions';
 
 const OrderArtWorkGroup = ({
@@ -32,12 +32,12 @@ const OrderArtWorkGroup = ({
   status,
   approvedWorkLog,
   rejectedWorkLog,
+  canceledWorkLog,
   getNotifyTemplatesAction,
   getRemindTemplatesAction,
   accountInfo,
   updateOrderStatus,
   isNewOrder,
-  uploadCommentWorkLog,
   createOrderCanvasWorkLogAction,
   workLog,
   lastWorkLog,
@@ -61,6 +61,7 @@ const OrderArtWorkGroup = ({
 
   const canAprroved = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) || false;
   const canRejected = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.REJECT_WORK_LOG) || false;
+  const canCanceled = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CANCELED_STEP_BOOKING) || false;
 
   const canCreateWorkLogForCanvas = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_WORK_LOG_FOR_CANVAS) || false;
   const canChangeStatus = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_STATUS_BOOKING) || false;
@@ -145,6 +146,41 @@ const OrderArtWorkGroup = ({
     });
   };
 
+  const handleConfirmCancelWorkLog = (LogId, workLogIndex) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='comfirm_cus'>
+            <div className='comfirm_cus__header'>
+              <div className='comfirm_cus__titl'>Change Status</div>
+              <button type='button' onClick={onClose} className='comfirm_cus__close'>
+                <div className='icon'>
+                  <Close />
+                </div>
+              </button>
+            </div>
+            <div className='comfirm_cus__body'>
+              <p>Are you sure you want to cancel this step?</p>
+            </div>
+            <div className='comfirm_cus__footer text-right'>
+              <button className='comfirm_cus__cancel comfirm_cus__control' onClick={onClose}>
+                Cancel
+              </button>
+              <button
+                className='comfirm_cus__delete comfirm_cus__control'
+                onClick={() => {
+                  canceledWorkLog(order.id, LogId, workLogIndex);
+                  onClose();
+                }}>
+                Delete
+              </button>
+            </div>
+          </div>
+        );
+      },
+    });
+  };
+
   return (
     <div className='order_detail__work_group group'>
       <div className={`group__header ${group || ''}`}>
@@ -170,6 +206,8 @@ const OrderArtWorkGroup = ({
             const isExportFile = work.status === 'EXPORT_FILE';
             const isSendFile = work.status === 'SEND_FILE';
 
+            const isCanRevert = (work.attachments.length === 0 && work.comments.length === 0 && work.activities.length === 0) || false;
+
             const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
 
             if (isDoneStatus) {
@@ -181,7 +219,7 @@ const OrderArtWorkGroup = ({
                 return (
                   <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                     {canChangeStatus && (
-                      <div className='order_detail__ctas text-center'>
+                      <div className='order_detail__ctas text-center justify-content-center'>
                         <Button onClick={handleStartSketch} color='primary' className='cta' type='button'>
                           Start Sketching
                         </Button>
@@ -204,12 +242,12 @@ const OrderArtWorkGroup = ({
                       <div className='order_detail__ctas ctas d-flex flex-wrap justify-content-between'>
                         <div className='ctas__group'>
                           {canNotifyCustomer && isNotifyStatus && (
-                            <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} containerClassName='ctas__item' className='ctas__button mb-3 order_detail__notify' type='button'>
+                            <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} containerClassName='ctas__item' className='ctas__button mb-3 ctas__notify' type='button'>
                               Notify Customer
                             </Button>
                           )}
                           {canNotifyCustomer && isNotifyStatus && (
-                            <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} containerClassName='ctas__item' className='ctas__button mb-3 order_detail__remind' type='button'>
+                            <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} containerClassName='ctas__item' className='ctas__button mb-3 ctas__remind' type='button'>
                               Remind Customer
                             </Button>
                           )}
@@ -240,6 +278,18 @@ const OrderArtWorkGroup = ({
                             </Button>
                           )}
 
+                          {canCanceled && (
+                            <Button
+                              color='secondary'
+                              onClick={() => handleConfirmCancelWorkLog(work.id, workLogIndex)}
+                              containerClassName='ctas__item'
+                              className='ctas__button ctas__canceled mb-3'
+                              disabled={!isCanRevert}
+                              type='button'>
+                              Cancel
+                            </Button>
+                          )}
+
                           {isSendFile && (
                             <Button color='primary' onClick={() => handleApproveWorkLog(work.id, isSendFile)} containerClassName='ctas__item' className='mb-3 ctas__button' type='button'>
                               {hasPoster ? 'Start Printing' : 'Mark as Done'}
@@ -259,7 +309,7 @@ const OrderArtWorkGroup = ({
   );
 };
 
-const mapStateToProps = ({ auth, orderDetail }) => ({
+const mapStateToProps = ({ auth, orderDetail, orderTable }) => ({
   accountInfo: auth.data.accountInfo,
   workLog: orderDetail.data.workLog,
 });
@@ -269,9 +319,9 @@ const mapDispatchToProps = {
   rejectedWorkLog: rejectedWorkLogAction,
   getNotifyTemplatesAction,
   updateOrderStatus: updateOrderStatusAction,
-  uploadCommentWorkLog: uploadCommentWorkLogAction,
   getRemindTemplatesAction,
   createOrderCanvasWorkLogAction,
+  canceledWorkLog: canceledWorkLogAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderArtWorkGroup);

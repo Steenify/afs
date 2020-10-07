@@ -3,8 +3,8 @@
 .user {
 	&__name {
 		font-weight: 500;
-		font-size: 15px;
-		line-height: 18px;
+		font-size: 15px !important;
+		line-height: 18px !important;
 		letter-spacing: 0.5px;
 		color: #000000;
 	}

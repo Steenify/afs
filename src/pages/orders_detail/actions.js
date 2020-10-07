@@ -17,6 +17,7 @@ import {
   updateOrderWorkLogCommentService,
   approvedOrderWorkLogService,
   rejectedOrderWorkLogService,
+  canceledOrderWorkLogService,
   getOrderEmailService,
   sentOrderEmailNotifyService,
   deleteFileDeliveryService,
@@ -218,7 +219,7 @@ export const getOrderCustomerAction = (id) => (dispatch) => {
 
 export const UPDATE_ORDER_STATUS_ACTION = actionCreator('UPDATE_ORDER_STATUS_ACTION');
 export const updateOrderStatusAction = (id, to) => (dispatch, getState) => {
-  const { status } = getState().order;
+  const { status } = getState().orderTable.orders;
 
   const onPending = () => {
     dispatch({
@@ -653,6 +654,40 @@ export const rejectedWorkLogAction = (id, logId, payload, index, cb, workLogType
 
   actionTryCatchCreator({
     service: rejectedOrderWorkLogService({ id, logId, data: payload }),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const CANCELED_WORK_LOG_ACTION = actionCreator('CANCELED_WORK_LOG_ACTION');
+export const canceledWorkLogAction = (id, logId, index, workLogType = 'workLog') => (dispatch, getState) => {
+  const onPending = () => {
+    dispatch({
+      type: CANCELED_WORK_LOG_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    console.log('onSuccess -> data', data);
+    dispatch({
+      type: CANCELED_WORK_LOG_ACTION.SUCCESS,
+      payload: {
+        index,
+        workLogType,
+        orderStatus: data?.status || '',
+      },
+    });
+  };
+  const onError = (error) => {
+    console.log('canceledWorkLogAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: CANCELED_WORK_LOG_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: canceledOrderWorkLogService({ id, logId }),
     onPending,
     onSuccess,
     onError,
