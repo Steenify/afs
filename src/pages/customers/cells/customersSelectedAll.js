@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { filter } from 'lodash';
 
-import { updateAllCustomersSelectedAction } from './actions';
+import { updateAllCustomersSelectedAction } from '../actions';
 
 const CustomersSelectedAll = ({ selected, updateAllCustomersSelectedAction }) => {
   const handleChange = (status) => {

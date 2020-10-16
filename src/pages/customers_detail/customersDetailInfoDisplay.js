@@ -8,10 +8,11 @@ import { formatMoney, dateStringFromDate } from 'utils';
 
 const CustomerDetailInfoDisplay = (props) => {
   const { customer, setUpdating } = props;
-
   const handleEdit = () => {
     setUpdating(true);
   };
+
+  const tags = customer?.customerExtension?.tags || [];
 
   return (
     <div className='customer_detail__original customer_detail__box box'>
@@ -38,6 +39,21 @@ const CustomerDetailInfoDisplay = (props) => {
           <span className=''>Customer Note:</span>
         </div>
         <P text={customer?.customerExtension?.note || ''} id='CustomerNoteBox' />
+
+        <div className='box__sub_title mb-2'>
+          <span className=''>Customer Tags:</span>
+        </div>
+        <div className='mb-3'>
+          <div className='customer_detail__tags tags'>
+            <div className='tags__list'>
+              {tags.map((tag) => (
+                <div key={`customer__tag__modal__${tag.id}`} className='tags__item'>
+                  {tag.name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
         <div className='box__device' />
         <div className='row'>
           <div className='col-6'>

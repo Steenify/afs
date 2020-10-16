@@ -6,14 +6,15 @@ import { Spinner } from 'reactstrap';
 import TableBody from 'components/common/tableBody';
 import TableHeader from 'components/common/tableHeader';
 
-import CustomersSelectedAll from './customersSelectedAll';
-import CustomersSelectedCell from './customersSelectedCell';
-import CustomersFullNameCell from './customersFullNameCell';
-import CustomersAddressCell from './customersAddressCell';
-import CustomersOverviewCell from './customersOverviewCell';
-import CustomersOrderCell from './customersOrderCell';
-import CustomersValueCell from './customersValueCell';
-import CustomersUpdateContactCell from './customersUpdateContactCell';
+import CustomersSelectedAll from './cells/customersSelectedAll';
+import CustomersSelectedCell from './cells/customersSelectedCell';
+import CustomersFullNameCell from './cells/customersFullNameCell';
+import CustomersAddressCell from './cells/customersAddressCell';
+import CustomersOverviewCell from './cells/customersOverviewCell';
+import CustomersOrderCell from './cells/customersOrderCell';
+import CustomersValueCell from './cells/customersValueCell';
+import CustomersUpdateContactCell from './cells/customersUpdateContactCell';
+import CustomersTagsCell from './cells/customersTagsCell';
 
 const columns = [
   {
@@ -57,6 +58,12 @@ const columns = [
     Header: 'Contact',
     minWidth: 100,
     Cell: CustomersUpdateContactCell,
+  },
+  {
+    accessor: 'tags',
+    Header: 'Tags',
+    minWidth: 200,
+    Cell: CustomersTagsCell,
   },
 ];
 

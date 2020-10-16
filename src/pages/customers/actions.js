@@ -1,5 +1,5 @@
 import { actionCreator, actionTryCatchCreator, isMobile } from 'utils';
-import { getCustomersService, updateCustomerService, createCustomerService } from 'services/customers';
+import { getCustomersService, updateCustomerService, createCustomerService, updateCustomerTagsService } from 'services/customers';
 
 export const UPDATE_CUSTOMER_ITEM_ACTION = 'UPDATE_CUSTOMER_ITEM_ACTION';
 export const updateCustomersItemsAction = (payload) => (dispatch) => {
@@ -103,6 +103,43 @@ export const updateCustomerAction = (params, onSuccess, onError) => async (dispa
         payload: error.response,
       });
       if (onError) onError(error.response);
+    },
+  });
+};
+
+export const UPDATE_CUSTOMER_EDIT_TAG_ACTION = 'UPDATE_CUSTOMER_EDIT_TAG_ACTION';
+export const updateCustmerEditTagAction = (payload) => (dispatch) => {
+  dispatch({
+    type: UPDATE_CUSTOMER_EDIT_TAG_ACTION,
+    payload,
+  });
+};
+
+export const UPDATE_CUSTOMER_ITEM_TAG_ACTION = 'UPDATE_CUSTOMER_ITEM_TAG_ACTION';
+export const updateCustmerItemTagAction = (payload) => (dispatch) => {
+  dispatch({
+    type: UPDATE_CUSTOMER_ITEM_TAG_ACTION,
+    payload,
+  });
+};
+
+export const UPDATE_CUSTOMER_TAGS_API_ACTION = actionCreator('UPDATE_CUSTOMER_TAGS_API_ACTION');
+export const updateCustomerTagsAPIAction = ({ login, payload, onSuccess }) => (dispatch) => {
+  actionTryCatchCreator({
+    service: updateCustomerTagsService(login, payload),
+    onPending: () => dispatch({ type: UPDATE_CUSTOMER_TAGS_API_ACTION.PENDING }),
+    onSuccess: (data) => {
+      dispatch({
+        type: UPDATE_CUSTOMER_TAGS_API_ACTION.SUCCESS,
+        payload: data,
+      });
+      if (onSuccess) onSuccess(data);
+    },
+    onError: (error) => {
+      dispatch({
+        type: UPDATE_CUSTOMER_TAGS_API_ACTION.ERROR,
+        payload: error.response,
+      });
     },
   });
 };

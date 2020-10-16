@@ -2,15 +2,16 @@ import update from 'react-addons-update';
 import { mapDataList, mapDataByIds, isMobile } from 'utils';
 import {
   GET_CUSTOMER_LIST_ACTION,
-  CREATE_CUSTOMER_ACTION,
   UPDATE_CUSTOMER_ACTION,
   UPDATE_CUSTOMER_FILTER_ACTION,
   UPDATE_CUSTOMER_ITEM_ACTION,
   UPDATE_CUSTOMERS_ALL_SELECTED_ROW_ACTION,
+  UPDATE_CUSTOMER_EDIT_TAG_ACTION,
+  UPDATE_CUSTOMER_ITEM_TAG_ACTION,
 } from './actions';
 
 const initialState = {
-  ui: { loading: false, loadingDetail: false },
+  ui: { loading: false, loadingDetail: false, showEditTag: false, userEditTag: '' },
   list: {
     customers: [],
     ids: [],
@@ -65,7 +66,6 @@ const reducer = (state = initialState, action) => {
         },
         list: {
           customers: { $set: payload.data },
-          // customers: { $set: mapDataList(payload.data, 'selected', false) },
           ids: { $set: ids },
           items: { $set: items },
           totalItems: { $set: payload.headers['x-total-count'] },
@@ -113,6 +113,31 @@ const reducer = (state = initialState, action) => {
             $apply: (items) => {
               const res = mapDataList(items, 'selected', payload);
               return res;
+            },
+          },
+        },
+      });
+    }
+    case UPDATE_CUSTOMER_EDIT_TAG_ACTION: {
+      return update(state, {
+        ui: {
+          showEditTag: {
+            $set: payload?.showEditTag,
+          },
+          userEditTag: {
+            $set: payload?.userEditTag,
+          },
+        },
+      });
+    }
+    case UPDATE_CUSTOMER_ITEM_TAG_ACTION: {
+      return update(state, {
+        list: {
+          items: {
+            [payload.id]: {
+              tags: {
+                $set: payload.tags,
+              },
             },
           },
         },

@@ -5,6 +5,7 @@ import Layout from 'components/common/Layout';
 import PageTitle from 'components/common/PageTitle';
 import CustomerList from './customersList';
 import CustomerCreate from './customersCreate';
+import CustomerTagsModal from './customerTagsModal';
 
 import './style.scss';
 
@@ -19,6 +20,7 @@ const CustomerManagement = () => {
         <CustomerCreate containerClassName='ml-auto' />
       </PageTitle>
       <CustomerList />
+      <CustomerTagsModal />
     </Layout>
   );
 };

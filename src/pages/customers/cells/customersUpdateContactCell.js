@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Popover from 'react-tiny-popover';
 import { toast } from 'react-toastify';
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
-import { updateCustomersItemsAction, updateCustomerAction } from './actions';
+import { updateCustomersItemsAction, updateCustomerAction } from '../actions';
 
 import ListContacts from 'components/layout/listContact';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { updateCustomersItemsAction } from './actions';
+import { updateCustomersItemsAction } from '../actions';
 
 const CustomersSelectedCell = ({ selected, updateCustomersItemsAction, id }) => {
   const handleChange = (checked) => {

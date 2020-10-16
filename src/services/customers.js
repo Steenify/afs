@@ -28,3 +28,10 @@ export const createCustomerService = (data) =>
     method: 'POST',
     data: data,
   });
+
+export const updateCustomerTagsService = (login, data) =>
+  request({
+    url: CUSTOMER_API + `/${login}/tags`,
+    method: 'PUT',
+    data,
+  });
