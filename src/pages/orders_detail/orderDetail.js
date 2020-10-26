@@ -31,7 +31,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
   let artworkItems = [],
     canvasItems = [];
   order.items.forEach((item) => {
-    if (getOrderItem(item.name) === filterOrderItems[1] || getOrderItem(item.name) === filterOrderItems[0]) {
+    if (getOrderItem(item.name) === filterOrderItems[1]) {
       hasFaster = true;
     }
     if (!includes(itemsToFilter, getOrderItem(item.name))) {

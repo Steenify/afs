@@ -26,7 +26,7 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
 
   let hasFaster = false;
   const filteredItems = filter(items, (item) => {
-    if (getOrderItem(item.name) === filterOrderItems[1] || getOrderItem(item.name) === filterOrderItems[0]) {
+    if (getOrderItem(item.name) === filterOrderItems[1]) {
       hasFaster = true;
     }
     return !includes(itemsToFilter, getOrderItem(item.name));
