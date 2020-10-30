@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import PageModal from 'components/common/pageModal';
 import Dropbox from 'components/common/dropbox';
 import Button from 'components/common/button';
+import P from 'components/common/parapraph';
 
 import { getOrderItem, getOrderOption, formatMoney, actionTryCatchCreator } from 'utils';
 import { statusPayments } from 'configs';
@@ -18,6 +19,7 @@ import { getAllOrdersService } from 'services/order';
 
 const ArtistPayoutModal = (props) => {
   const { isOpen, className, toggle, artist, createOrderTablePayoutsBulkAction, getArtistsListAction } = props;
+  console.log('ArtistPayoutModal -> artist', artist);
 
   const dropbox = useRef(null);
   const [extra, setExtra] = useState(0);
@@ -186,6 +188,15 @@ const ArtistPayoutModal = (props) => {
           </div>
 
           <div className='payout__divider' />
+
+          <div className='payout__item note'>
+            <div className='left'>
+              <span className='payout__label'>Payment Info</span>
+            </div>
+            <div className='right'>
+              <P text={artist?.paymentInfo || 'N/A'} id='ArtistPayBox' />
+            </div>
+          </div>
 
           <div className='payout__item note'>
             <div className='left'>
