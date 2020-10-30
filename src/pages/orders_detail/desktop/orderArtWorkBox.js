@@ -6,7 +6,7 @@ import { groupBy, sortBy, map, isEmpty, reduce } from 'lodash';
 import OrderArtWorkGroup from './orderArtWorkGroup';
 import OrderCustomerBox from './orderCustomerBox';
 import OrderArtDelivery from './orderArtDelivery';
-import { getOrderWorkLogAction } from './actions';
+import { getOrderWorkLogAction } from '../actions';
 
 const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, hasPoster }) => {
   useEffect(() => {

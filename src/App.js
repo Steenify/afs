@@ -107,7 +107,7 @@ const App = ({ getOrderTableCountByStatusAction, renewTokenAction, actGetAccount
           isPrivate={true}
         /> */}
 
-          <Route exact path={WEB_ROUTES.ORDERS_DETAIL.path} component={OrderDetail} />
+          <Route exact path={WEB_ROUTES.ORDERS_DETAIL.path} component={OrderDetail} className='order_detail__page' />
           <Route exact path={WEB_ROUTES.SETTINGS.path} component={Settings} isPrivate={true} role={WEB_ROUTES.SETTINGS.permission} />
           <Route exact path={WEB_ROUTES.ARTISTS.path} component={Artists} isPrivate={true} role={WEB_ROUTES.ARTISTS.permission} />
           <Route exact path={WEB_ROUTES.ARTISTS_DETAIL.path} component={ArtistDetail} isPrivate={true} role={WEB_ROUTES.ARTISTS_DETAIL.permission} />

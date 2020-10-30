@@ -10,7 +10,7 @@ import { PERMITTIONS_CONFIG } from 'configs';
 
 import { formatMoney } from 'utils';
 
-import { getOrderCustomerAction } from './actions';
+import { getOrderCustomerAction } from '../actions';
 
 import OrderChangeCustomer from './orderChangeCustomer';
 

@@ -5,7 +5,7 @@ import { groupBy, sortBy, map, isEmpty, reduce } from 'lodash';
 
 import OrderCanvasWorkGroup from './orderCanvasWorkGroup';
 // import OrderCanvasDelivery from './orderCanvasDelivery';
-import { getOrderCanvasWorkLogAction } from './actions';
+import { getOrderCanvasWorkLogAction } from '../actions';
 
 const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loading, workLog }) => {
   useEffect(() => {

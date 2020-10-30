@@ -16,6 +16,8 @@ import EmailRemind from './remindCustomer';
 import OrderBudget from './orderBudget';
 import OrderAssignedBox from './orderAssignedBox';
 
+import './style.scss';
+
 const OrderDetail = ({ loading, order, status, accountInfo }) => {
   if (isEmpty(order) || !status.length) {
     return <InPageLoading isLoading={loading} />;

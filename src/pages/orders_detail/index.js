@@ -7,12 +7,15 @@ import Breadcrumb from 'components/common/breadcrumb';
 
 import { WEB_ROUTES } from 'configs';
 
-import { getOrderDetailAction } from './actions';
 import { getOrderTableStatusAction } from 'components/tables/orders/actions';
 
-import Detail from './orderDetail';
+import { DesktopLG, MobileLG } from 'components/responsive';
 
-import './style.scss';
+import { getOrderDetailAction } from './actions';
+
+import Detail from './desktop/orderDetail';
+
+import DetailMobi from './mobile/orderDetailMobi';
 
 const OrderDetail = ({ getOrderDetail, getOrderTableStatusAction }) => {
   let { id } = useParams();
@@ -24,17 +27,24 @@ const OrderDetail = ({ getOrderDetail, getOrderTableStatusAction }) => {
 
   return (
     <Layout documentTitle={WEB_ROUTES.ORDERS_DETAIL.title} container fluid>
-      <Breadcrumb
-        data={[
-          {
-            title: WEB_ROUTES.ORDERS.title,
-            active: false,
-            path: WEB_ROUTES.ORDERS.path,
-            isBack: true,
-          },
-        ]}
-      />
-      <Detail id={id} />
+      <DesktopLG>
+        <>
+          <Breadcrumb
+            data={[
+              {
+                title: WEB_ROUTES.ORDERS.title,
+                active: false,
+                path: WEB_ROUTES.ORDERS.path,
+                isBack: true,
+              },
+            ]}
+          />
+          <Detail id={id} />
+        </>
+      </DesktopLG>
+      <MobileLG>
+        <DetailMobi id={id} />
+      </MobileLG>
     </Layout>
   );
 };

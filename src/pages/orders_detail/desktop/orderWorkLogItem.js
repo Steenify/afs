@@ -23,7 +23,14 @@ import { ReactComponent as Feedback } from 'assets/img/message__yellow.svg';
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
 import { mapStatusCanNotUpload, PERMITTIONS_CONFIG } from 'configs';
 
-import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction, updateTrackingCodeWorkLogAction } from './actions';
+import {
+  uploadFileWorkLogAction,
+  uploadCommentWorkLogAction,
+  deleteCommentWorkLogAction,
+  updateCommentWorkLogAction,
+  deleteAttachmentWorkLogAction,
+  updateTrackingCodeWorkLogAction,
+} from '../actions';
 import CanShow from 'components/layout/canshow';
 import { ReactDates } from 'components/common/datepicker';
 

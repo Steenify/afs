@@ -23,7 +23,7 @@ import {
   getRemindTemplatesAction,
   createOrderCanvasWorkLogAction,
   canceledWorkLogAction,
-} from './actions';
+} from '../actions';
 
 const OrderArtWorkGroup = ({
   order,

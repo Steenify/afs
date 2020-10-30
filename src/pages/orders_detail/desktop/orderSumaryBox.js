@@ -10,7 +10,7 @@ import Dropbox from 'components/common/dropbox';
 import { getListImageUrl } from 'utils';
 import { PERMITTIONS_CONFIG } from 'configs';
 
-import { updateOrderItemSumarizeAction, updateOrderItemSumarizeAPIAction, updateOrderItemFilesAction, deleteFileSummaryAction } from './actions';
+import { updateOrderItemSumarizeAction, updateOrderItemSumarizeAPIAction, updateOrderItemFilesAction, deleteFileSummaryAction } from '../actions';
 
 const OrderSumaryBox = ({ item, order, updateOrderItemSumarize, updateOrderItemSumarizeAPI, updateOrderItemFiles, accountInfo, deleteFileSummary }) => {
   const index = findIndex(order.items, (it) => it?.id === item?.id);

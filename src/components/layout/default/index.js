@@ -20,7 +20,6 @@ const DefaultLayout = (props) => {
         <SentryErrorBoundary>
           <Header />
         </SentryErrorBoundary>
-
         <div className='app-main py-5'>
           <SentryErrorBoundary>{children}</SentryErrorBoundary>
         </div>

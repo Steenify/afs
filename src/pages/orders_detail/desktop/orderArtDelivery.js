@@ -11,9 +11,9 @@ import Button from 'components/common/button';
 import { getListImageUrl, getSelectedStatus } from 'utils';
 import { PERMITTIONS_CONFIG } from 'configs';
 
-import { uploadFileWorkLogAction, deleteFileDeliveryAction, getNotifyTemplatesAction } from './actions';
+import { uploadFileWorkLogAction, deleteFileDeliveryAction, getNotifyTemplatesAction } from '../actions';
 
-const OrderCanvasDelivery = ({ order, images, works, workLog, uploadFileWorkLog, deleteFileDelivery, accountInfo, status, getNotifyTemplatesAction }) => {
+const OrderArtDelivery = ({ order, images, works, workLog, uploadFileWorkLog, deleteFileDelivery, accountInfo, status, getNotifyTemplatesAction }) => {
   const dropbox = useRef(null);
 
   const lastExport = works[works.length - 1];
@@ -128,4 +128,4 @@ const mapDispatchToProps = {
   getNotifyTemplatesAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderCanvasDelivery);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderArtDelivery);

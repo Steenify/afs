@@ -3,50 +3,47 @@ import { connect } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
-import { map } from 'lodash';
 import { toast } from 'react-toastify';
 
 import Button from 'components/common/button';
 import ImageGallery from 'components/common/imageGallery';
 
-import { getSelectedStatus, getListImageUrl } from 'utils';
+import { getListImageUrl } from 'utils';
 
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
 import CustomersUpdateContact from './customersUpdateContact';
 
 import {
-  updateShowEmailNotifyAction,
-  updateEmailNotifyAction,
+  updateShowEmailRemindAction,
   sendEmailNotifyAction,
-  getEmailTemplateAction,
-  updateFbTemplateNotifyAction,
-  getFBMessageTemplateAction,
+  getRemindEmailTemplateAction,
+  getRemindFBMessageTemplateAction,
   sendFBMessageNotifyAction,
   updatOrderCustomerAction,
-} from './actions';
+  updateRemindTemplateAction,
+  sentEmailRemindAction,
+  sentMessageRemindAction,
+} from '../actions';
 
-const EmaiNotify = (props) => {
+const RemindCustomer = (props) => {
   const {
     isShowEmail,
     email,
-    updateShowEmailNotify,
-    updateEmailNotify,
-    sendEmailNotify,
+    updateShowEmailRemind,
     loadingEmail,
-    status,
     order,
-    selectedEmailTemplate,
-    getEmailTemplate,
+    getRemindEmailTemplate,
     emailTitle,
     fbTemplate,
     fbTemplateAttachments,
     customer,
-    updateFbTemplateNotify,
     currentWorkLogIndex,
-    getFBMessageTemplate,
-    sendFBMessageNotify,
+    getRemindFBMessageTemplate,
     updatOrderCustomer,
+    updateRemindTemplateAction,
+    sentEmailRemindAction,
+    sentMessageRemindAction,
   } = props;
 
   const [notifyType, setNotifyType] = useState('email');
@@ -62,15 +59,13 @@ const EmaiNotify = (props) => {
     setCustomerEmail(value);
   };
 
-  const { emailTemplates, name } = getSelectedStatus(order.statusForCanvas || order.status, status);
-
   const toggle = () => {
-    updateShowEmailNotify(!isShowEmail);
+    updateShowEmailRemind(!isShowEmail);
   };
 
   const handleUpdateEmail = (e) => {
-    const value = e.target.getContent();
-    updateEmailNotify(value);
+    const email = e.target.getContent();
+    updateRemindTemplateAction({ email });
   };
 
   const handleSaveCustomerContact = (value) => {
@@ -85,28 +80,46 @@ const EmaiNotify = (props) => {
 
   const handleUpdateFBTemplate = (e) => {
     const { value } = e.target;
-    updateFbTemplateNotify(value);
+    updateRemindTemplateAction({ fbTemplate: value });
   };
 
-  const handleGetNewTemplate = (templateId) => {
-    getEmailTemplate(order.id, templateId, currentWorkLogIndex);
-    getFBMessageTemplate(order.id, templateId, currentWorkLogIndex);
+  const handleGetNewTemplate = () => {
+    getRemindEmailTemplate(order.id, currentWorkLogIndex);
+    getRemindFBMessageTemplate(order.id, currentWorkLogIndex);
   };
 
   const handleChangeTabType = (e) => {
     const data = e.target.getAttribute('data');
     setNotifyType(data || 'email');
     if (data === 'facebook') {
-      const firstTemplate = (emailTemplates || [])[0] || {};
-      handleGetNewTemplate(firstTemplate?.id);
+      handleGetNewTemplate();
     }
   };
 
   const handleSentNotify = () => {
     if (notifyType === 'email') {
-      sendEmailNotify(customerEmail);
+      if (!customerEmail) {
+        toast.warn('Email is required');
+        return;
+      }
+      if (!email) {
+        toast.warn('Email content is required');
+        return;
+      }
+      const payload = {
+        to: customerEmail,
+        content: email,
+        // title: emailTitle,
+      };
+      sentEmailRemindAction(payload, order?.id);
+      // sendEmailNotify(customerEmail);
     } else {
-      sendFBMessageNotify(customer?.contact?.psid);
+      const payload = {
+        content: fbTemplate,
+        attachments: fbTemplateAttachments || [],
+        psid: customer?.contact?.psid,
+      };
+      sentMessageRemindAction(payload, order?.id);
     }
   };
 
@@ -114,7 +127,7 @@ const EmaiNotify = (props) => {
     <Modal isOpen={isShowEmail} toggle={toggle} fade={false} size='lg' className='modal-dialog-centered  modal-no-border'>
       <div className='order_detail__email'>
         <ModalHeader toggle={toggle}>
-          Email Notify
+          Remind Customer
           <button type='button' className='modal-close' onClick={toggle}>
             <CloseIcon width='25px' height='25px' />
           </button>
@@ -130,16 +143,6 @@ const EmaiNotify = (props) => {
               </button>
             </div>
           </div>
-
-          <ul className='nav nav-pills template__list'>
-            {map(emailTemplates, (template) => (
-              <li key={`template_email__item__${template.id}`} className='nav-item mr-2 mb-2'>
-                <button onClick={() => handleGetNewTemplate(template.id)} className={`nav-link btn btn-link ${name} ${template.id === selectedEmailTemplate && 'active'}`}>
-                  {template.name}
-                </button>
-              </li>
-            ))}
-          </ul>
 
           <div className={`template__content ${notifyType !== 'email' ? 'd-none' : ''}`}>
             {loadingEmail ? (
@@ -163,7 +166,14 @@ const EmaiNotify = (props) => {
                   <div className='input-group-append'>
                     <span className='input-group-text'>Title: </span>
                   </div>
-                  <input type='text' className='form-control clipboad__input' value={emailTitle || ''} onChange={() => {}} placeholder='Email Title' />
+                  <input
+                    type='text'
+                    className='form-control clipboad__input'
+                    value={emailTitle || ''}
+                    // onChange={(e) => updateRemindTemplateAction({ emailTitle: e.target.value })}
+                    onChange={() => {}}
+                    placeholder='Email Title'
+                  />
                   <CopyToClipboard text={emailTitle || ''} onCopy={() => toast.dark('Copied')}>
                     <div className='input-group-append clipboad__input'>
                       <span className='input-group-text'>Copy</span>
@@ -223,26 +233,30 @@ const EmaiNotify = (props) => {
 };
 const mapStateToProps = ({ orderDetail, orderTable }) => ({
   status: orderTable.orders.status,
-  isShowEmail: orderDetail.ui.isShowEmail,
-  loadingEmail: orderDetail.ui.loadingEmail,
   selectedEmailTemplate: orderDetail.data.selectedEmailTemplate,
-  email: orderDetail.data.email,
-  emailTitle: orderDetail.data.emailTitle,
-  fbTemplate: orderDetail.data.fbTemplate,
-  fbTemplateAttachments: orderDetail.data.fbTemplateAttachments,
+  isShowEmail: orderDetail.ui.remind.isShowEmail,
+  loadingEmail: orderDetail.ui.remind.loadingEmail,
+  email: orderDetail.data.remind.email,
+  emailTitle: orderDetail.data.remind.emailTitle,
+  fbTemplate: orderDetail.data.remind.fbTemplate,
+  fbTemplateAttachments: orderDetail.data.remind.fbTemplateAttachments,
   customer: orderDetail.data.customer,
   currentWorkLogIndex: orderDetail.data.currentWorkLogIndex,
 });
 
 const mapDispatchToProps = {
-  updateShowEmailNotify: updateShowEmailNotifyAction,
-  updateEmailNotify: updateEmailNotifyAction,
+  updateShowEmailRemind: updateShowEmailRemindAction,
+  updateRemindTemplateAction,
+
+  getRemindEmailTemplate: getRemindEmailTemplateAction,
+  getRemindFBMessageTemplate: getRemindFBMessageTemplateAction,
+
   sendEmailNotify: sendEmailNotifyAction,
-  getEmailTemplate: getEmailTemplateAction,
-  updateFbTemplateNotify: updateFbTemplateNotifyAction,
-  getFBMessageTemplate: getFBMessageTemplateAction,
   sendFBMessageNotify: sendFBMessageNotifyAction,
+
   updatOrderCustomer: updatOrderCustomerAction,
+  sentEmailRemindAction,
+  sentMessageRemindAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmaiNotify);
+export default connect(mapStateToProps, mapDispatchToProps)(RemindCustomer);

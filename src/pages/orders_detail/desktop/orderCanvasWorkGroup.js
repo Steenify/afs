@@ -12,10 +12,10 @@ import { ReactComponent as Close } from 'assets/img/close.svg';
 
 import Button from 'components/common/button';
 
-import OrderWorkLogItem from './orderWorkLogItem';
+import OrderWorkLogItem from 'pages/orders_detail/desktop/orderWorkLogItem';
 import OrderRejectModal from './orderRejectModal';
 
-import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction } from './actions';
+import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction } from '../actions';
 
 const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, rejectedWorkLog, getNotifyTemplatesAction, accountInfo, isNewOrder, workLog, lastWorkLog }) => {
   let isOpened = false;

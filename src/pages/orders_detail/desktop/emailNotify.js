@@ -16,38 +16,37 @@ import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 import CustomersUpdateContact from './customersUpdateContact';
 
 import {
-  updateShowEmailRemindAction,
+  updateShowEmailNotifyAction,
+  updateEmailNotifyAction,
   sendEmailNotifyAction,
-  getRemindEmailTemplateAction,
-  getRemindFBMessageTemplateAction,
+  getEmailTemplateAction,
+  updateFbTemplateNotifyAction,
+  getFBMessageTemplateAction,
   sendFBMessageNotifyAction,
   updatOrderCustomerAction,
-  updateRemindTemplateAction,
-  sentEmailRemindAction,
-  sentMessageRemindAction,
-} from './actions';
+} from '../actions';
 
-const RemindCustomer = (props) => {
+const EmaiNotify = (props) => {
   const {
     isShowEmail,
     email,
-    updateShowEmailRemind,
+    updateShowEmailNotify,
+    updateEmailNotify,
     sendEmailNotify,
     loadingEmail,
     status,
     order,
-    getRemindEmailTemplate,
+    selectedEmailTemplate,
+    getEmailTemplate,
     emailTitle,
     fbTemplate,
     fbTemplateAttachments,
     customer,
+    updateFbTemplateNotify,
     currentWorkLogIndex,
-    getRemindFBMessageTemplate,
+    getFBMessageTemplate,
     sendFBMessageNotify,
     updatOrderCustomer,
-    updateRemindTemplateAction,
-    sentEmailRemindAction,
-    sentMessageRemindAction,
   } = props;
 
   const [notifyType, setNotifyType] = useState('email');
@@ -63,13 +62,15 @@ const RemindCustomer = (props) => {
     setCustomerEmail(value);
   };
 
+  const { emailTemplates, name } = getSelectedStatus(order.statusForCanvas || order.status, status);
+
   const toggle = () => {
-    updateShowEmailRemind(!isShowEmail);
+    updateShowEmailNotify(!isShowEmail);
   };
 
   const handleUpdateEmail = (e) => {
-    const email = e.target.getContent();
-    updateRemindTemplateAction({ email });
+    const value = e.target.getContent();
+    updateEmailNotify(value);
   };
 
   const handleSaveCustomerContact = (value) => {
@@ -84,46 +85,28 @@ const RemindCustomer = (props) => {
 
   const handleUpdateFBTemplate = (e) => {
     const { value } = e.target;
-    updateRemindTemplateAction({ fbTemplate: value });
+    updateFbTemplateNotify(value);
   };
 
-  const handleGetNewTemplate = () => {
-    getRemindEmailTemplate(order.id, currentWorkLogIndex);
-    getRemindFBMessageTemplate(order.id, currentWorkLogIndex);
+  const handleGetNewTemplate = (templateId) => {
+    getEmailTemplate(order.id, templateId, currentWorkLogIndex);
+    getFBMessageTemplate(order.id, templateId, currentWorkLogIndex);
   };
 
   const handleChangeTabType = (e) => {
     const data = e.target.getAttribute('data');
     setNotifyType(data || 'email');
     if (data === 'facebook') {
-      handleGetNewTemplate();
+      const firstTemplate = (emailTemplates || [])[0] || {};
+      handleGetNewTemplate(firstTemplate?.id);
     }
   };
 
   const handleSentNotify = () => {
     if (notifyType === 'email') {
-      if (!customerEmail) {
-        toast.warn('Email is required');
-        return;
-      }
-      if (!email) {
-        toast.warn('Email content is required');
-        return;
-      }
-      const payload = {
-        to: customerEmail,
-        content: email,
-        // title: emailTitle,
-      };
-      sentEmailRemindAction(payload, order?.id);
-      // sendEmailNotify(customerEmail);
+      sendEmailNotify(customerEmail);
     } else {
-      const payload = {
-        content: fbTemplate,
-        attachments: fbTemplateAttachments || [],
-        psid: customer?.contact?.psid,
-      };
-      sentMessageRemindAction(payload, order?.id);
+      sendFBMessageNotify(customer?.contact?.psid);
     }
   };
 
@@ -131,7 +114,7 @@ const RemindCustomer = (props) => {
     <Modal isOpen={isShowEmail} toggle={toggle} fade={false} size='lg' className='modal-dialog-centered  modal-no-border'>
       <div className='order_detail__email'>
         <ModalHeader toggle={toggle}>
-          Remind Customer
+          Email Notify
           <button type='button' className='modal-close' onClick={toggle}>
             <CloseIcon width='25px' height='25px' />
           </button>
@@ -147,6 +130,16 @@ const RemindCustomer = (props) => {
               </button>
             </div>
           </div>
+
+          <ul className='nav nav-pills template__list'>
+            {map(emailTemplates, (template) => (
+              <li key={`template_email__item__${template.id}`} className='nav-item mr-2 mb-2'>
+                <button onClick={() => handleGetNewTemplate(template.id)} className={`nav-link btn btn-link ${name} ${template.id === selectedEmailTemplate && 'active'}`}>
+                  {template.name}
+                </button>
+              </li>
+            ))}
+          </ul>
 
           <div className={`template__content ${notifyType !== 'email' ? 'd-none' : ''}`}>
             {loadingEmail ? (
@@ -170,14 +163,7 @@ const RemindCustomer = (props) => {
                   <div className='input-group-append'>
                     <span className='input-group-text'>Title: </span>
                   </div>
-                  <input
-                    type='text'
-                    className='form-control clipboad__input'
-                    value={emailTitle || ''}
-                    // onChange={(e) => updateRemindTemplateAction({ emailTitle: e.target.value })}
-                    onChange={() => {}}
-                    placeholder='Email Title'
-                  />
+                  <input type='text' className='form-control clipboad__input' value={emailTitle || ''} onChange={() => {}} placeholder='Email Title' />
                   <CopyToClipboard text={emailTitle || ''} onCopy={() => toast.dark('Copied')}>
                     <div className='input-group-append clipboad__input'>
                       <span className='input-group-text'>Copy</span>
@@ -237,30 +223,26 @@ const RemindCustomer = (props) => {
 };
 const mapStateToProps = ({ orderDetail, orderTable }) => ({
   status: orderTable.orders.status,
+  isShowEmail: orderDetail.ui.isShowEmail,
+  loadingEmail: orderDetail.ui.loadingEmail,
   selectedEmailTemplate: orderDetail.data.selectedEmailTemplate,
-  isShowEmail: orderDetail.ui.remind.isShowEmail,
-  loadingEmail: orderDetail.ui.remind.loadingEmail,
-  email: orderDetail.data.remind.email,
-  emailTitle: orderDetail.data.remind.emailTitle,
-  fbTemplate: orderDetail.data.remind.fbTemplate,
-  fbTemplateAttachments: orderDetail.data.remind.fbTemplateAttachments,
+  email: orderDetail.data.email,
+  emailTitle: orderDetail.data.emailTitle,
+  fbTemplate: orderDetail.data.fbTemplate,
+  fbTemplateAttachments: orderDetail.data.fbTemplateAttachments,
   customer: orderDetail.data.customer,
   currentWorkLogIndex: orderDetail.data.currentWorkLogIndex,
 });
 
 const mapDispatchToProps = {
-  updateShowEmailRemind: updateShowEmailRemindAction,
-  updateRemindTemplateAction,
-
-  getRemindEmailTemplate: getRemindEmailTemplateAction,
-  getRemindFBMessageTemplate: getRemindFBMessageTemplateAction,
-
+  updateShowEmailNotify: updateShowEmailNotifyAction,
+  updateEmailNotify: updateEmailNotifyAction,
   sendEmailNotify: sendEmailNotifyAction,
+  getEmailTemplate: getEmailTemplateAction,
+  updateFbTemplateNotify: updateFbTemplateNotifyAction,
+  getFBMessageTemplate: getFBMessageTemplateAction,
   sendFBMessageNotify: sendFBMessageNotifyAction,
-
   updatOrderCustomer: updatOrderCustomerAction,
-  sentEmailRemindAction,
-  sentMessageRemindAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RemindCustomer);
+export default connect(mapStateToProps, mapDispatchToProps)(EmaiNotify);
