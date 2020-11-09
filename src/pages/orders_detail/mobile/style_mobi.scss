@@ -1,4 +1,14 @@
 @import 'styles/var.scss';
 
+.order_detail {
+	@include max-lg() {
+		&__page {
+			.header__main {
+				display: none;
+			}
+		}
+	}
+}
+
 .order_detail_mobi {
 }

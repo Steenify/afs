@@ -1,19 +1,32 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+
+import { ReactComponent as ArrowLeftIcon } from 'assets/img/arrow-left.svg';
 
 import './style.scss';
 
-const Navigation = ({ title, RightComponent }) => {
+const Navigation = ({ title, RightButton }) => {
+  const history = useHistory();
+
+  const handleBack = () => {
+    history.goBack();
+  };
+
   return (
     <div className='navigation__page'>
       <div className='navigation__container'>
         <div className='navigation__left'>
-          <button className='navigation__back' type='button'></button>
+          <button className='navigation__back' onClick={handleBack} type='button'>
+            <span className='icon'>
+              <ArrowLeftIcon />
+            </span>
+          </button>
 
           <div className='navigation__title'>{title}</div>
         </div>
 
         <div className='navigation__right'>
-          <RightComponent />
+          <RightButton />
         </div>
       </div>
     </div>
@@ -22,7 +35,7 @@ const Navigation = ({ title, RightComponent }) => {
 
 Navigation.defaultProps = {
   title: '',
-  RightComponent: () => {},
+  RightButton: () => null,
 };
 
 export default Navigation;
