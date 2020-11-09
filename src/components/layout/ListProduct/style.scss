@@ -1,0 +1,22 @@
+.product_list {
+	&__item {
+		background: #eff3f9;
+		border: none;
+		display: block;
+		width: 100%;
+		padding: 10px 10px;
+		text-align: left;
+		margin-bottom: 10px;
+		font-size: 16px;
+		&.selected {
+			background: #4badf3;
+			color: #fff;
+		}
+	}
+	&__search {
+		.search__input {
+			font-size: 16px;
+			height: 40px;
+		}
+	}
+}

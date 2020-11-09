@@ -15,6 +15,7 @@ import EmaiNotify from './emailNotify';
 import EmailRemind from './remindCustomer';
 import OrderBudget from './orderBudget';
 import OrderAssignedBox from './orderAssignedBox';
+import AddProductModal from './addProductModal';
 
 const OrderDetail = ({ loading, order, status, accountInfo }) => {
   if (isEmpty(order) || !status.length) {
@@ -118,6 +119,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
       <InPageLoading isLoading={loading} />
       <EmaiNotify order={order} />
       <EmailRemind order={order} />
+      <AddProductModal order={order} />
     </div>
   );
 };

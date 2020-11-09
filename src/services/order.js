@@ -240,3 +240,10 @@ export const getAllBookingTagsService = (params) =>
     method: 'GET',
     params,
   });
+
+export const addOrderItemService = (orderId, data) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/items`,
+    method: 'POST',
+    data,
+  });

@@ -924,6 +924,16 @@
 		}
 	}
 
+	&__addproduct {
+		.addproduct {
+			&__note {
+				.form-control {
+					font-size: 16px;
+				}
+			}
+		}
+	}
+
 	@include max-lg() {
 		&__customer_box {
 			order: -1;

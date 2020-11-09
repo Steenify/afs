@@ -28,6 +28,7 @@ import {
   SENT_EMAIL_REMIND_ACTION,
   SENT_MESSAGE_REMIND_ACTION,
   CANCELED_WORK_LOG_ACTION,
+  ADD_ORDER_ITEM_ACTION,
 } from './actions';
 
 import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
@@ -39,6 +40,7 @@ const initialState = {
     loadingWorkLog: false,
     loadingCanvasWorkLog: false,
     isShowEmail: false,
+    isShowAddProduct: true,
     loadingEmail: false,
     remind: {
       isShowEmail: false,
@@ -125,6 +127,14 @@ const reducer = (state = initialState, action) => {
           },
         },
       });
+    case ORDER_DETAIL_ACTIONS.UPDATE_SHOW_ADD_PRODUCT_MODAL:
+      return update(state, {
+        ui: {
+          isShowAddProduct: {
+            $set: payload,
+          },
+        },
+      });
     case ORDER_DETAIL_ACTIONS.UPDATE_ORDER_CUSTOMER:
       return update(state, {
         data: {
@@ -150,6 +160,7 @@ const reducer = (state = initialState, action) => {
     case SENT_FB_MESSAGES_NOTIFY_ACTION.PENDING:
     case SENT_EMAIL_REMIND_ACTION.PENDING:
     case SENT_MESSAGE_REMIND_ACTION.PENDING:
+    case ADD_ORDER_ITEM_ACTION.PENDING:
       return update(state, {
         ui: {
           loading: { $set: true },
@@ -162,6 +173,19 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           order: { $set: payload.data },
+        },
+      });
+    case ADD_ORDER_ITEM_ACTION.SUCCESS:
+      return update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+        data: {
+          order: {
+            items: {
+              $push: [payload],
+            },
+          },
         },
       });
     case CREATE_ORDER_CANVAS_WORK_LOG_ACTION.SUCCESS: {
@@ -489,6 +513,7 @@ const reducer = (state = initialState, action) => {
     case SENT_FB_MESSAGES_NOTIFY_ACTION.ERROR:
     case SENT_EMAIL_REMIND_ACTION.ERROR:
     case SENT_MESSAGE_REMIND_ACTION.ERROR:
+    case ADD_ORDER_ITEM_ACTION.ERROR:
       return update(state, {
         ui: {
           loading: { $set: false },

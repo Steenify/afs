@@ -31,6 +31,7 @@ import {
   sendEmailRemindService,
   sendMessageRemindService,
   setOrderCustomerService,
+  addOrderItemService,
 } from 'services/order';
 
 export const ORDER_DETAIL_ACTIONS = {
@@ -41,6 +42,7 @@ export const ORDER_DETAIL_ACTIONS = {
   UPDATE_REMIND_TEMPLATE: 'UPDATE_REMIND_TEMPLATE',
   UPDATE_ORDER_CUSTOMER: 'UPDATE_ORDER_CUSTOMER',
   UPDATE_SHOW_EMAIL_REMIND: 'UPDATE_SHOW_EMAIL_REMIND',
+  UPDATE_SHOW_ADD_PRODUCT_MODAL: 'UPDATE_SHOW_ADD_PRODUCT_MODAL',
 };
 
 export const updateOrderItemSumarizeAction = (payload) => (dispatch) => {
@@ -71,6 +73,12 @@ export const updatOrderCustomerAction = (payload) => (dispatch) => {
 export const updateEmailNotifyAction = (payload) => (dispatch) => {
   dispatch({
     type: ORDER_DETAIL_ACTIONS.UPDATE_EMAIL_NOTIFY,
+    payload,
+  });
+};
+export const updateShowAddProductAction = (payload) => (dispatch) => {
+  dispatch({
+    type: ORDER_DETAIL_ACTIONS.UPDATE_SHOW_ADD_PRODUCT_MODAL,
     payload,
   });
 };
@@ -1090,6 +1098,36 @@ export const setOrderCustomerBookingAction = (payload, orderId, cb) => (dispatch
 
   actionTryCatchCreator({
     service: setOrderCustomerService(payload, orderId),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const ADD_ORDER_ITEM_ACTION = actionCreator('ADD_ORDER_ITEM_ACTION');
+export const addOrderItemAction = (orderId, data, cb) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: ADD_ORDER_ITEM_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: ADD_ORDER_ITEM_ACTION.SUCCESS,
+      payload: data,
+    });
+    cb && cb();
+  };
+  const onError = (error) => {
+    console.log('addOrderItemAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: ADD_ORDER_ITEM_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: addOrderItemService(orderId, data),
     onPending,
     onSuccess,
     onError,
