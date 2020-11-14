@@ -35,6 +35,12 @@ export const assignOrderService = ({ id, to }) =>
     method: 'PUT',
   });
 
+export const assignCSOrderService = ({ id, to }) =>
+  request({
+    url: `${ORDERS_API}/${id}/assign-cs/${to}`,
+    method: 'PUT',
+  });
+
 export const changeOrderStatusService = ({ id, to }) =>
   request({
     url: `${ORDERS_API}/${id}/status/${to}`,

@@ -22,6 +22,7 @@ const templateState = {
     assignee: '',
     alert: '',
     hasPoster: false,
+    cs: '',
   },
   table: {
     orders: [],

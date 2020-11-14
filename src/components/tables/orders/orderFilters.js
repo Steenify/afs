@@ -45,6 +45,19 @@ class OrderFilters extends Component {
     });
   };
 
+  handleCheckCS = () => {
+    const { updateOrderTableFilterAction, reducer, cs, accountInfo } = this.props;
+
+    const { login } = accountInfo;
+
+    const filter_cs = cs ? '' : login;
+
+    updateOrderTableFilterAction({
+      payload: { cs: filter_cs, page: 0 },
+      reducer,
+    });
+  };
+
   handleSearchTextAPI = (value) => {
     const { updateOrderTableFilterAction, reducer } = this.props;
     updateOrderTableFilterAction({
@@ -54,7 +67,7 @@ class OrderFilters extends Component {
   };
 
   render() {
-    const { text, accountInfo, reducer, selectedAlertType, orderStatusCount, hasPoster } = this.props;
+    const { text, accountInfo, reducer, selectedAlertType, orderStatusCount, hasPoster, cs } = this.props;
 
     const canAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING);
     const totalOrders = countTotalOrders(orderStatusCount);
@@ -84,6 +97,13 @@ class OrderFilters extends Component {
               <span className='number'>{orderStatusCount['CANVAS'] || 0}</span>
             </button>
           </CanShow>
+
+          <CanShow permission={PERMITTIONS_CONFIG.VIEW_MY_ORDER_CS}>
+            <button onClick={this.handleCheckCS} key={`list__alert_option__has_poster`} className={`status SKETCH ${cs !== '' && 'active'}`}>
+              My Orders
+              <span className='number'>{orderStatusCount['MY_ORDERS'] || 0}</span>
+            </button>
+          </CanShow>
         </div>
         <div className='filter__main flex-wrap'>
           <div className='filter__text'>
@@ -109,6 +129,7 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
     selectedAlertType: table.filter.alert,
     orderStatusCount: table.orderStatusCount,
     hasPoster: table.filter.hasPoster,
+    cs: table.filter.cs,
   };
 };
 

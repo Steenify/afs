@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { parsePhoneNumber } from 'react-phone-number-input';
 import { useTranslation } from 'react-i18next';
 
-import { Modal, ModalHeader, ModalBody, ModalFooter, Form, Alert } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Form } from 'reactstrap';
 import Input from 'components/common/input';
 import Button from 'components/common/button';
 import PhoneInput from 'components/common/phoneInput';

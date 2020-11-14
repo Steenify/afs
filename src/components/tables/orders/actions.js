@@ -3,6 +3,7 @@ import {
   getAllOrdersService,
   updateOrderBudgetService,
   assignOrderService,
+  assignCSOrderService,
   updateOrderArtistPaymentService,
   updateOrderArtistPaymentBulkService,
   getOrderCountByStatusService,
@@ -26,6 +27,9 @@ const buildSearchParam = (input = {}) => {
   }
   if (input.hasPoster) {
     params.append('hasPoster', input.hasPoster || false);
+  }
+  if (input.cs) {
+    params.append('cs', input.cs || '');
   }
   params.append('text', input.text || '');
   params.append('page', input.page || 0);
@@ -161,6 +165,31 @@ export const updateOrderTableAssignArtistAction = ({ payload, reducer, onSuccess
       console.log('updateOrderTableAssignArtistAction => onError -> error', JSON.stringify(error));
       dispatch({
         type: ORDER_TABLE_UPDATE_ARTIST_ACTION.ERROR,
+        payload: error.response,
+        reducer,
+      });
+    },
+  });
+};
+
+export const ORDER_TABLE_UPDATE_CS_ACTION = actionCreator('ORDER_TABLE_UPDATE_CS_ACTION');
+export const updateOrderTableAssignCSAction = ({ payload, reducer, onSuccess }) => (dispatch) => {
+  actionTryCatchCreator({
+    service: assignCSOrderService(payload),
+    onPending: () => {
+      dispatch({
+        type: ORDER_TABLE_UPDATE_CS_ACTION.PENDING,
+        reducer,
+      });
+    },
+    onSuccess: (data) => {
+      dispatch({ type: ORDER_TABLE_UPDATE_CS_ACTION.SUCCESS, payload: data, reducer });
+      onSuccess && onSuccess();
+    },
+    onError: (error) => {
+      console.log('updateOrderTableAssignCSAction => onError -> error', JSON.stringify(error));
+      dispatch({
+        type: ORDER_TABLE_UPDATE_CS_ACTION.ERROR,
         payload: error.response,
         reducer,
       });

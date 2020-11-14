@@ -25,6 +25,7 @@ import OrderCreatedDateCell from 'components/tables/orders/cells/orderCreateDate
 import OrderSubTotalCell from 'components/tables/orders/cells/orderSubTotalCell';
 import OrderStatusCell from 'components/tables/orders/cells/orderStatusCell';
 import OrderLastUpdateDateCell from 'components/tables/orders/cells/orderLastUpdateCell';
+import orderAssignCSCell from 'components/tables/orders/cells/orderAssignCSCell';
 
 import { getOrderTableStatusAction, getListAction, getAllTagsAction } from './actions';
 
@@ -119,6 +120,15 @@ class OrderTable extends PureComponent {
         },
       },
       {
+        accessor: 'cs',
+        Header: 'CS',
+        minWidth: 80,
+        Cell: orderAssignCSCell,
+        style: {
+          width: 110,
+        },
+      },
+      {
         accessor: 'status',
         minWidth: 150,
         Header: 'Status',
@@ -137,6 +147,9 @@ class OrderTable extends PureComponent {
     }
     if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ORDER_SUBTOTAL)) {
       columnsOrder = remove(columnsOrder, (col) => col.Header !== 'Price');
+    }
+    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_ORDER_TO_CS)) {
+      columnsOrder = remove(columnsOrder, (col) => col.Header !== 'CS');
     }
 
     const isCanPay = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_PAYMENT_STATUS);

@@ -5,7 +5,6 @@ import { debounce } from 'lodash';
 import Masonry from 'react-masonry-component';
 import { useHistory } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,7 +23,6 @@ import Title from './title';
 import { useTranslation } from 'react-i18next';
 import { uniqIdCreator } from 'utils';
 import UploadModal from './uploadModal';
-import { toast } from 'react-toastify';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import ActionableImage from './preview';
 
