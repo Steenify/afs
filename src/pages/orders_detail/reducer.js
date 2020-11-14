@@ -40,7 +40,7 @@ const initialState = {
     loadingWorkLog: false,
     loadingCanvasWorkLog: false,
     isShowEmail: false,
-    isShowAddProduct: true,
+    isShowAddProduct: false,
     loadingEmail: false,
     remind: {
       isShowEmail: false,
