@@ -280,6 +280,11 @@
 				font-size: 16px;
 			}
 
+			&__note {
+				font-size: 16px;
+				height: 100px;
+			}
+
 			&__create {
 				background: #0095ff;
 				text-transform: uppercase;
@@ -298,11 +303,17 @@
 				display: inline-block;
 				position: relative;
 				white-space: nowrap;
-				z-index: 1;
+				// z-index: 1;
 				border: none;
 				margin-right: 5px;
 				position: relative;
 				margin-bottom: 5px;
+			}
+
+			&__anni {
+				display: flex;
+				align-items: center;
+				flex-direction: column;
 			}
 
 			&__remove {

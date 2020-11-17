@@ -8,11 +8,15 @@ import {
   UPDATE_CUSTOMERS_ALL_SELECTED_ROW_ACTION,
   UPDATE_CUSTOMER_EDIT_TAG_ACTION,
   UPDATE_CUSTOMER_ITEM_TAG_ACTION,
+  UPDATE_CUSTOMER_EDIT_ANNIVERSARIES_ACTION,
+  UPDATE_CUSTOMER_ITEM_ANNIVERSARIES_ACTION,
+  GET_ANNIVERSARY_TYPES_ACTION,
 } from './actions';
 
 const initialState = {
-  ui: { loading: false, loadingDetail: false, showEditTag: false, userEditTag: '' },
+  ui: { loading: false, loadingDetail: false, showEditTag: false, userEditTag: '', showEditAnniversaries: false, userEditAnniversaries: '' },
   list: {
+    anniversaryTypes: [],
     customers: [],
     ids: [],
     items: {},
@@ -118,6 +122,19 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
+    case UPDATE_CUSTOMER_EDIT_ANNIVERSARIES_ACTION: {
+      return update(state, {
+        ui: {
+          showEditAnniversaries: {
+            $set: payload?.showEditAnniversaries,
+          },
+          userEditAnniversaries: {
+            $set: payload?.userEditAnniversaries,
+          },
+        },
+      });
+    }
+
     case UPDATE_CUSTOMER_EDIT_TAG_ACTION: {
       return update(state, {
         ui: {
@@ -140,6 +157,34 @@ const reducer = (state = initialState, action) => {
               },
             },
           },
+        },
+      });
+    }
+
+    case UPDATE_CUSTOMER_ITEM_ANNIVERSARIES_ACTION: {
+      return update(state, {
+        list: {
+          items: {
+            [payload.id]: {
+              anniversaries: {
+                $set: payload.anniversaries,
+              },
+            },
+          },
+        },
+      });
+    }
+    case GET_ANNIVERSARY_TYPES_ACTION.ERROR: {
+      return update(state, {
+        list: {
+          anniversaryTypes: { $set: [] },
+        },
+      });
+    }
+    case GET_ANNIVERSARY_TYPES_ACTION.SUCCESS: {
+      return update(state, {
+        list: {
+          anniversaryTypes: { $set: payload?.data || [] },
         },
       });
     }
