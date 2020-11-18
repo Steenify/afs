@@ -58,6 +58,15 @@ class OrderFilters extends Component {
     });
   };
 
+  handleCheckArtistUpdate = () => {
+    const { updateOrderTableFilterAction, reducer, artistUpdate } = this.props;
+
+    updateOrderTableFilterAction({
+      payload: { artistUpdate: !artistUpdate, page: 0 },
+      reducer,
+    });
+  };
+
   handleSearchTextAPI = (value) => {
     const { updateOrderTableFilterAction, reducer } = this.props;
     updateOrderTableFilterAction({
@@ -67,7 +76,7 @@ class OrderFilters extends Component {
   };
 
   render() {
-    const { text, accountInfo, reducer, selectedAlertType, orderStatusCount, hasPoster, cs } = this.props;
+    const { text, accountInfo, reducer, selectedAlertType, orderStatusCount, hasPoster, cs, artistUpdate } = this.props;
 
     const canAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING);
     const totalOrders = countTotalOrders(orderStatusCount);
@@ -97,11 +106,17 @@ class OrderFilters extends Component {
               <span className='number'>{orderStatusCount['CANVAS'] || 0}</span>
             </button>
           </CanShow>
-
           <CanShow permission={PERMITTIONS_CONFIG.VIEW_MY_ORDER_CS}>
             <button onClick={this.handleCheckCS} key={`list__alert_option__has_poster`} className={`status SKETCH ${cs !== '' && 'active'}`}>
               My Orders
               <span className='number'>{orderStatusCount['MY_ORDERS'] || 0}</span>
+            </button>
+          </CanShow>
+
+          <CanShow permission={PERMITTIONS_CONFIG.VIEW_LASTEST_UPDATED_ORDER}>
+            <button key={`list__alert_option__new_update`} onClick={this.handleCheckArtistUpdate} className={`status LATE_WORK_LOG_DEADLINE ${artistUpdate && 'active'}`}>
+              Artist Updated
+              <span className='number'>{orderStatusCount['ARTIST_UPLOADED'] || 0}</span>
             </button>
           </CanShow>
         </div>
@@ -130,6 +145,7 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
     orderStatusCount: table.orderStatusCount,
     hasPoster: table.filter.hasPoster,
     cs: table.filter.cs,
+    artistUpdate: table.filter.artistUpdate,
   };
 };
 

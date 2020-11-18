@@ -28,6 +28,9 @@ const buildSearchParam = (input = {}) => {
   if (input.hasPoster) {
     params.append('hasPoster', input.hasPoster || false);
   }
+  if (input.artistUpdate) {
+    params.append('alert', 'ARTIST_UPLOADED');
+  }
   if (input.cs) {
     params.append('cs', input.cs || '');
   }
