@@ -154,7 +154,7 @@ const OrderArtWorkGroup = ({
     });
   };
 
-  const handleConfirmCancelWorkLog = (LogId, workLogIndex) => {
+  const handleConfirmCancelWorkLog = (LogId, workLogIndex, artistId) => {
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
@@ -177,7 +177,7 @@ const OrderArtWorkGroup = ({
               <button
                 className='comfirm_cus__delete comfirm_cus__control'
                 onClick={() => {
-                  canceledWorkLog(order.id, LogId, workLogIndex);
+                  canceledWorkLog(order.id, LogId, workLogIndex, undefined, artistId);
                   onClose();
                 }}>
                 Delete
@@ -240,7 +240,7 @@ const OrderArtWorkGroup = ({
 
             return (
               <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
-                <OrderWorkLogItem work={work} isOpened={showActionState} order={order} />
+                <OrderWorkLogItem work={work} isOpened={showActionState} order={order} workLogType='workLog' />
 
                 {isSendFile && order.statusForCanvas ? (
                   <></>
@@ -289,7 +289,7 @@ const OrderArtWorkGroup = ({
                           {canCanceled && (
                             <Button
                               color='secondary'
-                              onClick={() => handleConfirmCancelWorkLog(work.id, workLogIndex)}
+                              onClick={() => handleConfirmCancelWorkLog(work.id, workLogIndex, work?.artist?.id)}
                               containerClassName='ctas__item'
                               className='ctas__button ctas__canceled mb-3'
                               disabled={!isCanRevert}

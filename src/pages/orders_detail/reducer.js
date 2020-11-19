@@ -55,7 +55,7 @@ const initialState = {
     order: {},
     customer: {},
     workLog: {},
-    canvasWorkLog: [],
+    canvasWorkLog: {},
     email: '',
     emailTitle: '',
     selectedEmailTemplate: 0,
@@ -251,12 +251,14 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           [payload.workLogType]: {
-            [payload.index]: {
-              attachments: {
-                $push: payload.data,
-              },
-              activities: {
-                $push: payload.activives,
+            [payload.artistId]: {
+              [payload.index]: {
+                attachments: {
+                  $push: payload.data,
+                },
+                activities: {
+                  $push: payload.activives,
+                },
               },
             },
           },
@@ -288,9 +290,11 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           [payload.workLogType]: {
-            [payload.logIndex]: {
-              attachments: {
-                $splice: [[payload.attachmentIndex, 1]],
+            [payload.artistId]: {
+              [payload.logIndex]: {
+                attachments: {
+                  $splice: [[payload.attachmentIndex, 1]],
+                },
               },
             },
           },
@@ -304,9 +308,11 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           [payload.workLogType]: {
-            [payload.logIndex]: {
-              comments: {
-                $splice: [[payload.comIndex, 1]],
+            [payload.artistId]: {
+              [payload.logIndex]: {
+                comments: {
+                  $splice: [[payload.comIndex, 1]],
+                },
               },
             },
           },
@@ -335,10 +341,12 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           [payload.workLogType]: {
-            [payload.logIndex]: {
-              comments: {
-                [payload.comIndex]: {
-                  $set: payload.data,
+            [payload.artistId]: {
+              [payload.logIndex]: {
+                comments: {
+                  [payload.comIndex]: {
+                    $set: payload.data,
+                  },
                 },
               },
             },
@@ -454,7 +462,6 @@ const reducer = (state = initialState, action) => {
       });
     }
     case CANCELED_WORK_LOG_ACTION.SUCCESS: {
-      console.log('reducer -> payload', payload);
       const newState = update(state, {
         ui: {
           loading: { $set: false },
@@ -466,7 +473,9 @@ const reducer = (state = initialState, action) => {
             },
           },
           [payload.workLogType]: {
-            $splice: [[payload?.index, 1]],
+            [payload.artistId]: {
+              $splice: [[payload?.index, 1]],
+            },
           },
         },
       });
@@ -751,9 +760,11 @@ const reducer = (state = initialState, action) => {
       return update(state, {
         data: {
           [payload.workLogType]: {
-            [payload.logIndex]: {
-              attachments: {
-                $splice: [[payload.fileIndex, 1]],
+            [payload.artistId]: {
+              [payload.logIndex]: {
+                attachments: {
+                  $splice: [[payload.fileIndex, 1]],
+                },
               },
             },
           },

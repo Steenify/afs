@@ -52,16 +52,33 @@ const OrderArtDelivery = ({ order, images, works, workLog, uploadFileWorkLog, de
         })),
       };
 
-      uploadFileWorkLog(order.id, lastExport?.id, data, workLogIndex, files, () => {
-        dropbox.current.clearFiles();
-      });
+      uploadFileWorkLog(
+        order.id,
+        lastExport?.id,
+        data,
+        workLogIndex,
+        files,
+        () => {
+          dropbox.current.clearFiles();
+        },
+        undefined,
+        lastExport?.artist?.id,
+      );
     }
   };
 
   const handleDeleteFile = (file, fileIndex) => {
-    deleteFileDelivery(order.id, file?.source?.id, workLogIndex, fileIndex, () => {
-      toast.dark('File deleteted!');
-    });
+    deleteFileDelivery(
+      order.id,
+      file?.source?.id,
+      workLogIndex,
+      fileIndex,
+      () => {
+        toast.dark('File deleteted!');
+      },
+      undefined,
+      lastExport?.artist?.id,
+    );
   };
 
   const handleNotifyEmail = () => {

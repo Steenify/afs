@@ -9,7 +9,6 @@ import OrderArtDelivery from './orderArtDelivery';
 import { getOrderWorkLogAction } from './actions';
 
 const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, hasPoster, artists = [] }) => {
-  console.log('OrderArtWorkBox -> artists', artists);
   useEffect(() => {
     if (order.id) {
       getOrderWorkLog(order.id);
@@ -22,7 +21,7 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
 
   useEffect(() => {
     setArtistId(artists[0]?.id);
-  }, [artists]);
+  }, [artists.length]);
 
   useEffect(() => {
     setCurrentWorkLog(workLog[artistId] || []);

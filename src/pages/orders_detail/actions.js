@@ -376,7 +376,7 @@ export const getOrderWorkLogAction = (id) => (dispatch) => {
 };
 
 export const UPLOAD_FILE_WORK_LOG_ACTION = actionCreator('UPLOAD_FILE_WORK_LOG_ACTION');
-export const uploadFileWorkLogAction = (id, logId, payload, index, files, cb, workLogType = 'workLog') => (dispatch, getState) => {
+export const uploadFileWorkLogAction = (id, logId, payload, index, files, cb, workLogType = 'workLog', artistId) => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: UPLOAD_FILE_WORK_LOG_ACTION.PENDING,
@@ -398,7 +398,7 @@ export const uploadFileWorkLogAction = (id, logId, payload, index, files, cb, wo
       cb && cb();
       dispatch({
         type: UPLOAD_FILE_WORK_LOG_ACTION.SUCCESS,
-        payload: { data: files, index, activives, workLogType },
+        payload: { data: files, index, activives, workLogType, artistId },
       });
     } else {
       toast.error('Can not saved file, Please try again later!');
@@ -452,7 +452,7 @@ export const uploadCommentWorkLogAction = (id, logId, payload, index, cb, workLo
 };
 
 export const DELETE_ATTACHMENT_WORK_LOG_ACTION = actionCreator('DELETE_ATTACHMENT_WORK_LOG_ACTION');
-export const deleteAttachmentWorkLogAction = (id, logId, attachmentId, logIndex, attachmentIndex, cb, workLogType = 'workLog') => (dispatch) => {
+export const deleteAttachmentWorkLogAction = (id, logId, attachmentId, logIndex, attachmentIndex, cb, workLogType = 'workLog', artistId) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: DELETE_ATTACHMENT_WORK_LOG_ACTION.PENDING,
@@ -462,7 +462,7 @@ export const deleteAttachmentWorkLogAction = (id, logId, attachmentId, logIndex,
     if (cb) cb();
     dispatch({
       type: DELETE_ATTACHMENT_WORK_LOG_ACTION.SUCCESS,
-      payload: { logIndex, attachmentIndex, workLogType },
+      payload: { logIndex, attachmentIndex, workLogType, artistId },
     });
   };
   const onError = (error) => {
@@ -482,7 +482,7 @@ export const deleteAttachmentWorkLogAction = (id, logId, attachmentId, logIndex,
 };
 
 export const DELETE_COMMENT_WORK_LOG_ACTION = actionCreator('DELETE_COMMENT_WORK_LOG_ACTION');
-export const deleteCommentWorkLogAction = (id, logId, comId, logIndex, comIndex, workLogType = 'workLog') => (dispatch) => {
+export const deleteCommentWorkLogAction = (id, logId, comId, logIndex, comIndex, workLogType = 'workLog', artistId) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: DELETE_COMMENT_WORK_LOG_ACTION.PENDING,
@@ -491,7 +491,7 @@ export const deleteCommentWorkLogAction = (id, logId, comId, logIndex, comIndex,
   const onSuccess = (data) => {
     dispatch({
       type: DELETE_COMMENT_WORK_LOG_ACTION.SUCCESS,
-      payload: { logIndex, comIndex, workLogType },
+      payload: { logIndex, comIndex, workLogType, artistId },
     });
   };
   const onError = (error) => {
@@ -541,7 +541,7 @@ export const updateTrackingCodeWorkLogAction = (id, data, cb) => (dispatch) => {
 };
 
 export const UPDATE_COMMENT_WORK_LOG_ACTION = actionCreator('UPDATE_COMMENT_WORK_LOG_ACTION');
-export const updateCommentWorkLogAction = (id, logId, comId, payload, logIndex, comIndex, cb, workLogType = 'workLog') => (dispatch) => {
+export const updateCommentWorkLogAction = (id, logId, comId, payload, logIndex, comIndex, cb, workLogType = 'workLog', artistId) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: UPDATE_COMMENT_WORK_LOG_ACTION.PENDING,
@@ -550,7 +550,7 @@ export const updateCommentWorkLogAction = (id, logId, comId, payload, logIndex, 
   const onSuccess = (data) => {
     dispatch({
       type: UPDATE_COMMENT_WORK_LOG_ACTION.SUCCESS,
-      payload: { logIndex, comIndex, data, workLogType },
+      payload: { logIndex, comIndex, data, workLogType, artistId },
     });
     cb && cb();
   };
@@ -671,7 +671,7 @@ export const rejectedWorkLogAction = (id, logId, payload, index, cb, workLogType
 };
 
 export const CANCELED_WORK_LOG_ACTION = actionCreator('CANCELED_WORK_LOG_ACTION');
-export const canceledWorkLogAction = (id, logId, index, workLogType = 'workLog') => (dispatch, getState) => {
+export const canceledWorkLogAction = (id, logId, index, workLogType = 'workLog', artistId) => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: CANCELED_WORK_LOG_ACTION.PENDING,
@@ -685,6 +685,7 @@ export const canceledWorkLogAction = (id, logId, index, workLogType = 'workLog')
         index,
         workLogType,
         orderStatus: data?.status || '',
+        artistId,
       },
     });
   };
@@ -933,7 +934,7 @@ export const sendFBMessageNotifyAction = (psid, workLogType = 'workLog') => (dis
 };
 
 export const DELETE_FILE_DELIVERY_ACTION = actionCreator('DELETE_FILE_DELIVERY_ACTION');
-export const deleteFileDeliveryAction = (id, fileId, logIndex, fileIndex, cb, workLogType = 'workLog') => (dispatch) => {
+export const deleteFileDeliveryAction = (id, fileId, logIndex, fileIndex, cb, workLogType = 'workLog', artistId) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: DELETE_FILE_DELIVERY_ACTION.PENDING,
@@ -944,7 +945,7 @@ export const deleteFileDeliveryAction = (id, fileId, logIndex, fileIndex, cb, wo
       cb && cb();
       dispatch({
         type: DELETE_FILE_DELIVERY_ACTION.SUCCESS,
-        payload: { logIndex, fileIndex, workLogType },
+        payload: { logIndex, fileIndex, workLogType, artistId },
       });
     } else {
       toast.error('Can not delete file, Please try again later!');
