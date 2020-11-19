@@ -934,6 +934,16 @@
 		}
 	}
 
+	&__assignedModal {
+		.assignedModal {
+			&__note {
+				.form-control {
+					font-size: 16px;
+				}
+			}
+		}
+	}
+
 	@include max-lg() {
 		&__customer_box {
 			order: -1;
@@ -1007,6 +1017,26 @@
 			.cta2 {
 				min-width: 120px;
 			}
+		}
+	}
+
+	.order_assigned_item {
+		.title {
+			font-size: 20px;
+		}
+
+		.name {
+			font-size: 17px;
+		}
+
+		.budget {
+			font-size: 16px;
+			line-height: 22px;
+			letter-spacing: 0.3px;
+			color: #337fd7;
+		}
+		@media (max-width: 991px) {
+			flex: 1;
 		}
 	}
 }

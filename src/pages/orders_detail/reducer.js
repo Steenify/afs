@@ -46,17 +46,22 @@ const initialState = {
       isShowEmail: false,
       loadingEmail: false,
     },
+    assignedBox: {
+      isShow: false,
+      currentShow: '',
+    },
   },
   data: {
     order: {},
     customer: {},
-    workLog: [],
+    workLog: {},
     canvasWorkLog: [],
     email: '',
     emailTitle: '',
     selectedEmailTemplate: 0,
     currentWorkLogIndex: -1,
     currentWorkLogType: 'workLog',
+    currentArtistId: 0,
     fbTemplate: '',
     fbTemplateAttachments: [],
     remind: {
@@ -217,7 +222,7 @@ const reducer = (state = initialState, action) => {
             },
           },
           workLog: {
-            $push: [payload.data],
+            [payload.artistId]: { $push: [payload.data] },
           },
         },
       });
@@ -265,9 +270,11 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           [payload.workLogType]: {
-            [payload.index]: {
-              comments: {
-                $push: [payload.data],
+            [payload.artistId]: {
+              [payload.index]: {
+                comments: {
+                  $push: [payload.data],
+                },
               },
             },
           },
@@ -348,12 +355,14 @@ const reducer = (state = initialState, action) => {
           },
           data: {
             [payload.workLogType]: {
-              [payload.index]: {
-                state: {
-                  $set: 'APPROVED',
-                },
-                activities: {
-                  $push: payload.activives,
+              [payload.artistId]: {
+                [payload.index]: {
+                  state: {
+                    $set: 'APPROVED',
+                  },
+                  activities: {
+                    $push: payload.activives,
+                  },
                 },
               },
             },
@@ -372,15 +381,19 @@ const reducer = (state = initialState, action) => {
               },
             },
             workLog: {
-              $push: [payload.data],
+              [payload.artistId]: {
+                $push: [payload.data],
+              },
             },
             canvasWorkLog: {
-              [payload.index]: {
-                state: {
-                  $set: 'APPROVED',
-                },
-                activities: {
-                  $push: payload.activives,
+              [payload.artistId]: {
+                [payload.index]: {
+                  state: {
+                    $set: 'APPROVED',
+                  },
+                  activities: {
+                    $push: payload.activives,
+                  },
                 },
               },
             },
@@ -398,15 +411,17 @@ const reducer = (state = initialState, action) => {
             },
           },
           [payload.workLogType]: {
-            [payload.index]: {
-              state: {
-                $set: 'APPROVED',
+            [payload.artistId]: {
+              [payload.index]: {
+                state: {
+                  $set: 'APPROVED',
+                },
+                activities: {
+                  $push: payload.activives,
+                },
               },
-              activities: {
-                $push: payload.activives,
-              },
+              $push: [payload.data],
             },
-            $push: [payload.data],
           },
         },
       });
@@ -423,15 +438,17 @@ const reducer = (state = initialState, action) => {
             },
           },
           [payload.workLogType]: {
-            [payload.index]: {
-              state: {
-                $set: 'REJECTED',
+            [payload.artistId]: {
+              [payload.index]: {
+                state: {
+                  $set: 'REJECTED',
+                },
+                activities: {
+                  $push: payload.activives,
+                },
               },
-              activities: {
-                $push: payload.activives,
-              },
+              $push: [payload.data],
             },
-            $push: [payload.data],
           },
         },
       });
@@ -476,7 +493,7 @@ const reducer = (state = initialState, action) => {
     case SENT_EMAIL_REMIND_ACTION.SUCCESS:
     case SENT_MESSAGE_REMIND_ACTION.SUCCESS:
     case SENT_FB_MESSAGES_NOTIFY_ACTION.SUCCESS: {
-      const { currentWorkLogIndex, currentWorkLogType = 'workLog' } = state.data;
+      const { currentWorkLogIndex, currentWorkLogType = 'workLog', currentArtistId } = state.data;
       return update(state, {
         ui: {
           loading: { $set: false },
@@ -484,9 +501,11 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           [currentWorkLogType]: {
-            [currentWorkLogIndex]: {
-              activities: {
-                $push: payload.activives,
+            [currentArtistId]: {
+              [currentWorkLogIndex]: {
+                activities: {
+                  $push: payload.activives,
+                },
               },
             },
           },
@@ -617,6 +636,9 @@ const reducer = (state = initialState, action) => {
           currentWorkLogType: {
             $set: payload.workLogType,
           },
+          currentArtistId: {
+            $set: payload.artistId,
+          },
         },
       });
     }
@@ -650,6 +672,9 @@ const reducer = (state = initialState, action) => {
           currentWorkLogType: {
             $set: payload.workLogType,
           },
+          currentArtistId: {
+            $set: payload.artistId,
+          },
         },
       });
     }
@@ -667,6 +692,9 @@ const reducer = (state = initialState, action) => {
           },
           currentWorkLogIndex: {
             $set: payload.workLogIndex,
+          },
+          currentArtistId: {
+            $set: payload.artistId,
           },
         },
       });
@@ -692,6 +720,9 @@ const reducer = (state = initialState, action) => {
           },
           currentWorkLogIndex: {
             $set: payload.workLogIndex,
+          },
+          currentArtistId: {
+            $set: payload.artistId,
           },
         },
       });
@@ -740,6 +771,16 @@ const reducer = (state = initialState, action) => {
                 },
               },
             },
+          },
+        },
+      });
+    }
+
+    case ORDER_DETAIL_ACTIONS.UPDATE_SHOW_ASSIGNED_MODAL: {
+      return update(state, {
+        ui: {
+          assignedBox: {
+            currentShow: { $set: payload },
           },
         },
       });

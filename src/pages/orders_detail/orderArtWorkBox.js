@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Spinner, Alert } from 'reactstrap';
 import { groupBy, sortBy, map, isEmpty, reduce } from 'lodash';
@@ -8,7 +8,8 @@ import OrderCustomerBox from './orderCustomerBox';
 import OrderArtDelivery from './orderArtDelivery';
 import { getOrderWorkLogAction } from './actions';
 
-const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, hasPoster }) => {
+const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, hasPoster, artists = [] }) => {
+  console.log('OrderArtWorkBox -> artists', artists);
   useEffect(() => {
     if (order.id) {
       getOrderWorkLog(order.id);
@@ -16,6 +17,16 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
   }, [getOrderWorkLog, order.id]);
 
   const [tab, setTab] = useState('activity');
+  const [artistId, setArtistId] = useState();
+  const [currentWorkLog, setCurrentWorkLog] = useState([]);
+
+  useEffect(() => {
+    setArtistId(artists[0]?.id);
+  }, [artists]);
+
+  useEffect(() => {
+    setCurrentWorkLog(workLog[artistId] || []);
+  }, [artistId, workLog]);
 
   if (loading || !status.length) {
     return (
@@ -25,9 +36,9 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
     );
   }
 
-  const isNewOrder = workLog.length === 1;
-  const lastWorkLog = workLog[workLog.length - 1];
-  const worklogGroup = groupBy(workLog, 'status');
+  const isNewOrder = currentWorkLog.length === 2;
+  const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
+  const worklogGroup = groupBy(currentWorkLog, 'status');
 
   const NEW_ORDER = [...(worklogGroup.NEW_ORDER || [])];
 
@@ -73,12 +84,41 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
       <div className='row'>
         <div className='col-lg-8'>
           <div className='order_detail__tabs'>
-            <button type='button' onClick={() => setTab('activity')} className={`order_detail__tab ${tab === 'activity' && 'active'}`}>
+            {artists.map(({ id, firstName = '' }) => {
+              const activityKey = `activity_${id}`;
+              const deliveryKey = `delivery_${id}`;
+
+              return (
+                <Fragment key={`order_tab_by_artist_${id}`}>
+                  <button
+                    key={activityKey}
+                    type='button'
+                    onClick={() => {
+                      setTab('activity');
+                      setArtistId(id);
+                    }}
+                    className={`order_detail__tab ${tab === 'activity' && artistId === id && 'active'}`}>
+                    {`Activity (${firstName})`}
+                  </button>
+                  <button
+                    key={deliveryKey}
+                    type='button'
+                    onClick={() => {
+                      setTab('delivery');
+                      setArtistId(id);
+                    }}
+                    className={`order_detail__tab ${tab === 'delivery' && artistId === id && 'active'}`}>
+                    {`Delivery (${firstName})`}
+                  </button>
+                </Fragment>
+              );
+            })}
+            {/* <button type='button' onClick={() => setTab('activity')} className={`order_detail__tab ${tab === 'activity' && 'active'}`}>
               Activity
             </button>
             <button type='button' onClick={() => setTab('delivery')} className={`order_detail__tab ${tab === 'delivery' && 'active'}`}>
               Delivery
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -135,6 +175,7 @@ const mapStateToProps = ({ orderTable, orderDetail, auth }) => ({
   loading: orderDetail.ui.loadingWorkLog,
   workLog: orderDetail.data.workLog,
   accountInfo: auth.data.accountInfo,
+  artists: orderDetail.data.order?.artistBudgets?.map?.((item) => item?.artist)?.filter?.((item) => item) || [],
 });
 
 const mapDispatchToProps = {

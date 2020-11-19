@@ -16,6 +16,11 @@ import EmailRemind from './remindCustomer';
 import OrderBudget from './orderBudget';
 import OrderAssignedBox from './orderAssignedBox';
 import AddProductModal from './addProductModal';
+import AssignedBoxModal from './assignedBoxModal';
+import BudgetHistoryModal from './budgetHistoryModal';
+import ChangeArtistModal from './changeArtistModal';
+import ChangeBudgetModal from './changeBudgetModal';
+import OrderAssignedItem from './orderAssignedItem';
 
 const OrderDetail = ({ loading, order, status, accountInfo }) => {
   if (isEmpty(order) || !status.length) {
@@ -59,8 +64,9 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
           </div>
           <div className='col-lg-6 col-xl-5 text-right'>
             <div className='info__right'>
-              {canEditAssign && canGetArtists && <OrderAssignedBox order={order} />}
-              <OrderBudget order={order} />
+              <OrderAssignedItem order={order} />
+              {/* {canEditAssign && canGetArtists && <OrderAssignedBox order={order} />}
+              <OrderBudget order={order} /> */}
             </div>
           </div>
         </div>
@@ -120,6 +126,10 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
       <EmaiNotify order={order} />
       <EmailRemind order={order} />
       <AddProductModal order={order} />
+      <AssignedBoxModal order={order} />
+      <BudgetHistoryModal order={order} />
+      <ChangeArtistModal order={order} />
+      <ChangeBudgetModal order={order} />
     </div>
   );
 };

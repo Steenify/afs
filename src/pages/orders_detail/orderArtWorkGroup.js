@@ -66,7 +66,7 @@ const OrderArtWorkGroup = ({
   const canCreateWorkLogForCanvas = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_WORK_LOG_FOR_CANVAS) || false;
   const canChangeStatus = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_STATUS_BOOKING) || false;
 
-  const handleApproveWorkLog = (LogId, isSendFile) => {
+  const handleApproveWorkLog = (LogId, isSendFile, artistId) => {
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
@@ -92,7 +92,7 @@ const OrderArtWorkGroup = ({
                   if (canCreateWorkLogForCanvas && isSendFile && hasPoster) {
                     createOrderCanvasWorkLogAction(order.id, LogId);
                   } else {
-                    approvedWorkLog(order.id, LogId);
+                    approvedWorkLog(order.id, LogId, undefined, undefined, artistId);
                   }
                   onClose();
                 }}>
@@ -108,23 +108,23 @@ const OrderArtWorkGroup = ({
   const handleNotifyEmail = (workLogIndex) => {
     const currentStatus = getSelectedStatus(order.status, status);
     if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
-      getNotifyTemplatesAction(order.id, currentStatus.emailTemplates[0].id, workLogIndex);
+      getNotifyTemplatesAction(order.id, currentStatus.emailTemplates[0].id, workLogIndex, undefined, lastWork?.artist?.id);
     } else {
       toast.warn('No Email template found!');
     }
   };
 
   const handleRemindEmail = (workLogIndex) => {
-    getRemindTemplatesAction(order.id, workLogIndex);
+    getRemindTemplatesAction(order.id, workLogIndex, undefined, lastWork?.artist?.id);
   };
 
-  const handleStartSketch = () => {
+  const handleStartSketch = (artistId) => {
     if (status.length) {
-      updateOrderStatus(order.id, status[1].name);
+      updateOrderStatus(order.id, status[1].name, artistId);
     }
   };
 
-  const handleConfirmRejectWorkLog = (LogId, workLogIndex) => {
+  const handleConfirmRejectWorkLog = (LogId, workLogIndex, artistId) => {
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
@@ -133,9 +133,17 @@ const OrderArtWorkGroup = ({
             orderNumber={order.number}
             onConfirm={(data) => {
               if (data.content) {
-                rejectedWorkLog(order.id, LogId, data, workLogIndex, () => {
-                  onClose();
-                });
+                rejectedWorkLog(
+                  order.id,
+                  LogId,
+                  data,
+                  workLogIndex,
+                  () => {
+                    onClose();
+                  },
+                  'workLog',
+                  artistId,
+                );
               } else {
                 toast.warn('Please input reject reason!');
               }
@@ -208,7 +216,7 @@ const OrderArtWorkGroup = ({
 
             const isCanRevert = (work.attachments.length === 0 && work.comments.length === 0 && work.activities.length === 0) || false;
 
-            const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
+            const workLogIndex = findIndex(workLog[work?.artist?.id] || [], (log) => log.id === work.id);
 
             if (isDoneStatus) {
               return null;
@@ -220,7 +228,7 @@ const OrderArtWorkGroup = ({
                   <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                     {canChangeStatus && (
                       <div className='order_detail__ctas text-center justify-content-center'>
-                        <Button onClick={handleStartSketch} color='primary' className='cta' type='button'>
+                        <Button onClick={() => handleStartSketch(work?.artist?.id)} color='primary' className='cta' type='button'>
                           Start Sketching
                         </Button>
                       </div>
@@ -258,7 +266,7 @@ const OrderArtWorkGroup = ({
                             <Button
                               color='secondary'
                               containerClassName='ctas__item'
-                              onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex)}
+                              onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex, work?.artist?.id)}
                               className='ctas__button mb-3'
                               disabled={!(work.attachments.length > 0) && needCheckFile}
                               type='button'>
@@ -269,7 +277,7 @@ const OrderArtWorkGroup = ({
                           {canAprroved && !isSendFile && (
                             <Button
                               color='primary'
-                              onClick={() => handleApproveWorkLog(work.id)}
+                              onClick={() => handleApproveWorkLog(work.id, false, work?.artist?.id)}
                               containerClassName='ctas__item'
                               className='ctas__button mb-3'
                               disabled={!(work.attachments.length > 0) && needCheckFile}
@@ -291,7 +299,12 @@ const OrderArtWorkGroup = ({
                           )}
 
                           {isSendFile && (
-                            <Button color='primary' onClick={() => handleApproveWorkLog(work.id, isSendFile)} containerClassName='ctas__item' className='mb-3 ctas__button' type='button'>
+                            <Button
+                              color='primary'
+                              onClick={() => handleApproveWorkLog(work.id, isSendFile, work?.artist?.id)}
+                              containerClassName='ctas__item'
+                              className='mb-3 ctas__button'
+                              type='button'>
                               {hasPoster ? 'Start Printing' : 'Mark as Done'}
                             </Button>
                           )}

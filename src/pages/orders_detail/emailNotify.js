@@ -47,6 +47,8 @@ const EmaiNotify = (props) => {
     getFBMessageTemplate,
     sendFBMessageNotify,
     updatOrderCustomer,
+    currentArtistId,
+    currentWorkLogType,
   } = props;
 
   const [notifyType, setNotifyType] = useState('email');
@@ -89,8 +91,8 @@ const EmaiNotify = (props) => {
   };
 
   const handleGetNewTemplate = (templateId) => {
-    getEmailTemplate(order.id, templateId, currentWorkLogIndex);
-    getFBMessageTemplate(order.id, templateId, currentWorkLogIndex);
+    getEmailTemplate(order.id, templateId, currentWorkLogIndex, currentWorkLogType, currentArtistId);
+    getFBMessageTemplate(order.id, templateId, currentWorkLogIndex, currentWorkLogType, currentArtistId);
   };
 
   const handleChangeTabType = (e) => {
@@ -232,6 +234,8 @@ const mapStateToProps = ({ orderDetail, orderTable }) => ({
   fbTemplateAttachments: orderDetail.data.fbTemplateAttachments,
   customer: orderDetail.data.customer,
   currentWorkLogIndex: orderDetail.data.currentWorkLogIndex,
+  currentArtistId: orderDetail.data.currentArtistId,
+  currentWorkLogType: orderDetail.data.currentWorkLogType,
 });
 
 const mapDispatchToProps = {
