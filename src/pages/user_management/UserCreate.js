@@ -18,10 +18,10 @@ import { actCreateUser, actGetUsers } from './actions';
 import { required, minValue, email } from 'utils/validation';
 const minValue4 = minValue(4);
 
-const UserCreate = ({ style, handleSubmit, containerClassName, ...props }) => {
+const UserCreate = ({ style, handleSubmit, containerClassName, actGetAuthorities, ...props }) => {
   useEffect(() => {
-    props.actGetAuthorities();
-  }, []);
+    actGetAuthorities();
+  }, [actGetAuthorities]);
 
   const { className, authorities, reset } = props;
   const { t } = useTranslation();

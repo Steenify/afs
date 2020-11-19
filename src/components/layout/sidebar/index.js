@@ -16,7 +16,6 @@ import { ReactComponent as Artist } from 'assets/img/Artist.svg';
 import { ReactComponent as Settings } from 'assets/img/settings.svg';
 import { ReactComponent as Payouts } from 'assets/img/payouts.svg';
 import { ReactComponent as Package } from 'assets/img/gallery.svg';
-import { ReactComponent as LateNotification } from 'assets/img/late_notification.svg';
 
 import { WEB_ROUTES } from 'configs/index';
 

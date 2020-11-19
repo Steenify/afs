@@ -1,5 +1,5 @@
 import update from 'react-addons-update';
-import { ARTISTS_ACTIONS, GET_ARTISTS_LIST_ACTION } from './actions';
+import { GET_ARTISTS_LIST_ACTION } from './actions';
 
 const initialState = {
   ui: { loading: false },

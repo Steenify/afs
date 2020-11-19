@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +29,7 @@ const UserFilters = (props) => {
   useEffect(() => {
     updateUserFilterAction({ name, page: 0 });
     actGetUserRoles();
-  }, []);
+  }, [actGetUserRoles, updateUserFilterAction, name]);
 
   return (
     <div className='user__filters'>

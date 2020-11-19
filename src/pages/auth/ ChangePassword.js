@@ -21,7 +21,7 @@ const ChangePassword = ({ style, handleSubmit, ...props }) => {
   const onSubmit = (values) => {
     props.actChangePassword(values).then((res) => {
       const { status, data } = res;
-      const { errorKey, message, title } = data;
+      const { errorKey, message } = data;
 
       if (status === 200) {
         toast.dark('Success Notification !');
@@ -50,27 +50,11 @@ const ChangePassword = ({ style, handleSubmit, ...props }) => {
 
   return (
     <Layout documentTitle='Change Password' container fluid>
-      <Breadcrumb
-        data={[
-          { title: 'Change Password', active: false, path: '/change-password' },
-        ]}
-      />
+      <Breadcrumb data={[{ title: 'Change Password', active: false, path: '/change-password' }]} />
       <PageTitle title='Change Password' className='mb-0 mr-3'></PageTitle>
       <Form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: 27 }}>
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='currentPassword'
-          label='Current Password'
-          type='password'
-        />
-        <Field
-          className='form-group--inline'
-          component={Input}
-          name='newPassword'
-          label='New Password'
-          type='password'
-        />
+        <Field className='form-group--inline' component={Input} name='currentPassword' label='Current Password' type='password' />
+        <Field className='form-group--inline' component={Input} name='newPassword' label='New Password' type='password' />
         <div className='d-flex'>
           <Button
             tag={Link}

@@ -1,5 +1,8 @@
 import update from 'immutability-helper';
-import { GET_NOTIFICATION_ACTIONS, GET_NOTIFICATION_ACTION, UPDATE_NOTIFICATION_ACTION, GET_RECIPIENTS } from './action';
+import {
+  UPDATE_NOTIFICATION_ACTION,
+  // GET_NOTIFICATION_ACTIONS, GET_NOTIFICATION_ACTION, GET_RECIPIENTS
+} from './action';
 
 const initialState = {
   ui: {

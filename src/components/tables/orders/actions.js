@@ -4,8 +4,6 @@ import {
   updateOrderBudgetService,
   assignOrderService,
   assignCSOrderService,
-  updateOrderArtistPaymentService,
-  updateOrderArtistPaymentBulkService,
   getOrderCountByStatusService,
   getOrderBulkMarkAsDoneService,
   getAllBookingTagsService,
@@ -318,7 +316,7 @@ export const updateOrderTableStatusDoneBulkAction = ({ payload, reducer, onSucce
 };
 
 export const GET_TAGS = actionCreator('ORDER_TABLE_GET_ALL_TAG');
-export const getAllTagsAction = () => (dispatch, getState) => {
+export const getAllTagsAction = () => (dispatch) => {
   const onPending = () => {
     dispatch({ type: GET_TAGS.PENDING });
   };

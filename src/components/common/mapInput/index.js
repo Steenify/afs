@@ -7,9 +7,7 @@ export class SearchBox extends Component {
     this.clearSearchBox = this.clearSearchBox.bind(this);
   }
 
-  componentDidMount(
-    { mapApi, refName, typeField, indexItem, inputName } = this.props,
-  ) {
+  componentDidMount({ mapApi, refName, typeField, indexItem, inputName } = this.props) {
     this.searchBox = new mapApi.places.Autocomplete(this[refName]);
     this.searchBox.setComponentRestrictions({ country: 'vn' });
     this.searchBox.addListener('place_changed', this.onPlacesChanged);
@@ -32,14 +30,7 @@ export class SearchBox extends Component {
 
   onPlacesChanged = () => {
     const place = this.searchBox.getPlace();
-    const {
-      refName,
-      typeField,
-      pickupLat,
-      pickupLong,
-      indexItem,
-      inputName,
-    } = this.props;
+    const { typeField, pickupLat, pickupLong, indexItem, inputName } = this.props;
 
     const inp = this.props[inputName];
 

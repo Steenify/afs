@@ -23,24 +23,24 @@ import {
 
 import { WEB_ROUTES } from 'configs';
 
-const CustomerGroupDetail = ({ style, handleSubmit, ...props }) => {
+const CustomerGroupDetail = ({ style, handleSubmit, actGetCustomerGroup, ...props }) => {
   let { id } = useParams();
   const { ui, errorRequest, customers } = props;
   const { t } = useTranslation();
 
   useEffect(() => {
-    props.actGetCustomerGroup(id).then(() => {
+    actGetCustomerGroup(id).then(() => {
       // Get list of customer
       // props.getCustomerListAction();
     });
-  }, []);
+  }, [actGetCustomerGroup, id]);
 
   const onSubmit = (values) => {
     const params = { ...values };
     params.users = [];
 
     values.users.forEach((item) => {
-      const index = customers.findIndex((c) => c.id == item);
+      const index = customers.findIndex((c) => c.id === item);
       if (index !== -1) {
         params.users.push(customers[index]);
       }

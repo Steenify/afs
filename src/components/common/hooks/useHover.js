@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-function useHover() {
+const useHover = () => {
   const [value, setValue] = useState(false);
 
   const ref = useRef(null);
@@ -25,6 +25,6 @@ function useHover() {
   );
 
   return [ref, value];
-}
+};
 
 export default useHover;

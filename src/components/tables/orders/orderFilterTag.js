@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Popover from 'react-tiny-popover';
 import { get } from 'lodash';
@@ -7,7 +7,7 @@ import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 
 import { updateOrderTableFilterAction, getOrderTableCountByStatusAction } from './actions';
 
-const OrderFilterAssignee = ({ accountInfo, updateOrderTableFilterAction, getOrderTableCountByStatusAction, reducer, tagItems, tags, orderStatusCount }) => {
+const OrderFilterAssignee = ({ updateOrderTableFilterAction, reducer, tagItems, tags, orderStatusCount }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
