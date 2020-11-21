@@ -1,6 +1,7 @@
 import { request } from 'utils/request';
 
 const ORDERS_API = '/api/bookings';
+const ORDER_API = '/api/booking';
 
 export const getAllOrdersService = (params) =>
   request({
@@ -251,5 +252,17 @@ export const addOrderItemService = (orderId, data) =>
   request({
     url: `${ORDERS_API}/${orderId}/items`,
     method: 'POST',
+    data,
+  });
+
+export const getBudgetsHistoryService = (orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/budget/log?sort=createdDate,desc`,
+  });
+
+export const adjustOrderBudgetService = (orderId, data) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/budget/adjust`,
+    method: 'PUT',
     data,
   });

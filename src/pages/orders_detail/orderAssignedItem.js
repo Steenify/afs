@@ -15,17 +15,20 @@ import { ReactComponent as InfoIC } from 'assets/img/info.svg';
 import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs } from 'pages/orders_detail/actions';
 
 const OrderAssignedItem = ({ order, updateShowAssignedBoxAction }) => {
-  const { assignedTo } = order;
+  const { assignedTo } = order || {};
+
   return (
     <div className='order_assigned_item'>
       <div className='d-flex align-items-center justify-content-between'>
         <div className='d-flex align-items-center'>
           <strong className='title'>Assigned</strong>
-          <span className='icon d-block ml-1 mr-5'>
-            <AssignedIcon width='14px' height='14px' />
-          </span>
+          {order?.artistBudgets?.length > 1 && (
+            <span className='icon d-block ml-1 mr-5'>
+              <AssignedIcon width='14px' height='14px' />
+            </span>
+          )}
         </div>
-        <button className='box__control p-0' onClick={() => updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.CHANGE_ARTIST)}>
+        <button className='box__control p-0' onClick={() => updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED)}>
           <span className='name'>Manage</span>
         </button>
       </div>

@@ -32,7 +32,11 @@ import {
   sendMessageRemindService,
   setOrderCustomerService,
   addOrderItemService,
+  getBudgetsHistoryService,
+  updateOrderBudgetService,
+  adjustOrderBudgetService,
 } from 'services/order';
+import { getAssignArtistsService } from 'services/artist';
 
 export const ORDER_DETAIL_ACTIONS = {
   UPDATE_ORDER_ITEM_SUMARIZE: 'UPDATE_ORDER_ITEM_SUMARIZE',
@@ -44,6 +48,7 @@ export const ORDER_DETAIL_ACTIONS = {
   UPDATE_SHOW_EMAIL_REMIND: 'UPDATE_SHOW_EMAIL_REMIND',
   UPDATE_SHOW_ADD_PRODUCT_MODAL: 'UPDATE_SHOW_ADD_PRODUCT_MODAL',
   UPDATE_SHOW_ASSIGNED_MODAL: 'UPDATE_SHOW_ASSIGNED_MODAL',
+  SET_ORDER_DETAIL_BUDGET: 'SET_ORDER_DETAIL_BUDGET',
 };
 
 export const updateOrderItemSumarizeAction = (payload) => (dispatch) => {
@@ -1137,10 +1142,49 @@ export const addOrderItemAction = (orderId, data, cb) => (dispatch) => {
   });
 };
 
+export const getBudgetsHistoryAction = ({ orderId = '', onPending = () => {}, onSuccess = () => {}, onError = () => {} }) => (dispatch) => {
+  actionTryCatchCreator({
+    service: getBudgetsHistoryService(orderId),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
 export const updateShowAssignedBoxAction = (payload) => (dispatch) => {
   dispatch({
     type: ORDER_DETAIL_ACTIONS.UPDATE_SHOW_ASSIGNED_MODAL,
     payload,
+  });
+};
+
+export const updateOrderBudgetAction = ({ orderId, data, onSuccess }) => (dispatch) => {
+  actionTryCatchCreator({
+    service: updateOrderBudgetService(data, orderId),
+    onSuccess,
+  });
+};
+
+export const adjustOrderBudgetAction = ({ orderId, data, onSuccess }) => (dispatch) => {
+  actionTryCatchCreator({
+    service: adjustOrderBudgetService(orderId, data),
+    onSuccess,
+  });
+};
+
+export const setBudgetAction = (payload) => (dispatch) => {
+  dispatch({
+    type: ORDER_DETAIL_ACTIONS.SET_ORDER_DETAIL_BUDGET,
+    payload,
+  });
+};
+
+export const getAssignArtistsAction = ({ params = '', onPending = () => {}, onSuccess = () => {}, onError = () => {} }) => (dispatch) => {
+  actionTryCatchCreator({
+    service: getAssignArtistsService(params),
+    onPending,
+    onSuccess,
+    onError,
   });
 };
 
@@ -1149,4 +1193,6 @@ export const ASSIGNED_MODAL_KEYs = {
   BUDGET_HISTORY: 'BUDGET_HISTORY',
   CHANGE_ARTIST: 'CHANGE_ARTIST',
   CHANGE_BUDGET: 'CHANGE_BUDGET',
+  INCREASE_BUDGET: 'INCREASE_BUDGET',
+  DECREASE_BUDGET: 'DECREASE_BUDGET',
 };

@@ -941,6 +941,98 @@
 					font-size: 16px;
 				}
 			}
+			&__action {
+				background: transparent;
+				border: none;
+				display: block;
+				width: 100%;
+				padding: 10px 0 10px 0;
+				text-align: left;
+				margin-bottom: 10px;
+				font-size: 16px;
+			}
+
+			&__action__container {
+				display: flex;
+				align-items: center;
+				.right {
+					font-size: 17px;
+					color: #767676;
+					flex: 1;
+					margin-left: 8px;
+				}
+			}
+		}
+		.back {
+			background: transparent;
+			border: none;
+			// padding: 10px 0 10px 0;
+			text-align: left;
+			font-size: 16px;
+		}
+		.previous-artist {
+			border: 1px solid#767676;
+			border-radius: 8px;
+			padding: 20px;
+		}
+
+		.previous-artist-row {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.label {
+			font-size: 16px;
+		}
+
+		.value {
+			font-size: 17px;
+			margin-left: 8px;
+		}
+
+		.budget__history__item {
+			border: 1px solid#767676;
+			border-radius: 8px;
+			padding: 20px;
+			margin-bottom: 8px;
+			.budget__history__row {
+				display: flex;
+				justify-content: space-between;
+			}
+			.label {
+				font-size: 16px;
+				color: #333333;
+			}
+
+			.value {
+				font-size: 17px;
+				margin-left: 8px;
+			}
+		}
+
+		.change__budget__row {
+			display: flex;
+			align-items: center;
+
+			.label {
+				font-size: 16px;
+			}
+
+			.amount {
+				font-size: 16px;
+				margin-left: 8px;
+				flex: 1;
+				height: 40px;
+			}
+
+			.note {
+				margin-left: 16px;
+			}
+		}
+
+		.artist__list {
+			max-height: 400px;
+			overflow: auto;
 		}
 	}
 

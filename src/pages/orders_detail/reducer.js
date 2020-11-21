@@ -493,7 +493,9 @@ const reducer = (state = initialState, action) => {
     case ORDER_TABLE_UPDATE_ARTIST_ACTION.SUCCESS: {
       return update(state, {
         data: {
-          order: { assignedTo: { $set: payload.assignedTo } },
+          order: {
+            $set: payload,
+          },
         },
       });
     }
@@ -792,6 +794,21 @@ const reducer = (state = initialState, action) => {
         ui: {
           assignedBox: {
             currentShow: { $set: payload },
+          },
+        },
+      });
+    }
+
+    case ORDER_DETAIL_ACTIONS.SET_ORDER_DETAIL_BUDGET: {
+      const order = state.data.order || {};
+      const index = order?.artistBudgets?.findIndex?.((item) => item?.artist?.id === order?.assignedTo?.id);
+      return update(state, {
+        data: {
+          order: {
+            budget: { $set: payload },
+            artistBudgets: {
+              [index]: { budget: { $set: payload } },
+            },
           },
         },
       });
