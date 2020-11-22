@@ -55,25 +55,26 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
               <Spinner />
             </div>
           ) : (
-            data.map((item, index) => {
-              // const
-              return (
-                <div key={`budget__history__${item?.id}__${index}`} className='budget__history__item'>
-                  <div className='budget__history__row'>
-                    <span className='label'>CS:</span>
-                    <strong className='value text-black'>{item?.user?.fullName}</strong>
+            <div className='budget__history__list'>
+              {data.map((item, index) => {
+                return (
+                  <div key={`budget__history__${item?.id}__${index}`} className='budget__history__item'>
+                    <div className='budget__history__row'>
+                      <span className='label'>CS:</span>
+                      <strong className='value text-black'>{item?.user?.fullName}</strong>
+                    </div>
+                    <div className='budget__history__row'>
+                      <span className='label'>Budget:</span>
+                      <strong className='value text-blue'>{formatMoney(item?.amount)}</strong>
+                    </div>
+                    <div className='budget__history__row'>
+                      <span className='label'>Note:</span>
+                      <span className='value text-gray'>{item?.note}</span>
+                    </div>
                   </div>
-                  <div className='budget__history__row'>
-                    <span className='label'>Budget:</span>
-                    <strong className='value text-blue'>{formatMoney(item?.amount)}</strong>
-                  </div>
-                  <div className='budget__history__row'>
-                    <span className='label'>Note:</span>
-                    <span className='value text-gray'>{item?.note}</span>
-                  </div>
-                </div>
-              );
-            })
+                );
+              })}
+            </div>
           )}
         </ModalBody>
       </div>
