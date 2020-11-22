@@ -9,8 +9,6 @@ import WEB_ROUTES from 'configs/web-routes';
 import ImageLoadAble from 'components/common/imageLoadAble';
 import Tags from '../gallery_listing/tags';
 import { ReactComponent as BackArrow } from 'assets/img/left_arrow.svg';
-import { ReactComponent as Close } from 'assets/img/close.svg';
-import { saveAs } from 'file-saver';
 import { getArtworkDetailAction, deleteArtworkDetailAction, resetArtworkAction } from './action';
 import { showConfirmAlert } from 'utils/index';
 import MeatBallDropdown from 'components/common/meatball-dropdown';
@@ -77,7 +75,7 @@ const GalleryDetail = (props) => {
       document.body.removeChild(fbRoot);
       window?.FB && delete window.FB;
     };
-  }, []);
+  }, [resetArtworkAction]);
 
   useEffect(() => {
     window?.FB?.XFBML?.parse && window.FB.XFBML.parse();
@@ -91,7 +89,7 @@ const GalleryDetail = (props) => {
     });
   };
 
-  const handleUpload = (item) => {
+  const handleUpload = () => {
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
@@ -110,7 +108,7 @@ const GalleryDetail = (props) => {
       });
       getAllTagsAction();
     }
-  }, [id, history, getArtworkDetailAction]);
+  }, [id, history, getArtworkDetailAction, getAllTagsAction]);
 
   const onDownload = () => {
     window.open(gallery?.destinationLink, '_blank');

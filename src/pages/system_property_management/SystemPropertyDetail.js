@@ -21,12 +21,12 @@ import { WEB_ROUTES } from 'configs';
 
 const SystemPropertyDetail = ({ style, handleSubmit, ...props }) => {
   let { id } = useParams();
-  const { ui, errorRequest } = props;
+  const { ui, errorRequest, actGetSystemProperty } = props;
   const { t } = useTranslation();
 
   useEffect(() => {
-    props.actGetSystemProperty(id);
-  }, []);
+    actGetSystemProperty(id);
+  }, [actGetSystemProperty, id]);
 
   const onSubmit = (values) => {
     props.actUpdateSystemProperty(values).then((res) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Spinner, UncontrolledAlert } from 'reactstrap';
@@ -12,6 +12,7 @@ import { actGetCustomerGroups, actDeleteCustomerGroup } from './actions';
 
 const CustomerList = (props) => {
   const { t } = useTranslation();
+  const { actGetCustomerGroups } = props;
 
   const columns = [
     {
@@ -47,8 +48,8 @@ const CustomerList = (props) => {
   ];
 
   useEffect(() => {
-    props.actGetCustomerGroups();
-  }, []);
+    actGetCustomerGroups();
+  }, [actGetCustomerGroups]);
 
   const handleDelete = (id) => {
     if (id) {

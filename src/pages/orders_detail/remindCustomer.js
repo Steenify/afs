@@ -3,13 +3,12 @@ import { connect } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
-import { map } from 'lodash';
 import { toast } from 'react-toastify';
 
 import Button from 'components/common/button';
 import ImageGallery from 'components/common/imageGallery';
 
-import { getSelectedStatus, getListImageUrl } from 'utils';
+import { getListImageUrl } from 'utils';
 
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
@@ -32,9 +31,7 @@ const RemindCustomer = (props) => {
     isShowEmail,
     email,
     updateShowEmailRemind,
-    sendEmailNotify,
     loadingEmail,
-    status,
     order,
     getRemindEmailTemplate,
     emailTitle,
@@ -43,7 +40,6 @@ const RemindCustomer = (props) => {
     customer,
     currentWorkLogIndex,
     getRemindFBMessageTemplate,
-    sendFBMessageNotify,
     updatOrderCustomer,
     updateRemindTemplateAction,
     sentEmailRemindAction,

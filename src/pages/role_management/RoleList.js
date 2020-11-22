@@ -12,6 +12,7 @@ import { actGetAuthorities, actDeleteAuthority } from './actions';
 
 const RoleList = (props) => {
   const { t } = useTranslation();
+  const { actGetAuthorities } = props;
 
   const columns = [
     { accessor: 'name', Header: t('baseApp.authority.name'), width: 'auto' },
@@ -19,10 +20,7 @@ const RoleList = (props) => {
       accessor: 'edit',
       Header: '',
       Cell: ({ row: { original } }) => (
-        <Button
-          tag={Link}
-          to={`/user/role/detail/${original.id}`}
-          color='primary'>
+        <Button tag={Link} to={`/user/role/detail/${original.id}`} color='primary'>
           {t('entity.action.edit')}
         </Button>
       ),
@@ -41,8 +39,8 @@ const RoleList = (props) => {
   ];
 
   useEffect(() => {
-    props.actGetAuthorities();
-  }, []);
+    actGetAuthorities();
+  }, [actGetAuthorities]);
 
   const handleDelete = (id) => {
     if (id) {
@@ -65,19 +63,12 @@ const RoleList = (props) => {
   }
 
   if (!_.isEmpty(error) && error.message) {
-    return (
-      <UncontrolledAlert color='danger'>{error.message}</UncontrolledAlert>
-    );
+    return <UncontrolledAlert color='danger'>{error.message}</UncontrolledAlert>;
   }
 
   return (
     <div className='role-list'>
-      <DataTable
-        data={authorities}
-        columns={columns}
-        className='bg-white'
-        whiteListSort={['delete']}
-      />
+      <DataTable data={authorities} columns={columns} className='bg-white' whiteListSort={['delete']} />
     </div>
   );
 };

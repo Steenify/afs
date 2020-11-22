@@ -122,7 +122,10 @@ class DateRangePickerWrapper extends PureComponent {
 
   render() {
     const { focusedInput, startDate, endDate, range } = this.state;
-    const { startDateId, endDateId, displayFormat, numberOfMonths, isOutsideRange, customArrowIcon, showDefaultInputIcon, inputIconPosition } = this.props;
+    const {
+      isOutsideRange,
+      //  startDateId, endDateId, displayFormat, numberOfMonths, customArrowIcon, showDefaultInputIcon, inputIconPosition
+    } = this.props;
 
     const orientationList = ['horizontal', 'vertical'];
 

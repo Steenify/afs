@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Form, Alert, Table, Input, FormGroup, Label } from 'reactstrap';
+import { reduxForm } from 'redux-form';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Alert, Table, Input, FormGroup, Label } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
@@ -13,12 +13,12 @@ import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
 import { actPublishNotification, getAllNotificationsAction } from './actions';
 import { actGetUsers } from 'pages/user_management/actions';
-import { getErrorMessage, getPaginationItemsNumber } from 'utils';
+import { getPaginationItemsNumber } from 'utils';
 
 const NotificationPublish = ({ style, handleSubmit, ...props }) => {
   useEffect(() => {}, []);
 
-  const { className, errorRequest, reset, users = [], ui, error, data } = props;
+  const { className, errorRequest, reset, users = [], data } = props;
   const { t } = useTranslation();
 
   const [modal, setModal] = useState(false);
@@ -45,7 +45,7 @@ const NotificationPublish = ({ style, handleSubmit, ...props }) => {
       })
       .then((res) => {
         let count = 0;
-        res.data.map((user) => {
+        res.data.forEach((user) => {
           const index = selectedUsers.findIndex((item) => item.id === user.id);
           if (index !== -1) {
             count++;
@@ -69,7 +69,7 @@ const NotificationPublish = ({ style, handleSubmit, ...props }) => {
     const id = item['id'] || '';
     let count = 0;
 
-    props.users.map((user) => {
+    props.users.forEach((user) => {
       const index = selectedUsers.findIndex((item) => item.id === user.id);
       if (index !== -1) {
         count++;
@@ -138,7 +138,7 @@ const NotificationPublish = ({ style, handleSubmit, ...props }) => {
     setIsCheckAll(checked);
 
     if (checked) {
-      props.users.map((user) => {
+      props.users.forEach((user) => {
         const index = selectedUsers.findIndex((item) => item.id === user.id);
 
         if (index === -1) {
@@ -218,7 +218,7 @@ const NotificationPublish = ({ style, handleSubmit, ...props }) => {
   );
 };
 
-const mapStateToProps = ({ notification, user }) => {
+const mapStateToProps = ({ user }) => {
   return {
     initialValues: {
       description: '',

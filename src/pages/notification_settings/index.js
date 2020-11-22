@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, CardTitle, CardText, Row, Col, Badge, Spinner } from 'reactstrap';
+import { Nav, NavItem, NavLink, Badge, Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { uniqBy, debounce } from 'lodash';
 
@@ -11,10 +11,6 @@ import PageTitle from 'components/common/PageTitle';
 import Button from 'components/common/button';
 import MenuItem from './MenuItem';
 
-import { ReactComponent as NSComments } from 'assets/img/ns_comments.svg';
-import { ReactComponent as NSUpdateStatus } from 'assets/img/ns_update_status.svg';
-import { ReactComponent as NSAssigned } from 'assets/img/ns_assigned.svg';
-import { ReactComponent as NSUpload } from 'assets/img/ns_upload.svg';
 import { ReactComponent as CloseIcon } from 'assets/img/close_white.svg';
 
 import { WEB_ROUTES } from 'configs';
@@ -28,7 +24,6 @@ const NotificationSettings = (props) => {
     history,
     notificationSettings: {
       ui: { isLoading },
-      data,
     },
     getNotificationActionsAction,
     getNotificationActionAction,
@@ -53,8 +48,8 @@ const NotificationSettings = (props) => {
   const toggle = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
-      setRecipients((old) => []);
-      setSelectedRecipients((old) => []);
+      setRecipients(() => []);
+      setSelectedRecipients(() => []);
       setSearch('');
     }
   };
@@ -75,7 +70,7 @@ const NotificationSettings = (props) => {
         setActiveTab(0);
       }
     });
-  }, []);
+  }, [getNotificationActionsAction]);
 
   useEffect(() => {
     if (!search) {
@@ -91,7 +86,7 @@ const NotificationSettings = (props) => {
         return;
       }
 
-      setRecipients((old) =>
+      setRecipients(() =>
         [...data].map((d) => {
           const hasEffected = selectedRecipients.find((r) => r.userId === d.userId);
 
@@ -101,7 +96,7 @@ const NotificationSettings = (props) => {
         }),
       );
     });
-  }, [search]);
+  }, [search, debounceGetRecipientsAction, selectedRecipients]);
 
   useEffect(() => {
     if (actions[activeTab]?.id) {
@@ -129,7 +124,7 @@ const NotificationSettings = (props) => {
             return;
           }
 
-          setRecipients((old) =>
+          setRecipients(() =>
             [...data].map((d) => {
               const hasEffected = finalList.find((r) => r.userId === d.userId);
 
@@ -145,7 +140,7 @@ const NotificationSettings = (props) => {
         setMessageDefault(actions[activeTab]?.messageDefault || '');
       });
     }
-  }, [activeTab]);
+  }, [activeTab, getNotificationActionAction, getRecipientsAction, selectedRecipients, actions]);
 
   const onSave = () => {
     const action = actions[activeTab];
@@ -187,7 +182,7 @@ const NotificationSettings = (props) => {
       list[index] = item;
     }
 
-    setSelectedRecipients((old) => list);
+    setSelectedRecipients(() => list);
   };
 
   return (
@@ -237,7 +232,7 @@ const NotificationSettings = (props) => {
           }}>
           {/* <div className='box'> */}
           <Nav className='nav-pills box h-100' style={{ overflowY: 'auto' }}>
-            {actions.map(({ icon, name, description }, i) => (
+            {actions.map(({ name, description }, i) => (
               <NavItem key={i} className='cursor-pointer w-100'>
                 <NavLink
                   className={['notification-action', activeTab === i ? 'active' : ''].join(' ').trim()}
@@ -319,9 +314,9 @@ const NotificationSettings = (props) => {
                                 newRecipients[i] = item;
                               }
 
-                              setRecipients((old) => newRecipients);
+                              setRecipients(() => newRecipients);
 
-                              setSelectedRecipients((old) => list);
+                              setSelectedRecipients(() => list);
                             }}
                             checked={recipient.checked}
                           />

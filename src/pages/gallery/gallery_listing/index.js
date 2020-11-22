@@ -63,7 +63,7 @@ const Listing = ({
     return () => {
       resetAction();
     };
-  }, []);
+  }, [resetAction]);
 
   useEffect(() => {
     const { page, size, tag, text } = filterData;

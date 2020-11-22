@@ -14,10 +14,10 @@ import { actCreateCustomerGroup, actGetCustomerGroups, getCustomerListAction } f
 
 import { required } from 'utils/validation';
 
-const CustomerGroupCreate = ({ style, handleSubmit, ...props }) => {
+const CustomerGroupCreate = ({ style, handleSubmit, getCustomerListAction, ...props }) => {
   useEffect(() => {
-    props.getCustomerListAction();
-  }, []);
+    getCustomerListAction();
+  }, [getCustomerListAction]);
 
   const { className, errorRequest, reset, customers } = props;
 

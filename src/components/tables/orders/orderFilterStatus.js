@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Popover from 'react-tiny-popover';
-import { reduce, get } from 'lodash';
+import { get } from 'lodash';
 
 import { PERMITTIONS_CONFIG } from 'configs';
 

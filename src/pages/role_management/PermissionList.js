@@ -12,6 +12,7 @@ import { actGetAllPermissions, actDeletePermission } from './actions';
 
 const PermissionList = (props) => {
   const { t } = useTranslation();
+  const { actGetAllPermissions } = props;
 
   const columns = [
     { accessor: 'name', Header: t('baseApp.permission.name'), width: 'auto' },
@@ -24,10 +25,7 @@ const PermissionList = (props) => {
       accessor: 'edit',
       Header: '',
       Cell: ({ row: { original } }) => (
-        <Button
-          tag={Link}
-          to={`/user/permission/detail/${original.id}`}
-          color='primary'>
+        <Button tag={Link} to={`/user/permission/detail/${original.id}`} color='primary'>
           {t('entity.action.edit')}
         </Button>
       ),
@@ -46,8 +44,8 @@ const PermissionList = (props) => {
   ];
 
   useEffect(() => {
-    props.actGetAllPermissions();
-  }, []);
+    actGetAllPermissions();
+  }, [actGetAllPermissions]);
 
   const handleDelete = (id) => {
     if (id) {
@@ -70,19 +68,12 @@ const PermissionList = (props) => {
   }
 
   if (!_.isEmpty(error) && error.message) {
-    return (
-      <UncontrolledAlert color='danger'>{error.message}</UncontrolledAlert>
-    );
+    return <UncontrolledAlert color='danger'>{error.message}</UncontrolledAlert>;
   }
 
   return (
     <div className='role-list'>
-      <DataTable
-        data={permissions}
-        columns={columns}
-        className='bg-white'
-        whiteListSort={['delete']}
-      />
+      <DataTable data={permissions} columns={columns} className='bg-white' whiteListSort={['delete']} />
     </div>
   );
 };

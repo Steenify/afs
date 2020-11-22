@@ -8,8 +8,6 @@ import PageTitle from 'components/common/PageTitle';
 import { WEB_ROUTES } from 'configs';
 
 import { ReactComponent as Settings } from 'assets/img/settings.svg';
-import { ReactComponent as CustomerIcon } from 'assets/img/customer.svg';
-import { ReactComponent as Artist } from 'assets/img/Artist.svg';
 import { ReactComponent as Package } from 'assets/img/gallery.svg';
 import { ReactComponent as LateNotificationIcon } from 'assets/img/late_notification.svg';
 
