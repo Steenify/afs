@@ -19,6 +19,19 @@ class OrderFilters extends Component {
     this.handleSearchTextAPI = debounce(this.handleSearchTextAPI, 1000);
   }
 
+  handleChangeStatusResset = (event) => {
+    const { updateOrderTableFilterAction, reducer } = this.props;
+    updateOrderTableFilterAction({
+      payload: {
+        alert: '',
+        page: 0,
+        cs: '',
+        hasPoster: false,
+      },
+      reducer,
+    });
+  };
+
   handleChangeStatus = (event) => {
     const { updateOrderTableFilterAction, reducer } = this.props;
     const { target } = event;
@@ -75,7 +88,7 @@ class OrderFilters extends Component {
     return (
       <div className='order__filter'>
         <div className='list_status d-none d-sm-block'>
-          <button data='' onClick={this.handleChangeStatus} key={`list__status_option__all`} className={`status ${!selectedAlertType && 'active'}`}>
+          <button data='' onClick={this.handleChangeStatusResset} key={`list__status_option__all`} className={`status ${!selectedAlertType && 'active'}`}>
             All
             <span className='number'>{totalOrders || 0}</span>
           </button>
@@ -91,13 +104,22 @@ class OrderFilters extends Component {
             No Sketch in 3 days
             <span className='number'>{orderStatusCount['LATE_WORK_LOG_DEADLINE'] || 0}</span>
           </button>
+          <CanShow permission={PERMITTIONS_CONFIG.VIEW_LASTEST_UPDATED_ORDER}>
+            <button
+              data='ARTIST_UPLOADED'
+              key={`list__alert_option__new_update`}
+              onClick={this.handleChangeStatus}
+              className={`status ARTIST_UPLOADED COLOR_REVIEW ${selectedAlertType === 'ARTIST_UPLOADED' && 'active'}`}>
+              Artist Updated
+              <span className='number'>{orderStatusCount['ARTIST_UPLOADED'] || 0}</span>
+            </button>
+          </CanShow>
           <CanShow permission={PERMITTIONS_CONFIG.SHOW_POSTER}>
             <button onClick={this.handleCheckPoster} key={`list__alert_option__has_poster`} className={`status ${hasPoster === true && 'active'}`}>
               Has Poster
               <span className='number'>{orderStatusCount['CANVAS'] || 0}</span>
             </button>
           </CanShow>
-
           <CanShow permission={PERMITTIONS_CONFIG.VIEW_MY_ORDER_CS}>
             <button onClick={this.handleCheckCS} key={`list__alert_option__has_poster`} className={`status SKETCH ${cs !== '' && 'active'}`}>
               My Orders

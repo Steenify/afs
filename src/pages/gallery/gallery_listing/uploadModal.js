@@ -1,12 +1,10 @@
-import React, { useState, useRef, useEffect, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import Button from 'components/common/button';
 import Dropbox from 'components/common/dropbox';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 import SelectCreatable from 'react-select/creatable';
-import ImageFile from 'components/common/imageFile';
 
 const WrapperRow = ({ label = '', children }) => (
   <div className='row pb-3'>
@@ -15,7 +13,7 @@ const WrapperRow = ({ label = '', children }) => (
   </div>
 );
 
-const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isLoading = false }) => {
+const UploadModal = ({ onClose, onConfirm, item, tagItems = [], isLoading = false }) => {
   const [name, setName] = useState(item?.title || '');
   const [description, setDescription] = useState(item?.description || '');
   const [destinationLink, setDestinationLink] = useState(item?.destinationLink || '');
@@ -26,7 +24,7 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isL
     onClose();
   };
 
-  const onSave = (e) => {
+  const onSave = () => {
     if (dropbox.current) {
       const files = dropbox.current.getFiles() || [];
       if (!name) {
@@ -93,7 +91,7 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isL
                 </div>
               </div>
             ) : (
-              <Fragment>
+              <>
                 <WrapperRow label='Name:'>
                   <input type='text' className='form-control' value={name} onChange={(e) => setName(e.target.value)} />
                 </WrapperRow>
@@ -118,7 +116,7 @@ const UploadModal = ({ onClose, onConfirm, orderNumber, item, tagItems = [], isL
                 <WrapperRow label='Destination Link:'>
                   <input type='text' className='form-control' value={destinationLink} onChange={(e) => setDestinationLink(e.target.value)} />
                 </WrapperRow>
-              </Fragment>
+              </>
             )}
           </ModalBody>
           <ModalFooter className='justify-content-between'>

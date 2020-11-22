@@ -21,14 +21,14 @@ import { WEB_ROUTES } from 'configs';
 
 const RoleDetail = ({ style, handleSubmit, ...props }) => {
   let { id } = useParams();
-  const { ui, errorRequest, permissions } = props;
+  const { ui, errorRequest, permissions, actGetAuthority, actGetAllPermissions } = props;
   const { t } = useTranslation();
 
   useEffect(() => {
-    props.actGetAuthority(id).then(() => {
-      props.actGetAllPermissions();
+    actGetAuthority(id).then(() => {
+      actGetAllPermissions();
     });
-  }, []);
+  }, [actGetAuthority, actGetAllPermissions, id]);
 
   const onSubmit = (values) => {
     const params = { ...values };

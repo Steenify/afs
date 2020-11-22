@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Spinner, Alert } from 'reactstrap';
-import { groupBy, sortBy, map, isEmpty, reduce } from 'lodash';
+import { Spinner } from 'reactstrap';
+import { groupBy, sortBy, map } from 'lodash';
 
 import OrderCanvasWorkGroup from './orderCanvasWorkGroup';
 // import OrderCanvasDelivery from './orderCanvasDelivery';

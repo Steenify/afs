@@ -10,10 +10,10 @@ import { useTranslation } from 'react-i18next';
 
 import { actGetUserRoles } from './actions';
 
-const UserSearchBox = ({ style, handleSubmit, onSearch, ...props }) => {
+const UserSearchBox = ({ style, handleSubmit, onSearch, actGetUserRoles, ...props }) => {
   useEffect(() => {
-    props.actGetUserRoles();
-  }, []);
+    actGetUserRoles();
+  }, [actGetUserRoles]);
 
   const onSubmit = (values) => {
     onSearch(values);
@@ -28,31 +28,13 @@ const UserSearchBox = ({ style, handleSubmit, onSearch, ...props }) => {
   const { t } = useTranslation();
 
   return (
-    <form
-      className='search-advance'
-      style={{ ...style }}
-      onSubmit={handleSubmit(onSubmit)}>
+    <form className='search-advance' style={{ ...style }} onSubmit={handleSubmit(onSubmit)}>
       <Row form className='align-items-end'>
         <Col md={4}>
-          <Field
-            className='mb-0'
-            component={Input}
-            name='name'
-            label=''
-            placeholder={
-              t('baseApp.userManagement.search.emailUserName') + '...'
-            }
-          />
+          <Field className='mb-0' component={Input} name='name' label='' placeholder={t('baseApp.userManagement.search.emailUserName') + '...'} />
         </Col>
         <Col md={4}>
-          <Field
-            className='mb-0 form-group--role'
-            component={Select}
-            name='role'
-            label=''
-            placeholder={t('baseApp.userManagement.search.role') + '...'}
-            options={userRoles}
-          />
+          <Field className='mb-0 form-group--role' component={Select} name='role' label='' placeholder={t('baseApp.userManagement.search.role') + '...'} options={userRoles} />
         </Col>
         <Col md={4}>
           <div className='d-flex w-100'>
@@ -67,9 +49,7 @@ const UserSearchBox = ({ style, handleSubmit, onSearch, ...props }) => {
               <SearchIcon className='btn-icon' />
               {t('entity.action.search')}
             </Button>
-            <Button
-              onClick={() => clearForm()}
-              style={{ height: 38, paddingLeft: 23, paddingRight: 23 }}>
+            <Button onClick={() => clearForm()} style={{ height: 38, paddingLeft: 23, paddingRight: 23 }}>
               {t('entity.action.clear')}
             </Button>
           </div>

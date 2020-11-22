@@ -15,6 +15,7 @@ import { getErrorMessage } from 'utils';
 
 const NotificationList = (props) => {
   const { t } = useTranslation();
+  const { getAllNotificationsAction } = props;
 
   const columns = [
     {
@@ -76,8 +77,8 @@ const NotificationList = (props) => {
   ];
 
   useEffect(() => {
-    props.getAllNotificationsAction();
-  }, []);
+    getAllNotificationsAction();
+  }, [getAllNotificationsAction]);
 
   const handleLoad = (activePage) => {
     props.getAllNotificationsAction({
@@ -101,7 +102,7 @@ const NotificationList = (props) => {
     }
   };
 
-  const { notifications = [], ui, error } = props;
+  const { notifications = [] } = props;
 
   return (
     <div>

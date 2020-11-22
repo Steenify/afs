@@ -17,7 +17,7 @@ class RFInput extends PureComponent {
       groupStyle,
       inputStyle,
       disabled,
-      meta: { touched, error, warning },
+      meta: { touched, error },
       type,
     } = this.props;
     return (
