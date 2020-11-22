@@ -79,8 +79,9 @@ export const mapStatusVerifyFile = ['SKETCH', 'SKETCH_EDIT', 'COLOR', 'COLOR_EDI
 export const mapStatusPayment = {
   PAID: 'Paid',
   UNPAID: 'Unpaid',
+  PARTIAL_PAID: 'Partial paid',
 };
-export const statusPayments = ['PAID', 'UNPAID'];
+export const statusPayments = ['PAID', 'UNPAID', 'PARTIAL_PAID'];
 
 export const PSDFileType = ['image/vnd.adobe.photoshop', 'application/x-photoshop', 'application/photoshop', 'application/psd', 'image/psd'];
 

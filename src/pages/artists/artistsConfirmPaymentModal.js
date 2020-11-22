@@ -21,6 +21,7 @@ const ArtistsConfirmPaymentModal = (props) => {
   useEffect(() => {
     if (isOpen && selectedArtists.length > 0) {
       const params = { artists: map(selectedArtists, (artist) => artist.id).join(',') };
+
       actionTryCatchCreator({
         service: getPayoutInfoByArtists(params),
         onPending: () => onChangeLoading(true),
@@ -64,8 +65,8 @@ const ArtistsConfirmPaymentModal = (props) => {
         const item = data.items[id] || null;
         return {
           artistId: item.artist,
-          payout: map(item?.bookings || [], (or) => ({
-            bookingNumber: or.number,
+          payout: map(item?.budgets || [], (or) => ({
+            bookingNumber: or.bookingNumber,
             paid: or?.budget,
           })),
           extraPayment: Number(item?.extra || 0),
@@ -90,7 +91,7 @@ const ArtistsConfirmPaymentModal = (props) => {
 
   const canConfirm = selectedArtists.length > 0 && data.ids.length > 0;
   const current = data.items[data.currentArtistId] || {};
-  const totalDisplay = reduce(current?.bookings || [], (total, item) => (total += parseInt(item.budget || 0, 10)), 0) + (parseInt(current?.extra || 0, 10) || 0);
+  const totalDisplay = reduce(current?.budgets || [], (total, item) => (total += parseInt(item.budget || 0, 10)), 0) + (parseInt(current?.extra || 0, 10) || 0);
 
   return (
     <PageModal size='lg' isOpen={isOpen} toggle={toggle} title={'Confirm Payment'} className={`artists__payout ${className}`}>
@@ -111,17 +112,17 @@ const ArtistsConfirmPaymentModal = (props) => {
           </div>
           <div className=' col-md-8 content_right'>
             <div className='mt-4' />
-            {current?.bookings?.map((order) => {
-              const filteredItems = filter(order.items, (item) => getOrderItem(item.name) !== 'Faster Processing');
+            {current?.budgets?.map((budget) => {
+              const filteredItems = filter(budget.items, (item) => getOrderItem(item.name) !== 'Faster Processing');
               return (
-                <div key={`order__payout__item__${order.id}`}>
+                <div key={`order__payout__item__${budget.id}`}>
                   <div className='payout__item order'>
                     <div className='left'>
-                      <span className='number'>#{order.number}</span>
+                      <span className='number'>#{budget.bookingNumber}</span>
                       <span className='name'>{getOrderOption((filteredItems[0] || {})?.name || '')}</span>
                     </div>
                     <div className='right'>
-                      <strong className='money'>{formatMoney(order.budget)}</strong>
+                      <strong className='money'>{formatMoney(budget.budget)}</strong>
                     </div>
                   </div>
                 </div>
@@ -185,11 +186,11 @@ const ArtistsConfirmPaymentModal = (props) => {
 
 const mapStateToProps = ({ artists, auth }) => {
   const { items } = artists.data;
-  const artist = filter(items, (a) => a.selected && a.numUnpaid > 0)[0] || {};
-  const selectedArtists = filter(items, (a) => a.selected && a.numUnpaid > 0) || [];
+  // const artist = filter(items, (a) => a.selected && a.numUnpaid > 0)[0] || {};
+  const selectedArtists = filter(items, (a) => a.selected) || [];
   return {
     accountInfo: auth.data.accountInfo,
-    artist,
+    // artist,
     selectedArtists,
   };
 };
