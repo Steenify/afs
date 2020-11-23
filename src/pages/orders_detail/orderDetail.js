@@ -13,14 +13,13 @@ import OrderArtWorkBox from './orderArtWorkBox';
 import OrderCanvasWorkBox from './orderCanvasWorkBox';
 import EmaiNotify from './emailNotify';
 import EmailRemind from './remindCustomer';
-import OrderBudget from './orderBudget';
-import OrderAssignedBox from './orderAssignedBox';
 import AddProductModal from './addProductModal';
 import AssignedBoxModal from './assignedBoxModal';
 import BudgetHistoryModal from './budgetHistoryModal';
 import ChangeArtistModal from './changeArtistModal';
 import ChangeBudgetModal from './changeBudgetModal';
 import OrderAssignedItem from './orderAssignedItem';
+import PreviousArtistBudget from './previousArtistBudget';
 
 const OrderDetail = ({ loading, order, status, accountInfo }) => {
   if (isEmpty(order) || !status.length) {
@@ -29,7 +28,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
 
   const canEditAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;
   const canGetArtists = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) || false;
-
+  const canViewPreviousArtist = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.GET_ARTIST_BUDGET) || false;
   const SHOW_POSTER = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.SHOW_POSTER);
   const itemsToFilter = SHOW_POSTER ? filterOrderItemsAdmin : filterOrderItems;
 
@@ -45,6 +44,8 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
       else artworkItems.push(item);
     }
   });
+  const { artistBudgets = [], assignedTo = {} } = order || {};
+  const previousArtists = artistBudgets.filter((item) => item?.artist?.id !== assignedTo?.id);
 
   return (
     <div className='order_detail'>
@@ -67,6 +68,14 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
               <OrderAssignedItem order={order} />
               {/* {canEditAssign && canGetArtists && <OrderAssignedBox order={order} />}
               <OrderBudget order={order} /> */}
+              {canViewPreviousArtist &&
+                previousArtists.map((item) => {
+                  return (
+                    <div className='mb-2'>
+                      <PreviousArtistBudget item={item} />
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
@@ -128,7 +137,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
       <AddProductModal order={order} />
       <AssignedBoxModal order={order} />
       <BudgetHistoryModal order={order} />
-      <ChangeArtistModal order={order} />
+      {canEditAssign && <ChangeArtistModal order={order} />}
       <ChangeBudgetModal order={order} />
     </div>
   );

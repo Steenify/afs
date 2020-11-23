@@ -9,6 +9,7 @@ import { ReactComponent as RightRectangle } from 'assets/img/right_rectangle.svg
 import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs } from './actions';
 import { formatMoney } from 'utils';
 import { PERMITTIONS_CONFIG, mapRoles } from 'configs';
+import PreviousArtistBudget from './previousArtistBudget';
 
 const AssignedBoxModal = ({ order, isOpen, permissions = [], authorities = [], updateShowAssignedBoxAction }) => {
   const { artistBudgets = [], assignedTo = {}, budget = 0 } = order || {};
@@ -103,14 +104,7 @@ const AssignedBoxModal = ({ order, isOpen, permissions = [], authorities = [], u
           {previousArtists.map((item) => {
             return (
               <div className='previous-artist mb-2'>
-                <div className='previous-artist-row'>
-                  <span className='label text-gray'>Previous Artist:</span>
-                  <strong className='value text-gray'>{item?.artist?.fullName}</strong>
-                </div>
-                <div className='previous-artist-row'>
-                  <span className='label text-gray'>Budget:</span>
-                  <strong className='value text-gray'>{formatMoney(item?.budget)}</strong>
-                </div>
+                <PreviousArtistBudget item={item} />
               </div>
             );
           })}

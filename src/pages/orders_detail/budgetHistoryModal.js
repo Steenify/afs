@@ -8,6 +8,12 @@ import { ReactComponent as BackIcon } from 'assets/img/back.svg';
 import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, getBudgetsHistoryAction } from './actions';
 import { formatMoney } from 'utils';
 
+const BUDGET_CHANGE_TYPES = {
+  MODIFY: 'Modify Budget',
+  INCREASE: 'Increase Budget',
+  DECREASE: 'Decrease Budget',
+};
+
 const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBudgetsHistoryAction }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -65,7 +71,7 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
                       <strong className='value text-black'>{item?.user?.fullName}</strong>
                     </div>
                     <div className='budget__history__row'>
-                      <span className='label'>Budget:</span>
+                      <span className='label'>{`${BUDGET_CHANGE_TYPES[item?.action] || 'Budget'}:`}</span>
                       <strong className='value text-blue'>{formatMoney(item?.amount)}</strong>
                     </div>
                     <div className='budget__history__row'>
