@@ -21,7 +21,8 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
         },
         onSuccess: (res) => {
           setLoading(false);
-          setData(res);
+          const sorted = (res || []).sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+          setData(sorted);
         },
         onError: () => {
           setLoading(false);
