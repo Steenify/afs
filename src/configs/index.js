@@ -51,6 +51,10 @@ export const PERMITTIONS_CONFIG = {
   VIEW_MY_ORDER_CS: 'VIEW_MY_ORDER_CS',
   ASSIGN_ORDER_TO_CS: 'ASSIGN_ORDER_TO_CS',
   VIEW_LASTEST_UPDATED_ORDER: 'VIEW_LASTEST_UPDATED_ORDER',
+  ADJUST_BUDGET: 'ADJUST_BUDGET',
+  GET_BUDGET_CHANGE_LOG: 'GET_BUDGET_CHANGE_LOG',
+  GET_ARTIST_BUDGET: 'GET_ARTIST_BUDGET',
+  VIEW_ALL_ARTIST_TABS: 'VIEW_ALL_ARTIST_TABS',
 };
 
 export const listStatus = ['NEW_ORDER', 'SKETCH', 'SKETCH_REVIEW', 'SKETCH_EDIT', 'COLOR', 'COLOR_REVIEW', 'COLOR_EDIT', 'EXPORT_FILE', 'SEND_FILE', 'DONE'];
@@ -73,6 +77,7 @@ export const mapStatusRemind = ['CUSTOMER_REVIEW_COLOR', 'CUSTOMER_REVIEW_SKETCH
 export const mapRoles = {
   ROLE_CUSTOMER_SERVICE: 'ROLE_CUSTOMER_SERVICE',
   ROLE_ARTIST: 'ROLE_ARTIST',
+  ROLE_ADMIN: 'ROLE_ADMIN',
 };
 
 export const mapStatusVerifyFile = ['SKETCH', 'SKETCH_EDIT', 'COLOR', 'COLOR_EDIT', 'EXPORT_FILE'];
@@ -80,8 +85,9 @@ export const mapStatusVerifyFile = ['SKETCH', 'SKETCH_EDIT', 'COLOR', 'COLOR_EDI
 export const mapStatusPayment = {
   PAID: 'Paid',
   UNPAID: 'Unpaid',
+  PARTIAL_PAID: 'Partial paid',
 };
-export const statusPayments = ['PAID', 'UNPAID'];
+export const statusPayments = ['PAID', 'UNPAID', 'PARTIAL_PAID'];
 
 export const PSDFileType = ['image/vnd.adobe.photoshop', 'application/x-photoshop', 'application/photoshop', 'application/psd', 'image/psd'];
 

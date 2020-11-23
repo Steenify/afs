@@ -16,10 +16,10 @@ import { statusPayments } from 'configs';
 import { createOrderTablePayoutsBulkAction } from 'components/tables/orders/actions';
 import { getArtistsListAction } from './actions';
 import { getAllOrdersService } from 'services/order';
+import { getPayoutInfoByArtists } from 'services/payout';
 
 const ArtistPayoutModal = (props) => {
   const { isOpen, className, toggle, artist, createOrderTablePayoutsBulkAction, getArtistsListAction } = props;
-  console.log('ArtistPayoutModal -> artist', artist);
 
   const dropbox = useRef(null);
   const [extra, setExtra] = useState(0);
@@ -29,17 +29,19 @@ const ArtistPayoutModal = (props) => {
 
   useEffect(() => {
     if (isOpen && !isEmpty(artist)) {
-      const params = { assignee: artist.login, artistPaymentStatus: statusPayments[1], page: 0, size: 100 };
+      // const params = { assignee: artist.login, artistPaymentStatus: statusPayments[1], page: 0, size: 100 };
+      const params = { artists: artist?.id };
       actionTryCatchCreator({
-        service: getAllOrdersService(params),
+        service: getPayoutInfoByArtists(params),
         onPending: () => setData((prev) => ({ ...prev, loading: true })),
         onError: () => setData((prev) => ({ ...prev, loading: false })),
         onSuccess: (data) => {
-          const totalBudget = reduce(data, (total, item) => (total += parseInt(item.budget || 0, 10)), 0);
-          const notes = map(data, (order) => {
-            return `#${order.number}(${formatMoney(order.budget)})`;
+          const budgets = data?.[0]?.budgets || [];
+          const totalBudget = reduce(budgets, (total, item) => (total += parseInt(item?.budget || 0, 10)), 0);
+          const notes = map(budgets, (budget) => {
+            return `#${budget.bookingNumber}(${formatMoney(budget.budget)})`;
           });
-          setData({ orders: data, loading: false, totalBudget });
+          setData({ orders: budgets, loading: false, totalBudget });
           setNote(`Payment for orders: ${notes.join(' + ')}`);
           setExtra(0);
           setNoteItem({});
@@ -90,10 +92,10 @@ const ArtistPayoutModal = (props) => {
       }));
 
       const items = map(orders, (or) => ({
-        bookingNumber: or.number,
+        bookingNumber: or.bookingNumber,
         paid: or?.budget,
         payoutItemType: 'BOOKING_PAYMENT',
-        note: noteItem[or?.number] || '',
+        note: noteItem[or?.bookingNumber] || '',
       }));
 
       if ((parseInt(extra, 10) || 0) > 0) {
@@ -115,7 +117,7 @@ const ArtistPayoutModal = (props) => {
       createOrderTablePayoutsBulkAction({
         payload,
         onSuccess: () => {
-          const messge = orders.map((or) => or?.number).join(', ');
+          const messge = orders.map((or) => or?.bookingNumber).join(', ');
           toast.dark(`Updated status payment of ${messge}`);
           setNote('');
           setExtra(0);
@@ -145,7 +147,7 @@ const ArtistPayoutModal = (props) => {
               <div key={`order__payout__item__${order.id}`}>
                 <div className='payout__item order'>
                   <div className='left'>
-                    <span className='number'>#{order.number}</span>
+                    <span className='number'>#{order.bookingNumber}</span>
                     <span className='name'>{getOrderOption((filteredItems[0] || {})?.name || '')}</span>
                   </div>
                   <div className='right'>

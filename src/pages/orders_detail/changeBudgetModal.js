@@ -20,6 +20,12 @@ const TITLES = {
   DECREASE_BUDGET: 'Decrease Amount',
 };
 
+const ACTION_CHANGE_TYPES = {
+  CHANGE_BUDGET: 'MODIFY',
+  INCREASE_BUDGET: 'INCREASE',
+  DECREASE_BUDGET: 'DECREASE',
+};
+
 const ChangeBudgetModal = ({ order, isOpen, currentShow, updateShowAssignedBoxAction, updateOrderBudgetAction, adjustOrderBudgetAction, setBudgetAction }) => {
   const [amount, setAmount] = useState();
   const [note, setNote] = useState('');
@@ -65,6 +71,7 @@ const ChangeBudgetModal = ({ order, isOpen, currentShow, updateShowAssignedBoxAc
       const data = {
         note,
         amount: mark * number,
+        action: ACTION_CHANGE_TYPES[currentShow] || '',
       };
       adjustOrderBudgetAction({
         orderId,

@@ -257,7 +257,7 @@ export const addOrderItemService = (orderId, data) =>
 
 export const getBudgetsHistoryService = (orderId) =>
   request({
-    url: `${ORDERS_API}/${orderId}/budget/log?sort=createdDate,desc`,
+    url: `${ORDERS_API}/${orderId}/budget/log`,
   });
 
 export const adjustOrderBudgetService = (orderId, data) =>

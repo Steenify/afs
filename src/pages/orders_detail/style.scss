@@ -934,6 +934,22 @@
 		}
 	}
 
+	&__previousArtistBudget {
+		.previous-artist-row {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.label {
+			font-size: 16px;
+		}
+
+		.value {
+			font-size: 17px;
+			margin-left: 8px;
+		}
+	}
+
 	&__assignedModal {
 		.assignedModal {
 			&__note {
@@ -976,10 +992,10 @@
 			padding: 20px;
 		}
 
-		.previous-artist-row {
-			display: flex;
-			justify-content: space-between;
-		}
+		// .previous-artist-row {
+		// 	display: flex;
+		// 	justify-content: space-between;
+		// }
 
 		.label {
 			font-size: 16px;

@@ -7,6 +7,7 @@ import OrderArtWorkGroup from './orderArtWorkGroup';
 import OrderCustomerBox from './orderCustomerBox';
 import OrderArtDelivery from './orderArtDelivery';
 import { getOrderWorkLogAction } from './actions';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, hasPoster, artists = [] }) => {
   useEffect(() => {
@@ -99,7 +100,7 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
                     className={`order_detail__tab ${tab === 'activity' && artistId === id && 'active'}`}>
                     {`Activity ${postText}`}
                   </button>
-                  <button
+                  {/* <button
                     key={deliveryKey}
                     type='button'
                     onClick={() => {
@@ -108,16 +109,22 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
                     }}
                     className={`order_detail__tab ${tab === 'delivery' && artistId === id && 'active'}`}>
                     {`Delivery ${postText}`}
-                  </button>
+                  </button> */}
                 </Fragment>
               );
             })}
             {/* <button type='button' onClick={() => setTab('activity')} className={`order_detail__tab ${tab === 'activity' && 'active'}`}>
               Activity
-            </button>
-            <button type='button' onClick={() => setTab('delivery')} className={`order_detail__tab ${tab === 'delivery' && 'active'}`}>
-              Delivery
             </button> */}
+            <button
+              type='button'
+              onClick={() => {
+                setTab('delivery');
+                setArtistId(order?.assignedTo?.id);
+              }}
+              className={`order_detail__tab ${tab === 'delivery' && artistId === order?.assignedTo?.id && 'active'}`}>
+              Delivery
+            </button>
           </div>
         </div>
 
@@ -169,12 +176,22 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
   );
 };
 
-const mapStateToProps = ({ orderTable, orderDetail, auth }) => ({
+const mapStateToProps = ({ orderTable, orderDetail, auth }, ownProps) => ({
   status: orderTable.orders.status,
   loading: orderDetail.ui.loadingWorkLog,
   workLog: orderDetail.data.workLog,
   accountInfo: auth.data.accountInfo,
-  artists: orderDetail.data.order?.artistBudgets?.map?.((item) => item?.artist)?.filter?.((item) => item) || [],
+  artists:
+    orderDetail.data.order?.artistBudgets
+      ?.map?.((item) => item?.artist)
+      ?.sort((a) => (a?.id === ownProps?.order?.assignedTo?.id ? -1 : 1))
+      ?.filter?.((item) => {
+        const permissions = auth?.data?.accountInfo?.permissions || [];
+        if (permissions.includes(PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS)) {
+          return item;
+        }
+        return item?.id === ownProps?.order?.assignedTo?.id;
+      }) || [],
 });
 
 const mapDispatchToProps = {
