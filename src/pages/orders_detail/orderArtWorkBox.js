@@ -7,7 +7,7 @@ import OrderArtWorkGroup from './orderArtWorkGroup';
 import OrderCustomerBox from './orderCustomerBox';
 import OrderArtDelivery from './orderArtDelivery';
 import { getOrderWorkLogAction } from './actions';
-import { mapRoles } from 'configs';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, hasPoster, artists = [] }) => {
   useEffect(() => {
@@ -186,11 +186,11 @@ const mapStateToProps = ({ orderTable, orderDetail, auth }, ownProps) => ({
       ?.map?.((item) => item?.artist)
       ?.sort((a) => (a?.id === ownProps?.order?.assignedTo?.id ? -1 : 1))
       ?.filter?.((item) => {
-        const authorities = auth?.data?.accountInfo?.authorities || [];
-        if (authorities.includes(mapRoles.ROLE_ARTIST)) {
-          return item?.id === ownProps?.order?.assignedTo?.id;
+        const permissions = auth?.data?.accountInfo?.permissions || [];
+        if (permissions.includes(PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS)) {
+          return item;
         }
-        return item;
+        return item?.id === ownProps?.order?.assignedTo?.id;
       }) || [],
 });
 
