@@ -24,14 +24,14 @@ import { WEB_ROUTES } from 'configs';
 
 import { useTranslation } from 'react-i18next';
 
-const UserDetail = ({ style, handleSubmit, ...props }) => {
+const UserDetail = ({ style, handleSubmit, actGetUser, actGetAuthorities, ...props }) => {
   let { login } = useParams();
 
   useEffect(() => {
-    props.actGetUser(login).then(() => {
-      props.actGetAuthorities();
+    actGetUser(login).then(() => {
+      actGetAuthorities();
     });
-  }, []);
+  }, [actGetUser, actGetAuthorities, login]);
 
   const { ui, errorRequest, authorities } = props;
   const { t } = useTranslation();

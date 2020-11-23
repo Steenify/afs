@@ -148,7 +148,7 @@ class OrderTable extends PureComponent {
     if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ORDER_SUBTOTAL)) {
       columnsOrder = remove(columnsOrder, (col) => col.Header !== 'Price');
     }
-    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_ORDER_TO_CS)) {
+    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_MY_ORDER_CS)) {
       columnsOrder = remove(columnsOrder, (col) => col.Header !== 'CS');
     }
 

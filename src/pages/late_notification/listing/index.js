@@ -1,6 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import Layout from 'components/common/Layout';
 import { getLateNotificationAction, updateFilterAction, getLateNotificationTemplateAction } from './action';
 import { WEB_ROUTES } from 'configs';
@@ -10,11 +9,9 @@ import Title from './title';
 import { useTranslation } from 'react-i18next';
 import Table from './table';
 import TemplatePreview from './templatePreviewModal';
-import moment from 'moment';
 import './style.scss';
 
 const Listing = ({ filterData = initialState.filterData, data = initialState.data, getLateNotificationTemplateAction, getLateNotificationAction, updateFilterAction }) => {
-  const history = useHistory();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -24,7 +21,6 @@ const Listing = ({ filterData = initialState.filterData, data = initialState.dat
   useEffect(() => {
     const { page, size, tag, text } = filterData;
     getLateNotificationAction({ page, size, tag, text });
-    const temp = moment(null);
   }, [getLateNotificationAction, filterData]);
 
   return (

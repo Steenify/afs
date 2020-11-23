@@ -37,7 +37,7 @@ const ArtistsConfirmPaymentModal = (props) => {
         },
       });
     }
-  }, [isOpen]);
+  }, [isOpen, selectedArtists]);
 
   const onChangeLoading = (loading) => {
     setData((prev) => ({ ...prev, loading }));

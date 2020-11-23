@@ -19,14 +19,14 @@ import { required } from 'utils/validation';
 
 import { WEB_ROUTES } from 'configs';
 
-const PermissionDetail = ({ style, handleSubmit, ...props }) => {
+const PermissionDetail = ({ style, handleSubmit, actGetPermission, ...props }) => {
   let { id } = useParams();
   const { ui, errorRequest } = props;
   const { t } = useTranslation();
 
   useEffect(() => {
-    props.actGetPermission(id);
-  }, []);
+    actGetPermission(id);
+  }, [id, actGetPermission]);
 
   const onSubmit = (values) => {
     const params = { ...values };

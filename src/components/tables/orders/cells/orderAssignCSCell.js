@@ -18,14 +18,14 @@ const AssignCSCell = ({ cs, accountInfo, id, updateOrderTableItemsAction, update
 
   const onSave = (value) => {
     toggle();
-    // updateOrderTableItemsAction({
-    //   payload: {
-    //     id: id,
-    //     field: 'cs',
-    //     value: value,
-    //   },
-    //   reducer,
-    // });
+    updateOrderTableItemsAction({
+      payload: {
+        id: id,
+        field: 'cs',
+        value: value,
+      },
+      reducer,
+    });
 
     const payload = { id: id, to: value.login };
     const name = value.login !== 'null' ? value.firstName : '_______';
@@ -37,10 +37,9 @@ const AssignCSCell = ({ cs, accountInfo, id, updateOrderTableItemsAction, update
     });
   };
 
-  const canAssignOrder = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING);
-  const canGetArtists = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST);
+  const canAssignOrder = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_ORDER_TO_CS);
 
-  if (!canAssignOrder || !canGetArtists) {
+  if (!canAssignOrder) {
     return (
       <div className='order__assigned'>
         <span className='name'>{isEmpty(cs) || !cs ? '____________' : `${cs?.fullName || ''}` || `${cs?.firstName || ''} ${cs?.lastName || ''}`}</span>

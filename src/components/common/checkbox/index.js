@@ -17,7 +17,7 @@ class RFCheckbox extends PureComponent {
       groupStyle,
       inputStyle,
       // disabled,
-      meta: { touched, error, warning },
+      meta: { touched, error },
       // type,
       labelActive,
       labelUnActive,
@@ -26,20 +26,8 @@ class RFCheckbox extends PureComponent {
       <FormGroup className={`${className || ''}`} style={groupStyle} check>
         <Label check>
           {required && <span style={{ color: '#c50000' }}>* </span>}
-          <Input
-            {...input}
-            onChange={input.onChange}
-            id={id}
-            placeholder={placeholder}
-            style={inputStyle}
-            type='checkbox'
-            checked={input.value}
-          />
-          {labelActive && labelUnActive
-            ? input.value
-              ? labelActive
-              : labelUnActive
-            : label}
+          <Input {...input} onChange={input.onChange} id={id} placeholder={placeholder} style={inputStyle} type='checkbox' checked={input.value} />
+          {labelActive && labelUnActive ? (input.value ? labelActive : labelUnActive) : label}
         </Label>
         {touched && error && (
           <span className='error' style={{ color: 'red' }}>

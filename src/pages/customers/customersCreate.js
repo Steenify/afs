@@ -16,7 +16,7 @@ import { createCustomerAction, getCustomerListAction } from './actions';
 import { required, email } from 'utils/validation';
 
 const CustomerCreate = ({ style, handleSubmit, ...props }) => {
-  const { className, errorRequest, reset, containerClassName } = props;
+  const { className, reset, containerClassName } = props;
   const { t } = useTranslation();
 
   const [modal, setModal] = useState(false);
