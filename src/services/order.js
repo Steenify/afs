@@ -1,7 +1,6 @@
 import { request } from 'utils/request';
 
 const ORDERS_API = '/api/bookings';
-const ORDER_API = '/api/booking';
 
 export const getAllOrdersService = (params) =>
   request({
