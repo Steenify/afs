@@ -1057,6 +1057,71 @@
 		}
 	}
 
+	&__todos {
+		.todo {
+			&__item {
+				display: flex;
+				align-items: flex-start;
+				margin-bottom: 5px;
+
+				&.RESOLVED {
+					.todo {
+						&__icon {
+							cursor: none;
+							color: #9ea0a5;
+
+							.cus-checkbox {
+								border-color: #9ea0a5;
+								cursor: none;
+							}
+							.cus-checkbox .checkmark:after {
+								border-color: #9ea0a5;
+							}
+						}
+						&__text {
+							text-decoration: line-through;
+							color: #9ea0a5;
+						}
+
+						&__edit {
+							display: none;
+						}
+					}
+				}
+			}
+
+			&__icon {
+				width: 30px;
+				min-width: 30px;
+			}
+
+			&__text {
+				width: 100%;
+				flex: 1;
+				color: $black;
+			}
+
+			&__create {
+				margin-bottom: 10px;
+			}
+
+			&__form {
+				display: flex;
+			}
+			&__input {
+				height: 35px;
+				margin-right: 5px;
+			}
+
+			&__edit {
+				width: 30px;
+				height: 30px;
+				background: none;
+				border: none;
+			}
+		}
+	}
+
 	@include max-lg() {
 		&__customer_box {
 			order: -1;

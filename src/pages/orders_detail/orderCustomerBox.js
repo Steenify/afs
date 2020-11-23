@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 
 import CanShow from 'components/layout/canshow';
 import Button from 'components/common/button';
-
 import { PERMITTIONS_CONFIG } from 'configs';
 
 import { formatMoney } from 'utils';
@@ -14,6 +13,7 @@ import { formatMoney } from 'utils';
 import { getOrderCustomerAction, updateShowAddProductAction } from './actions';
 
 import OrderChangeCustomer from './orderChangeCustomer';
+import OrderTodoList from './orderTodoList';
 
 const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, accountInfo, updateShowAddProduct }) => {
   const canViewCustommer = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO) || false;
@@ -43,15 +43,18 @@ const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, acco
     <>
       <CanShow permission={PERMITTIONS_CONFIG.ADD_PRODUCT_INTO_ORDER}>
         <div className={`order_detail__customer box `}>
-          <div className='box__header mb-2'>
+          <div className='box__header mb-0'>
             <div className='box__title'>Add Order Item </div>
             <div className='control'>
-              <Button color='primary' onClick={() => updateShowAddProduct(true)}>
+              <Button color='primary' style={{ minHeight: 'auto', height: 30 }} onClick={() => updateShowAddProduct(true)}>
                 Add Item
               </Button>
             </div>
           </div>
         </div>
+      </CanShow>
+      <CanShow permission={PERMITTIONS_CONFIG.VIEW_ORDER_TODO_LIST}>
+        <OrderTodoList />
       </CanShow>
 
       <div className={`order_detail__customer box `}>
