@@ -6,7 +6,7 @@ import { isEmpty, debounce } from 'lodash';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 import { ReactComponent as BackIcon } from 'assets/img/back.svg';
-import ListArtists from 'components/layout/ListArtistAssign';
+
 import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, getAssignArtistsAction } from './actions';
 import { updateOrderTableAssignArtistAction } from 'components/tables/orders/actions';
 const ChangeArtistModal = ({ order, isOpen, updateShowAssignedBoxAction, getAssignArtistsAction, updateOrderTableAssignArtistAction }) => {
@@ -14,6 +14,7 @@ const ChangeArtistModal = ({ order, isOpen, updateShowAssignedBoxAction, getAssi
   const [artists, setArtists] = useState([]);
   const [searchText, setSearchText] = useState('');
   const assignedTo = order?.assignedTo;
+
   useEffect(() => {
     debouncedGetAssignArtistsAction(searchText);
   }, [searchText]);

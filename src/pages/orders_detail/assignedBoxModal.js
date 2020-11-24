@@ -33,8 +33,6 @@ const AssignedBoxModal = ({ order, isOpen, permissions = [], authorities = [], u
           </button>
         </ModalHeader>
         <ModalBody>
-          {/* <OrderAssignedBox order={order} />
-          <OrderBudget order={order} /> */}
           <div className='assignedModal__assigned mb-3'>
             <button
               className='assignedModal__action'
@@ -66,16 +64,16 @@ const AssignedBoxModal = ({ order, isOpen, permissions = [], authorities = [], u
 
           <div className={`assignedModal__content`}>
             {canAdjustBudget && (
-              <div>
+              <div className='assignedModal__ctas'>
                 <button
-                  className=''
+                  className='assignedModal__cta assignedModal__cta__1'
                   onClick={() => {
                     updateShowAssignedBoxAction(INCREASE_BUDGET);
                   }}>
                   <div className=''>Increase Budget</div>
                 </button>
                 <button
-                  className=''
+                  className='assignedModal__cta assignedModal__cta__2'
                   onClick={() => {
                     updateShowAssignedBoxAction(DECREASE_BUDGET);
                   }}>
@@ -84,31 +82,34 @@ const AssignedBoxModal = ({ order, isOpen, permissions = [], authorities = [], u
               </div>
             )}
             {canViewBudgetHistory && (
-              <button
-                className=''
-                onClick={() => {
-                  updateShowAssignedBoxAction(BUDGET_HISTORY);
-                }}>
-                <div className=''>Budget History</div>
-              </button>
+              <div className='assignedModal__ctas'>
+                <button
+                  className='assignedModal__cta'
+                  onClick={() => {
+                    updateShowAssignedBoxAction(BUDGET_HISTORY);
+                  }}>
+                  <div className=''>Budget History</div>
+                </button>
+              </div>
             )}
           </div>
-        </ModalBody>
-        <ModalFooter>
-          <Button color='primary' onClick={toggle}>
+
+          <Button color='primary' className='assignedModal__done' onClick={toggle}>
             Done
           </Button>
-        </ModalFooter>
-
-        <ModalBody>
-          {previousArtists.map((item) => {
-            return (
-              <div className='previous-artist mb-2'>
-                <PreviousArtistBudget item={item} />
-              </div>
-            );
-          })}
         </ModalBody>
+
+        <ModalFooter>
+          <div className='w-100'>
+            {previousArtists.map((item) => {
+              return (
+                <div key={`order__prev__aritst__modal__${item.id}`} className='previous-artist mb-2'>
+                  <PreviousArtistBudget item={item} />
+                </div>
+              );
+            })}
+          </div>
+        </ModalFooter>
       </div>
     </Modal>
   );
