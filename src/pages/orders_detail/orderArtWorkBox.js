@@ -36,8 +36,6 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
     );
   }
 
-  console.log('🚀 ~ file: orderArtWorkBox.js ~ line 40 ~ OrderArtWorkBox ~ currentWorkLog', currentWorkLog);
-
   const isNewOrder = currentWorkLog.length === 2;
   const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
   const worklogGroup = groupBy(currentWorkLog, 'status');

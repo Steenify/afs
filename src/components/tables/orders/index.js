@@ -13,6 +13,7 @@ import { remove, get } from 'lodash';
 import OrderBulkAction from 'components/tables/orders/orderBulkAction';
 import OrderPaging from 'components/tables/orders/orderPaging';
 import OrderFilter from 'components/tables/orders/orderFilters';
+import OrderUpdateBudgetModal from 'components/tables/orders/orderUpdateBudgetModal';
 
 import orderBudgetCell from 'components/tables/orders/cells/orderBugetCell';
 import AssignArtistCell from 'components/tables/orders/cells/orderAssignArtistCell';
@@ -171,6 +172,7 @@ class OrderTable extends PureComponent {
           </div>
         </div>
         <OrderPaging reducer={reducer} />
+        <OrderUpdateBudgetModal reducer={reducer} />
       </>
     );
   }

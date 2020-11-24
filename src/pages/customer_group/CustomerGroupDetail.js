@@ -74,7 +74,7 @@ const CustomerGroupDetail = ({ style, handleSubmit, actGetCustomerGroup, ...prop
   };
 
   return (
-    <Layout documentTitle={t(WEB_ROUTES.CUSTOMER_GROUP_DETAIL.title)} container fluid>
+    <Layout documentTitle={WEB_ROUTES.CUSTOMER_GROUP_DETAIL.title} container fluid>
       <Breadcrumb
         data={[
           {

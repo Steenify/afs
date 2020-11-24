@@ -9,6 +9,7 @@ import {
   ORDER_TABLE_GET_STATUS_ACTION,
   ORDER_TABLE_GET_COUNT_BY_STATUS_ACTION,
   GET_TAGS,
+  ORDER_TABLE_UPDATE_SELECTED_ORDER_BUDGET_ACTION,
 } from './actions';
 
 const templateState = {
@@ -36,6 +37,10 @@ const templateState = {
   status: [],
   tags: [],
   orderStatusCount: {},
+  ui: {
+    selectedOrder: {},
+    isOpenEditBudget: false,
+  },
 };
 
 const initialState = {
@@ -125,6 +130,14 @@ const templateReducer = (state = templateState, action) => {
               return res;
             },
           },
+        },
+      });
+    }
+
+    case ORDER_TABLE_UPDATE_SELECTED_ORDER_BUDGET_ACTION: {
+      return update(state, {
+        ui: {
+          $merge: payload,
         },
       });
     }
