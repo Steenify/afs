@@ -14,7 +14,7 @@ import { updateCustmerEditTagAction, updateCustmerItemTagAction, updateCustomerT
 const CustomerTagsModal = (props) => {
   const [newTag, setNewTag] = useState('');
 
-  const { className, showEditTag, updateCustmerEditTag, customer, updateCustmerItemTag, updateCustomerTagsAPI } = props;
+  const { className, showEditTag, updateCustmerEditTag, customer, updateCustmerItemTag, updateCustomerTagsAPI, isDetail } = props;
   const tags = customer?.tags || [];
 
   const handleChangeTag = (e) => {
@@ -54,16 +54,17 @@ const CustomerTagsModal = (props) => {
     updateCustmerItemTag({
       id: customer.id,
       tags: newTags,
+      isDetail,
     });
   };
 
   const handleRemoveTag = (t) => {
     const tagFiltered = tags.filter((tag) => tag.id !== t.id);
-
     setNewTag('');
     updateCustmerItemTag({
       id: customer.id,
       tags: tagFiltered,
+      isDetail,
     });
   };
 
@@ -123,12 +124,20 @@ const CustomerTagsModal = (props) => {
   );
 };
 
-const mapStateToProps = ({ customers }) => {
+const mapStateToProps = ({ customers, customerDetail }) => {
   const { showEditTag, userEditTag } = customers.ui;
   const { items } = customers.list;
+  let customer = {};
+  const isDetail = showEditTag && userEditTag === -1;
+  if (isDetail) {
+    customer = { ...customerDetail.data.customer, tags: customerDetail.data.customer.customerExtension?.tags || [] };
+  } else if (showEditTag) {
+    customer = items[userEditTag] || {};
+  }
   return {
-    showEditTag,
-    customer: items[userEditTag] || {},
+    showEditTag: showEditTag,
+    customer,
+    isDetail,
   };
 };
 

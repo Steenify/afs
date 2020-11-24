@@ -45,6 +45,7 @@ import GalleryListing from 'pages/gallery/gallery_listing';
 import GalleryDetail from 'pages/gallery/gallery_detail';
 import LateNotificationList from 'pages/late_notification/listing';
 import NotificationSettings from 'pages/notification_settings';
+import CustomersCare from 'pages/customers_care';
 
 import head from 'utils/head';
 
@@ -121,6 +122,7 @@ const App = ({ getOrderTableCountByStatusAction, renewTokenAction, actGetAccount
           <Route exact path={WEB_ROUTES.GALLERY_LISTING.path} component={GalleryListing} isPrivate={true} role={WEB_ROUTES.GALLERY_LISTING.permission} />
           <Route exact path={WEB_ROUTES.LATE_NOTIFICATION.path} component={LateNotificationList} isPrivate={true} role={WEB_ROUTES.LATE_NOTIFICATION.permission} />
           <Route exact path={WEB_ROUTES.NOTIFICATION_SETTINGS.path} component={NotificationSettings} isPrivate={true} role={WEB_ROUTES.NOTIFICATION_SETTINGS.permission} />
+          <Route exact path={WEB_ROUTES.CUSTOMERS_CARE.path} component={CustomersCare} isPrivate={true} role={WEB_ROUTES.CUSTOMERS_CARE.permission} />
           <Route exact path={WEB_ROUTES.GALLERY_DETAIL.path} component={GalleryDetail} isPrivate={true} role={WEB_ROUTES.GALLERY_DETAIL.permission} className='gallery__page' />
           {isTokenRenewed && <></>}
           <PublicRoute exact path={WEB_ROUTES.POLICY.path}>

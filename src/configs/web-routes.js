@@ -155,8 +155,13 @@ const WEB_ROUTES = {
   },
   NOTIFICATION_SETTINGS: {
     path: '/notification-settings',
-    title: 'Notification Settings', // 'baseApp.sidebar.galleryListing',
+    title: 'Notification Settings',
     // permission: 'VIEW_LATE_NOTIFICATION_LIST',
+  },
+  CUSTOMERS_CARE: {
+    path: '/customers-care',
+    title: 'Customers Care',
+    permission: 'VIEW_CUSTOMERS_CARE',
   },
 };
 

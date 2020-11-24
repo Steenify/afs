@@ -5,12 +5,20 @@ import Button from 'components/common/button';
 import P from 'components/common/parapraph';
 
 import { formatMoney, dateStringFromDate } from 'utils';
+import CustomerTagsModal from 'pages/customers/customerTagsModal';
+import { updateCustmerEditTagAction } from 'pages/customers/actions';
 
 const CustomerDetailInfoDisplay = (props) => {
-  const { customer, setUpdating } = props;
+  const { customer, setUpdating, updateCustmerEditTagAction } = props;
   const handleEdit = () => {
     setUpdating(true);
   };
+
+  const handleEditTags = () => {
+    updateCustmerEditTagAction({ showEditTag: true, userEditTag: -1 });
+  };
+
+  const handleEditAnniversary = () => {};
 
   const tags = customer?.customerExtension?.tags || [];
 
@@ -42,6 +50,11 @@ const CustomerDetailInfoDisplay = (props) => {
 
         <div className='box__sub_title mb-2'>
           <span className=''>Customer Tags:</span>
+          <div className='float-right text-right'>
+            <Button onClick={handleEditTags} color='primary' className='btn-create mb-2'>
+              Edit
+            </Button>
+          </div>
         </div>
         <div className='mb-3'>
           <div className='customer_detail__tags tags'>
@@ -181,12 +194,13 @@ const CustomerDetailInfoDisplay = (props) => {
           </div>
         </div>
       </div>
+      <CustomerTagsModal />
     </div>
   );
 };
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { updateCustmerEditTagAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetailInfoDisplay);

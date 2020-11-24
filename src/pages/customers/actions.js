@@ -189,7 +189,7 @@ export const getAnniversaryTypesAction = () => (dispatch) => {
     onSuccess: (data) => {
       dispatch({
         type: GET_ANNIVERSARY_TYPES_ACTION.SUCCESS,
-        payload: data,
+        payload: data?.map((item) => ({ label: item, value: item })),
       });
     },
     onError: (error) => {

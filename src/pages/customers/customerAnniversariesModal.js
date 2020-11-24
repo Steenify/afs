@@ -11,7 +11,7 @@ import { getUUID, dateStringFromDate } from 'utils';
 import moment from 'moment';
 
 import { updateCustomerEditAnniversariesAction, updateCustomerItemAnniversariesAction, updateCustomerAnniversariesAPIAction, getAnniversaryTypesAction } from './actions';
-import Select from 'react-select';
+import Select from 'react-select/creatable';
 import { SingleDatePicker } from 'react-dates';
 
 const returnYears = () => {
@@ -21,7 +21,6 @@ const returnYears = () => {
   }
   return years;
 };
-const options = ['Birthday', 'First graduation', "Woman's day"].map((label, value) => ({ value, label }));
 const SelectStyles = {
   control: (base) => ({
     ...base,
@@ -29,11 +28,6 @@ const SelectStyles = {
     borderBottomRightRadius: '0px',
   }),
 };
-
-const mockAnni = [
-  { id: 1, name: 'Birthday', date: moment().add(-20, 'y'), note: 'Send flower' },
-  { id: 2, name: 'First graduation', date: moment().add(-3, 'y').add(3, 'm'), note: 'None note entered' },
-];
 
 const CustomerTagsModal = (props) => {
   const [anniType, setAnniType] = useState(null);
@@ -49,12 +43,17 @@ const CustomerTagsModal = (props) => {
     updateCustomerItemAnniversariesAction,
     updateCustomerAnniversariesAPIAction,
     getAnniversaryTypesAction,
+    anniversaryTypes,
   } = props;
   const anniversaries = customer?.anniversaries || [];
 
   useEffect(() => {
-    // getAnniversaryTypesAction();
-  }, [getAnniversaryTypesAction]);
+    if (showEditAnniversaries) {
+      getAnniversaryTypesAction();
+    } else {
+      resetState();
+    }
+  }, [getAnniversaryTypesAction, showEditAnniversaries]);
 
   const resetState = () => {
     setAnniType(null);
@@ -89,7 +88,6 @@ const CustomerTagsModal = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!anniType?.label) {
       toast.dark('Please select anniversary type!');
       return;
@@ -176,11 +174,11 @@ const CustomerTagsModal = (props) => {
         <form onSubmit={handleSubmit} className='tags__form'>
           <div className='input-group mb-2'>
             <div style={{ flex: 1 }}>
-              <Select options={options} styles={SelectStyles} value={anniType} onChange={setAnniType} />
+              <Select options={anniversaryTypes} styles={SelectStyles} value={anniType} onChange={setAnniType} />
             </div>
             <div className='input-group-append'>
               <button className='btn btn-outline-secondary tags__create' type='submit'>
-                create
+                Add
               </button>
             </div>
           </div>
@@ -213,10 +211,11 @@ const CustomerTagsModal = (props) => {
 
 const mapStateToProps = ({ customers }) => {
   const { showEditAnniversaries, userEditAnniversaries } = customers.ui;
-  const { items } = customers.list;
+  const { items, anniversaryTypes } = customers.list;
   return {
     showEditAnniversaries,
     customer: items[userEditAnniversaries] || {},
+    anniversaryTypes,
   };
 };
 

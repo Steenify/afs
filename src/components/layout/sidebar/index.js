@@ -74,6 +74,11 @@ const SideBar = (props) => {
           title: t(WEB_ROUTES.CUSTOMER_LIST.title),
           icon: <CustomerIcon />,
         },
+        {
+          ...WEB_ROUTES.CUSTOMERS_CARE,
+          title: t(WEB_ROUTES.CUSTOMERS_CARE.title),
+          icon: <CustomerIcon />,
+        },
         // {
         //   ...WEB_ROUTES.LATE_NOTIFICATION,
         //   icon: <LateNotification />,

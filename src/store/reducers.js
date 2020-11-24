@@ -18,6 +18,7 @@ import payouts from 'pages/payouts/reducer';
 import gallery from 'pages/gallery/reducer';
 import lateNotification from 'pages/late_notification/reducer';
 import notificationSettings from 'pages/notification_settings/reducer';
+import customersCare from 'pages/customers_care/reducer';
 
 import { GLOBAL_ACTIONS, AUTHENTICATE_TOKEN } from './actions';
 
@@ -95,6 +96,7 @@ export default combineReducers({
   role,
   customers,
   customerDetail,
+  customersCare,
   notification,
   systemProperty,
   orderTable,

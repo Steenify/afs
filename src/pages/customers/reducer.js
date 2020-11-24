@@ -148,6 +148,9 @@ const reducer = (state = initialState, action) => {
       });
     }
     case UPDATE_CUSTOMER_ITEM_TAG_ACTION: {
+      if (payload?.isDetail) {
+        return state;
+      }
       return update(state, {
         list: {
           items: {
@@ -184,7 +187,7 @@ const reducer = (state = initialState, action) => {
     case GET_ANNIVERSARY_TYPES_ACTION.SUCCESS: {
       return update(state, {
         list: {
-          anniversaryTypes: { $set: payload?.data || [] },
+          anniversaryTypes: { $set: payload || [] },
         },
       });
     }

@@ -1,7 +1,7 @@
 import update from 'react-addons-update';
 
 import { GET_CUSTOMER_DETAIL_ACTION, GET_CUSTOMER_ORDERS_ACTION, RESET_CUSTOMER_DETAIL_ACTION, UPDATE_CUSTOMER_DETAIL_ACTION } from './actions';
-
+import { UPDATE_CUSTOMER_ITEM_TAG_ACTION } from 'pages/customers/actions';
 const initialState = {
   ui: {
     loading: false,
@@ -71,6 +71,22 @@ const reducer = (state = initialState, action) => {
       return update(state, {
         ui: { loading: { $set: false } },
         data: { customer: { $merge: payload } },
+      });
+    }
+    case UPDATE_CUSTOMER_ITEM_TAG_ACTION: {
+      if (!payload?.isDetail) {
+        return state;
+      }
+      return update(state, {
+        data: {
+          customer: {
+            customerExtension: {
+              tags: {
+                $set: payload.tags,
+              },
+            },
+          },
+        },
       });
     }
     default:
