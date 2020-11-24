@@ -137,7 +137,6 @@ const WEB_ROUTES = {
     title: 'Transaction details',
     permission: 'VIEW_PAYOUT_DETAIL',
   },
-
   GALLERY_LISTING: {
     path: '/gallery',
     title: 'Background Gallery', // 'baseApp.sidebar.galleryListing',
@@ -157,6 +156,16 @@ const WEB_ROUTES = {
     path: '/notification-settings',
     title: 'Notification Settings', // 'baseApp.sidebar.galleryListing',
     // permission: 'VIEW_LATE_NOTIFICATION_LIST',
+  },
+  WORKFLOWS: {
+    path: '/workflows',
+    title: 'Workflows',
+    permission: 'GET_FLOW',
+  },
+  WORKFLOW_DETAIL: {
+    path: '/workflows/:id',
+    title: 'Workflow Detail',
+    permission: 'GET_FLOW',
   },
 };
 

@@ -23,7 +23,6 @@ const templateState = {
     alert: '',
     hasPoster: false,
     cs: '',
-    artistUpdate: false,
   },
   table: {
     orders: [],

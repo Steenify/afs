@@ -1,6 +1,7 @@
 import { request } from 'utils/request';
 
 const ORDERS_API = '/api/bookings';
+const ORDERS_API_V2 = '/api/v2/bookings';
 
 export const getAllOrdersService = (params) =>
   request({
@@ -76,7 +77,7 @@ export const setOrderCustomerService = (data, id) =>
 
 export const getOrderWorkLogService = ({ id }) =>
   request({
-    url: `${ORDERS_API}/${id}/work-logs`,
+    url: `${ORDERS_API_V2}/${id}/work-logs`,
     method: 'GET',
   });
 
@@ -193,7 +194,7 @@ export const updateOrderArtistPaymentBulkService = (status, data) =>
 
 export const getOrderCountByStatusService = () =>
   request({
-    url: `${ORDERS_API}/count-by-status`,
+    url: `${ORDERS_API_V2}/count-by-status`,
     method: 'GET',
   });
 
@@ -252,4 +253,30 @@ export const addOrderItemService = (orderId, data) =>
     url: `${ORDERS_API}/${orderId}/items`,
     method: 'POST',
     data,
+  });
+
+export const getOrderTodoList = (orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list`,
+    method: 'GET',
+  });
+
+export const createOrderTodoList = (orderId, data) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list`,
+    method: 'POST',
+    data,
+  });
+
+export const updateOrderTodoList = (orderId, todoId, data) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list/${todoId}`,
+    method: 'PUT',
+    data,
+  });
+
+export const resolvedOrderTodoList = (orderId, todoId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list/${todoId}/resolve`,
+    method: 'PUT',
   });

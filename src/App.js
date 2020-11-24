@@ -46,6 +46,9 @@ import GalleryDetail from 'pages/gallery/gallery_detail';
 import LateNotificationList from 'pages/late_notification/listing';
 import NotificationSettings from 'pages/notification_settings';
 
+import Workflows from 'pages/workflows';
+import WorkflowDetail from 'pages/workflow_detail';
+
 import head from 'utils/head';
 
 import { WEB_ROUTES, mapRoles } from 'configs';
@@ -106,6 +109,9 @@ const App = ({ getOrderTableCountByStatusAction, renewTokenAction, actGetAccount
           component={Home}
           isPrivate={true}
         /> */}
+
+          <Route exact path={WEB_ROUTES.WORKFLOWS.path} component={Workflows} />
+          <Route exact path={WEB_ROUTES.WORKFLOW_DETAIL.path} component={WorkflowDetail} />
 
           <Route exact path={WEB_ROUTES.ORDERS_DETAIL.path} component={OrderDetail} />
           <Route exact path={WEB_ROUTES.SETTINGS.path} component={Settings} isPrivate={true} role={WEB_ROUTES.SETTINGS.permission} />

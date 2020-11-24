@@ -32,6 +32,14 @@
 			color: $text_color;
 		}
 
+		&-small {
+			min-height: 30px;
+			border-radius: 3px;
+			font-weight: 500;
+			font-size: 15px;
+			line-height: 18px;
+		}
+
 		&-create {
 			min-height: 30px;
 			background: #337fd7;

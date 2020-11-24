@@ -21,7 +21,7 @@ class RFInput extends PureComponent {
       type,
     } = this.props;
     return (
-      <FormGroup className={`${className || ''} form-group--input`} style={groupStyle}>
+      <FormGroup className={`${className || ''} form-group--input form-group--${type}`} style={groupStyle}>
         {label && (
           <Label>
             {required && <span style={{ color: '#c50000' }}>* </span>}
