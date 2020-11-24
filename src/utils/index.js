@@ -8,6 +8,7 @@ import * as Sentry from '@sentry/react';
 import PSDFile from 'assets/img/psd__icon.jpg';
 import { ReactComponent as Close } from 'assets/img/close.svg';
 import { confirmAlert } from 'react-confirm-alert';
+import { ORDER_STATUS } from 'configs';
 
 export const storeData = (key, value) => {
   try {
@@ -233,7 +234,7 @@ export const countTotalOrders = (orderStatus) => {
   return reduce(
     orderStatus,
     (res, value, key) => {
-      const validStatus = ['COLOR_EDIT', 'SKETCH_EDIT', 'NEW_ORDER', 'SKETCH', 'EXPORT_FILE', 'COLOR', 'COLOR_REVIEW', 'SEND_FILE'];
+      const validStatus = [ORDER_STATUS.NEW, ORDER_STATUS.IN_PROGRESS, ORDER_STATUS.PARTIAL_FULLFILLED];
       if (validStatus.includes(key)) {
         return (res += value);
       }

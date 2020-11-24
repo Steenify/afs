@@ -5,7 +5,7 @@ import { get } from 'lodash';
 
 import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 
-import { updateOrderTableFilterAction, getOrderTableCountByStatusAction } from './actions';
+import { updateOrderTableFilterAction } from './actions';
 
 const OrderFilterAssignee = ({ updateOrderTableFilterAction, reducer, tagItems, tags, orderStatusCount }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -73,7 +73,6 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
 
 const mapDispatchToProps = {
   updateOrderTableFilterAction,
-  getOrderTableCountByStatusAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderFilterAssignee);

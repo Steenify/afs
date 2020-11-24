@@ -44,9 +44,9 @@ const SettingsPage = (props) => {
     // },
 
     {
-      ...WEB_ROUTES.GALLERY_LISTING,
+      ...WEB_ROUTES.WORKFLOWS,
       icon: <Package />,
-      des: 'Gallery',
+      des: 'Workflow',
     },
     {
       ...WEB_ROUTES.LATE_NOTIFICATION,

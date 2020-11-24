@@ -10,7 +10,7 @@ import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 import { updateOrderTableFilterAction, getOrderTableCountByStatusAction } from './actions';
 import { countTotalOrders } from 'utils';
 
-const OrderFilterAssignee = ({ status, selectedStatus, orderStatusCount, accountInfo, updateOrderTableFilterAction, getOrderTableCountByStatusAction, reducer }) => {
+const OrderFilterStatus = ({ status, selectedStatus, orderStatusCount, accountInfo, updateOrderTableFilterAction, getOrderTableCountByStatusAction, reducer }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
@@ -85,4 +85,4 @@ const mapDispatchToProps = {
   getOrderTableCountByStatusAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderFilterAssignee);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderFilterStatus);

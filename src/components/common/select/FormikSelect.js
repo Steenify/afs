@@ -47,12 +47,12 @@ export const CustomStyles = {
   }),
 };
 
-export class SelectInput extends Component {
+class FormikSelect extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: props.input?.value || null,
+      value: props.field?.value || null,
     };
 
     this.singleChange = this.singleChange.bind(this);
@@ -60,37 +60,38 @@ export class SelectInput extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ value: nextProps.input.value });
+    this.setState({ value: nextProps.field.value });
   }
 
   singleChange(event) {
-    const { input } = this.props;
-    if (input.onChange && event != null) {
+    const { field } = this.props;
+    if (field.onChange && event != null) {
       this.setState({ value: event.value });
-      input.onChange(event.value);
+      field.onChange(event.value);
     } else {
-      input.onChange(null);
+      field.onChange('');
     }
   }
 
   multiChange(values) {
-    const { input } = this.props;
+    const { field } = this.props;
     const value = values && values.length ? values.map((item) => item.value) : '';
 
     if (value) {
       this.setState({ value });
-      input.onChange(value);
+      field.onChange(value);
     } else {
-      input.onChange(null);
+      field.onChange([]);
     }
   }
 
   render() {
-    const { input, options, label, multi, className, meta = {} } = this.props;
+    const { field, options, label, multi, className, meta = {} } = this.props;
 
     const { touched, error } = meta;
 
     const { value } = this.state;
+    console.log('🚀 ~ file: FormikSelect.js ~ line 94 ~ FormikSelect ~ render ~ value', field.value);
     let selected;
 
     if (multi) {
@@ -106,7 +107,7 @@ export class SelectInput extends Component {
         });
       }
     } else {
-      selected = options ? options.filter((option) => option.value === input.value)[0] : '';
+      selected = options ? options.filter((option) => option.value === field.value)[0] : '';
     }
 
     return (
@@ -137,3 +138,5 @@ export class SelectInput extends Component {
     );
   }
 }
+
+export default FormikSelect;
