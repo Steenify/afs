@@ -1,7 +1,7 @@
 import update from 'react-addons-update';
 
 import { GET_CUSTOMER_DETAIL_ACTION, GET_CUSTOMER_ORDERS_ACTION, RESET_CUSTOMER_DETAIL_ACTION, UPDATE_CUSTOMER_DETAIL_ACTION } from './actions';
-import { UPDATE_CUSTOMER_ITEM_TAG_ACTION } from 'pages/customers/actions';
+import { UPDATE_CUSTOMER_ITEM_TAG_ACTION, UPDATE_CUSTOMER_ITEM_ANNIVERSARIES_ACTION } from 'pages/customers/actions';
 const initialState = {
   ui: {
     loading: false,
@@ -83,6 +83,22 @@ const reducer = (state = initialState, action) => {
             customerExtension: {
               tags: {
                 $set: payload.tags,
+              },
+            },
+          },
+        },
+      });
+    }
+    case UPDATE_CUSTOMER_ITEM_ANNIVERSARIES_ACTION: {
+      if (!payload?.isDetail) {
+        return state;
+      }
+      return update(state, {
+        data: {
+          customer: {
+            customerExtension: {
+              anniversaries: {
+                $set: payload.anniversaries,
               },
             },
           },

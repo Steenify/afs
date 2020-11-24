@@ -165,6 +165,9 @@ const reducer = (state = initialState, action) => {
     }
 
     case UPDATE_CUSTOMER_ITEM_ANNIVERSARIES_ACTION: {
+      if (payload?.isDetail) {
+        return state;
+      }
       return update(state, {
         list: {
           items: {

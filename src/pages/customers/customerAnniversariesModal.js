@@ -44,6 +44,7 @@ const CustomerTagsModal = (props) => {
     updateCustomerAnniversariesAPIAction,
     getAnniversaryTypesAction,
     anniversaryTypes,
+    isDetail,
   } = props;
   const anniversaries = customer?.anniversaries || [];
 
@@ -112,6 +113,7 @@ const CustomerTagsModal = (props) => {
     updateCustomerItemAnniversariesAction({
       id: customer.id,
       anniversaries: newAnniversary,
+      isDetail,
     });
     resetState();
   };
@@ -122,6 +124,7 @@ const CustomerTagsModal = (props) => {
     updateCustomerItemAnniversariesAction({
       id: customer.id,
       anniversaries: tagFiltered,
+      isDetail,
     });
   };
 
@@ -209,13 +212,21 @@ const CustomerTagsModal = (props) => {
   );
 };
 
-const mapStateToProps = ({ customers }) => {
+const mapStateToProps = ({ customers, customerDetail }) => {
   const { showEditAnniversaries, userEditAnniversaries } = customers.ui;
   const { items, anniversaryTypes } = customers.list;
+  const isDetail = showEditAnniversaries && userEditAnniversaries === -1;
+  let customer = {};
+  if (isDetail) {
+    customer = { ...customerDetail.data.customer, anniversaries: customerDetail.data.customer.customerExtension?.anniversaries || [] };
+  } else if (showEditAnniversaries) {
+    customer = items[userEditAnniversaries] || {};
+  }
   return {
     showEditAnniversaries,
-    customer: items[userEditAnniversaries] || {},
+    customer,
     anniversaryTypes,
+    isDetail,
   };
 };
 
