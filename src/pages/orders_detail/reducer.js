@@ -29,6 +29,10 @@ import {
   SENT_MESSAGE_REMIND_ACTION,
   CANCELED_WORK_LOG_ACTION,
   ADD_ORDER_ITEM_ACTION,
+  GET_ORDER_TODO_LIST_ACTION,
+  CREATE_ORDER_TODO_LIST_ACTION,
+  EDIT_ORDER_TODO_LIST_ACTION,
+  RESOLVED_ORDER_TODO_LIST_ACTION,
 } from './actions';
 
 import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
@@ -42,6 +46,7 @@ const initialState = {
     isShowEmail: false,
     isShowAddProduct: false,
     loadingEmail: false,
+    loadingTodo: true,
     remind: {
       isShowEmail: false,
       loadingEmail: false,
@@ -70,6 +75,7 @@ const initialState = {
       email: '',
       emailTitle: '',
     },
+    todos: [],
   },
 };
 
@@ -783,6 +789,51 @@ const reducer = (state = initialState, action) => {
                   $splice: [[payload.fileIndex, 1]],
                 },
               },
+            },
+          },
+        },
+      });
+    }
+    case GET_ORDER_TODO_LIST_ACTION.SUCCESS: {
+      return update(state, {
+        ui: {
+          loadingTodo: {
+            $set: false,
+          },
+        },
+        data: {
+          todos: {
+            $set: payload,
+          },
+        },
+      });
+    }
+    case CREATE_ORDER_TODO_LIST_ACTION.SUCCESS: {
+      return update(state, {
+        data: {
+          todos: {
+            $push: [payload],
+          },
+        },
+      });
+    }
+    case EDIT_ORDER_TODO_LIST_ACTION.SUCCESS: {
+      return update(state, {
+        data: {
+          todos: {
+            [payload.index]: {
+              $set: payload.data,
+            },
+          },
+        },
+      });
+    }
+    case RESOLVED_ORDER_TODO_LIST_ACTION.SUCCESS: {
+      return update(state, {
+        data: {
+          todos: {
+            [payload.index]: {
+              $set: payload.data,
             },
           },
         },

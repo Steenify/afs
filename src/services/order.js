@@ -1,7 +1,6 @@
 import { request } from 'utils/request';
 
 const ORDERS_API = '/api/bookings';
-const ORDER_API = '/api/booking';
 
 export const getAllOrdersService = (params) =>
   request({
@@ -255,6 +254,31 @@ export const addOrderItemService = (orderId, data) =>
     data,
   });
 
+export const getOrderTodoList = (orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list`,
+    method: 'GET',
+  });
+
+export const createOrderTodoList = (orderId, data) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list`,
+    method: 'POST',
+    data,
+  });
+
+export const updateOrderTodoList = (orderId, todoId, data) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list/${todoId}`,
+    method: 'PUT',
+    data,
+  });
+
+export const resolvedOrderTodoList = (orderId, todoId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list/${todoId}/resolve`,
+    method: 'PUT',
+  });
 export const getBudgetsHistoryService = (orderId) =>
   request({
     url: `${ORDERS_API}/${orderId}/budget/log`,
