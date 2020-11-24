@@ -254,3 +254,29 @@ export const addOrderItemService = (orderId, data) =>
     method: 'POST',
     data,
   });
+
+export const getOrderTodoList = (orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list`,
+    method: 'GET',
+  });
+
+export const createOrderTodoList = (orderId, data) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list`,
+    method: 'POST',
+    data,
+  });
+
+export const updateOrderTodoList = (orderId, todoId, data) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list/${todoId}`,
+    method: 'PUT',
+    data,
+  });
+
+export const resolvedOrderTodoList = (orderId, todoId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list/${todoId}/resolve`,
+    method: 'PUT',
+  });

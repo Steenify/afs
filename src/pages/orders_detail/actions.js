@@ -32,6 +32,10 @@ import {
   sendMessageRemindService,
   setOrderCustomerService,
   addOrderItemService,
+  getOrderTodoList,
+  createOrderTodoList,
+  updateOrderTodoList,
+  resolvedOrderTodoList,
 } from 'services/order';
 
 export const ORDER_DETAIL_ACTIONS = {
@@ -1128,6 +1132,130 @@ export const addOrderItemAction = (orderId, data, cb) => (dispatch) => {
 
   actionTryCatchCreator({
     service: addOrderItemService(orderId, data),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const GET_ORDER_TODO_LIST_ACTION = actionCreator('GET_ORDER_TODO_LIST_ACTION');
+export const getOrderTodoListAction = (orderId) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: GET_ORDER_TODO_LIST_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: GET_ORDER_TODO_LIST_ACTION.SUCCESS,
+      payload: data,
+    });
+  };
+  const onError = (error) => {
+    dispatch({
+      type: GET_ORDER_TODO_LIST_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: getOrderTodoList(orderId),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const CREATE_ORDER_TODO_LIST_ACTION = actionCreator('CREATE_ORDER_TODO_LIST_ACTION');
+export const createOrderTodoListAction = (orderId, payload, cb) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: CREATE_ORDER_TODO_LIST_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: CREATE_ORDER_TODO_LIST_ACTION.SUCCESS,
+      payload: data,
+    });
+    cb && cb();
+  };
+  const onError = (error) => {
+    console.log('createOrderTodoListAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: CREATE_ORDER_TODO_LIST_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: createOrderTodoList(orderId, payload),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const EDIT_ORDER_TODO_LIST_ACTION = actionCreator('EDIT_ORDER_TODO_LIST_ACTION');
+export const editOrderTodoListAction = (orderId, todoId, payload, index, cb) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: EDIT_ORDER_TODO_LIST_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: EDIT_ORDER_TODO_LIST_ACTION.SUCCESS,
+      payload: {
+        data,
+        index,
+      },
+    });
+    cb && cb();
+  };
+  const onError = (error) => {
+    console.log('editOrderTodoListAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: EDIT_ORDER_TODO_LIST_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: updateOrderTodoList(orderId, todoId, payload),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const RESOLVED_ORDER_TODO_LIST_ACTION = actionCreator('RESOLVED_ORDER_TODO_LIST_ACTION');
+export const resolvedOrderTodoListAction = (orderId, todoId, index, cb) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: RESOLVED_ORDER_TODO_LIST_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: RESOLVED_ORDER_TODO_LIST_ACTION.SUCCESS,
+      payload: {
+        data,
+        index,
+      },
+    });
+    cb && cb();
+  };
+  const onError = (error) => {
+    console.log('resolvedOrderTodoList => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: RESOLVED_ORDER_TODO_LIST_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: resolvedOrderTodoList(orderId, todoId),
     onPending,
     onSuccess,
     onError,
