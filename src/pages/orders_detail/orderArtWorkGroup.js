@@ -42,6 +42,7 @@ const OrderArtWorkGroup = ({
   workLog,
   lastWorkLog,
   hasPoster,
+  isCurrentArtist,
 }) => {
   let isOpened = false;
 
@@ -206,7 +207,7 @@ const OrderArtWorkGroup = ({
       <Collapse isOpen={isOpen}>
         <div className={`group__body ${isNewOrder && 'isNewOrder'}`}>
           {works.map((work) => {
-            const showActionState = lastWorkLog.id === work.id;
+            const showActionState = lastWorkLog.id === work.id && isCurrentArtist;
             const showActionPermitions = canNotifyCustomer || canAprroved || canRejected;
 
             const isNewStatus = work.status === 'NEW_ORDER';
@@ -223,7 +224,7 @@ const OrderArtWorkGroup = ({
             }
 
             if (isNewStatus) {
-              if (isNewOrder) {
+              if (isNewOrder && isCurrentArtist) {
                 return (
                   <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                     {canChangeStatus && (
