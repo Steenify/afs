@@ -56,6 +56,7 @@
 				flex: 1;
 				.search__box {
 					height: 38px;
+					border-radius: 0;
 				}
 			}
 
@@ -72,6 +73,9 @@
 				align-items: center;
 				height: 38px;
 				color: #141414;
+				&.middle {
+					border-radius: 0;
+				}
 			}
 
 			&__assignee {

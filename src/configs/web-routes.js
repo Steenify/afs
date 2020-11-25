@@ -167,6 +167,11 @@ const WEB_ROUTES = {
     title: 'Workflow Detail',
     permission: 'GET_FLOW',
   },
+  PRODUCTS: {
+    path: '/products',
+    title: 'Products',
+    permission: 'GET_PRODUCT',
+  },
 };
 
 export default WEB_ROUTES;

@@ -79,6 +79,13 @@ export const WORKFLOW_TRANSITION_ACTION_TYPE = {
   RESOLVE: 'RESOLVE',
 };
 
+export const ORDER_STATUS_FRIENDLY = {
+  NEW: { name: 'NEW', friendlyName: 'New' },
+  IN_PROGRESS: { name: 'IN_PROGRESS', friendlyName: 'In Progress' },
+  PARTIAL_FULLFILLED: { name: 'PARTIAL_FULLFILLED', friendlyName: 'Partial Fulfilled' },
+  FULLFILLED: { name: 'FULLFILLED', friendlyName: 'Fulfilled' },
+};
+
 export const ORDER_STATUS = {
   NEW: 'NEW',
   IN_PROGRESS: 'IN_PROGRESS',

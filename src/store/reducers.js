@@ -20,6 +20,7 @@ import lateNotification from 'pages/late_notification/reducer';
 import notificationSettings from 'pages/notification_settings/reducer';
 import workflows from 'pages/workflows/reducer';
 import workflowDetail from 'pages/workflow_detail/reducer';
+import products from 'pages/products/reducer';
 
 import { GLOBAL_ACTIONS, AUTHENTICATE_TOKEN } from './actions';
 
@@ -110,4 +111,5 @@ export default combineReducers({
   notificationSettings,
   workflows,
   workflowDetail,
+  products,
 });

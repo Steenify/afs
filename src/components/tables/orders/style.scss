@@ -638,7 +638,8 @@
 					border: 1px solid #c6d0dc;
 				}
 
-				&.NEW_ORDER {
+				&.NEW_ORDER,
+				&.NEW {
 					background: #e1fce8;
 					border: 1px solid #e1fce8;
 
@@ -654,7 +655,8 @@
 					}
 				}
 
-				&.SKETCH {
+				&.SKETCH,
+				&.IN_PROGRESS {
 					background: #fff3cd;
 					border: 1px solid #fff3cd;
 
@@ -707,7 +709,8 @@
 
 				&.CUSTOMER_REVIEW_COLOR,
 				&.COLOR_REVIEW,
-				&.COLOR_EDIT {
+				&.COLOR_EDIT,
+				&.PARTIAL_FULLFILLED {
 					background: #ffe5f4;
 					border: 1px solid #ffe5f4;
 
@@ -741,7 +744,8 @@
 					}
 				}
 
-				&.DONE {
+				&.DONE,
+				&.FULLFILLED {
 					background: #ececec;
 					border: 1px solid #ececec;
 

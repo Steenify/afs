@@ -46,7 +46,12 @@ const SettingsPage = (props) => {
     {
       ...WEB_ROUTES.WORKFLOWS,
       icon: <Package />,
-      des: 'Workflow',
+      des: 'Workflows',
+    },
+    {
+      ...WEB_ROUTES.PRODUCTS,
+      icon: <Package />,
+      des: 'Products',
     },
     {
       ...WEB_ROUTES.LATE_NOTIFICATION,
