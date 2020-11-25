@@ -66,31 +66,42 @@ const OrderUpdateBudgetModal = ({
         payload,
         id: selectedOrder?.id,
         reducer,
-        onSuccess: () => toast.dark(`Order [#${selectedOrder?.number}]'s budget is changed to ${formatNumber(amount || 0)}$`),
+        onSuccess: () => {
+          toast.dark(`Order [#${selectedOrder?.number}]'s budget is changed to ${formatNumber(amount || 0)}$`);
+          updateOrderTableSelectedOrderBudget({ payload: { isOpenEditBudget: false, selectedOrder: {} }, reducer });
+          setAmount(0);
+          setNote('');
+        },
       });
     }
 
     if (type === 'Increase' || type === 'Decrease') {
       const mark = type === listActions[1] ? 1 : -1;
       const currentBudget = selectedOrder?.budget || 0;
+
+      updateOrderTableItems({
+        payload: {
+          id: selectedOrder?.id,
+          field: 'budget',
+          value: mark * number + currentBudget,
+        },
+        reducer,
+      });
+
       const data = {
         note,
         amount: mark * number,
         action: ACTION_CHANGE_TYPES[type] || '',
       };
+
       adjustOrderBudgetTable({
         orderId: selectedOrder?.id,
         data,
-        onSuccess: () => {
-          updateOrderTableItems({
-            payload: {
-              id: selectedOrder?.id,
-              field: 'budget',
-              value: mark * number + currentBudget,
-            },
-            reducer,
-          });
+        onDone: () => {
           toast.dark(`Order [#${selectedOrder?.number}]'s budget is changed`);
+          updateOrderTableSelectedOrderBudget({ payload: { isOpenEditBudget: false }, reducer });
+          setAmount(0);
+          setNote('');
         },
       });
     }

@@ -73,18 +73,23 @@ const OrderDetail = ({ loading, order, status, accountInfo, updateShowAssignedBo
                 {canEditAssign && canGetArtists && <OrderAssignedBox order={order} />}
                 <OrderBudget order={order} />
               </div>
-
-              <div className='info__right mt-3'>
-                <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.BUDGET_HISTORY)} className='btn info__cta info__history btn-dark'>
-                  Budget History
-                </button>
-                <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.INCREASE_BUDGET)} className='btn info__cta info__increase btn-success'>
-                  Increase $
-                </button>
-                <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.DECREASE_BUDGET)} className='btn info__cta info__decrease btn-danger'>
-                  Decrease $
-                </button>
-              </div>
+              <CanShow permission={PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS}>
+                <div className='info__right mt-3'>
+                  <CanShow permission={PERMITTIONS_CONFIG.GET_ARTIST_BUDGET}>
+                    <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.BUDGET_HISTORY)} className='btn info__cta info__history btn-dark'>
+                      Budget History
+                    </button>
+                  </CanShow>
+                  <CanShow permission={PERMITTIONS_CONFIG.ADJUST_BUDGET}>
+                    <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.INCREASE_BUDGET)} className='btn info__cta info__increase btn-success'>
+                      Increase $
+                    </button>
+                    <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.DECREASE_BUDGET)} className='btn info__cta info__decrease btn-danger'>
+                      Decrease $
+                    </button>
+                  </CanShow>
+                </div>
+              </CanShow>
             </div>
           </div>
 
