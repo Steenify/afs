@@ -15,6 +15,7 @@ import CustomersOrderCell from './cells/customersOrderCell';
 import CustomersValueCell from './cells/customersValueCell';
 import CustomersUpdateContactCell from './cells/customersUpdateContactCell';
 import CustomersTagsCell from './cells/customersTagsCell';
+import CustomersAnniversariesCell from './cells/customersAnniversariesCell';
 
 const columns = [
   {
@@ -64,6 +65,12 @@ const columns = [
     Header: 'Tags',
     minWidth: 200,
     Cell: CustomersTagsCell,
+  },
+  {
+    accessor: 'anniversaries',
+    Header: 'Anniversaries',
+    minWidth: 200,
+    Cell: CustomersAnniversariesCell,
   },
 ];
 

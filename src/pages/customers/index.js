@@ -6,6 +6,7 @@ import PageTitle from 'components/common/PageTitle';
 import CustomerList from './customersList';
 import CustomerCreate from './customersCreate';
 import CustomerTagsModal from './customerTagsModal';
+import CustomerAnniversariesModal from './customerAnniversariesModal';
 
 import './style.scss';
 
@@ -21,6 +22,7 @@ const CustomerManagement = () => {
       </PageTitle>
       <CustomerList />
       <CustomerTagsModal />
+      <CustomerAnniversariesModal />
     </Layout>
   );
 };

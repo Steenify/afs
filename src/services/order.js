@@ -280,3 +280,14 @@ export const resolvedOrderTodoList = (orderId, todoId) =>
     url: `${ORDERS_API}/${orderId}/todo-list/${todoId}/resolve`,
     method: 'PUT',
   });
+export const getBudgetsHistoryService = (orderId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/budget/log`,
+  });
+
+export const adjustOrderBudgetService = (orderId, data) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/budget/adjust`,
+    method: 'PUT',
+    data,
+  });

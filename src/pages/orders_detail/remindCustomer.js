@@ -44,6 +44,8 @@ const RemindCustomer = (props) => {
     updateRemindTemplateAction,
     sentEmailRemindAction,
     sentMessageRemindAction,
+    currentWorkLogType,
+    currentArtistId,
   } = props;
 
   const [notifyType, setNotifyType] = useState('email');
@@ -84,8 +86,8 @@ const RemindCustomer = (props) => {
   };
 
   const handleGetNewTemplate = () => {
-    getRemindEmailTemplate(order.id, currentWorkLogIndex);
-    getRemindFBMessageTemplate(order.id, currentWorkLogIndex);
+    getRemindEmailTemplate(order.id, currentWorkLogIndex, currentWorkLogType, currentArtistId);
+    getRemindFBMessageTemplate(order.id, currentWorkLogIndex, currentWorkLogType, currentArtistId);
   };
 
   const handleChangeTabType = (e) => {
@@ -242,6 +244,8 @@ const mapStateToProps = ({ orderDetail, orderTable }) => ({
   fbTemplateAttachments: orderDetail.data.remind.fbTemplateAttachments,
   customer: orderDetail.data.customer,
   currentWorkLogIndex: orderDetail.data.currentWorkLogIndex,
+  currentArtistId: orderDetail.data.currentArtistId,
+  currentWorkLogType: orderDetail.data.currentWorkLogType,
 });
 
 const mapDispatchToProps = {

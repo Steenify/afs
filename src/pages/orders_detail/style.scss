@@ -934,6 +934,164 @@
 		}
 	}
 
+	&__previousArtistBudget {
+		.previous-artist-row {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.label {
+			font-size: 16px;
+		}
+
+		.value {
+			font-size: 17px;
+			margin-left: 8px;
+		}
+	}
+
+	&__assignedModal {
+		.assignedModal {
+			&__note {
+				.form-control {
+					font-size: 16px;
+				}
+			}
+			&__action {
+				background: transparent;
+				border: none;
+				display: block;
+				width: 100%;
+				padding: 10px 0 10px 0;
+				text-align: left;
+				font-size: 16px;
+			}
+
+			&__action__container {
+				display: flex;
+				align-items: center;
+				border-bottom: 1px solid #e2e5ee;
+				padding-bottom: 5px;
+				.right {
+					font-size: 17px;
+					color: #767676;
+					flex: 1;
+					margin-left: 8px;
+				}
+			}
+
+			&__ctas {
+				margin-bottom: 10px;
+				display: flex;
+			}
+
+			&__cta {
+				background: linear-gradient(180deg, #ffffff 0%, #fdfdfd 17.23%, #f3f4f6 99.88%);
+				border: 1px solid #d2d6e0;
+				box-shadow: 0px 1px 0px rgba(170, 170, 170, 0.1);
+				border-radius: 3px;
+				width: 100%;
+				padding: 8px;
+				font-weight: 500;
+				font-size: 16px;
+				line-height: 19px;
+				color: #54626e;
+
+				&__1 {
+					margin-right: 5px;
+				}
+				&__2 {
+					margin-left: 5px;
+				}
+			}
+
+			&__done {
+				background: #337fd7;
+				border-radius: 4px;
+				width: 100%;
+				display: block;
+				margin-top: 30px;
+				margin-bottom: 30px;
+			}
+		}
+		.back {
+			background: transparent;
+			border: none;
+			// padding: 10px 0 10px 0;
+			text-align: left;
+			font-size: 16px;
+		}
+		.previous-artist {
+			border: 1px solid#767676;
+			border-radius: 8px;
+			padding: 20px;
+		}
+
+		// .previous-artist-row {
+		// 	display: flex;
+		// 	justify-content: space-between;
+		// }
+
+		.label {
+			font-size: 16px;
+		}
+
+		.value {
+			font-size: 17px;
+			margin-left: 8px;
+		}
+
+		.budget__history__list {
+			max-height: 500px;
+			overflow: auto;
+		}
+
+		.budget__history__item {
+			border: 1px solid#767676;
+			border-radius: 8px;
+			padding: 20px;
+			margin-bottom: 8px;
+			.budget__history__row {
+				display: flex;
+				justify-content: space-between;
+			}
+			.label {
+				font-size: 16px;
+				color: #333333;
+			}
+
+			.value {
+				font-size: 17px;
+				margin-left: 8px;
+			}
+		}
+
+		.change__budget__row {
+			display: flex;
+			align-items: center;
+
+			.label {
+				font-size: 16px;
+			}
+
+			.amount {
+				font-size: 16px;
+				margin-left: 8px;
+				flex: 1;
+				height: 40px;
+			}
+
+			.note {
+				margin-left: 16px;
+			}
+		}
+
+		.artist__list {
+			max-height: 400px;
+			overflow: auto;
+		}
+	}
+
 	&__todos {
 		.todo {
 			&__item {
@@ -1072,6 +1230,26 @@
 			.cta2 {
 				min-width: 120px;
 			}
+		}
+	}
+
+	.order_assigned_item {
+		.title {
+			font-size: 20px;
+		}
+
+		.name {
+			font-size: 17px;
+		}
+
+		.budget {
+			font-size: 16px;
+			line-height: 22px;
+			letter-spacing: 0.3px;
+			color: #337fd7;
+		}
+		@media (max-width: 991px) {
+			flex: 1;
 		}
 	}
 }

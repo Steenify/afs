@@ -21,7 +21,7 @@ const OrderBulkAction = ({ selected, updateOrderTableStatusDoneBulkAction, updat
 
   const toggle = () => setIsOpen(!isOpen);
 
-  const canPayOut = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT) && selected.filter((s) => s.artistPaymentStatus === statusPayments[1]).length > 0;
+  const canPayOut = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_PAYOUT) && selected.filter((s) => s.artistPaymentStatus !== statusPayments[0]).length > 0;
 
   const handleUpdateOrderStatusDone = (isRefund) => {
     const ids = selected.map((s) => s.id);

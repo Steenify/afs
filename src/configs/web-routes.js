@@ -31,7 +31,7 @@ const WEB_ROUTES = {
   },
   CUSTOMER_DETAIL: {
     path: '/customer/detail/:login',
-    title: 'baseApp.customerManagement.detail.title',
+    title: 'CUSTOMER DETAIL',
     permission: 'VIEW_CUSTOMER_DETAIL',
   },
   CUSTOMER_DETAIL_EDIT: {
@@ -41,7 +41,7 @@ const WEB_ROUTES = {
   },
   CUSTOMER_GROUP_LIST: {
     path: '/customer-group',
-    title: 'baseApp.sidebar.customerGroup',
+    title: 'Customer Group',
     permission: 'VIEW_CUSTOMER_GROUP_LIST',
   },
   CUSTOMER_GROUP_DETAIL: {
@@ -51,7 +51,7 @@ const WEB_ROUTES = {
   },
   NOTIFICATION_LIST: {
     path: '/notifications',
-    title: 'baseApp.sidebar.notification',
+    title: 'Notification',
     permission: '',
   },
   ADMIN_NOTIFICATION_LIST: {
@@ -154,7 +154,7 @@ const WEB_ROUTES = {
   },
   NOTIFICATION_SETTINGS: {
     path: '/notification-settings',
-    title: 'Notification Settings', // 'baseApp.sidebar.galleryListing',
+    title: 'Notification Settings',
     // permission: 'VIEW_LATE_NOTIFICATION_LIST',
   },
   WORKFLOWS: {
@@ -171,6 +171,11 @@ const WEB_ROUTES = {
     path: '/products',
     title: 'Products',
     permission: 'GET_PRODUCT',
+  },
+  CUSTOMERS_CARE: {
+    path: '/customers-care',
+    title: 'Customers Care',
+    permission: 'VIEW_CUSTOMERS_CARE',
   },
 };
 

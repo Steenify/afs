@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { isEmpty, includes } from 'lodash';
 
 import InPageLoading from 'components/common/inPageLoading';
+import CanShow from 'components/layout/canshow';
 
-import { PERMITTIONS_CONFIG, filterOrderItems, filterOrderItemsAdmin } from 'configs';
+import { PERMITTIONS_CONFIG, filterOrderItems, filterOrderItemsAdmin, statusPayments, mapStatusPayment } from 'configs';
 import { dateTimeStringFromDate, getSelectedStatus, getOrderItem } from 'utils';
 
 import OrderSumaryBox from './orderSumaryBox';
@@ -13,17 +14,17 @@ import OrderArtWorkBox from './orderArtWorkBox';
 import OrderCanvasWorkBox from './orderCanvasWorkBox';
 import EmaiNotify from './emailNotify';
 import EmailRemind from './remindCustomer';
-import OrderBudget from './orderBudget';
-import OrderAssignedBox from './orderAssignedBox';
 import AddProductModal from './addProductModal';
+import AssignedBoxModal from './assignedBoxModal';
+import BudgetHistoryModal from './budgetHistoryModal';
+import ChangeArtistModal from './changeArtistModal';
+import ChangeBudgetModal from './changeBudgetModal';
+import OrderAssignedItem from './orderAssignedItem';
 
 const OrderDetail = ({ loading, order, status, accountInfo }) => {
   if (isEmpty(order) || !status.length) {
     return <InPageLoading isLoading={loading} />;
   }
-
-  const canEditAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;
-  const canGetArtists = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) || false;
 
   const SHOW_POSTER = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.SHOW_POSTER);
   const itemsToFilter = SHOW_POSTER ? filterOrderItemsAdmin : filterOrderItems;
@@ -44,12 +45,13 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
   return (
     <div className='order_detail'>
       <div className='order_detail__header'>
-        <div className='row no-gutters align-items-center'>
-          <div className='col-lg-6 col-xl-7'>
-            <div className='info__left'>
+        <div className='row align-items-start'>
+          <div className='col-12'>
+            <div className='info__left mb-3'>
               <div className='number'>#{order?.number}</div>
               <div className='status'>
-                <span className={`order__status ${getSelectedStatus(order.status, status).name}`}>{getSelectedStatus(order.status, status).friendlyName}</span>
+                <span className={`order__status mr-2 ${order?.artistPaymentStatus || statusPayments[1]}}`}> {mapStatusPayment[order?.artistPaymentStatus] || mapStatusPayment.UNPAID}</span>
+                <span className={`order__status mr-2 ${getSelectedStatus(order.status, status).name}`}>{getSelectedStatus(order.status, status).friendlyName}</span>
               </div>
               <div className='deadline'>
                 <strong>Deadline: </strong>
@@ -57,11 +59,8 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
               </div>
             </div>
           </div>
-          <div className='col-lg-6 col-xl-5 text-right'>
-            <div className='info__right'>
-              {canEditAssign && canGetArtists && <OrderAssignedBox order={order} />}
-              <OrderBudget order={order} />
-            </div>
+          <div className='col-12'>
+            <OrderAssignedItem />
           </div>
         </div>
       </div>
@@ -120,6 +119,12 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
       <EmaiNotify order={order} />
       <EmailRemind order={order} />
       <AddProductModal order={order} />
+      <CanShow permission={PERMITTIONS_CONFIG.ASSIGN_BOOKING}>
+        <AssignedBoxModal order={order} />
+        <ChangeArtistModal order={order} />
+      </CanShow>
+      <BudgetHistoryModal order={order} />
+      <ChangeBudgetModal order={order} />
     </div>
   );
 };

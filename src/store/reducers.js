@@ -21,6 +21,7 @@ import notificationSettings from 'pages/notification_settings/reducer';
 import workflows from 'pages/workflows/reducer';
 import workflowDetail from 'pages/workflow_detail/reducer';
 import products from 'pages/products/reducer';
+import customersCare from 'pages/customers_care/reducer';
 
 import { GLOBAL_ACTIONS, AUTHENTICATE_TOKEN } from './actions';
 
@@ -98,6 +99,7 @@ export default combineReducers({
   role,
   customers,
   customerDetail,
+  customersCare,
   notification,
   systemProperty,
   orderTable,

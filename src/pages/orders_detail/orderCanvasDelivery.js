@@ -17,7 +17,7 @@ const OrderCanvasDelivery = ({ order, images, works, workLog, uploadFileWorkLog,
   const dropbox = useRef(null);
 
   const lastExport = works[works.length - 1];
-  const workLogIndex = findIndex(workLog, (log) => log.id === lastExport?.id);
+  const workLogIndex = findIndex(workLog[lastExport?.artist?.id] || [], (log) => log.id === lastExport?.id);
 
   const canModifyDelivery = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_DELIVERY) || false;
 
@@ -53,22 +53,39 @@ const OrderCanvasDelivery = ({ order, images, works, workLog, uploadFileWorkLog,
         })),
       };
 
-      uploadFileWorkLog(order.id, lastExport?.id, data, workLogIndex, files, () => {
-        dropbox.current.clearFiles();
-      });
+      uploadFileWorkLog(
+        order.id,
+        lastExport?.id,
+        data,
+        workLogIndex,
+        files,
+        () => {
+          dropbox.current.clearFiles();
+        },
+        undefined,
+        lastExport?.artist?.id,
+      );
     }
   };
 
   const handleDeleteFile = (file, fileIndex) => {
-    deleteFileDelivery(order.id, file?.source?.id, workLogIndex, fileIndex, () => {
-      toast.dark('File deleteted!');
-    });
+    deleteFileDelivery(
+      order.id,
+      file?.source?.id,
+      workLogIndex,
+      fileIndex,
+      () => {
+        toast.dark('File deleteted!');
+      },
+      'canvasWorkLog',
+      lastExport?.artist?.id,
+    );
   };
 
   const handleNotifyEmail = () => {
     const currentStatus = getSelectedStatus('SEND_FILE', status);
     if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
-      getNotifyTemplatesAction(order.id, currentStatus.emailTemplates[0].id);
+      getNotifyTemplatesAction(order.id, currentStatus.emailTemplates[0].id, workLogIndex, undefined, lastExport?.artist?.id);
     } else {
       toast.warn('No Email template found!');
     }

@@ -68,7 +68,7 @@ const OrderWorkLogItem = ({
   const isRejected = work.state === 'REJECTED';
   const isAproved = work.state === 'APPROVED';
   const isExported = order.status === 'EXPORT_FILE';
-  const workLogIndex = findIndex(workLog, (log) => log.id === work.id);
+  const workLogIndex = findIndex(workLog[work?.artist?.id] || [], (log) => log.id === work.id);
 
   const notUpload = mapStatusCanNotUpload.indexOf(order.statusForCanvas || order.status) !== -1;
 
@@ -133,6 +133,7 @@ const OrderWorkLogItem = ({
           setIsEdit(false);
         },
         workLogType,
+        work?.artist?.id,
       );
     }
   };
@@ -182,6 +183,7 @@ const OrderWorkLogItem = ({
             setEditCommentIndex(0);
           },
           workLogType,
+          work?.artist?.id,
         );
       } else {
         uploadCommentWorkLog(
@@ -194,13 +196,14 @@ const OrderWorkLogItem = ({
             commentBox.current.setCommemt('');
           },
           workLogType,
+          work?.artist?.id,
         );
       }
     }
   };
 
   const handleDeleteComment = (comId, comIndex) => {
-    deleteCommentWorkLog(order.id, work.id, comId, workLogIndex, comIndex, workLogType);
+    deleteCommentWorkLog(order.id, work.id, comId, workLogIndex, comIndex, workLogType, work?.artist?.id);
   };
 
   const handleCheckEdit = (com, index) => {
@@ -256,7 +259,7 @@ const OrderWorkLogItem = ({
 
   const handleDeleteFile = (file) => {
     const fileIndex = findIndex(work.attachments, (pho) => pho?.id === file?.source?.id);
-    deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'), workLogType);
+    deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'), workLogType, work?.artist?.id);
   };
 
   return (

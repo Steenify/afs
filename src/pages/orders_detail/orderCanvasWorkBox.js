@@ -90,11 +90,11 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
 };
 
 const mapStateToProps = ({ orderTable, orderDetail, auth }) => {
-  const workLog = [...orderDetail.data.canvasWorkLog];
+  // const workLog = [...orderDetail.data.canvasWorkLog];
   return {
     status: orderTable.orders.status,
     loading: orderDetail.ui.loadingCanvasWorkLog,
-    workLog,
+    workLog: orderDetail.data.canvasWorkLog,
     accountInfo: auth.data.accountInfo,
   };
 };

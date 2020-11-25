@@ -35,3 +35,16 @@ export const updateCustomerTagsService = (login, data) =>
     method: 'PUT',
     data,
   });
+
+export const getAnniversaryTypeService = () =>
+  request({
+    url: CUSTOMER_API + `/anniversary-types`,
+    method: 'GET',
+  });
+
+export const updateCustomerAnniversariesService = (login, data) =>
+  request({
+    url: CUSTOMER_API + `/${login}/anniversaries`,
+    method: 'PUT',
+    data,
+  });

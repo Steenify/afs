@@ -10,11 +10,9 @@ import PageTitle from 'components/common/PageTitle';
 import { WEB_ROUTES } from 'configs';
 
 const NotificationManagement = () => {
-  const { t } = useTranslation();
-
   return (
-    <Layout documentTitle={t(WEB_ROUTES.NOTIFICATION_LIST.title)} container fluid>
-      <PageTitle title={t(WEB_ROUTES.NOTIFICATION_LIST.title)} className='mb-0 mr-3'>
+    <Layout documentTitle={WEB_ROUTES.NOTIFICATION_LIST.title} container fluid>
+      <PageTitle title={WEB_ROUTES.NOTIFICATION_LIST.title} className='mb-0 mr-3'>
         {/* <NotificationCreate /> */}
       </PageTitle>
       <NotificationList />

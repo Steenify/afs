@@ -59,6 +59,10 @@ export const PERMITTIONS_CONFIG = {
   RESOLVED_ORDER_TODO_LIST: 'RESOLVED_ORDER_TODO_LIST',
   EDIT_ORDER_TODO_LIST: 'EDIT_ORDER_TODO_LIST',
   VIEW_ORDER_TODO_LIST: 'VIEW_ORDER_TODO_LIST',
+  ADJUST_BUDGET: 'ADJUST_BUDGET',
+  GET_BUDGET_CHANGE_LOG: 'GET_BUDGET_CHANGE_LOG',
+  GET_ARTIST_BUDGET: 'GET_ARTIST_BUDGET',
+  VIEW_ALL_ARTIST_TABS: 'VIEW_ALL_ARTIST_TABS',
 };
 
 export const ORDER_EXTRA_STATUS = {
@@ -111,6 +115,7 @@ export const mapStatusRemind = ['CUSTOMER_REVIEW_COLOR', 'CUSTOMER_REVIEW_SKETCH
 export const mapRoles = {
   ROLE_CUSTOMER_SERVICE: 'ROLE_CUSTOMER_SERVICE',
   ROLE_ARTIST: 'ROLE_ARTIST',
+  ROLE_ADMIN: 'ROLE_ADMIN',
 };
 
 export const mapStatusVerifyFile = ['SKETCH', 'SKETCH_EDIT', 'COLOR', 'COLOR_EDIT', 'EXPORT_FILE'];
@@ -118,8 +123,9 @@ export const mapStatusVerifyFile = ['SKETCH', 'SKETCH_EDIT', 'COLOR', 'COLOR_EDI
 export const mapStatusPayment = {
   PAID: 'Paid',
   UNPAID: 'Unpaid',
+  PARTIAL_PAID: 'Partial paid',
 };
-export const statusPayments = ['PAID', 'UNPAID'];
+export const statusPayments = ['PAID', 'UNPAID', 'PARTIAL_PAID'];
 
 export const PSDFileType = ['image/vnd.adobe.photoshop', 'application/x-photoshop', 'application/photoshop', 'application/psd', 'image/psd'];
 
