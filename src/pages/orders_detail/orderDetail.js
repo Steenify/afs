@@ -14,20 +14,28 @@ import OrderArtWorkBox from './orderArtWorkBox';
 import OrderCanvasWorkBox from './orderCanvasWorkBox';
 import EmaiNotify from './emailNotify';
 import EmailRemind from './remindCustomer';
-import AddProductModal from './addProductModal';
-import AssignedBoxModal from './assignedBoxModal';
-import BudgetHistoryModal from './budgetHistoryModal';
-import ChangeArtistModal from './changeArtistModal';
-import ChangeBudgetModal from './changeBudgetModal';
+import AddProductModal from './modal/addProductModal';
+import AssignedBoxModal from './modal/assignedBoxModal';
+import BudgetHistoryModal from './modal/budgetHistoryModal';
+import ChangeArtistModal from './modal/changeArtistModal';
+import ChangeBudgetModal from './modal/changeBudgetModal';
 import OrderAssignedItem from './orderAssignedItem';
 
-const OrderDetail = ({ loading, order, status, accountInfo }) => {
+import OrderAssignedBox from './orderAssignedBox';
+import OrderBudget from './orderBudget';
+
+import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs } from './actions';
+
+const OrderDetail = ({ loading, order, status, accountInfo, updateShowAssignedBox }) => {
   if (isEmpty(order) || !status.length) {
     return <InPageLoading isLoading={loading} />;
   }
 
   const SHOW_POSTER = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.SHOW_POSTER);
   const itemsToFilter = SHOW_POSTER ? filterOrderItemsAdmin : filterOrderItems;
+
+  const canEditAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;
+  const canGetArtists = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) || false;
 
   let hasFaster = false;
   let artworkItems = [],
@@ -46,7 +54,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
     <div className='order_detail'>
       <div className='order_detail__header'>
         <div className='row align-items-start'>
-          <div className='col-12'>
+          <div className='col-lg-6 col-xl-7'>
             <div className='info__left mb-3'>
               <div className='number'>#{order?.number}</div>
               <div className='status'>
@@ -59,8 +67,31 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
               </div>
             </div>
           </div>
+          <div className='col-lg-6 col-xl-5'>
+            <div className='d-none d-lg-block'>
+              <div className='info__right '>
+                {canEditAssign && canGetArtists && <OrderAssignedBox order={order} />}
+                <OrderBudget order={order} />
+              </div>
+
+              <div className='info__right mt-3'>
+                <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.BUDGET_HISTORY)} className='btn info__cta info__history btn-dark'>
+                  Budget History
+                </button>
+                <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.INCREASE_BUDGET)} className='btn info__cta info__increase btn-success'>
+                  Increase $
+                </button>
+                <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.DECREASE_BUDGET)} className='btn info__cta info__decrease btn-danger'>
+                  Decrease $
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className='col-12'>
-            <OrderAssignedItem />
+            <div className='d-lg-none'>
+              <OrderAssignedItem />
+            </div>
           </div>
         </div>
       </div>
@@ -138,6 +169,8 @@ const mapStateToProps = ({ orderDetail, orderTable, auth }) => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateShowAssignedBox: updateShowAssignedBoxAction,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderDetail);

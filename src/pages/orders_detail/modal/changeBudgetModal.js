@@ -11,7 +11,7 @@ import NumberFormat from 'react-number-format';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 import { ReactComponent as BackIcon } from 'assets/img/back.svg';
 
-import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, updateOrderBudgetAction, adjustOrderBudgetAction, setBudgetAction } from './actions';
+import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, updateOrderBudgetAction, adjustOrderBudgetAction, setBudgetAction } from '../actions';
 
 const { CHANGE_BUDGET, INCREASE_BUDGET, DECREASE_BUDGET } = ASSIGNED_MODAL_KEYs;
 const TITLES = {
@@ -38,7 +38,13 @@ const ChangeBudgetModal = ({ order, isOpen, currentShow, updateShowAssignedBoxAc
   }, [isOpen]);
 
   const toggle = () => updateShowAssignedBoxAction(false);
-  const onBack = () => updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED);
+  const onBack = () => {
+    if (window.innerWidth < 991) {
+      updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED);
+    } else {
+      updateShowAssignedBoxAction('');
+    }
+  };
   const onSave = () => {
     const number = parseInt(amount || 0, 10);
     if (!amount) {

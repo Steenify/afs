@@ -57,6 +57,25 @@
 			flex-wrap: wrap;
 		}
 
+		.info {
+			&__cta {
+				margin-left: 10px;
+				margin-bottom: 5px;
+			}
+
+			&__history {
+				color: #000;
+				background-color: #ffd5d5;
+				border-color: #ffd5d5;
+			}
+
+			&__artist {
+				color: #000;
+				background-color: #ffdff1;
+				border-color: #ffdff1;
+			}
+		}
+
 		@include max-xl() {
 			.info__left {
 				.number,
@@ -1107,7 +1126,6 @@
 
 							.cus-checkbox {
 								border-color: #9ea0a5;
-								cursor: none;
 							}
 							.cus-checkbox .checkmark:after {
 								border-color: #9ea0a5;
@@ -1124,7 +1142,9 @@
 					}
 				}
 			}
-
+			&__cta {
+				background-color: #ff8844;
+			}
 			&__icon {
 				width: 30px;
 				min-width: 30px;
@@ -1153,6 +1173,17 @@
 				height: 30px;
 				background: none;
 				border: none;
+			}
+
+			&__remove {
+				.span {
+					background: #dc3545;
+					color: $white;
+					border-radius: 100%;
+					display: inline-block;
+					width: 20px;
+					height: 20px;
+				}
 			}
 		}
 	}

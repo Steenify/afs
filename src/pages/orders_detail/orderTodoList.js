@@ -3,16 +3,18 @@ import { connect } from 'react-redux';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { findIndex } from 'lodash';
+import { confirmAlert } from 'react-confirm-alert';
 
 import CanShow from 'components/layout/canshow';
 import Button from 'components/common/button';
 import { PERMITTIONS_CONFIG } from 'configs';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
+import { ReactComponent as Close } from 'assets/img/close_white.svg';
 
-import { getOrderTodoListAction, createOrderTodoListAction, editOrderTodoListAction, resolvedOrderTodoListAction } from './actions';
+import { getOrderTodoListAction, createOrderTodoListAction, editOrderTodoListAction, resolvedOrderTodoListAction, removeOrderTodoListAction } from './actions';
 
-const OrderCustomerBox = ({ order, todos, loadingTodo, getOrderTodoList, createOrderTodoList, editOrderTodoList, resolvedOrderTodoList }) => {
+const OrderCustomerBox = ({ order, todos, loadingTodo, getOrderTodoList, createOrderTodoList, editOrderTodoList, resolvedOrderTodoList, removeOrderTodoList }) => {
   useEffect(() => {
     getOrderTodoList(order.id);
   }, [order.id, getOrderTodoList]);
@@ -67,6 +69,45 @@ const OrderCustomerBox = ({ order, todos, loadingTodo, getOrderTodoList, createO
     }
   };
 
+  const handleRemove = (to) => {
+    const index = findIndex(todos, (t) => t.id === to.id);
+
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='comfirm_cus'>
+            <div className='comfirm_cus__header'>
+              <div className='comfirm_cus__titl'>Remove Todo</div>
+              <button type='button' onClick={onClose} className='comfirm_cus__close'>
+                <div className='icon'>
+                  <Close />
+                </div>
+              </button>
+            </div>
+            <div className='comfirm_cus__body'>
+              <p>Are you sure you want to remove this todo?</p>
+            </div>
+            <div className='comfirm_cus__footer text-right'>
+              <button className='comfirm_cus__cancel comfirm_cus__control' onClick={onClose}>
+                Cancel
+              </button>
+              <button
+                className='comfirm_cus__accept comfirm_cus__control'
+                onClick={() => {
+                  removeOrderTodoList(order.id, to.id, index, () => {
+                    toast.dark(`[${order.number}] removed todo`);
+                  });
+                  onClose();
+                }}>
+                Accept
+              </button>
+            </div>
+          </div>
+        );
+      },
+    });
+  };
+
   const handleResolvedTodo = (to) => {
     const index = findIndex(todos, (t) => t.id === to.id);
     resolvedOrderTodoList(order.id, to.id, index, () => {
@@ -94,7 +135,7 @@ const OrderCustomerBox = ({ order, todos, loadingTodo, getOrderTodoList, createO
             <div className='todo__create'>
               <form onSubmit={handleCreateTodo} className='todo__form'>
                 <input ref={textBox} type='text' placeholder='Todo description' value={text} onChange={handleChangeText} className='todo__input form-control' />
-                <Button color='primary' style={{ minHeight: 'auto', height: 35 }} onClick={handleCreateTodo}>
+                <Button color='primary' className='todo__cta' style={{ minHeight: 'auto', height: 35 }} onClick={handleCreateTodo}>
                   {editId ? 'Edit' : 'Add'}
                 </Button>
               </form>
@@ -120,6 +161,13 @@ const OrderCustomerBox = ({ order, todos, loadingTodo, getOrderTodoList, createO
                   </div>
                 </button>
               </CanShow>
+              <CanShow permission={PERMITTIONS_CONFIG.REMOVE_ORDER_TODO_LIST}>
+                <button type='button' className='todo__edit todo__remove' onClick={() => handleRemove(to)}>
+                  <div className='span'>
+                    <Close />
+                  </div>
+                </button>
+              </CanShow>
             </div>
           ))}
         </div>
@@ -140,6 +188,7 @@ const mapDispatchToProps = {
   createOrderTodoList: createOrderTodoListAction,
   editOrderTodoList: editOrderTodoListAction,
   resolvedOrderTodoList: resolvedOrderTodoListAction,
+  removeOrderTodoList: removeOrderTodoListAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderCustomerBox);

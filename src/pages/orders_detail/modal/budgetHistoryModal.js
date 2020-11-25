@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
+
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 import { ReactComponent as BackIcon } from 'assets/img/back.svg';
 
-import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, getBudgetsHistoryAction } from './actions';
+import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, getBudgetsHistoryAction } from '../actions';
 import { formatMoney } from 'utils';
 
 const BUDGET_CHANGE_TYPES = {
@@ -41,7 +41,13 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
   }, [isOpen, getBudgetsHistoryAction, order]);
 
   const toggle = () => updateShowAssignedBoxAction(false);
-  const onBack = () => updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED);
+  const onBack = () => {
+    if (window.innerWidth < 991) {
+      updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED);
+    } else {
+      updateShowAssignedBoxAction('');
+    }
+  };
   return (
     <Modal isOpen={isOpen} toggle={toggle} fade={false} size='lg' className='modal-dialog-centered  modal-no-border order_detail__assignedModal'>
       <div className='assignedModal'>
