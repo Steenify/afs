@@ -332,3 +332,12 @@ export const getAllTagsAction = () => (dispatch) => {
     onError,
   });
 };
+
+export const ORDER_TABLE_UPDATE_SELECTED_ORDER_BUDGET_ACTION = 'ORDER_TABLE_UPDATE_SELECTED_ORDER_BUDGET_ACTION';
+export const updateOrderTableSelectedOrderBudgetAction = ({ payload, reducer }) => (dispatch) => {
+  dispatch({
+    type: ORDER_TABLE_UPDATE_SELECTED_ORDER_BUDGET_ACTION,
+    payload,
+    reducer,
+  });
+};

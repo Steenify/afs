@@ -86,7 +86,6 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
           <div className='order_detail__tabs'>
             {artists.map(({ id, firstName = '' }) => {
               const activityKey = `activity_${id}`;
-              const deliveryKey = `delivery_${id}`;
               const postText = artists.length > 1 ? `(${firstName})` : '';
               return (
                 <Fragment key={`order_tab_by_artist_${id}`}>
@@ -100,16 +99,6 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
                     className={`order_detail__tab ${tab === 'activity' && artistId === id && 'active'}`}>
                     {`Activity ${postText}`}
                   </button>
-                  {/* <button
-                    key={deliveryKey}
-                    type='button'
-                    onClick={() => {
-                      setTab('delivery');
-                      setArtistId(id);
-                    }}
-                    className={`order_detail__tab ${tab === 'delivery' && artistId === id && 'active'}`}>
-                    {`Delivery ${postText}`}
-                  </button> */}
                 </Fragment>
               );
             })}

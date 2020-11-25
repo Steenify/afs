@@ -27,7 +27,7 @@ const ACTION_CHANGE_TYPES = {
 };
 
 const ChangeBudgetModal = ({ order, isOpen, currentShow, updateShowAssignedBoxAction, updateOrderBudgetAction, adjustOrderBudgetAction, setBudgetAction }) => {
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState(0);
   const [note, setNote] = useState('');
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const ChangeBudgetModal = ({ order, isOpen, currentShow, updateShowAssignedBoxAc
   const title = TITLES[currentShow] || 'Change Budget';
   return (
     <Modal isOpen={isOpen} toggle={toggle} fade={false} size='lg' className='modal-dialog-centered  modal-no-border order_detail__assignedModal'>
-      <div className='assignedModal'>
+      <div className='changeBudgetModal'>
         <ModalHeader toggle={toggle}>
           <div className='d-flex align-items-center'>
             <button type='button' className='back mr-2' onClick={onBack}>
@@ -100,14 +100,12 @@ const ChangeBudgetModal = ({ order, isOpen, currentShow, updateShowAssignedBoxAc
           </button>
         </ModalHeader>
         <ModalBody>
-          <div className='change__budget__row mb-3'>
-            <span className='label'>{`${title}:`}</span>
+          <div className=' mb-3'>
+            <div className='label'>{`${title}:`}</div>
             <NumberFormat prefix={'$  '} thousandSeparator={true} className='form-control amount' value={amount} onValueChange={(data) => setAmount(data?.value || 0)} />
           </div>
-          {/* <div className='change__budget__row'> */}
           <span className='label'>Note:</span>
-          <textarea className='form-control note' placeholder='' onChange={(e) => setNote(e?.target?.value || '')} value={note} rows='3'></textarea>
-          {/* </div> */}
+          <textarea className='form-control note' placeholder='Change budget note' onChange={(e) => setNote(e?.target?.value || '')} value={note} rows='3'></textarea>
         </ModalBody>
         <ModalFooter>
           <Button color='primary' onClick={onSave}>

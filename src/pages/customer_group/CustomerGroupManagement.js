@@ -10,20 +10,18 @@ import PageTitle from 'components/common/PageTitle';
 import { WEB_ROUTES } from 'configs';
 
 const CustomerGroupManagement = () => {
-  const { t } = useTranslation();
-
   return (
-    <Layout documentTitle={t(WEB_ROUTES.CUSTOMER_GROUP_LIST.title)} container fluid>
+    <Layout documentTitle={WEB_ROUTES.CUSTOMER_GROUP_LIST.title} container fluid>
       <Breadcrumb
         data={[
           {
-            title: t(WEB_ROUTES.CUSTOMER_GROUP_LIST.title),
+            title: WEB_ROUTES.CUSTOMER_GROUP_LIST.title,
             active: false,
             path: '/customer-group',
           },
         ]}
       />
-      <PageTitle title={t(WEB_ROUTES.CUSTOMER_GROUP_LIST.title)} className='mb-0 mr-3'>
+      <PageTitle title={WEB_ROUTES.CUSTOMER_GROUP_LIST.title} className='mb-0 mr-3'>
         <CustomerGroupCreate />
       </PageTitle>
       <CustomerGroupList />
