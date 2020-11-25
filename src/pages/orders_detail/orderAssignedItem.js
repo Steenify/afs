@@ -16,7 +16,7 @@ import { PERMITTIONS_CONFIG } from 'configs';
 import PreviousArtistBudget from './previousArtistBudget';
 
 const OrderAssignedItem = ({ order, updateShowAssignedBoxAction, accountInfo }) => {
-  const { assignedTo, artistBudgets = [] } = order || {};
+  const { assignedTo = {}, artistBudgets = [] } = order || {};
   const { login } = accountInfo;
 
   const canViewAllArtistTabs = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS) || false;
