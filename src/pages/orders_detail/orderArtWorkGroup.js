@@ -224,12 +224,15 @@ const OrderArtWorkGroup = ({
             }
 
             if (isNewStatus) {
-              if (isCurrentArtist) {
+              if (isCurrentArtist && isNewOrder) {
                 return (
                   <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                     {canChangeStatus && (
                       <div className='order_detail__ctas text-center justify-content-center'>
-                        <Button onClick={() => handleStartSketch(work?.artist?.id)} color='primary' className='cta' type='button'>
+                        {/* <Button onClick={() => handleStartSketch(work?.artist?.id)} color='primary' className='cta' type='button'>
+                          Start Sketching
+                        </Button> */}
+                        <Button onClick={() => handleApproveWorkLog(work.id, false, work?.artist?.id)} color='primary' className='cta' type='button'>
                           Start Sketching
                         </Button>
                       </div>
