@@ -36,6 +36,7 @@ import {
   createOrderTodoList,
   updateOrderTodoList,
   resolvedOrderTodoList,
+  removeOrderTodoList,
   getBudgetsHistoryService,
   updateOrderBudgetService,
   adjustOrderBudgetService,
@@ -1273,6 +1274,37 @@ export const resolvedOrderTodoListAction = (orderId, todoId, index, cb) => (disp
 
   actionTryCatchCreator({
     service: resolvedOrderTodoList(orderId, todoId),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+export const REMOVE_ORDER_TODO_LIST_ACTION = actionCreator('REMOVE_ORDER_TODO_LIST_ACTION');
+export const removeOrderTodoListAction = (orderId, todoId, index, cb) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: REMOVE_ORDER_TODO_LIST_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    dispatch({
+      type: REMOVE_ORDER_TODO_LIST_ACTION.SUCCESS,
+      payload: {
+        index,
+      },
+    });
+    cb && cb();
+  };
+  const onError = (error) => {
+    console.log('removeOrderTodoListAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: REMOVE_ORDER_TODO_LIST_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: removeOrderTodoList(orderId, todoId),
     onPending,
     onSuccess,
     onError,

@@ -36,7 +36,9 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
     );
   }
 
-  const isNewOrder = currentWorkLog.length === 2;
+  const isCurrentArtist = artistId === order?.assignedTo?.id;
+
+  const isNewOrder = order.status === status[0].name || currentWorkLog.length === 1;
   const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
   const worklogGroup = groupBy(currentWorkLog, 'status');
 
@@ -132,6 +134,7 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
                     <OrderArtWorkGroup
                       hasPoster={hasPoster}
                       isNewOrder={isNewOrder}
+                      isCurrentArtist={isCurrentArtist}
                       works={works}
                       order={order}
                       group={key}

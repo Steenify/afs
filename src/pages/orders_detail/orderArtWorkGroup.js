@@ -42,6 +42,7 @@ const OrderArtWorkGroup = ({
   workLog,
   lastWorkLog,
   hasPoster,
+  isCurrentArtist,
 }) => {
   let isOpened = false;
 
@@ -206,7 +207,7 @@ const OrderArtWorkGroup = ({
       <Collapse isOpen={isOpen}>
         <div className={`group__body ${isNewOrder && 'isNewOrder'}`}>
           {works.map((work) => {
-            const showActionState = lastWorkLog.id === work.id;
+            const showActionState = lastWorkLog.id === work.id && isCurrentArtist;
             const showActionPermitions = canNotifyCustomer || canAprroved || canRejected;
 
             const isNewStatus = work.status === 'NEW_ORDER';
@@ -221,14 +222,16 @@ const OrderArtWorkGroup = ({
             if (isDoneStatus) {
               return null;
             }
-
             if (isNewStatus) {
-              if (isNewOrder) {
+              if (isCurrentArtist && isNewOrder) {
                 return (
                   <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                     {canChangeStatus && (
                       <div className='order_detail__ctas text-center justify-content-center'>
-                        <Button onClick={() => handleStartSketch(work?.artist?.id)} color='primary' className='cta' type='button'>
+                        {/* <Button onClick={() => handleStartSketch(work?.artist?.id)} color='primary' className='cta' type='button'>
+                          Start Sketching
+                        </Button> */}
+                        <Button onClick={() => handleApproveWorkLog(work.id, false, work?.artist?.id)} color='primary' className='cta' type='button'>
                           Start Sketching
                         </Button>
                       </div>

@@ -7,7 +7,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap'
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 import { ReactComponent as BackIcon } from 'assets/img/back.svg';
 
-import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, getAssignArtistsAction } from './actions';
+import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, getAssignArtistsAction } from '../actions';
 import { updateOrderTableAssignArtistAction } from 'components/tables/orders/actions';
 const ChangeArtistModal = ({ order, isOpen, updateShowAssignedBoxAction, getAssignArtistsAction, updateOrderTableAssignArtistAction }) => {
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,13 @@ const ChangeArtistModal = ({ order, isOpen, updateShowAssignedBoxAction, getAssi
   );
 
   const toggle = () => updateShowAssignedBoxAction(false);
-  const onBack = () => updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED);
+  const onBack = () => {
+    // if (window.innerWidth < 991) {
+    //   updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED);
+    // } else {
+    updateShowAssignedBoxAction('');
+    // }
+  };
   const onSave = (artist) => {
     if ((assignedTo || {})['login'] === artist?.login) {
       toast.warn('Please select new artist!');
