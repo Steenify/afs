@@ -5,7 +5,7 @@ import Popover from 'react-tiny-popover';
 import Select from 'react-select';
 
 import { updateReminderFilterAction } from './actions';
-import { REMINDER_TYPES, REMINDER_STATUS, REMINDER_TYPES_COLOR } from './const';
+import { REMINDER_TYPES, REMINDER_STATUS, REMINDER_TYPES_COLOR, REMINDER_TYPES_TEXT } from './const';
 import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 class CustomersFilters extends Component {
   constructor() {
@@ -99,7 +99,7 @@ const ReminderFilters = ({ updateReminderFilterAction, status, type }) => {
         </button>
         {[ANNIVERSARY, BIRTHDAY, DAY_AFTER_FIRST_ORDER_COMPLETE, RETURN_CUSTOMERS].map((item) => (
           <button data={item} onClick={handleChangeType} key={`list__status_option__returning`} className={`status ${REMINDER_TYPES_COLOR[item] || ''} ${type === item && 'active'}`}>
-            {item}
+            {REMINDER_TYPES_TEXT[item]}
           </button>
         ))}
         <div className='ml-auto'>
