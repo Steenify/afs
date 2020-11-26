@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
 import { findIndex } from 'lodash';
+import { Alert } from 'reactstrap';
 
 import ImageGallery from 'components/common/imageGallery';
 import Dropbox from 'components/common/dropbox';
@@ -13,7 +14,7 @@ import { PERMITTIONS_CONFIG } from 'configs';
 
 import { uploadFileWorkLogAction, deleteFileDeliveryAction, getNotifyTemplatesAction } from './actions';
 
-const OrderArtDelivery = ({ order, images, works, workLog, uploadFileWorkLog, deleteFileDelivery, accountInfo, status, getNotifyTemplatesAction }) => {
+const OrderArtDelivery = ({ isDeliverable, order, images, works, workLog, uploadFileWorkLog, deleteFileDelivery, accountInfo, status, getNotifyTemplatesAction }) => {
   const dropbox = useRef(null);
 
   const lastExport = works[works.length - 1];
@@ -89,6 +90,14 @@ const OrderArtDelivery = ({ order, images, works, workLog, uploadFileWorkLog, de
       toast.warn('No Email template found!');
     }
   };
+
+  if (!isDeliverable) {
+    return (
+      <Alert color='warning'>
+        <h3 className='text-center'>No Deliverables</h3>
+      </Alert>
+    );
+  }
 
   return (
     <div className='deli__body'>

@@ -15,7 +15,7 @@ import { createPayoutService, confirmPayoutService } from 'services/payout';
 const buildSearchParam = (input = {}) => {
   var params = new URLSearchParams();
   if (input.status) {
-    params.append('status', input.status || '');
+    params.append('overallStatus', input.status || '');
   }
   if (input.alert) {
     params.append('alert', input.alert || '');

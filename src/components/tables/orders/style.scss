@@ -263,7 +263,8 @@
 			left: 8px;
 		}
 
-		&.SKETCH {
+		&.SKETCH,
+		&.IN_PROGRESS {
 			background: #fff3cd;
 
 			&::before {
@@ -292,7 +293,8 @@
 
 		&.CUSTOMER_REVIEW_COLOR,
 		&.COLOR_REVIEW,
-		&.COLOR_EDIT {
+		&.COLOR_EDIT,
+		&.PARTIAL_FULLFILLED {
 			background: #ffe5f4;
 
 			&::before {
@@ -314,7 +316,8 @@
 		&.PAID,
 		&.PRINT_PREVIEW,
 		&.PRINT_TRACKING,
-		&.PRINT_RECEIVED {
+		&.PRINT_RECEIVED,
+		&.FULLFILLED {
 			background: #ececec;
 
 			&::before {

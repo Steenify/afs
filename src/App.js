@@ -48,6 +48,7 @@ import NotificationSettings from 'pages/notification_settings';
 import Workflows from 'pages/workflows';
 import WorkflowDetail from 'pages/workflow_detail';
 import Products from 'pages/products';
+import UIComponents from 'pages/ui_components';
 import CustomersCare from 'pages/customers_care';
 
 import head from 'utils/head';
@@ -111,6 +112,7 @@ const App = ({ getOrderTableCountByStatusAction, renewTokenAction, actGetAccount
           isPrivate={true}
         /> */}
 
+          <Route exact path={WEB_ROUTES.UI_COMPONENTS.path} component={UIComponents} />
           <Route exact path={WEB_ROUTES.WORKFLOWS.path} component={Workflows} />
           <Route exact path={WEB_ROUTES.WORKFLOW_DETAIL.path} component={WorkflowDetail} />
 

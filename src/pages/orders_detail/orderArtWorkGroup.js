@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import { findIndex } from 'lodash';
 import { getSelectedStatus, dateTimeStringFromDate } from 'utils';
-import { PERMITTIONS_CONFIG, mapStatusOpen, mapStatusNotiy, mapStatusVerifyFile } from 'configs';
+import { PERMITTIONS_CONFIG, mapStatusNotiy, mapStatusVerifyFile, WORKFLOW_STATE_TYPE } from 'configs';
 
 import { ReactComponent as Toggle } from 'assets/img/toggle.svg';
 import { ReactComponent as Close } from 'assets/img/close.svg';
@@ -36,35 +36,33 @@ const OrderArtWorkGroup = ({
   getNotifyTemplatesAction,
   getRemindTemplatesAction,
   accountInfo,
-  updateOrderStatus,
+  updateOrderStatusAction,
   isNewOrder,
   createOrderCanvasWorkLogAction,
   workLog,
   lastWorkLog,
   hasPoster,
 }) => {
-  let isOpened = false;
+  const canNotifyCustomer = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.NOTIFY_BOOKING_TO_CUSTOMER) || false;
+  const canAprroved = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) || false;
+  const canRejected = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.REJECT_WORK_LOG) || false;
+  const canCanceled = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CANCELED_STEP_BOOKING) || false;
+  const canCreateWorkLogForCanvas = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_WORK_LOG_FOR_CANVAS) || false;
+  const canChangeStatus = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_STATUS_BOOKING) || false;
 
-  if (mapStatusOpen[group].indexOf(order.status) !== -1) {
-    isOpened = true;
-  }
+  // TODO: need to check for current Product status instead of Order status
+  // let isOpened = false;
+  // if (mapStatusOpen[group].indexOf(order.status) !== -1) {
+  //   isOpened = true;
+  // }
 
   const isNotifyStatus = mapStatusNotiy.indexOf(order.status) !== -1;
   const needCheckFile = mapStatusVerifyFile.indexOf(order.status) !== -1;
 
-  const [isOpen, setIsOpen] = useState(isOpened || false);
+  const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
 
   const lastWork = works[works.length - 1];
-
-  const canNotifyCustomer = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.NOTIFY_BOOKING_TO_CUSTOMER) || false;
-
-  const canAprroved = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) || false;
-  const canRejected = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.REJECT_WORK_LOG) || false;
-  const canCanceled = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CANCELED_STEP_BOOKING) || false;
-
-  const canCreateWorkLogForCanvas = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CREATE_WORK_LOG_FOR_CANVAS) || false;
-  const canChangeStatus = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_STATUS_BOOKING) || false;
 
   const handleApproveWorkLog = (LogId, isSendFile, artistId) => {
     confirmAlert({
@@ -120,7 +118,7 @@ const OrderArtWorkGroup = ({
 
   const handleStartSketch = (artistId) => {
     if (status.length) {
-      updateOrderStatus(order.id, status[1].name, artistId);
+      updateOrderStatusAction(order.id, status[1].name, artistId);
     }
   };
 
@@ -193,7 +191,7 @@ const OrderArtWorkGroup = ({
     <div className='order_detail__work_group group'>
       <div className={`group__header ${group || ''}`}>
         <div className='group__title' onClick={toggle}>
-          <div className='state dot'>{getSelectedStatus(group, status).friendlyName}</div>
+          <div className='state dot'>{group}</div>
           <div className='deadline'>{dateTimeStringFromDate(lastWork?.createdDate)}</div>
         </div>
 
@@ -209,8 +207,8 @@ const OrderArtWorkGroup = ({
             const showActionState = lastWorkLog.id === work.id;
             const showActionPermitions = canNotifyCustomer || canAprroved || canRejected;
 
-            const isNewStatus = work.status === 'NEW_ORDER';
-            const isDoneStatus = work.status === 'DONE';
+            const isNewStatus = work.wlStateType === WORKFLOW_STATE_TYPE.START;
+            const isDoneStatus = work.wlStateType === WORKFLOW_STATE_TYPE.DONE;
             const isExportFile = work.status === 'EXPORT_FILE';
             const isSendFile = work.status === 'SEND_FILE';
 
@@ -229,7 +227,7 @@ const OrderArtWorkGroup = ({
                     {canChangeStatus && (
                       <div className='order_detail__ctas text-center justify-content-center'>
                         <Button onClick={() => handleStartSketch(work?.artist?.id)} color='primary' className='cta' type='button'>
-                          Start Sketching
+                          Start Working
                         </Button>
                       </div>
                     )}
@@ -331,7 +329,7 @@ const mapDispatchToProps = {
   approvedWorkLog: approvedWorkLogAction,
   rejectedWorkLog: rejectedWorkLogAction,
   getNotifyTemplatesAction,
-  updateOrderStatus: updateOrderStatusAction,
+  updateOrderStatusAction,
   getRemindTemplatesAction,
   createOrderCanvasWorkLogAction,
   canceledWorkLog: canceledWorkLogAction,

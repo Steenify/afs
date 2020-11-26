@@ -60,7 +60,7 @@ const mapStateToProps = ({ workflowDetail, auth }) => {
   return {
     accountInfo: auth.data.accountInfo,
     loadingInfo,
-    initialValues: { ...workflow },
+    initialValues: { name: workflow?.name, description: workflow?.description },
   };
 };
 

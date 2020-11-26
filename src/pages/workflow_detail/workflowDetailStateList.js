@@ -16,19 +16,20 @@ const WorkflowDetailStateList = (props) => {
     getEmailTemplatesAction();
   }, [getEmailTemplatesAction]);
 
-  const stateOptions = useMemo(() => (states || []).map((s) => ({ ...s, label: s.name, value: s.stateId })), [states]);
+  const stateOptions = useMemo(() => (states || []).map((s) => ({ ...s, label: s.name, value: s.stateId || s.id })), [states]);
 
   const canUpdate = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_FLOW);
 
   return (
     <div>
       {states?.map?.((state, index) => {
-        const formName = `workflowStateForm_${state.stateId || 'new'}`;
+        const _id = state.stateId || state.id;
+        const formName = `workflowStateForm_${_id || _.uniqueId('new')}`;
         return (
-          <div key={`${state.stateId}`}>
+          <div key={`${formName}`}>
             <WorkflowState state={state} index={index} stateOptions={stateOptions} form={formName} />
             <div className='d-flex flex-column align-items-center'>
-              {state.stateId && (
+              {_id && (
                 <>
                   {!canUpdate && index < states?.length - 1 && <DownArrow height='24px' className='m-2' />}
                   {canUpdate && (

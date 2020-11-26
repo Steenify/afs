@@ -172,6 +172,11 @@ const WEB_ROUTES = {
     title: 'Products',
     permission: 'GET_PRODUCT',
   },
+  UI_COMPONENTS: {
+    path: '/ui-components',
+    title: 'UI Components',
+    permission: 'GET_FLOW',
+  },
   CUSTOMERS_CARE: {
     path: '/customers-care',
     title: 'Customers Care',

@@ -20,6 +20,7 @@ import lateNotification from 'pages/late_notification/reducer';
 import notificationSettings from 'pages/notification_settings/reducer';
 import workflows from 'pages/workflows/reducer';
 import workflowDetail from 'pages/workflow_detail/reducer';
+import uiComponents from 'pages/ui_components/reducer';
 import products from 'pages/products/reducer';
 import customersCare from 'pages/customers_care/reducer';
 
@@ -114,4 +115,5 @@ export default combineReducers({
   workflows,
   workflowDetail,
   products,
+  uiComponents,
 });

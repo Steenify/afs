@@ -802,6 +802,11 @@
 	&__tabs {
 		border-bottom: 2px solid #e2e5ed;
 		margin-bottom: 20px;
+		scrollbar-width: thin;
+		white-space: nowrap;
+		overflow-x: scroll;
+		overflow-y: hidden;
+		display: flex;
 	}
 
 	&__tab {
@@ -816,6 +821,10 @@
 		padding: 5px 0;
 		margin-bottom: -2px;
 		border-bottom: 2px solid #e2e5ed;
+
+		&.big {
+			font-size: 20px;
+		}
 
 		&.active,
 		&:hover,

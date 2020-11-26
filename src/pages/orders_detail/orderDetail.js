@@ -1,17 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { isEmpty, includes } from 'lodash';
+import { isEmpty } from 'lodash';
 
 import InPageLoading from 'components/common/inPageLoading';
 import CanShow from 'components/layout/canshow';
 
-import { PERMITTIONS_CONFIG, filterOrderItems, filterOrderItemsAdmin, statusPayments, mapStatusPayment } from 'configs';
-import { dateTimeStringFromDate, getSelectedStatus, getOrderItem } from 'utils';
+import { PERMITTIONS_CONFIG, statusPayments, mapStatusPayment, ORDER_STATUS_FRIENDLY } from 'configs';
+import { dateTimeStringFromDate, getSelectedStatus } from 'utils';
 
-import OrderSumaryBox from './orderSumaryBox';
-import OrderItemBox from './orderItemBox';
-import OrderArtWorkBox from './orderArtWorkBox';
-import OrderCanvasWorkBox from './orderCanvasWorkBox';
 import EmaiNotify from './emailNotify';
 import EmailRemind from './remindCustomer';
 import AddProductModal from './addProductModal';
@@ -20,27 +16,13 @@ import BudgetHistoryModal from './budgetHistoryModal';
 import ChangeArtistModal from './changeArtistModal';
 import ChangeBudgetModal from './changeBudgetModal';
 import OrderAssignedItem from './orderAssignedItem';
+import OrderCustomerBox from './orderCustomerBox';
+import OrderDetailItemList from './orderDetailItemList';
 
-const OrderDetail = ({ loading, order, status, accountInfo }) => {
+const OrderDetail = ({ loading, order, status }) => {
   if (isEmpty(order) || !status.length) {
     return <InPageLoading isLoading={loading} />;
   }
-
-  const SHOW_POSTER = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.SHOW_POSTER);
-  const itemsToFilter = SHOW_POSTER ? filterOrderItemsAdmin : filterOrderItems;
-
-  let hasFaster = false;
-  let artworkItems = [],
-    canvasItems = [];
-  order.items.forEach((item) => {
-    if (getOrderItem(item.name) === filterOrderItems[1]) {
-      hasFaster = true;
-    }
-    if (!includes(itemsToFilter, getOrderItem(item.name))) {
-      if (item.productType === 'CANVAS') canvasItems.push(item);
-      else artworkItems.push(item);
-    }
-  });
 
   return (
     <div className='order_detail'>
@@ -51,7 +33,7 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
               <div className='number'>#{order?.number}</div>
               <div className='status'>
                 <span className={`order__status mr-2 ${order?.artistPaymentStatus || statusPayments[1]}}`}> {mapStatusPayment[order?.artistPaymentStatus] || mapStatusPayment.UNPAID}</span>
-                <span className={`order__status mr-2 ${getSelectedStatus(order.status, status).name}`}>{getSelectedStatus(order.status, status).friendlyName}</span>
+                <span className={`order__status mr-2 ${order.overallStatus}`}>{getSelectedStatus(order.overallStatus, ORDER_STATUS_FRIENDLY).friendlyName}</span>
               </div>
               <div className='deadline'>
                 <strong>Deadline: </strong>
@@ -65,55 +47,14 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
         </div>
       </div>
 
-      {artworkItems.map((item) => (
-        <div className='row' key={`order_list_item_${item.id}`}>
-          <div className='col-lg-6'>
-            <div className='order_detail__wrapper'>
-              <OrderItemBox hasFaster={hasFaster} item={item} order={order} />
-            </div>
-          </div>
-          <div className='col-lg-6'>
-            <div className='order_detail__wrapper'>
-              <OrderSumaryBox item={item} order={order} />
-            </div>
-          </div>
+      <div className='row'>
+        <div className='col-lg-8'>
+          <OrderDetailItemList />
         </div>
-      ))}
-      <OrderArtWorkBox order={order} hasPoster={canvasItems.length > 0} />
-
-      {SHOW_POSTER && canvasItems.length > 0 && (
-        <>
-          <div className='order_detail__header canvas'>
-            <div className='row no-gutters align-items-center'>
-              <div className='col-lg-6 col-xl-7'>
-                <div className='info__left'>
-                  <div className='number'>Canvas</div>
-                  {order.statusForCanvas && (
-                    <div className='status'>
-                      <span className={`order__status ${getSelectedStatus(order.statusForCanvas, status).name}`}>{getSelectedStatus(order.statusForCanvas, status).friendlyName}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-          {canvasItems.map((item) => (
-            <div className='row' key={`order_list_item_${item.id}`}>
-              <div className='col-lg-6'>
-                <div className='order_detail__wrapper'>
-                  <OrderItemBox hasFaster={hasFaster} item={item} order={order} />
-                </div>
-              </div>
-              <div className='col-lg-6'>
-                <div className='order_detail__wrapper'>
-                  <OrderSumaryBox item={item} order={order} />
-                </div>
-              </div>
-            </div>
-          ))}
-          {(order.status === 'SEND_FILE' || order.status === 'DONE') && <OrderCanvasWorkBox order={order} />}
-        </>
-      )}
+        <div className='col-lg-4 order_detail__customer_box'>
+          <OrderCustomerBox order={order} customer={order.customer} />
+        </div>
+      </div>
 
       <InPageLoading isLoading={loading} />
       <EmaiNotify order={order} />
@@ -129,12 +70,11 @@ const OrderDetail = ({ loading, order, status, accountInfo }) => {
   );
 };
 
-const mapStateToProps = ({ orderDetail, orderTable, auth }) => {
+const mapStateToProps = ({ orderDetail, orderTable }) => {
   return {
     loading: orderDetail.ui.loading,
     order: orderDetail.data.order,
     status: orderTable.orders.status,
-    accountInfo: auth.data.accountInfo,
   };
 };
 

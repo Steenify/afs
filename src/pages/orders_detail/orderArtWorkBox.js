@@ -7,15 +7,9 @@ import OrderArtWorkGroup from './orderArtWorkGroup';
 import OrderCustomerBox from './orderCustomerBox';
 import OrderArtDelivery from './orderArtDelivery';
 import { getOrderWorkLogAction } from './actions';
-import { PERMITTIONS_CONFIG } from 'configs';
+import { PERMITTIONS_CONFIG, WORKFLOW_STATE_TYPE } from 'configs';
 
-const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, hasPoster, artists = [] }) => {
-  useEffect(() => {
-    if (order.id) {
-      getOrderWorkLog(order.id);
-    }
-  }, [getOrderWorkLog, order.id]);
-
+const OrderArtWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster, artists = [] }) => {
   const [tab, setTab] = useState('activity');
   const [artistId, setArtistId] = useState();
   const [currentWorkLog, setCurrentWorkLog] = useState([]);
@@ -25,10 +19,11 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
   }, [artists.length]);
 
   useEffect(() => {
-    setCurrentWorkLog(workLog[artistId] || []);
-  }, [artistId, workLog]);
+    const worklogs = (workLog[artistId] || []).filter((w) => w.bookingItemId === item.id);
+    setCurrentWorkLog(worklogs);
+  }, [artistId, workLog, item.id]);
 
-  if (loading || !status.length) {
+  if (loadingWorkLog || !status.length) {
     return (
       <div style={{ minHeight: '100px' }} className='order_detail__work_list box d-flex align-items-center justify-content-center'>
         <Spinner />
@@ -36,75 +31,41 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
     );
   }
 
-  const isNewOrder = currentWorkLog.length === 2;
+  const isNewOrder = currentWorkLog.length === 1 && currentWorkLog[0]?.wlStateType === WORKFLOW_STATE_TYPE.START;
+  const isDeliverable = currentWorkLog.find((w) => w.wlStateType === WORKFLOW_STATE_TYPE.DONE);
   const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
-  const worklogGroup = groupBy(currentWorkLog, 'status');
+  const worklogGroupedByState = groupBy(currentWorkLog, 'wlState');
+  console.log('🚀 ~ file: orderArtWorkBox.js ~ line 39 ~ OrderArtWorkBox ~ worklogGroup', worklogGroupedByState);
 
-  const NEW_ORDER = [...(worklogGroup.NEW_ORDER || [])];
-
-  const SKETCH = sortBy([...(worklogGroup.SKETCH || []), ...(worklogGroup.SKETCH_REVIEW || []), ...(worklogGroup.SKETCH_EDIT || [])], (skethItem) => new Date(skethItem.createdDate));
-
-  const COLOR = sortBy([...(worklogGroup.COLOR || []), ...(worklogGroup.COLOR_REVIEW || []), ...(worklogGroup.COLOR_EDIT || [])], (colorItem) => new Date(colorItem.createdDate));
-
-  const EXPORT_FILE = sortBy([...(worklogGroup.EXPORT_FILE || []), ...(worklogGroup.SEND_FILE || [])], (exportItem) => new Date(exportItem.createdDate));
-
-  const DONE = [...(worklogGroup.DONE || [])];
-
-  const WorkGrouped = {
-    NEW_ORDER,
-    SKETCH,
-    COLOR,
-    EXPORT_FILE,
-    DONE,
-  };
-
-  if (!SKETCH.length) {
-    delete WorkGrouped.SKETCH;
-  }
-  if (!COLOR.length) {
-    delete WorkGrouped.COLOR;
-  }
-  if (!EXPORT_FILE.length) {
-    delete WorkGrouped.EXPORT_FILE;
-  }
-  if (!DONE.length) {
-    delete WorkGrouped.DONE;
-  }
-
-  const allExportImage = reduce(
-    EXPORT_FILE,
-    (list, item) => {
-      return [...list, ...item.attachments];
-    },
-    [],
-  );
+  // const allExportImage = reduce(
+  //   EXPORT_FILE,
+  //   (list, item) => {
+  //     return [...list, ...item.attachments];
+  //   },
+  //   [],
+  // );
 
   return (
     <div className='order_detail__work_list'>
       <div className='row'>
-        <div className='col-lg-8'>
+        <div className='col-lg-12'>
           <div className='order_detail__tabs'>
             {artists.map(({ id, firstName = '' }) => {
               const activityKey = `activity_${id}`;
               const postText = artists.length > 1 ? `(${firstName})` : '';
               return (
-                <Fragment key={`order_tab_by_artist_${id}`}>
-                  <button
-                    key={activityKey}
-                    type='button'
-                    onClick={() => {
-                      setTab('activity');
-                      setArtistId(id);
-                    }}
-                    className={`order_detail__tab ${tab === 'activity' && artistId === id && 'active'}`}>
-                    {`Activity ${postText}`}
-                  </button>
-                </Fragment>
+                <button
+                  key={activityKey}
+                  type='button'
+                  onClick={() => {
+                    setTab('activity');
+                    setArtistId(id);
+                  }}
+                  className={`order_detail__tab ${tab === 'activity' && artistId === id && 'active'}`}>
+                  {`Activity ${postText}`}
+                </button>
               );
             })}
-            {/* <button type='button' onClick={() => setTab('activity')} className={`order_detail__tab ${tab === 'activity' && 'active'}`}>
-              Activity
-            </button> */}
             <button
               type='button'
               onClick={() => {
@@ -117,7 +78,7 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
           </div>
         </div>
 
-        <div className='col-lg-8'>
+        <div className='col-lg-12'>
           <div className={`order_detail__content ${tab === 'activity' && 'active'} `}>
             <div className='order_detail__work_items box'>
               {isEmpty(order.assignedTo) && (
@@ -127,7 +88,7 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
               )}
 
               {!isEmpty(order.assignedTo) &&
-                map(WorkGrouped, (works, key) => {
+                map(worklogGroupedByState, (works, key) => {
                   return (
                     <OrderArtWorkGroup
                       hasPoster={hasPoster}
@@ -146,19 +107,9 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
 
           <div className={`order_detail__content ${tab === 'delivery' && 'active'} `}>
             <div className='order_detail__delivery box'>
-              {!EXPORT_FILE.length && (
-                <Alert color='warning'>
-                  <h3 className='text-center'>No Deliverables</h3>
-                </Alert>
-              )}
-
-              {EXPORT_FILE.length > 0 && <OrderArtDelivery works={[...(worklogGroup.EXPORT_FILE || [])]} order={order} images={allExportImage} />}
+              {/* <OrderArtDelivery isDeliverable={isDeliverable} works={[...(worklogGroup.EXPORT_FILE || [])]} order={order} images={allExportImage} /> */}
             </div>
           </div>
-        </div>
-
-        <div className='col-lg-4 order_detail__customer_box'>
-          <OrderCustomerBox order={order} customer={order.customer} />
         </div>
       </div>
     </div>
@@ -167,7 +118,7 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
 
 const mapStateToProps = ({ orderTable, orderDetail, auth }, ownProps) => ({
   status: orderTable.orders.status,
-  loading: orderDetail.ui.loadingWorkLog,
+  loadingWorkLog: orderDetail.ui.loadingWorkLog,
   workLog: orderDetail.data.workLog,
   accountInfo: auth.data.accountInfo,
   artists:
@@ -183,8 +134,6 @@ const mapStateToProps = ({ orderTable, orderDetail, auth }, ownProps) => ({
       }) || [],
 });
 
-const mapDispatchToProps = {
-  getOrderWorkLog: getOrderWorkLogAction,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderArtWorkBox);

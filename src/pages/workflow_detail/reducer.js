@@ -33,14 +33,13 @@ const reducer = (state = initialState, action) => {
       });
     }
     case UPDATE_WORKFLOW_ACTION.SUCCESS: {
+      const temp = { name: payload.name, description: payload.description };
       return update(state, {
         ui: {
           loadingInfo: { $set: false },
         },
         data: {
-          workflow: {
-            name: { $set: payload.name },
-          },
+          workflow: { $merge: temp },
         },
       });
     }

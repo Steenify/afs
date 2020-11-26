@@ -51,6 +51,6 @@ const WorkflowDeleteModal = (props) => {
   );
 };
 
-const mapStateToProps = () => {};
+const mapStateToProps = () => ({});
 
 export default connect(mapStateToProps, { deleteWorkflowAction })(WorkflowDeleteModal);

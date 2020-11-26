@@ -49,6 +49,11 @@ const SettingsPage = (props) => {
       des: 'Workflows',
     },
     {
+      ...WEB_ROUTES.UI_COMPONENTS,
+      icon: <Package />,
+      des: 'UI Components',
+    },
+    {
       ...WEB_ROUTES.PRODUCTS,
       icon: <Package />,
       des: 'Products',

@@ -10,8 +10,6 @@ import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 import { updateOrderTableFilterAction, getOrderTableCountByStatusAction } from './actions';
 import { countTotalOrders } from 'utils';
 
-const orderStatuses = Object.keys(ORDER_STATUS_FRIENDLY).map((i) => ORDER_STATUS_FRIENDLY[i]);
-
 const OrderFilterStatus = ({ selectedStatus, orderStatusCount, updateOrderTableFilterAction, getOrderTableCountByStatusAction, reducer }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
@@ -47,7 +45,7 @@ const OrderFilterStatus = ({ selectedStatus, orderStatusCount, updateOrderTableF
               All
               <span className='number'>{totalOrders || 0}</span>
             </button>
-            {orderStatuses.map((sta) => (
+            {ORDER_STATUS_FRIENDLY.map((sta) => (
               <button data={sta.name} onClick={handleChangeStatus} key={`list__status_option__${sta.name}`} className={`status  ${sta.name} ${selectedStatus === sta.name && 'active'}`}>
                 {sta.friendlyName}
                 {orderStatusCount[sta.name] && sta.name !== 'DONE' && <span className='number'>{orderStatusCount[sta.name]}</span>}
@@ -57,7 +55,7 @@ const OrderFilterStatus = ({ selectedStatus, orderStatusCount, updateOrderTableF
         </div>
       )}>
       <button onClick={() => setIsPopoverOpen(!isPopoverOpen)} className='filter__toggle middle'>
-        <span className='dispaly_name'>{orderStatuses.find((s) => s.name === selectedStatus)?.friendlyName || 'Status'}</span>
+        <span className='dispaly_name'>{ORDER_STATUS_FRIENDLY.find((s) => s.name === selectedStatus)?.friendlyName || 'Status'}</span>
         <span className='icon mb-1 ml-2'>
           <Cavet />
         </span>

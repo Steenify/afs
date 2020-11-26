@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { reduxForm, Field, FieldArray } from 'redux-form';
 import { useParams } from 'react-router-dom';
 import { Form, Alert } from 'reactstrap';
-import _ from 'lodash';
 
 import { Select } from 'components/common/select';
 import Input from 'components/common/input';
@@ -191,6 +190,13 @@ const WorkflowState = (props) => {
             <div className='col-lg-6'>
               <Field className='form__item' component={Input} name='description' type='textarea' placeholder={'Description'} />
             </div>
+          </div>
+          <div className='box__sub_title mb-2 d-flex align-items-center'>
+            <span className=''>Deliverable?</span>
+            <label className='cus-checkbox ml-2'>
+              <Field className='form-control sr-only' component={'input'} type='checkbox' name='isDeliverable' />
+              <span className='checkmark'></span>
+            </label>
           </div>
           <div className='box__sub_title mb-2'>
             <span className=''>Message Templates</span>
