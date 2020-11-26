@@ -222,7 +222,6 @@ const OrderArtWorkGroup = ({
             if (isDoneStatus) {
               return null;
             }
-
             if (isNewStatus) {
               if (isCurrentArtist && isNewOrder) {
                 return (
