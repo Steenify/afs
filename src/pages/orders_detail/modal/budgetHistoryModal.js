@@ -50,7 +50,7 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
   };
   return (
     <Modal isOpen={isOpen} toggle={toggle} fade={false} size='lg' className='modal-dialog-centered  modal-no-border order_detail__assignedModal'>
-      <div className='assignedModal'>
+      <div className='assignedModal' style={{ marginLeft: -20, marginRight: -20 }}>
         <ModalHeader toggle={toggle}>
           <div className='d-flex align-items-center'>
             <div>Budget History</div>
@@ -75,11 +75,14 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
                     <th style={{ minWidth: 100 }} scope='col'>
                       People
                     </th>
-                    <th style={{ minWidth: 120 }} scope='col'>
+                    <th style={{ minWidth: 130 }} scope='col'>
                       Type
                     </th>
-                    <th style={{ minWidth: 70, textAlign: 'right' }} scope='col'>
+                    <th style={{ minWidth: 80, textAlign: 'right' }} scope='col'>
                       Budget
+                    </th>
+                    <th style={{ minWidth: 100 }} scope='col'>
+                      Artist
                     </th>
                     <th style={{ minWidth: 130 }} scope='col'>
                       Reason
@@ -97,6 +100,7 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
                       <td>{item?.user?.fullName}</td>
                       <td>{`${BUDGET_CHANGE_TYPES[item?.action] || 'Budget'}`}</td>
                       <td style={{ textAlign: 'right' }}>{formatMoney(item?.amount)}</td>
+                      <td>{item?.artist?.fullName}</td>
                       <td>{item?.note}</td>
                       <td>{getLogStatusPayment(item?.artist)}</td>
                     </tr>
