@@ -7,6 +7,7 @@ import {
   getOrderCountByStatusService,
   getOrderBulkMarkAsDoneService,
   getAllBookingTagsService,
+  adjustOrderBudgetService,
 } from 'services/order';
 
 import { getAllStatusService } from 'services/status';
@@ -323,6 +324,7 @@ export const getAllTagsAction = () => (dispatch) => {
     dispatch({ type: GET_TAGS.SUCCESS, payload });
   };
   const onError = (error) => {
+    console.log('getAllTagsAction => onError -> error', JSON.stringify(error));
     dispatch({ type: GET_TAGS.ERROR, payload: error.response });
   };
   actionTryCatchCreator({
@@ -339,5 +341,25 @@ export const updateOrderTableSelectedOrderBudgetAction = ({ payload, reducer }) 
     type: ORDER_TABLE_UPDATE_SELECTED_ORDER_BUDGET_ACTION,
     payload,
     reducer,
+  });
+};
+
+export const ORDER_TABLE_ADJUST_BUDGET_ACTION = actionCreator('ORDER_TABLE_ADJUST_BUDGET_ACTION');
+export const adjustOrderBudgetTableAction = ({ orderId, data, onDone }) => (dispatch) => {
+  const onPending = () => {
+    dispatch({ type: ORDER_TABLE_ADJUST_BUDGET_ACTION.PENDING });
+  };
+  const onSuccess = (data) => {
+    dispatch({ type: ORDER_TABLE_ADJUST_BUDGET_ACTION.SUCCESS, data });
+    onDone && onDone(data);
+  };
+  const onError = (error) => {
+    dispatch({ type: ORDER_TABLE_ADJUST_BUDGET_ACTION.ERROR, payload: error.response });
+  };
+  actionTryCatchCreator({
+    service: adjustOrderBudgetService(orderId, data),
+    onPending,
+    onSuccess,
+    onError,
   });
 };

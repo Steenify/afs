@@ -11,7 +11,7 @@ import Dropbox from 'components/common/dropbox';
 
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 
-import { updateShowAddProductAction, addOrderItemAction } from './actions';
+import { updateShowAddProductAction, addOrderItemAction } from '../actions';
 
 class AddProductModal extends Component {
   constructor() {

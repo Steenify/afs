@@ -280,6 +280,13 @@ export const resolvedOrderTodoList = (orderId, todoId) =>
     url: `${ORDERS_API}/${orderId}/todo-list/${todoId}/resolve`,
     method: 'PUT',
   });
+
+export const removeOrderTodoList = (orderId, todoId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/todo-list/${todoId}`,
+    method: 'DELETE',
+  });
+
 export const getBudgetsHistoryService = (orderId) =>
   request({
     url: `${ORDERS_API}/${orderId}/budget/log`,

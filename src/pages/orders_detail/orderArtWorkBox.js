@@ -31,6 +31,7 @@ const OrderArtWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPost
     );
   }
 
+  const isCurrentArtist = artistId === order?.assignedTo?.id;
   const isNewOrder = currentWorkLog.length === 1 && currentWorkLog[0]?.wlStateType === WORKFLOW_STATE_TYPE.START;
   const isDeliverable = currentWorkLog.find((w) => w.wlStateType === WORKFLOW_STATE_TYPE.DONE);
   const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
@@ -93,6 +94,7 @@ const OrderArtWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPost
                     <OrderArtWorkGroup
                       hasPoster={hasPoster}
                       isNewOrder={isNewOrder}
+                      isCurrentArtist={isCurrentArtist}
                       works={works}
                       order={order}
                       group={key}

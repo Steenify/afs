@@ -42,6 +42,7 @@ const OrderArtWorkGroup = ({
   workLog,
   lastWorkLog,
   hasPoster,
+  isCurrentArtist,
 }) => {
   const canNotifyCustomer = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.NOTIFY_BOOKING_TO_CUSTOMER) || false;
   const canAprroved = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) || false;
@@ -204,7 +205,7 @@ const OrderArtWorkGroup = ({
       <Collapse isOpen={isOpen}>
         <div className={`group__body ${isNewOrder && 'isNewOrder'}`}>
           {works.map((work) => {
-            const showActionState = lastWorkLog.id === work.id;
+            const showActionState = lastWorkLog.id === work.id && isCurrentArtist;
             const showActionPermitions = canNotifyCustomer || canAprroved || canRejected;
 
             const isNewStatus = work.wlStateType === WORKFLOW_STATE_TYPE.START;
@@ -219,14 +220,13 @@ const OrderArtWorkGroup = ({
             if (isDoneStatus) {
               return null;
             }
-
             if (isNewStatus) {
-              if (isNewOrder) {
+              if (isCurrentArtist && isNewOrder) {
                 return (
                   <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                     {canChangeStatus && (
                       <div className='order_detail__ctas text-center justify-content-center'>
-                        <Button onClick={() => handleStartSketch(work?.artist?.id)} color='primary' className='cta' type='button'>
+                        <Button onClick={() => handleApproveWorkLog(work.id, false, work?.artist?.id)} color='primary' className='cta' type='button'>
                           Start Working
                         </Button>
                       </div>

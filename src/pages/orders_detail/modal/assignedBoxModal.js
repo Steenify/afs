@@ -6,10 +6,11 @@ import Button from 'components/common/button';
 import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
 import { ReactComponent as RightRectangle } from 'assets/img/right_rectangle.svg';
 
-import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs } from './actions';
+import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs } from '../actions';
+
 import { formatMoney } from 'utils';
 import { PERMITTIONS_CONFIG, mapRoles } from 'configs';
-import PreviousArtistBudget from './previousArtistBudget';
+import PreviousArtistBudget from '../previousArtistBudget';
 
 const AssignedBoxModal = ({ order, isOpen, permissions = [], authorities = [], updateShowAssignedBoxAction }) => {
   const { artistBudgets = [], assignedTo = {}, budget = 0 } = order || {};
