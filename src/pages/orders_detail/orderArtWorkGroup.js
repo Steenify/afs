@@ -224,7 +224,7 @@ const OrderArtWorkGroup = ({
             }
 
             if (isNewStatus) {
-              if (isNewOrder && isCurrentArtist) {
+              if (isCurrentArtist) {
                 return (
                   <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                     {canChangeStatus && (

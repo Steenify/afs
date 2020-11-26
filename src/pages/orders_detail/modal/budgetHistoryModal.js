@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from 'reactstrap';
-
-import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
-import { ReactComponent as BackIcon } from 'assets/img/back.svg';
+import { findIndex } from 'lodash';
+import Button from 'components/common/button';
 
 import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, getBudgetsHistoryAction } from '../actions';
-import { formatMoney } from 'utils';
+import { formatMoney, dateTimeStringFromDate } from 'utils';
 
 const BUDGET_CHANGE_TYPES = {
   MODIFY: 'Modify Budget',
@@ -17,6 +16,7 @@ const BUDGET_CHANGE_TYPES = {
 const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBudgetsHistoryAction }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const { artistBudgets } = order;
 
   useEffect(() => {
     if (isOpen) {
@@ -41,26 +41,20 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
   }, [isOpen, getBudgetsHistoryAction, order]);
 
   const toggle = () => updateShowAssignedBoxAction(false);
-  const onBack = () => {
-    if (window.innerWidth < 991) {
-      updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED);
-    } else {
-      updateShowAssignedBoxAction('');
-    }
+
+  const getLogStatusPayment = (art) => {
+    const index = findIndex(artistBudgets, (bg) => bg?.artist?.login === art?.login);
+    const budget = artistBudgets[index] || {};
+
+    return budget?.artistPaymentStatus || 'N/A';
   };
   return (
     <Modal isOpen={isOpen} toggle={toggle} fade={false} size='lg' className='modal-dialog-centered  modal-no-border order_detail__assignedModal'>
       <div className='assignedModal'>
         <ModalHeader toggle={toggle}>
           <div className='d-flex align-items-center'>
-            <button type='button' className='back mr-2' onClick={onBack}>
-              <BackIcon width='25px' height='25px' />
-            </button>
             <div>Budget History</div>
           </div>
-          <button type='button' className='modal-close' onClick={toggle}>
-            <CloseIcon width='25px' height='25px' />
-          </button>
         </ModalHeader>
         <ModalBody>
           {loading ? (
@@ -69,27 +63,55 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
             </div>
           ) : (
             <div className='budget__history__list'>
-              {data.map((item, index) => {
-                return (
-                  <div key={`budget__history__${item?.id}__${index}`} className='budget__history__item'>
-                    <div className='budget__history__row'>
-                      <span className='label'>CS:</span>
-                      <strong className='value text-black'>{item?.user?.fullName}</strong>
-                    </div>
-                    <div className='budget__history__row'>
-                      <span className='label'>{`${BUDGET_CHANGE_TYPES[item?.action] || 'Budget'}:`}</span>
-                      <strong className='value text-blue'>{formatMoney(item?.amount)}</strong>
-                    </div>
-                    <div className='budget__history__row'>
-                      <span className='label'>Note:</span>
-                      <span className='value text-gray'>{item?.note}</span>
-                    </div>
-                  </div>
-                );
-              })}
+              <table className='table table-bordered'>
+                <thead>
+                  <tr>
+                    <th style={{ minWidth: 50 }} scope='col'>
+                      #
+                    </th>
+                    <th style={{ minWidth: 150 }} scope='col'>
+                      Time
+                    </th>
+                    <th style={{ minWidth: 100 }} scope='col'>
+                      People
+                    </th>
+                    <th style={{ minWidth: 120 }} scope='col'>
+                      Type
+                    </th>
+                    <th style={{ minWidth: 70, textAlign: 'right' }} scope='col'>
+                      Budget
+                    </th>
+                    <th style={{ minWidth: 130 }} scope='col'>
+                      Reason
+                    </th>
+                    <th style={{ minWidth: 100 }} scope='col'>
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((item, index) => (
+                    <tr key={`budget__history__${item?.id}__${index}`}>
+                      <th scope='row'>{index + 1}</th>
+                      <td>{dateTimeStringFromDate(item?.createdDate)}</td>
+                      <td>{item?.user?.fullName}</td>
+                      <td>{`${BUDGET_CHANGE_TYPES[item?.action] || 'Budget'}`}</td>
+                      <td style={{ textAlign: 'right' }}>{formatMoney(item?.amount)}</td>
+                      <td>{item?.note}</td>
+                      <td>{getLogStatusPayment(item?.artist)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </ModalBody>
+
+        <ModalFooter>
+          <Button color='secondary' className='modal-close' onClick={toggle}>
+            Close
+          </Button>
+        </ModalFooter>
       </div>
     </Modal>
   );

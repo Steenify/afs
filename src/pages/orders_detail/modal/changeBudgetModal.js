@@ -8,22 +8,31 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Button from 'components/common/button';
 import { formatMoney } from 'utils';
 import NumberFormat from 'react-number-format';
-import { ReactComponent as CloseIcon } from 'assets/img/close.svg';
-import { ReactComponent as BackIcon } from 'assets/img/back.svg';
 
 import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, updateOrderBudgetAction, adjustOrderBudgetAction, setBudgetAction } from '../actions';
 
 const { CHANGE_BUDGET, INCREASE_BUDGET, DECREASE_BUDGET } = ASSIGNED_MODAL_KEYs;
 const TITLES = {
-  CHANGE_BUDGET: 'Budget',
-  INCREASE_BUDGET: 'Increase Amount',
-  DECREASE_BUDGET: 'Decrease Amount',
+  CHANGE_BUDGET: 'Change Budget',
+  INCREASE_BUDGET: 'Increase Budget',
+  DECREASE_BUDGET: 'Decrease Budget',
 };
 
 const ACTION_CHANGE_TYPES = {
   CHANGE_BUDGET: 'MODIFY',
   INCREASE_BUDGET: 'INCREASE',
   DECREASE_BUDGET: 'DECREASE',
+};
+
+const ACTION_CHANGE_COLORS = {
+  CHANGE_BUDGET: 'primary',
+  INCREASE_BUDGET: 'success',
+  DECREASE_BUDGET: 'danger',
+};
+const ACTION_CHANGE_TEXT = {
+  CHANGE_BUDGET: 'primary',
+  INCREASE_BUDGET: 'Increase $',
+  DECREASE_BUDGET: 'Decrease $',
 };
 
 const ChangeBudgetModal = ({ order, isOpen, currentShow, updateShowAssignedBoxAction, updateOrderBudgetAction, adjustOrderBudgetAction, setBudgetAction }) => {
@@ -33,17 +42,13 @@ const ChangeBudgetModal = ({ order, isOpen, currentShow, updateShowAssignedBoxAc
   useEffect(() => {
     if (!isOpen) {
       setNote('');
-      setAmount();
+      setAmount(0);
     }
   }, [isOpen]);
 
   const toggle = () => updateShowAssignedBoxAction(false);
   const onBack = () => {
-    if (window.innerWidth < 991) {
-      updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED);
-    } else {
-      updateShowAssignedBoxAction('');
-    }
+    updateShowAssignedBoxAction('');
   };
   const onSave = () => {
     const number = parseInt(amount || 0, 10);
@@ -96,26 +101,23 @@ const ChangeBudgetModal = ({ order, isOpen, currentShow, updateShowAssignedBoxAc
       <div className='changeBudgetModal'>
         <ModalHeader toggle={toggle}>
           <div className='d-flex align-items-center'>
-            <button type='button' className='back mr-2' onClick={onBack}>
-              <BackIcon width='25px' height='25px' />
-            </button>
-            <div>Change Budget</div>
+            <div>{`${title}`}</div>
           </div>
-          <button type='button' className='modal-close' onClick={toggle}>
-            <CloseIcon width='25px' height='25px' />
-          </button>
         </ModalHeader>
         <ModalBody>
-          <div className=' mb-3'>
-            <div className='label'>{`${title}:`}</div>
+          <div className='d-flex align-items-center mb-3'>
+            <div className='label mr-3'>{'Amount:'}</div>
             <NumberFormat prefix={'$  '} thousandSeparator={true} className='form-control amount' value={amount} onValueChange={(data) => setAmount(data?.value || 0)} />
           </div>
-          <span className='label'>Note:</span>
+          <span className='label'>Reason:</span>
           <textarea className='form-control note' placeholder='Change budget note' onChange={(e) => setNote(e?.target?.value || '')} value={note} rows='3'></textarea>
         </ModalBody>
         <ModalFooter>
-          <Button color='primary' onClick={onSave}>
-            Save
+          <Button color='secondary' className='modal-close' onClick={toggle}>
+            Cancel
+          </Button>
+          <Button color={ACTION_CHANGE_COLORS[currentShow] || 'primary'} onClick={onSave}>
+            {ACTION_CHANGE_TEXT[currentShow] || 'Save'}
           </Button>
         </ModalFooter>
       </div>

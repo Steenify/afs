@@ -1148,6 +1148,9 @@
 			&__icon {
 				width: 30px;
 				min-width: 30px;
+				.cus-checkbox {
+					border-color: #ff8844;
+				}
 			}
 
 			&__text {
@@ -1166,6 +1169,7 @@
 			&__input {
 				height: 35px;
 				margin-right: 5px;
+				border-color: #ff8844;
 			}
 
 			&__edit {
@@ -1180,9 +1184,11 @@
 					background: #dc3545;
 					color: $white;
 					border-radius: 100%;
-					display: inline-block;
+					display: flex;
 					width: 20px;
 					height: 20px;
+					align-items: center;
+					justify-content: center;
 				}
 			}
 		}

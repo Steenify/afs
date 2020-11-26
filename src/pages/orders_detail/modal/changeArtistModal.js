@@ -46,11 +46,11 @@ const ChangeArtistModal = ({ order, isOpen, updateShowAssignedBoxAction, getAssi
 
   const toggle = () => updateShowAssignedBoxAction(false);
   const onBack = () => {
-    if (window.innerWidth < 991) {
-      updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED);
-    } else {
-      updateShowAssignedBoxAction('');
-    }
+    // if (window.innerWidth < 991) {
+    //   updateShowAssignedBoxAction(ASSIGNED_MODAL_KEYs.ASSIGNED);
+    // } else {
+    updateShowAssignedBoxAction('');
+    // }
   };
   const onSave = (artist) => {
     if ((assignedTo || {})['login'] === artist?.login) {

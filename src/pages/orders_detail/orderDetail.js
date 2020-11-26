@@ -19,7 +19,7 @@ import AssignedBoxModal from './modal/assignedBoxModal';
 import BudgetHistoryModal from './modal/budgetHistoryModal';
 import ChangeArtistModal from './modal/changeArtistModal';
 import ChangeBudgetModal from './modal/changeBudgetModal';
-import OrderAssignedItem from './orderAssignedItem';
+// import OrderAssignedItem from './orderAssignedItem';
 
 import OrderAssignedBox from './orderAssignedBox';
 import OrderBudget from './orderBudget';
@@ -68,36 +68,34 @@ const OrderDetail = ({ loading, order, status, accountInfo, updateShowAssignedBo
             </div>
           </div>
           <div className='col-lg-6 col-xl-5'>
-            <div className='d-none d-lg-block'>
-              <div className='info__right '>
-                {canEditAssign && canGetArtists && <OrderAssignedBox order={order} />}
-                <OrderBudget order={order} />
-              </div>
-              <CanShow permission={PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS}>
-                <div className='info__right mt-3'>
-                  <CanShow permission={PERMITTIONS_CONFIG.GET_ARTIST_BUDGET}>
-                    <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.BUDGET_HISTORY)} className='btn info__cta info__history btn-dark'>
-                      Budget History
-                    </button>
-                  </CanShow>
-                  <CanShow permission={PERMITTIONS_CONFIG.ADJUST_BUDGET}>
-                    <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.INCREASE_BUDGET)} className='btn info__cta info__increase btn-success'>
-                      Increase $
-                    </button>
-                    <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.DECREASE_BUDGET)} className='btn info__cta info__decrease btn-danger'>
-                      Decrease $
-                    </button>
-                  </CanShow>
-                </div>
-              </CanShow>
+            <div className='info__right '>
+              {canEditAssign && canGetArtists && <OrderAssignedBox order={order} />}
+              <OrderBudget order={order} />
             </div>
+            <CanShow permission={PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS}>
+              <div className='d-flex flex-wrap justify-content-end align-items-center  mt-3'>
+                <CanShow permission={PERMITTIONS_CONFIG.GET_ARTIST_BUDGET}>
+                  <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.BUDGET_HISTORY)} className='btn info__cta info__history btn-dark'>
+                    Budget History
+                  </button>
+                </CanShow>
+                <CanShow permission={PERMITTIONS_CONFIG.ADJUST_BUDGET}>
+                  <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.INCREASE_BUDGET)} className='btn info__cta info__increase btn-success'>
+                    Increase $
+                  </button>
+                  <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.DECREASE_BUDGET)} className='btn info__cta info__decrease btn-danger'>
+                    Decrease $
+                  </button>
+                </CanShow>
+              </div>
+            </CanShow>
           </div>
 
-          <div className='col-12'>
+          {/* <div className='col-12'>
             <div className='d-lg-none'>
               <OrderAssignedItem />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
