@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import Button from 'components/common/button';
 import DataTable from 'components/common/DataTable';
+import { showConfirmAlert } from 'utils';
 
 import { actGetAuthorities, actDeleteAuthority } from './actions';
 
@@ -30,7 +31,7 @@ const RoleList = (props) => {
       accessor: 'delete',
       Header: '',
       Cell: ({ row: { original } }) => (
-        <Button color='danger' onClick={() => handleDelete(original.id)}>
+        <Button color='danger' onClick={() => handleDelete(original)}>
           {t('entity.action.delete')}
         </Button>
       ),
@@ -42,12 +43,19 @@ const RoleList = (props) => {
     actGetAuthorities();
   }, [actGetAuthorities]);
 
-  const handleDelete = (id) => {
+  const handleDelete = (role) => {
+    const { id, name = '' } = role || {};
     if (id) {
-      props.actDeleteAuthority(id).then((res) => {
-        if (res && res.status === 204) {
-          props.actGetAuthorities();
-        }
+      showConfirmAlert({
+        title: 'Confirm Delete',
+        text: `Are you sure you want to delete role ${name}?`,
+        onConfirm: () => {
+          props.actDeleteAuthority(id).then((res) => {
+            if (res && res.status === 204) {
+              props.actGetAuthorities();
+            }
+          });
+        },
       });
     }
   };
