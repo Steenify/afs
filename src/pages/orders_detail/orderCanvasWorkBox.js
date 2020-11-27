@@ -24,9 +24,11 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
     );
   }
 
-  const isNewOrder = workLog[0]?.status === 'NEW_ORDER';
-  const lastWorkLog = workLog[workLog.length - 1];
-  const worklogGroup = groupBy(workLog, 'status');
+  const currentWorkLog = workLog[order?.assignedTo?.id || ''] || [];
+
+  const isNewOrder = currentWorkLog[0]?.status === 'NEW_ORDER';
+  const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
+  const worklogGroup = groupBy(currentWorkLog, 'status');
 
   const NEW_ORDER = [...(worklogGroup.NEW_ORDER || [])];
   const PRINT_PREVIEW = sortBy([...(worklogGroup.PRINT_PREVIEW || [])], (item) => new Date(item.createdDate));
