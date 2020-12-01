@@ -12,7 +12,7 @@ const OrderPaging = ({ totalPage, page, reducer, updateOrderTableFilterAction })
   };
 
   return (
-    <div className='d-flex justify-content-center'>
+    <div className='d-flex justify-content-center mt-3'>
       <Paging items={totalPage} activePage={page + 1} onSelect={goToPage} />
     </div>
   );

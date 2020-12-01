@@ -1,3 +1,5 @@
+import smoothscroll from 'smoothscroll-polyfill';
+
 import './bootstrap';
 import './i18n';
 import './react-dates';
@@ -10,3 +12,4 @@ import 'nprogress/nprogress.css';
 // import 'emoji-mart/css/emoji-mart.css';
 
 toast.configure();
+smoothscroll.polyfill();
