@@ -24,7 +24,9 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
     );
   }
 
-  const currentWorkLog = workLog[order?.assignedTo?.id || ''] || [];
+  const defaultWorkLogKey = Object.keys(workLog)?.[0] || '';
+  const currentWorkLogTemp = workLog[order?.assignedTo?.id] || [];
+  const currentWorkLog = currentWorkLogTemp?.length === 0 ? workLog[defaultWorkLogKey] || [] : currentWorkLogTemp;
 
   const isNewOrder = currentWorkLog[0]?.status === 'NEW_ORDER';
   const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
