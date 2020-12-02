@@ -120,7 +120,7 @@ const SideBar = (props) => {
                   {item.links.map((link) => {
                     if (link.isExternal) {
                       return (
-                        <a key={link.path} className='link link--icon' href={link.path} target='_blank' rel='noreferrer'>
+                        <a key={link.path} className='link link--icon' href={link.path} target='_blank' rel='noreferrer noreferrer'>
                           <span className='icon'>{link.icon}</span>
                           <span className='text'>{link.title}</span>
                         </a>

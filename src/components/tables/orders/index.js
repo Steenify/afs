@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, createRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Spinner } from 'reactstrap';
 
 import TableBody from 'components/common/tableBody';
 import TableHeader from 'components/common/tableHeader';
+import ScrollControl from 'components/common/tableScrollControl';
 
 import { PERMITTIONS_CONFIG } from 'configs';
 
@@ -33,6 +34,12 @@ import { getOrderTableStatusAction, getListAction, getAllTagsAction } from './ac
 import './style.scss';
 
 class OrderTable extends PureComponent {
+  constructor() {
+    super();
+    this.containerRef = createRef();
+    this.tableRef = createRef();
+  }
+
   componentDidMount() {
     const { getOrderTableStatusAction, reducer, getListAction, filter, getAllTagsAction } = this.props;
     getOrderTableStatusAction({ reducer });
@@ -164,12 +171,13 @@ class OrderTable extends PureComponent {
             <Spinner /> <span className='text'>Loading</span>
           </div>
           {isCanPay && <OrderBulkAction reducer={reducer} />}
-          <div className='table-responsive bg-light steenify-table bg-white order__table'>
-            <table className='table'>
+          <div ref={this.containerRef} className='table-responsive bg-light steenify-table bg-white order__table scroll_control__target'>
+            <table ref={this.tableRef} className='table'>
               <TableHeader columns={columnsOrder} />
               <TableBody cellProps={{ goToDetail: this.goToDetail, reducer }} getRowProps={this.getRowProps} reducer={reducer} data={ids} columns={columnsOrder} rowName='TableRowOrder' />
             </table>
           </div>
+          <ScrollControl data={ids} containerRef={this.containerRef} tableRef={this.tableRef} />
         </div>
         <OrderPaging reducer={reducer} />
         <OrderUpdateBudgetModal reducer={reducer} />

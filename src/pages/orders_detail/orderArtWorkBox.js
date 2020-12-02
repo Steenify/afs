@@ -17,16 +17,13 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
   }, [getOrderWorkLog, order.id]);
 
   const [tab, setTab] = useState('activity');
-  const [artistId, setArtistId] = useState();
-  const [currentWorkLog, setCurrentWorkLog] = useState([]);
+  const [artistId, setArtistId] = useState(0);
 
   useEffect(() => {
     setArtistId(artists[0]?.id);
   }, [artists.length]);
 
-  useEffect(() => {
-    setCurrentWorkLog(workLog[artistId] || []);
-  }, [artistId, workLog]);
+  const currentWorkLog = workLog[artistId] || [];
 
   if (loading || !status.length) {
     return (
