@@ -21,7 +21,7 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
 
   useEffect(() => {
     setArtistId(artists[0]?.id);
-  }, [artists.length]);
+  }, [artists]);
 
   const currentWorkLog = workLog[artistId] || [];
 

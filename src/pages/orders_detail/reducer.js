@@ -860,16 +860,26 @@ const reducer = (state = initialState, action) => {
     case ORDER_DETAIL_ACTIONS.SET_ORDER_DETAIL_BUDGET: {
       const order = state.data.order || {};
       const index = order?.artistBudgets?.findIndex?.((item) => item?.artist?.id === order?.assignedTo?.id);
-      return update(state, {
-        data: {
-          order: {
-            budget: { $set: payload },
-            artistBudgets: {
-              [index]: { budget: { $set: payload } },
+      if (index !== -1) {
+        return update(state, {
+          data: {
+            order: {
+              budget: { $set: payload },
+              artistBudgets: {
+                [index]: { budget: { $set: payload } },
+              },
             },
           },
-        },
-      });
+        });
+      } else {
+        return update(state, {
+          data: {
+            order: {
+              budget: { $set: payload },
+            },
+          },
+        });
+      }
     }
 
     default:
