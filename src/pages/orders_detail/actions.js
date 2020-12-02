@@ -527,10 +527,10 @@ export const updateTrackingCodeWorkLogAction = (id, data, cb) => (dispatch) => {
       type: UPDATE_TRACKING_CODE_WORK_LOG_ACTION.PENDING,
     });
   };
-  const onSuccess = () => {
+  const onSuccess = (payload) => {
     dispatch({
       type: UPDATE_TRACKING_CODE_WORK_LOG_ACTION.SUCCESS,
-      payload: { id, data },
+      payload,
     });
     cb && cb();
   };

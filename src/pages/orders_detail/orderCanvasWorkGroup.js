@@ -35,6 +35,7 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
 
   const canAprroved = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) || false;
   const canRejected = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.REJECT_WORK_LOG) || false;
+  const isPassTrackingStatus = (order?.printfulTrackings?.length || 0) > 0; // order.printfulTrackingUrl && order.printfulTrackingCode && order.printfulEstimatedDeliveryTo && order.printfulEstimatedDeliveryFrom;
 
   const handleApproveWorkLog = (LogId, isMarkAsDone, artistId) => {
     confirmAlert({
@@ -133,8 +134,6 @@ const OrderCanvasWorkGroup = ({ order, group, works, status, approvedWorkLog, re
             const isTrackingStatus = work.status === 'PRINT_TRACKING';
             const isReceivedStatus = work.status === 'PRINT_RECEIVED';
             const isDoneStatus = work.status === 'DONE';
-
-            const isPassTrackingStatus = order.printfulTrackingUrl && order.printfulTrackingCode && order.printfulEstimatedDeliveryTo && order.printfulEstimatedDeliveryFrom;
 
             const workLogIndex = findIndex(workLog[work?.artist?.id] || [], (log) => log.id === work.id);
 
