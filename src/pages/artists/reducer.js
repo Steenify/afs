@@ -2,7 +2,7 @@ import update from 'react-addons-update';
 
 import { mapDataList, mapDataByIds, isMobile } from 'utils';
 
-import { ARTISTS_ACTIONS, GET_ARTISTS_LIST_ACTION, GET_ARTISTS_ACTION, UPDATE_ARTISTS_API_ACTION } from './actions';
+import { ARTISTS_ACTIONS, GET_ARTISTS_LIST_ACTION, GET_ARTISTS_ACTION, UPDATE_ARTISTS_API_ACTION, ARTIST_CREATE_PAYOUTS_BULK_ACTION } from './actions';
 
 const initialState = {
   ui: { loading: false, loadingDetail: false },
@@ -123,6 +123,21 @@ const reducer = (state = initialState, action) => {
         },
         artist: { $set: payload.data },
       });
+
+    case ARTIST_CREATE_PAYOUTS_BULK_ACTION.PENDING:
+      return update(state, {
+        ui: {
+          loading: { $set: true },
+        },
+      });
+    case ARTIST_CREATE_PAYOUTS_BULK_ACTION.SUCCESS:
+    case ARTIST_CREATE_PAYOUTS_BULK_ACTION.ERROR:
+      return update(state, {
+        ui: {
+          loading: { $set: false },
+        },
+      });
+
     case ARTISTS_ACTIONS.UPDATE_ARTIST_DETAIL:
       return update(state, {
         artist: { $merge: payload },
