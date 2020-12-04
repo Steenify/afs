@@ -71,9 +71,6 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
             <button type='button' onClick={() => setTab('activity')} className={`order_detail__tab ${tab === 'activity' && 'active'}`}>
               Activity
             </button>
-            {/* <button type='button' onClick={() => setTab('delivery')} className={`order_detail__tab ${tab === 'delivery' && 'active'}`}>
-              Delivery
-            </button> */}
           </div>
         </div>
 

@@ -34,6 +34,7 @@ import {
   EDIT_ORDER_TODO_LIST_ACTION,
   RESOLVED_ORDER_TODO_LIST_ACTION,
   REMOVE_ORDER_TODO_LIST_ACTION,
+  DELETE_ARTIST_BUDGET_ORDER_ACTION,
 } from './actions';
 
 import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
@@ -842,6 +843,17 @@ const reducer = (state = initialState, action) => {
         data: {
           todos: {
             $splice: [[payload.index, 1]],
+          },
+        },
+      });
+    }
+    case DELETE_ARTIST_BUDGET_ORDER_ACTION.SUCCESS: {
+      return update(state, {
+        data: {
+          order: {
+            artistBudgets: {
+              $splice: [[payload.index, 1]],
+            },
           },
         },
       });

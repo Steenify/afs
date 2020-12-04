@@ -842,6 +842,30 @@
 			color: $main_color;
 			border-bottom: 2px solid $main_color;
 		}
+
+		.tab {
+			&__btn {
+				background: none;
+				border: none;
+				outline: none;
+				font-weight: 600;
+				color: #767676;
+			}
+
+			&__delete {
+				width: 20px;
+				height: 20px;
+				border-radius: 100%;
+				background-color: $danger;
+				border: none;
+				outline: none;
+				margin-left: 10px;
+				color: $white;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
 	}
 
 	&__content {
