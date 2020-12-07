@@ -14,10 +14,11 @@ import './style.scss';
 
 const DefaultLayout = (props) => {
   const { children, isMenuOpen, className, systemProperties, showAnnouncement } = props;
-  const list_announcement = filter(systemProperties, (prob) => prob.name === 'admin_announcement');
+  const list_announcement = filter(systemProperties, (prob) => prob.name === 'admin_announcement' && prob.value);
+
   const has_announcement = list_announcement.length;
   return (
-    <div className={`${className} ${showAnnouncement && 'has__annoucement'}`}>
+    <div className={`${className} ${!!showAnnouncement && !!has_announcement && 'has__annoucement'}`}>
       {has_announcement && <Announcement data={list_announcement} />}
       <SentryErrorBoundary>
         <SideBar />

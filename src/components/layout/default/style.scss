@@ -1,10 +1,14 @@
 .has__annoucement {
 	.sidebar,
 	.header__main {
-		top: 47px;
+		top: 40px;
+	}
+
+	.sidebar {
+		height: calc(100vh - 40px);
 	}
 
 	.app-body {
-		padding-top: 47px;
+		padding-top: 40px;
 	}
 }
