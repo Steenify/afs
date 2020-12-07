@@ -40,6 +40,7 @@ import {
   getBudgetsHistoryService,
   updateOrderBudgetService,
   adjustOrderBudgetService,
+  deleteArtistBudgetOrderService,
 } from 'services/order';
 import { getAssignArtistsService } from 'services/artist';
 
@@ -447,10 +448,10 @@ export const updateTrackingCodeWorkLogAction = (id, data, cb) => (dispatch) => {
       type: UPDATE_TRACKING_CODE_WORK_LOG_ACTION.PENDING,
     });
   };
-  const onSuccess = () => {
+  const onSuccess = (payload) => {
     dispatch({
       type: UPDATE_TRACKING_CODE_WORK_LOG_ACTION.SUCCESS,
-      payload: { id, data },
+      payload,
     });
     cb && cb();
   };
@@ -1186,6 +1187,7 @@ export const resolvedOrderTodoListAction = (orderId, todoId, index, cb) => (disp
     onError,
   });
 };
+
 export const REMOVE_ORDER_TODO_LIST_ACTION = actionCreator('REMOVE_ORDER_TODO_LIST_ACTION');
 export const removeOrderTodoListAction = (orderId, todoId, index, cb) => (dispatch) => {
   const onPending = () => {
@@ -1249,6 +1251,39 @@ export const setBudgetAction = (payload) => (dispatch) => {
 export const getAssignArtistsAction = ({ params = '', onPending = () => {}, onSuccess = () => {}, onError = () => {} }) => (dispatch) => {
   actionTryCatchCreator({
     service: getAssignArtistsService(params),
+    onPending,
+    onSuccess,
+    onError,
+  });
+};
+
+export const DELETE_ARTIST_BUDGET_ORDER_ACTION = actionCreator('DELETE_ARTIST_BUDGET_ORDER_ACTION');
+export const deleteArtistBudgetOrderAction = (orderId, budgetId, index, cb) => (dispatch) => {
+  const onPending = () => {
+    dispatch({
+      type: DELETE_ARTIST_BUDGET_ORDER_ACTION.PENDING,
+    });
+  };
+  const onSuccess = (data) => {
+    console.log('🚀 ~ file: actions.js ~ line 1361 ~ onSuccess ~ data', data);
+    dispatch({
+      type: DELETE_ARTIST_BUDGET_ORDER_ACTION.SUCCESS,
+      payload: {
+        index,
+      },
+    });
+    cb && cb();
+  };
+  const onError = (error) => {
+    console.log('deleteArtistBudgetOrderAction => onError -> error', JSON.stringify(error));
+    dispatch({
+      type: DELETE_ARTIST_BUDGET_ORDER_ACTION.ERROR,
+      payload: error.response,
+    });
+  };
+
+  actionTryCatchCreator({
+    service: deleteArtistBudgetOrderService(orderId, budgetId),
     onPending,
     onSuccess,
     onError,

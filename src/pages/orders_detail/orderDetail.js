@@ -36,6 +36,7 @@ const OrderDetail = ({ loading, order, accountInfo, updateShowAssignedBox, reset
 
   const canEditAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;
   const canGetArtists = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) || false;
+  const isUnpaid = order?.artistPaymentStatus === 'UNPAID';
 
   return (
     <div className='order_detail'>
@@ -66,14 +67,16 @@ const OrderDetail = ({ loading, order, accountInfo, updateShowAssignedBox, reset
                     Budget History
                   </button>
                 </CanShow>
-                <CanShow permission={PERMITTIONS_CONFIG.ADJUST_BUDGET}>
-                  <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.INCREASE_BUDGET)} className='btn info__cta info__increase btn-success'>
-                    Increase $
-                  </button>
-                  <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.DECREASE_BUDGET)} className='btn info__cta info__decrease btn-danger'>
-                    Decrease $
-                  </button>
-                </CanShow>
+                {isUnpaid && (
+                  <CanShow permission={PERMITTIONS_CONFIG.ADJUST_BUDGET}>
+                    <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.INCREASE_BUDGET)} className='btn info__cta info__increase btn-success'>
+                      Increase $
+                    </button>
+                    <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.DECREASE_BUDGET)} className='btn info__cta info__decrease btn-danger'>
+                      Decrease $
+                    </button>
+                  </CanShow>
+                )}
               </div>
             </CanShow>
           </div>

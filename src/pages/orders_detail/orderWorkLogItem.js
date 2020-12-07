@@ -13,6 +13,9 @@ import Button from 'components/common/button';
 import P from 'components/common/parapraph';
 import CommentBox from 'components/common/commentBox';
 
+import TrackingInfoForm from './workingTrackingInfos';
+import TrackingInfo from './trackingInfos';
+
 // import { ReactComponent as EmojiIcon } from 'assets/img/emoji.svg';
 
 import { ReactComponent as Close } from 'assets/img/close.svg';
@@ -25,7 +28,6 @@ import { PERMITTIONS_CONFIG } from 'configs';
 
 import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction, updateTrackingCodeWorkLogAction } from './actions';
 import CanShow from 'components/layout/canshow';
-import { ReactDates } from 'components/common/datepicker';
 
 const OrderWorkLogItem = ({
   workLogType, // TODO: remove
@@ -286,58 +288,7 @@ const OrderWorkLogItem = ({
       </div>
 
       <Collapse isOpen={isOpenWork}>
-        {canTracking && (
-          <div className='order_detail__tracking_code'>
-            <div className='box__header mb-0'>
-              <div className='box__title w-100'>Tracking Info</div>
-            </div>
-            {isWorking ? (
-              <>
-                <div className='m-2'>
-                  <span>URL</span>
-                  <input ref={trackingURLInput} defaultValue={order.printfulTrackingUrl} type='text' className='form-control' placeholder='Enter tracking URL' />
-                </div>
-                <div className='m-2'>
-                  <span>Code</span>
-                  <input ref={trackingCodeInput} defaultValue={order.printfulTrackingCode} type='text' className='form-control' placeholder='Enter tracking Code' />
-                </div>
-                <div className='d-flex align-items-center mb-2'>
-                  <div className='m-2'>
-                    <span>Estimated Delivery From</span>
-                    <ReactDates date={trackingDeliveryFromDate} isOutsideRange={() => false} onChange={setTrackingDeliveryFromDate} />
-                  </div>
-                  <div className='m-2'>
-                    <span>Estimated Delivery To</span>
-                    <ReactDates date={trackingDeliveryToDate} isOutsideRange={() => false} onChange={setTrackingDeliveryToDate} />
-                  </div>
-                </div>
-
-                <div className='order_detail__ctas text-right'>
-                  <Button onClick={handleUpdateTrackingInfo} color='primary' className='cta cta2' type='button'>
-                    Update
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className='m-2'>
-                  <span>URL: </span>
-                  <a target='_blank' rel='noopener noreferrer' href={order.printfulTrackingUrl}>
-                    Link
-                  </a>
-                </div>
-                <div className='m-2'>
-                  <span>Code: {order.printfulTrackingCode}</span>
-                </div>
-                <div className='m-2'>
-                  <span>
-                    Estimated Delivery: {moment(order.printfulEstimatedDeliveryFrom).format('DD/MM/YYYY')} - {moment(order.printfulEstimatedDeliveryTo).format('DD/MM/YYYY')}
-                  </span>
-                </div>
-              </>
-            )}
-          </div>
-        )}
+        {canTracking && <div className='order_detail__tracking_code'>{isWorking ? <TrackingInfoForm /> : <TrackingInfo />}</div>}
 
         {(!work.attachments?.length || isEdit) && canUpload && (
           <div>

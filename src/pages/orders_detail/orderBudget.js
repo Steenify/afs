@@ -69,10 +69,11 @@ class OrderBudget extends Component {
   render() {
     const { accountInfo, order } = this.props;
     const { isPopoverOpen, value } = this.state;
+    const isUnpaid = order?.artistPaymentStatus === 'UNPAID';
 
-    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_BUDGET)) {
+    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_BUDGET) || !isUnpaid) {
       return (
-        <div className='budget'>
+        <div className='budget mb-3'>
           Budget: <span>{formatMoney(order.budget)} </span>
         </div>
       );

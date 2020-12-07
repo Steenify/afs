@@ -33,6 +33,7 @@ import {
   RESOLVED_ORDER_TODO_LIST_ACTION,
   REMOVE_ORDER_TODO_LIST_ACTION,
   RESET_ORDER_DETAIL_ACTION,
+  DELETE_ARTIST_BUDGET_ORDER_ACTION,
 } from './actions';
 
 import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
@@ -300,10 +301,7 @@ const reducer = (state = initialState, action) => {
         },
         data: {
           order: {
-            printfulTrackingUrl: { $set: payload.data.printfulTrackingUrl },
-            printfulTrackingCode: { $set: payload.data.printfulTrackingCode },
-            printfulEstimatedDeliveryTo: { $set: payload.data.printfulEstimatedDeliveryTo },
-            printfulEstimatedDeliveryFrom: { $set: payload.data.printfulEstimatedDeliveryFrom },
+            printfulTrackings: { $set: payload || [] },
           },
         },
       });
@@ -814,6 +812,17 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
+    case DELETE_ARTIST_BUDGET_ORDER_ACTION.SUCCESS: {
+      return update(state, {
+        data: {
+          order: {
+            artistBudgets: {
+              $splice: [[payload.index, 1]],
+            },
+          },
+        },
+      });
+    }
 
     case ORDER_DETAIL_ACTIONS.UPDATE_SHOW_ASSIGNED_MODAL: {
       return update(state, {
@@ -828,16 +837,26 @@ const reducer = (state = initialState, action) => {
     case ORDER_DETAIL_ACTIONS.SET_ORDER_DETAIL_BUDGET: {
       const order = state.data.order || {};
       const index = order?.artistBudgets?.findIndex?.((item) => item?.artist?.id === order?.assignedTo?.id);
-      return update(state, {
-        data: {
-          order: {
-            budget: { $set: payload },
-            artistBudgets: {
-              [index]: { budget: { $set: payload } },
+      if (index !== -1) {
+        return update(state, {
+          data: {
+            order: {
+              budget: { $set: payload },
+              artistBudgets: {
+                [index]: { budget: { $set: payload } },
+              },
             },
           },
-        },
-      });
+        });
+      } else {
+        return update(state, {
+          data: {
+            order: {
+              budget: { $set: payload },
+            },
+          },
+        });
+      }
     }
 
     default:

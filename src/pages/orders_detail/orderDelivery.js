@@ -17,7 +17,7 @@ import { uploadFileWorkLogAction, deleteFileDeliveryAction, getNotifyTemplatesAc
 const OrderArtDelivery = ({ uiComponents, order, works, workLog, uploadFileWorkLog, deleteFileDelivery, accountInfo, status, getNotifyTemplatesAction }) => {
   const dropbox = useRef(null);
 
-  const isDeliverable = works[works.length - 1].deliverable;
+  const isDeliverable = works?.[works.length - 1]?.deliverable;
 
   const exportWorklogs = works.filter((w) => uiComponents?.find((i) => i.name === w.component)?.canExportFile);
   const images = exportWorklogs.reduce((list, item) => [...list, ...item.attachments], []);

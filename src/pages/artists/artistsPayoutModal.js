@@ -11,15 +11,13 @@ import Button from 'components/common/button';
 import P from 'components/common/parapraph';
 
 import { getOrderItem, getOrderOption, formatMoney, actionTryCatchCreator } from 'utils';
-import { statusPayments } from 'configs';
 
 import { createOrderTablePayoutsBulkAction } from 'components/tables/orders/actions';
-import { getArtistsListAction } from './actions';
-import { getAllOrdersService } from 'services/order';
+import { getArtistsListAction, createArtistPayoutsBulkAction } from './actions';
 import { getPayoutInfoByArtists } from 'services/payout';
 
 const ArtistPayoutModal = (props) => {
-  const { isOpen, className, toggle, artist, createOrderTablePayoutsBulkAction, getArtistsListAction } = props;
+  const { isOpen, className, toggle, artist, createOrderTablePayoutsBulkAction, getArtistsListAction, createArtistPayoutsBulk } = props;
 
   const dropbox = useRef(null);
   const [extra, setExtra] = useState(0);
@@ -114,17 +112,26 @@ const ArtistPayoutModal = (props) => {
         totalPaid: totalBudget + (parseInt(extra, 10) || 0),
       };
 
-      createOrderTablePayoutsBulkAction({
-        payload,
-        onSuccess: () => {
-          const messge = orders.map((or) => or?.bookingNumber).join(', ');
-          toast.dark(`Updated status payment of ${messge}`);
-          setNote('');
-          setExtra(0);
-          setNoteItem({});
-          getArtistsListAction();
-          toggle();
-        },
+      // createOrderTablePayoutsBulkAction({
+      //   payload,
+      //   onSuccess: () => {
+      //     const messge = orders.map((or) => or?.bookingNumber).join(', ');
+      //     toast.dark(`Updated status payment of ${messge}`);
+      //     setNote('');
+      //     setExtra(0);
+      //     setNoteItem({});
+      //     getArtistsListAction();
+      //     toggle();
+      //   },
+      // });
+
+      createArtistPayoutsBulk(payload, () => {
+        const messge = orders.map((or) => or?.bookingNumber).join(', ');
+        toast.dark(`Updated status payment of ${messge}`);
+        setNote('');
+        setExtra(0);
+        setNoteItem({});
+        toggle();
       });
     }
   };
@@ -244,6 +251,6 @@ const mapStateToProps = ({ artists, auth }) => {
   };
 };
 
-const mapDispatchToProps = { createOrderTablePayoutsBulkAction, getArtistsListAction };
+const mapDispatchToProps = { createOrderTablePayoutsBulkAction, getArtistsListAction, createArtistPayoutsBulk: createArtistPayoutsBulkAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArtistPayoutModal);

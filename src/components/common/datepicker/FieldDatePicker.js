@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Field } from 'redux-form';
 import { SingleDatePicker } from 'react-dates';
 import { FormGroup, Label } from 'reactstrap';
@@ -16,6 +16,16 @@ const returnYears = () => {
 
 const DatePicker = ({ label, placeholder, required, onChange, touched, error, value, className }) => {
   const [focused, setFocused] = useState(false);
+  const [isTouched, setTouched] = useState(false);
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    setCount(count + 1);
+  }, [focused]);
+  useEffect(() => {
+    if (count > 1 && !focused) {
+      setTouched(true);
+    }
+  }, [count]);
   const date = value ? moment(value) : null;
 
   const handleChange = (value) => {
@@ -64,7 +74,7 @@ const DatePicker = ({ label, placeholder, required, onChange, touched, error, va
         renderMonthElement={renderMonthElement}
         id='date_picker_id'
       />
-      {touched && error && (
+      {isTouched && error && (
         <span className='error' style={{ color: 'red' }}>
           {error}
         </span>
@@ -77,7 +87,19 @@ export const FieldDatePicker = (props) => {
   const { name, label, placeholder, required, className } = props;
 
   const renderComponent = ({ input, meta, ...other }) => {
-    return <DatePicker className={className} label={label} placeholder={placeholder} required={required} onChange={input.onChange} value={input.value} touched={meta.touched} error={meta.error} />;
+    return (
+      <DatePicker
+        className={className}
+        label={label}
+        placeholder={placeholder}
+        required={required}
+        onChange={input.onChange}
+        value={input.value}
+        touched={meta.touched}
+        error={meta.error}
+        {...other}
+      />
+    );
   };
 
   return <Field name={name} component={renderComponent} {...props} />;

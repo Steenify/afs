@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import Button from 'components/common/button';
 import DataTable from 'components/common/DataTable';
+import { showConfirmAlert } from 'utils';
 
 import { actGetAllPermissions, actDeletePermission } from './actions';
 
@@ -35,7 +36,7 @@ const PermissionList = (props) => {
       accessor: 'delete',
       Header: '',
       Cell: ({ row: { original } }) => (
-        <Button color='danger' onClick={() => handleDelete(original.id)}>
+        <Button color='danger' onClick={() => handleDelete(original)}>
           {t('entity.action.delete')}
         </Button>
       ),
@@ -47,12 +48,19 @@ const PermissionList = (props) => {
     actGetAllPermissions();
   }, [actGetAllPermissions]);
 
-  const handleDelete = (id) => {
+  const handleDelete = (item) => {
+    const { id, name = '' } = item || {};
     if (id) {
-      props.actDeletePermission(id).then((res) => {
-        if (res && res.status === 204) {
-          props.actGetAllPermissions();
-        }
+      showConfirmAlert({
+        title: 'Confirm Delete',
+        text: `Are you sure you want to delete permission ${name}?`,
+        onConfirm: () => {
+          props.actDeletePermission(id).then((res) => {
+            if (res && res.status === 204) {
+              props.actGetAllPermissions();
+            }
+          });
+        },
       });
     }
   };

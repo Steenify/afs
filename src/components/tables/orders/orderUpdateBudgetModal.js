@@ -166,8 +166,8 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
   return {
     accountInfo: auth.data.accountInfo,
     listActions: listActions,
-    selectedOrder: table.ui.selectedOrder,
-    isOpenEditBudget: table.ui.isOpenEditBudget,
+    selectedOrder: table?.ui?.selectedOrder,
+    isOpenEditBudget: table?.ui?.isOpenEditBudget,
   };
 };
 

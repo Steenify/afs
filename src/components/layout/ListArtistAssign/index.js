@@ -75,70 +75,29 @@ class ListArtists extends Component {
       <div className='order__info p-3 list_artist_assign'>
         <div className='order__artist'>
           <div className='search mb-3'>
-            <input
-              type='text'
-              placeholder='Search artist'
-              value={text}
-              onChange={this.handleChangeText}
-              className='form-control search__input search__box'
-            />
+            <input type='text' placeholder='Search artist' value={text} onChange={this.handleChangeText} className='form-control search__input search__box' />
           </div>
 
           <div className='list mb-3'>
             {isLoading ? (
-              <div
-                style={{ minHeight: '100px' }}
-                className=' d-flex align-items-center justify-content-center'>
+              <div style={{ minHeight: '100px' }} className=' d-flex align-items-center justify-content-center'>
                 <Spinner />
               </div>
             ) : (
               <div>
-                <button
-                  onClick={() => onSave({ login: 'null' })}
-                  key={`list__artist__login`}
-                  className={`artist__select `}>
-                  <strong className='name'>
-                    ____________Select____________
-                  </strong>
-                  <div className='status'></div>
-                </button>
                 {artists.map((art) => {
-                  const doing =
-                    (art?.numNewOrder || 0) +
-                    (art?.numSketch || 0) +
-                    (art?.numSketchEdit || 0) +
-                    (art?.numColorEdit || 0) +
-                    (art?.numColor || 0);
-
-                  const reviewing =
-                    (art?.numSketchReview || 0) +
-                    (art?.numColorReview || 0) +
-                    (art?.numExportFile || 0);
+                  const doing = (art?.numNewOrder || 0) + (art?.numSketch || 0) + (art?.numSketchEdit || 0) + (art?.numColorEdit || 0) + (art?.numColor || 0);
+                  const reviewing = (art?.numSketchReview || 0) + (art?.numColorReview || 0) + (art?.numExportFile || 0);
                   return (
-                    <button
-                      onClick={() => onSave(art)}
-                      key={`list__artist__${art.login}`}
-                      className={`artist__select ${
-                        art.login === assignedTo?.login ? 'active' : ''
-                      }`}>
+                    <button onClick={() => onSave(art)} key={`list__artist__${art.login}`} className={`artist__select ${art.login === assignedTo?.login ? 'active' : ''}`}>
                       <div className='avt'>
-                        <img
-                          src={`https://ui-avatars.com/api/?name=${
-                            art?.fullName || ''
-                          }${art?.firstName || ''}${art?.lastName || ''}`}
-                          alt='comments__author'
-                        />
+                        <img src={`https://ui-avatars.com/api/?name=${art?.fullName || ''}${art?.firstName || ''}${art?.lastName || ''}`} alt='comments__author' />
                       </div>
 
                       <div className='info'>
-                        <strong className='name'>
-                          {art?.fullName ||
-                            `${art?.firstName} ${art?.lastName}`}
-                        </strong>
+                        <strong className='name'>{art?.fullName || `${art?.firstName} ${art?.lastName}`}</strong>
                         <div className='status'>
-                          {art.note && (
-                            <div className='note text-break'>{`${art.note}`}</div>
-                          )}
+                          {art.note && <div className='note text-break'>{`${art.note}`}</div>}
                           <div className='currProgress'>
                             Doing: {doing}, Reviewing: {reviewing}
                           </div>

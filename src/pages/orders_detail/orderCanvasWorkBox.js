@@ -24,9 +24,13 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
     );
   }
 
-  const isNewOrder = workLog[0]?.status === 'NEW_ORDER';
-  const lastWorkLog = workLog[workLog.length - 1];
-  const worklogGroup = groupBy(workLog, 'status');
+  const defaultWorkLogKey = Object.keys(workLog)?.[0] || '';
+  const currentWorkLogTemp = workLog[order?.assignedTo?.id] || [];
+  const currentWorkLog = currentWorkLogTemp?.length === 0 ? workLog[defaultWorkLogKey] || [] : currentWorkLogTemp;
+
+  const isNewOrder = currentWorkLog[0]?.status === 'NEW_ORDER';
+  const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
+  const worklogGroup = groupBy(currentWorkLog, 'status');
 
   const NEW_ORDER = [...(worklogGroup.NEW_ORDER || [])];
   const PRINT_PREVIEW = sortBy([...(worklogGroup.PRINT_PREVIEW || [])], (item) => new Date(item.createdDate));
@@ -67,9 +71,6 @@ const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loadin
             <button type='button' onClick={() => setTab('activity')} className={`order_detail__tab ${tab === 'activity' && 'active'}`}>
               Activity
             </button>
-            {/* <button type='button' onClick={() => setTab('delivery')} className={`order_detail__tab ${tab === 'delivery' && 'active'}`}>
-              Delivery
-            </button> */}
           </div>
         </div>
 

@@ -304,3 +304,9 @@ export const adjustOrderBudgetService = (orderId, data) =>
     method: 'PUT',
     data,
   });
+
+export const deleteArtistBudgetOrderService = (orderId, budgetId) =>
+  request({
+    url: `${ORDERS_API}/${orderId}/artist-budget/${budgetId}`,
+    method: 'DELETE',
+  });

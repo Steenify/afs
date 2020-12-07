@@ -1,18 +1,22 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Spinner, Alert } from 'reactstrap';
 import { groupBy, sortBy, map, isEmpty, reduce } from 'lodash';
+import { toast } from 'react-toastify';
+import { confirmAlert } from 'react-confirm-alert';
+import { ReactComponent as Close } from 'assets/img/close_white.svg';
+
+import CanShow from 'components/layout/canshow';
 
 import OrderWorkGroup from './orderWorkGroup';
 import OrderCustomerBox from './orderCustomerBox';
 import OrderArtDelivery from './orderDelivery';
-import { getOrderWorkLogAction } from './actions';
+import { deleteArtistBudgetOrderAction } from './actions';
 import { PERMITTIONS_CONFIG, WORKFLOW_STATE_TYPE } from 'configs';
 
-const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster, artists = [] }) => {
+const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster, artists = [], deleteArtistBudgetOrder }) => {
   const [tab, setTab] = useState('activity');
-  const [artistId, setArtistId] = useState();
-  const [currentWorkLog, setCurrentWorkLog] = useState([]);
+  const [artistId, setArtistId] = useState(0);
 
   const worklogToDeliver = (workLog[artists[0]?.id] || []).filter((w) => w.bookingItemId === item.id);
 
@@ -20,10 +24,46 @@ const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster,
     setArtistId(artists[0]?.id);
   }, [artists]);
 
-  useEffect(() => {
-    const worklogs = (workLog[artistId] || []).filter((w) => w.bookingItemId === item.id);
-    setCurrentWorkLog(worklogs);
-  }, [artistId, workLog, item.id]);
+  const handleDeleteArtistBudget = (artist) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='comfirm_cus'>
+            <div className='comfirm_cus__header'>
+              <div className='comfirm_cus__titl'>Remove Artist Budget</div>
+              <button type='button' onClick={onClose} className='comfirm_cus__close'>
+                <div className='icon'>
+                  <Close />
+                </div>
+              </button>
+            </div>
+            <div className='comfirm_cus__body'>
+              <p>
+                Are you sure you want to remove <strong>[ {artist?.firstName} ]</strong> from this order?
+              </p>
+            </div>
+            <div className='comfirm_cus__footer text-right'>
+              <button className='comfirm_cus__cancel comfirm_cus__control' onClick={onClose}>
+                Cancel
+              </button>
+              <button
+                className='comfirm_cus__accept comfirm_cus__control'
+                onClick={() => {
+                  deleteArtistBudgetOrder(order.id, artist?.budgetId, artist?.index, () => {
+                    toast.dark(`[${artist?.firstName}] is removed from this order!`);
+                  });
+                  onClose();
+                }}>
+                Accept
+              </button>
+            </div>
+          </div>
+        );
+      },
+    });
+  };
+
+  const currentWorkLog = workLog[artistId] || [];
 
   if (loadingWorkLog || !status.length) {
     return (
@@ -51,20 +91,37 @@ const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster,
       <div className='row'>
         <div className='col-lg-12'>
           <div className='order_detail__tabs'>
-            {artists.map(({ id, firstName = '' }) => {
+            {artists.map((art) => {
+              const { id, firstName = '', calculatePayout } = art;
               const activityKey = `activity_${id}`;
               const postText = artists.length > 1 ? `(${firstName})` : '';
+              const artistWorkLog = workLog[id] || [];
+              const artistWorkLogNew = artistWorkLog.length === 1;
+
+              const isAssigning = art?.id === order?.assignedTo?.id;
+
               return (
-                <button
-                  key={activityKey}
-                  type='button'
-                  onClick={() => {
-                    setTab('activity');
-                    setArtistId(id);
-                  }}
-                  className={`order_detail__tab ${tab === 'activity' && artistId === id && 'active'}`}>
-                  {`Activity ${postText}`}
-                </button>
+                <div className={`d-inline-block order_detail__tab tab ${tab === 'activity' && artistId === id && 'active'}`} key={`order_tab_by_artist_${id}`}>
+                  <button
+                    key={activityKey}
+                    type='button'
+                    className='tab__btn'
+                    onClick={() => {
+                      setTab('activity');
+                      setArtistId(id);
+                    }}>
+                    {`Activity ${postText}`}
+                  </button>
+                  <CanShow permission={PERMITTIONS_CONFIG.DELETE_ARTIST_BUDGET}>
+                    {(artistWorkLogNew || !calculatePayout) && !isAssigning && (
+                      <button type='button' className='tab__delete' onClick={() => handleDeleteArtistBudget(art)}>
+                        <span className='icon'>
+                          <Close />
+                        </span>
+                      </button>
+                    )}
+                  </CanShow>
+                </div>
               );
             })}
             <button
@@ -123,24 +180,34 @@ const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster,
   );
 };
 
-const mapStateToProps = ({ orderTable, orderDetail, auth }, ownProps) => ({
-  status: orderTable.orders.status,
-  loadingWorkLog: orderDetail.ui.loadingWorkLog,
-  workLog: orderDetail.data.workLog,
-  accountInfo: auth.data.accountInfo,
-  artists:
-    orderDetail.data.order?.artistBudgets
-      ?.map?.((item) => item?.artist)
-      ?.sort((a) => (a?.id === ownProps?.order?.assignedTo?.id ? -1 : 1))
-      ?.filter?.((item) => {
-        const permissions = auth?.data?.accountInfo?.permissions || [];
-        if (permissions.includes(PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS)) {
+const mapStateToProps = ({ orderTable, orderDetail, auth }) => {
+  const { artistBudgets, assignedTo } = orderDetail.data.order;
+  const permissions = auth.data.accountInfo?.permissions || [];
+  const canViewArtistTabs = permissions.includes(PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS) || false;
+
+  const artists =
+    artistBudgets
+      ?.map((item, index) => ({ ...item?.artist, calculatePayout: item?.calculatePayout, budgetId: item.id, index }))
+      ?.sort((a) => (a?.id === assignedTo?.id ? -1 : 1))
+      ?.filter((item) => {
+        if (canViewArtistTabs) {
           return item;
         }
-        return item?.id === ownProps?.order?.assignedTo?.id;
-      }) || [],
-});
+        return item?.id === assignedTo?.id;
+      }) || [];
 
-const mapDispatchToProps = {};
+  return {
+    status: orderTable.orders.status,
+    loading: orderDetail.ui.loadingWorkLog,
+    workLog: orderDetail.data.workLog,
+    accountInfo: auth.data.accountInfo,
+    artists,
+    canViewArtistTabs,
+  };
+};
+
+const mapDispatchToProps = {
+  deleteArtistBudgetOrder: deleteArtistBudgetOrderAction,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderWorkBox);
