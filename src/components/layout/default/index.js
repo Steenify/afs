@@ -13,11 +13,11 @@ import SentryErrorBoundary from 'components/SentryErrorBoundary';
 import './style.scss';
 
 const DefaultLayout = (props) => {
-  const { children, isMenuOpen, className, systemProperties } = props;
+  const { children, isMenuOpen, className, systemProperties, showAnnouncement } = props;
   const list_announcement = filter(systemProperties, (prob) => prob.name === 'admin_announcement');
   const has_announcement = list_announcement.length;
   return (
-    <div className={`${className} ${has_announcement && 'has__annoucement'}`}>
+    <div className={`${className} ${showAnnouncement && 'has__annoucement'}`}>
       {has_announcement && <Announcement data={list_announcement} />}
       <SentryErrorBoundary>
         <SideBar />
@@ -41,8 +41,8 @@ const DefaultLayout = (props) => {
 const mapStateToProps = ({ global, systemProperty }) => {
   return {
     isMenuOpen: global.ui.isMenuOpen,
-    showAnnouncement: global.ui.showAnnouncement,
     systemProperties: systemProperty.data.systemProperties || [],
+    showAnnouncement: global.ui.showAnnouncement,
   };
 };
 

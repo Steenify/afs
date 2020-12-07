@@ -1,6 +1,7 @@
 import React from 'react';
 import { reduce } from 'lodash';
 import { connect } from 'react-redux';
+import Ticker from 'react-ticker';
 
 import { ReactComponent as Close } from 'assets/img/close_white.svg';
 
@@ -26,7 +27,11 @@ const Announcement = ({ data, showAnnouncement, setShowAnnouncementAction }) => 
   return (
     <div className='announcement'>
       <div className='announcement__container'>
-        <div className='announcement__text'>{text}</div>
+        <div className='announcement__text'>
+          <Ticker offset='run-in' mode='smooth'>
+            {() => <>{text}</>}
+          </Ticker>
+        </div>
         <button type='button' className='announcement__cta' onClick={() => setShowAnnouncementAction(false)}>
           <div className='icon'>
             <Close width='30px' height='30px' />
@@ -36,7 +41,7 @@ const Announcement = ({ data, showAnnouncement, setShowAnnouncementAction }) => 
     </div>
   );
 };
-const mapStateToProps = ({ global, systemProperty }) => {
+const mapStateToProps = ({ global }) => {
   return {
     showAnnouncement: global.ui.showAnnouncement,
   };
