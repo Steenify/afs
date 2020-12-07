@@ -1,18 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { filter } from 'lodash';
+
 import Footer from 'components/layout/footer';
 import Header from 'components/layout/header';
 import SideBar from 'components/layout/sidebar';
+import Announcement from 'components/layout/announcement';
 
 import SentryErrorBoundary from 'components/SentryErrorBoundary';
 
 import './style.scss';
 
 const DefaultLayout = (props) => {
-  const { children, isMenuOpen, className } = props;
+  const { children, isMenuOpen, className, systemProperties } = props;
+  const list_announcement = filter(systemProperties, (prob) => prob.name === 'admin_announcement');
+  const has_announcement = list_announcement.length;
   return (
-    <div className={className}>
+    <div className={`${className} ${has_announcement && 'has__annoucement'}`}>
+      {has_announcement && <Announcement data={list_announcement} />}
       <SentryErrorBoundary>
         <SideBar />
       </SentryErrorBoundary>
@@ -32,9 +38,11 @@ const DefaultLayout = (props) => {
   );
 };
 
-const mapStateToProps = ({ global }) => {
+const mapStateToProps = ({ global, systemProperty }) => {
   return {
     isMenuOpen: global.ui.isMenuOpen,
+    showAnnouncement: global.ui.showAnnouncement,
+    systemProperties: systemProperty.data.systemProperties || [],
   };
 };
 

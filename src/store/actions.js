@@ -6,11 +6,19 @@ export const GLOBAL_ACTIONS = {
   UPDATE_APP_LOADING: 'UPDATE_APP_LOADING',
   CHANGE_LANG: 'CHANGE_LANG',
   TOGGLE_MENU: 'TOGGLE_MENU',
+  SET_SHOW_ANNOUNCEMENT: 'SET_SHOW_ANNOUNCEMENT',
 };
 
 export const updateAppLoading = (payload) => (dispatch) => {
   dispatch({
     type: GLOBAL_ACTIONS.UPDATE_APP_LOADING,
+    payload,
+  });
+};
+
+export const setShowAnnouncement = (payload) => (dispatch) => {
+  dispatch({
+    type: GLOBAL_ACTIONS.SET_SHOW_ANNOUNCEMENT,
     payload,
   });
 };

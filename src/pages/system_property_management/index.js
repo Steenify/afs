@@ -20,7 +20,7 @@ const SystemPropertiesManagement = () => {
           {
             title: t(WEB_ROUTES.SYSTEM_PROPERTY_LIST.title),
             active: false,
-            path: '/system-property',
+            path: WEB_ROUTES.SYSTEM_PROPERTY_LIST.path,
           },
         ]}
       />

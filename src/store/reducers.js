@@ -28,6 +28,7 @@ const initialState = {
     isAuthenticated: false,
     redirectLink: '',
     isMenuOpen: false,
+    showAnnouncement: true,
   },
   data: {
     user: {},
@@ -46,6 +47,12 @@ const global = (state = initialState, action) => {
       return update(state, {
         ui: {
           loading: { $set: action.payload },
+        },
+      });
+    case GLOBAL_ACTIONS.SET_SHOW_ANNOUNCEMENT:
+      return update(state, {
+        ui: {
+          showAnnouncement: { $set: action.payload },
         },
       });
     case GLOBAL_ACTIONS.UPDATE_USER_INFO: {

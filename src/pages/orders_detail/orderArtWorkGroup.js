@@ -15,15 +15,7 @@ import Button from 'components/common/button';
 import OrderWorkLogItem from './orderWorkLogItem';
 import OrderRejectModal from './orderRejectModal';
 
-import {
-  approvedWorkLogAction,
-  rejectedWorkLogAction,
-  getNotifyTemplatesAction,
-  updateOrderStatusAction,
-  getRemindTemplatesAction,
-  createOrderCanvasWorkLogAction,
-  canceledWorkLogAction,
-} from './actions';
+import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction, getRemindTemplatesAction, createOrderCanvasWorkLogAction, canceledWorkLogAction } from './actions';
 
 const OrderArtWorkGroup = ({
   order,
@@ -36,7 +28,6 @@ const OrderArtWorkGroup = ({
   getNotifyTemplatesAction,
   getRemindTemplatesAction,
   accountInfo,
-  updateOrderStatus,
   isNewOrder,
   createOrderCanvasWorkLogAction,
   workLog,
@@ -117,12 +108,6 @@ const OrderArtWorkGroup = ({
 
   const handleRemindEmail = (workLogIndex) => {
     getRemindTemplatesAction(order.id, workLogIndex, undefined, lastWork?.artist?.id);
-  };
-
-  const handleStartSketch = (artistId) => {
-    if (status.length) {
-      updateOrderStatus(order.id, status[1].name, artistId);
-    }
   };
 
   const handleConfirmRejectWorkLog = (LogId, workLogIndex, artistId) => {
@@ -228,9 +213,6 @@ const OrderArtWorkGroup = ({
                   <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
                     {canChangeStatus && (
                       <div className='order_detail__ctas text-center justify-content-center'>
-                        {/* <Button onClick={() => handleStartSketch(work?.artist?.id)} color='primary' className='cta' type='button'>
-                          Start Sketching
-                        </Button> */}
                         <Button onClick={() => handleApproveWorkLog(work.id, false, work?.artist?.id)} color='primary' className='cta' type='button'>
                           Start Sketching
                         </Button>
@@ -325,7 +307,7 @@ const OrderArtWorkGroup = ({
   );
 };
 
-const mapStateToProps = ({ auth, orderDetail, orderTable }) => ({
+const mapStateToProps = ({ auth, orderDetail }) => ({
   accountInfo: auth.data.accountInfo,
   workLog: orderDetail.data.workLog,
 });
@@ -334,7 +316,6 @@ const mapDispatchToProps = {
   approvedWorkLog: approvedWorkLogAction,
   rejectedWorkLog: rejectedWorkLogAction,
   getNotifyTemplatesAction,
-  updateOrderStatus: updateOrderStatusAction,
   getRemindTemplatesAction,
   createOrderCanvasWorkLogAction,
   canceledWorkLog: canceledWorkLogAction,

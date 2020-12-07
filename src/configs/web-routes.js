@@ -67,7 +67,7 @@ const WEB_ROUTES = {
   SYSTEM_PROPERTY_DETAIL: {
     path: '/system-property/detail/:id',
     title: 'System Property Detail',
-    permission: 'baseApp.sidebar.systemProperty',
+    permission: '',
   },
   HOME: {
     path: '/',
