@@ -14,13 +14,17 @@ import { PERMITTIONS_CONFIG } from 'configs';
 
 import { uploadFileWorkLogAction, deleteFileDeliveryAction, getNotifyTemplatesAction } from './actions';
 
-const OrderArtDelivery = ({ isDeliverable, order, images, works, workLog, uploadFileWorkLog, deleteFileDelivery, accountInfo, status, getNotifyTemplatesAction }) => {
+const OrderArtDelivery = ({ uiComponents, order, works, workLog, uploadFileWorkLog, deleteFileDelivery, accountInfo, status, getNotifyTemplatesAction }) => {
   const dropbox = useRef(null);
 
-  const lastExport = works[works.length - 1];
-  const workLogIndex = findIndex(workLog[lastExport?.artist?.id] || [], (log) => log.id === lastExport?.id);
-  const canModifyDelivery = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_DELIVERY) || false;
+  const isDeliverable = works[works.length - 1].deliverable;
 
+  const exportWorklogs = works.filter((w) => uiComponents?.find((i) => i.name === w.component)?.canExportFile);
+  const images = exportWorklogs.reduce((list, item) => [...list, ...item.attachments], []);
+  const lastExport = exportWorklogs[exportWorklogs.length - 1];
+  const workLogIndex = findIndex(workLog[lastExport?.artist?.id] || [], (log) => log.id === lastExport?.id);
+
+  const canModifyDelivery = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.MODIFY_DELIVERY) || false;
   const canNotifyCustomer = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.NOTIFY_BOOKING_TO_CUSTOMER) || false;
 
   const handleUploadSketch = () => {
@@ -62,24 +66,13 @@ const OrderArtDelivery = ({ isDeliverable, order, images, works, workLog, upload
         () => {
           dropbox.current.clearFiles();
         },
-        undefined,
         lastExport?.artist?.id,
       );
     }
   };
 
   const handleDeleteFile = (file, fileIndex) => {
-    deleteFileDelivery(
-      order.id,
-      file?.source?.id,
-      workLogIndex,
-      fileIndex,
-      () => {
-        toast.dark('File deleteted!');
-      },
-      undefined,
-      lastExport?.artist?.id,
-    );
+    deleteFileDelivery(order.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'), lastExport?.artist?.id);
   };
 
   const handleNotifyEmail = () => {
@@ -141,10 +134,11 @@ const OrderArtDelivery = ({ isDeliverable, order, images, works, workLog, upload
   );
 };
 
-const mapStateToProps = ({ orderDetail, auth, orderTable }) => ({
+const mapStateToProps = ({ orderDetail, auth, orderTable, uiComponents }) => ({
   workLog: orderDetail.data.workLog,
   accountInfo: auth.data.accountInfo,
   status: orderTable.orders.status,
+  uiComponents: uiComponents.data.components,
 });
 
 const mapDispatchToProps = {

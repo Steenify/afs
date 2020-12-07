@@ -7,14 +7,16 @@ import Button from 'components/common/button';
 import WorkflowState from './workflowState';
 import { ReactComponent as DownArrow } from 'assets/img/down-arrow.svg';
 import { getEmailTemplatesAction, addNewStateAction } from './actions';
+import { getComponentsAction } from 'pages/ui_components/actions';
 import { PERMITTIONS_CONFIG } from 'configs';
 
 const WorkflowDetailStateList = (props) => {
-  const { accountInfo, states, getEmailTemplatesAction, addNewStateAction } = props;
+  const { accountInfo, states, getEmailTemplatesAction, addNewStateAction, getComponentsAction } = props;
 
   useEffect(() => {
     getEmailTemplatesAction();
-  }, [getEmailTemplatesAction]);
+    getComponentsAction();
+  }, [getEmailTemplatesAction, getComponentsAction]);
 
   const stateOptions = useMemo(() => (states || []).map((s) => ({ ...s, label: s.name, value: s.stateId || s.id })), [states]);
 
@@ -69,4 +71,4 @@ const mapStateToProps = ({ workflowDetail, auth }) => {
   };
 };
 
-export default connect(mapStateToProps, { getEmailTemplatesAction, addNewStateAction })(WorkflowDetailStateList);
+export default connect(mapStateToProps, { getEmailTemplatesAction, addNewStateAction, getComponentsAction })(WorkflowDetailStateList);

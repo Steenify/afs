@@ -21,18 +21,19 @@ import { ReactComponent as Message } from 'assets/img/message.svg';
 import { ReactComponent as Feedback } from 'assets/img/message__yellow.svg';
 
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
-import { mapStatusCanNotUpload, PERMITTIONS_CONFIG } from 'configs';
+import { PERMITTIONS_CONFIG } from 'configs';
 
 import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction, updateTrackingCodeWorkLogAction } from './actions';
 import CanShow from 'components/layout/canshow';
 import { ReactDates } from 'components/common/datepicker';
 
 const OrderWorkLogItem = ({
-  workLogType,
+  workLogType, // TODO: remove
   work,
   order,
-  uploadFileWorkLog,
+  component,
   isOpened,
+  uploadFileWorkLog,
   workLog,
   uploadCommentWorkLog,
   deleteCommentWorkLog,
@@ -40,6 +41,8 @@ const OrderWorkLogItem = ({
   deleteAttachmentWorkLog,
   updateTrackingCodeWorkLogAction,
 }) => {
+  const { canTracking, canUpload, canExportFile } = component;
+
   const [isOpenWork, setIsOpenWork] = useState(isOpened || false);
   const toggleWork = () => setIsOpenWork(!isOpenWork);
 
@@ -61,16 +64,11 @@ const OrderWorkLogItem = ({
   const [editComment, setEditComment] = useState({});
   const [editCommentIndex, setEditCommentIndex] = useState(0);
 
-  const isPrintTrackingStatus = work.status === 'PRINT_TRACKING';
-
   const isWorking = work.state === 'WORKING';
   const isReview = work.state === 'REVIEWING';
   const isRejected = work.state === 'REJECTED';
   const isAproved = work.state === 'APPROVED';
-  const isExported = order.status === 'EXPORT_FILE';
   const workLogIndex = findIndex(workLog[work?.artist?.id] || [], (log) => log.id === work.id);
-
-  const notUpload = mapStatusCanNotUpload.indexOf(order.statusForCanvas || order.status) !== -1;
 
   const activities = work?.activities || [];
   const activitiesGroup = groupBy(activities, 'activityType');
@@ -132,7 +130,6 @@ const OrderWorkLogItem = ({
           dropbox.current.clearFiles();
           setIsEdit(false);
         },
-        workLogType,
         work?.artist?.id,
       );
     }
@@ -195,7 +192,6 @@ const OrderWorkLogItem = ({
             commentBox.current.clearFiles();
             commentBox.current.setCommemt('');
           },
-          workLogType,
           work?.artist?.id,
         );
       }
@@ -259,7 +255,7 @@ const OrderWorkLogItem = ({
 
   const handleDeleteFile = (file) => {
     const fileIndex = findIndex(work.attachments, (pho) => pho?.id === file?.source?.id);
-    deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'), workLogType, work?.artist?.id);
+    deleteAttachmentWorkLog(order.id, work.id, file?.source?.id, workLogIndex, fileIndex, () => toast.dark('File deleteted!'), work?.artist?.id);
   };
 
   return (
@@ -274,7 +270,7 @@ const OrderWorkLogItem = ({
         <div onClick={toggleWork} className='box__title w-100'>
           {work.name} <span className='work__last_update'>{dateTimeToDeadline(work.lastModifiedDate)}</span>
         </div>
-        {isWorking && !notUpload && (
+        {isWorking && canUpload && (
           <div className='control'>
             {isEdit ? (
               <button type='button' onClick={handleCancel} className='box__control'>
@@ -290,7 +286,7 @@ const OrderWorkLogItem = ({
       </div>
 
       <Collapse isOpen={isOpenWork}>
-        {isPrintTrackingStatus && (
+        {canTracking && (
           <div className='order_detail__tracking_code'>
             <div className='box__header mb-0'>
               <div className='box__title w-100'>Tracking Info</div>
@@ -343,11 +339,11 @@ const OrderWorkLogItem = ({
           </div>
         )}
 
-        {(!work.attachments?.length || isEdit) && !notUpload && !isPrintTrackingStatus && (
+        {(!work.attachments?.length || isEdit) && canUpload && (
           <div>
             {!isRejected && !isAproved && (
               <>
-                <Dropbox className='upload' ref={dropbox} finalDriveId={isExported ? order.finalDriveId : ''} orderNumber={order.number} id={`work_log__${work.status}__${work.id}`} />
+                <Dropbox className='upload' ref={dropbox} finalDriveId={canExportFile ? order.finalDriveId : ''} orderNumber={order.number} id={`work_log__${work.status}__${work.id}`} />
                 {isWorking && (
                   <div className='order_detail__ctas text-right'>
                     <Button onClick={handleUploadSketch} color='primary' className='cta cta2' type='button'>
@@ -553,8 +549,8 @@ const OrderWorkLogItem = ({
   );
 };
 
-const mapStateToProps = ({ orderDetail }, ownProps) => ({
-  workLog: orderDetail.data[ownProps.workLogType || 'workLog'],
+const mapStateToProps = ({ orderDetail }) => ({
+  workLog: orderDetail.data.workLog,
 });
 
 const mapDispatchToProps = {

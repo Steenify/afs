@@ -45,7 +45,6 @@ const OrderCustomerBox = ({ order, todos, loadingTodo, getOrderTodoList, createO
 
     if (editId) {
       const index = findIndex(todos, (to) => to.id === editId);
-      console.log('🚀 ~ file: orderTodoList.js ~ line 44 ~ handleCreateTodo ~ index', index);
       editOrderTodoList(order.id, editId, payload, index, () => {
         setText('');
         setEditId(null);

@@ -48,6 +48,7 @@ const WorkflowState = (props) => {
     errorRequest,
     handleSubmit,
     emailTemplates,
+    components,
     updateWorkflowStateZapierAction,
     createWorkflowStateZapierAction,
     deleteWorkflowStateZapierAction,
@@ -65,6 +66,7 @@ const WorkflowState = (props) => {
       const temp = emailTemplates.find((et) => et.id === template);
       return { id: temp.id, name: temp.name };
     });
+    const component = components.find((c) => c.id === values.component)?.name;
     const transitions = isCreatingFlow
       ? [
           { actionType: 'CANCEL', state: { name: values.name } },
@@ -80,8 +82,7 @@ const WorkflowState = (props) => {
             };
           })
           .filter((item) => item);
-    const params = { ...values, messageTemplates, transitions };
-    console.log('🚀 ~ file: workflowState.js ~ line 27 ~ onSubmit ~ params', params);
+    const params = { ...values, messageTemplates, transitions, component };
     if (!isCreatingFlow) {
       updateWorkflowStateZapierAction(id, params, () => setUpdating(false));
     } else {
@@ -184,17 +185,17 @@ const WorkflowState = (props) => {
           <div className='row'>
             <div className='col-lg-6'>
               <Field className='form__item' component={Input} name='name' placeholder={'Name'} />
-              <Field className='form__item' component={Input} name='component' placeholder={'UI Component'} />
+              <Field className='form__item' component={Select} name='component' placeholder={'UI Component'} options={components} />
               <Field className='form__item' component={Select} name='type' placeholder='Type' options={stateTypes} />
             </div>
             <div className='col-lg-6'>
               <Field className='form__item' component={Input} name='description' type='textarea' placeholder={'Description'} />
             </div>
           </div>
-          <div className='box__sub_title mb-2 d-flex align-items-center'>
+          <div className='box__sub_title mb-3 d-flex align-items-center'>
             <span className=''>Deliverable?</span>
-            <label className='cus-checkbox ml-2'>
-              <Field className='form-control sr-only' component={'input'} type='checkbox' name='isDeliverable' />
+            <label className='cus-checkbox ml-3'>
+              <Field className='form-control sr-only' component={'input'} type='checkbox' name='deliverable' />
               <span className='checkmark'></span>
             </label>
           </div>
@@ -228,18 +229,23 @@ const WorkflowState = (props) => {
   );
 };
 
-const mapStateToProps = ({ workflowDetail, auth }, { state }) => {
+const mapStateToProps = ({ workflowDetail, auth, uiComponents }, { state }) => {
   const {
     data: { emailTemplates },
   } = workflowDetail;
+  const {
+    data: { components },
+  } = uiComponents;
   const initialValues = {
     ...state,
+    component: components.find((c) => c.name === state.component)?.id,
     messageTemplates: (state.messageTemplates || []).map((item) => item.id),
     transitions: (state.transitions || []).map((item) => ({ ...item, state: item.state.id })),
   };
   return {
     accountInfo: auth.data.accountInfo,
     emailTemplates,
+    components,
     initialValues,
   };
 };

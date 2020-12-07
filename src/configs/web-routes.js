@@ -175,7 +175,7 @@ const WEB_ROUTES = {
   UI_COMPONENTS: {
     path: '/ui-components',
     title: 'UI Components',
-    permission: 'GET_FLOW',
+    permission: 'GET_COMPONENT',
   },
   CUSTOMERS_CARE: {
     path: '/customers-care',

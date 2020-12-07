@@ -12,6 +12,7 @@ class ComponentList extends Component {
     const { getComponentsAction } = this.props;
     getComponentsAction();
   }
+
   render() {
     return (
       <div className='artists__page'>

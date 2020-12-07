@@ -107,15 +107,21 @@ export const uploadOrderWorkLogService = ({ id, logId, data }) =>
     data,
   });
 
-export const approvedOrderWorkLogService = ({ id, logId }) =>
+// export const approvedOrderWorkLogService = ({ id, logId }) =>
+//   request({
+//     url: `${ORDERS_API}/${id}/work-logs/${logId}/approve`,
+//     method: 'PUT',
+//   });
+
+export const approvedOrderWorkLogService = ({ id, itemId, logId }) =>
   request({
-    url: `${ORDERS_API}/${id}/work-logs/${logId}/approve`,
+    url: `${ORDERS_API_V2}/${id}/items/${itemId}/work-logs/${logId}/approve`,
     method: 'PUT',
   });
 
-export const rejectedOrderWorkLogService = ({ id, logId, data }) =>
+export const rejectedOrderWorkLogService = ({ id, itemId, logId, data }) =>
   request({
-    url: `${ORDERS_API}/${id}/work-logs/${logId}/reject`,
+    url: `${ORDERS_API_V2}/${id}/items/${itemId}/work-logs/${logId}/reject`,
     method: 'PUT',
     data,
   });

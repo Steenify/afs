@@ -91,7 +91,6 @@ class FormikSelect extends Component {
     const { touched, error } = meta;
 
     const { value } = this.state;
-    console.log('🚀 ~ file: FormikSelect.js ~ line 94 ~ FormikSelect ~ render ~ value', field.value);
     let selected;
 
     if (multi) {

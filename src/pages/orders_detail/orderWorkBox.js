@@ -3,20 +3,22 @@ import { connect } from 'react-redux';
 import { Spinner, Alert } from 'reactstrap';
 import { groupBy, sortBy, map, isEmpty, reduce } from 'lodash';
 
-import OrderArtWorkGroup from './orderArtWorkGroup';
+import OrderWorkGroup from './orderWorkGroup';
 import OrderCustomerBox from './orderCustomerBox';
-import OrderArtDelivery from './orderArtDelivery';
+import OrderArtDelivery from './orderDelivery';
 import { getOrderWorkLogAction } from './actions';
 import { PERMITTIONS_CONFIG, WORKFLOW_STATE_TYPE } from 'configs';
 
-const OrderArtWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster, artists = [] }) => {
+const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster, artists = [] }) => {
   const [tab, setTab] = useState('activity');
   const [artistId, setArtistId] = useState();
   const [currentWorkLog, setCurrentWorkLog] = useState([]);
 
+  const worklogToDeliver = (workLog[artists[0]?.id] || []).filter((w) => w.bookingItemId === item.id);
+
   useEffect(() => {
     setArtistId(artists[0]?.id);
-  }, [artists.length]);
+  }, [artists]);
 
   useEffect(() => {
     const worklogs = (workLog[artistId] || []).filter((w) => w.bookingItemId === item.id);
@@ -33,10 +35,8 @@ const OrderArtWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPost
 
   const isCurrentArtist = artistId === order?.assignedTo?.id;
   const isNewOrder = currentWorkLog.length === 1 && currentWorkLog[0]?.wlStateType === WORKFLOW_STATE_TYPE.START;
-  const isDeliverable = currentWorkLog.find((w) => w.wlStateType === WORKFLOW_STATE_TYPE.DONE);
   const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
   const worklogGroupedByState = groupBy(currentWorkLog, 'wlState');
-  console.log('🚀 ~ file: orderArtWorkBox.js ~ line 39 ~ OrderArtWorkBox ~ worklogGroup', worklogGroupedByState);
 
   // const allExportImage = reduce(
   //   EXPORT_FILE,
@@ -91,13 +91,14 @@ const OrderArtWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPost
               {!isEmpty(order.assignedTo) &&
                 map(worklogGroupedByState, (works, key) => {
                   return (
-                    <OrderArtWorkGroup
+                    <OrderWorkGroup
                       hasPoster={hasPoster}
                       isNewOrder={isNewOrder}
                       isCurrentArtist={isCurrentArtist}
                       works={works}
                       order={order}
                       group={key}
+                      item={item}
                       key={`workGroup__item__${key}`}
                       lastWorkLog={lastWorkLog}
                       status={status}
@@ -109,7 +110,11 @@ const OrderArtWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPost
 
           <div className={`order_detail__content ${tab === 'delivery' && 'active'} `}>
             <div className='order_detail__delivery box'>
-              {/* <OrderArtDelivery isDeliverable={isDeliverable} works={[...(worklogGroup.EXPORT_FILE || [])]} order={order} images={allExportImage} /> */}
+              <OrderArtDelivery
+                works={worklogToDeliver}
+                order={order}
+                // isDeliverable={isDeliverable} works={[...(worklogGroup.EXPORT_FILE || [])]} images={allExportImage}
+              />
             </div>
           </div>
         </div>
@@ -138,4 +143,4 @@ const mapStateToProps = ({ orderTable, orderDetail, auth }, ownProps) => ({
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderArtWorkBox);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderWorkBox);

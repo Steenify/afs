@@ -5,8 +5,6 @@ import {
   UPDATE_ORDER_ITEM_SUMARIZE_ACTION,
   UPDATE_ORDER_ITEM_FILES_ACTION,
   GET_ORDER_CUSTOMER_ACTION,
-  UPDATE_ORDER_STATUS_ACTION,
-  CREATE_ORDER_CANVAS_WORK_LOG_ACTION,
   GET_ORDER_CANVAS_WORK_LOG_ACTION,
   GET_ORDER_WORK_LOG_ACTION,
   UPLOAD_FILE_WORK_LOG_ACTION,
@@ -34,6 +32,7 @@ import {
   EDIT_ORDER_TODO_LIST_ACTION,
   RESOLVED_ORDER_TODO_LIST_ACTION,
   REMOVE_ORDER_TODO_LIST_ACTION,
+  RESET_ORDER_DETAIL_ACTION,
 } from './actions';
 
 import { ORDER_TABLE_UPDATE_BUDGET_ACTION, ORDER_TABLE_UPDATE_ARTIST_ACTION } from 'components/tables/orders/actions';
@@ -83,6 +82,9 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case RESET_ORDER_DETAIL_ACTION: {
+      return initialState;
+    }
     case ORDER_DETAIL_ACTIONS.UPDATE_ORDER_ITEM_SUMARIZE:
       return update(state, {
         data: {
@@ -158,8 +160,6 @@ const reducer = (state = initialState, action) => {
 
     case GET_ORDER_DETAIL_ACTION.PENDING:
     case UPDATE_ORDER_ITEM_FILES_ACTION.PENDING:
-    case CREATE_ORDER_CANVAS_WORK_LOG_ACTION.PENDING:
-    case UPDATE_ORDER_STATUS_ACTION.PENDING:
     case UPLOAD_FILE_WORK_LOG_ACTION.PENDING:
     case UPLOAD_COMMENT_WORK_LOG_ACTION.PENDING:
     case UPDATE_TRACKING_CODE_WORK_LOG_ACTION.PENDING:
@@ -197,39 +197,6 @@ const reducer = (state = initialState, action) => {
             items: {
               $push: [payload],
             },
-          },
-        },
-      });
-    case CREATE_ORDER_CANVAS_WORK_LOG_ACTION.SUCCESS: {
-      return update(state, {
-        ui: {
-          loading: { $set: false },
-        },
-        data: {
-          order: {
-            statusForCanvas: {
-              $set: payload.data.status,
-            },
-          },
-          canvasWorkLog: {
-            $set: [payload.data],
-          },
-        },
-      });
-    }
-    case UPDATE_ORDER_STATUS_ACTION.SUCCESS:
-      return update(state, {
-        ui: {
-          loading: { $set: false },
-        },
-        data: {
-          order: {
-            status: {
-              $set: payload.status,
-            },
-          },
-          workLog: {
-            [payload.artistId]: { $push: [payload.data] },
           },
         },
       });
@@ -392,12 +359,12 @@ const reducer = (state = initialState, action) => {
           data: {
             order: {
               status: {
-                $set: payload.data.status,
+                $set: payload.workLog.status,
               },
             },
             workLog: {
               [payload.artistId]: {
-                $push: [payload.data],
+                $push: [payload.workLog],
               },
             },
             canvasWorkLog: {
@@ -422,7 +389,7 @@ const reducer = (state = initialState, action) => {
         data: {
           order: {
             [payload.workLogType === 'workLog' ? 'status' : 'statusForCanvas']: {
-              $set: payload.data.status,
+              $set: payload.workLog.status,
             },
           },
           [payload.workLogType]: {
@@ -435,7 +402,7 @@ const reducer = (state = initialState, action) => {
                   $push: payload.activives,
                 },
               },
-              $push: [payload.data],
+              $push: [payload.workLog],
             },
           },
         },
@@ -449,7 +416,7 @@ const reducer = (state = initialState, action) => {
         data: {
           order: {
             status: {
-              $set: payload.data.status,
+              $set: payload.workLog.status,
             },
           },
           [payload.workLogType]: {
@@ -462,7 +429,7 @@ const reducer = (state = initialState, action) => {
                   $push: payload.activives,
                 },
               },
-              $push: [payload.data],
+              $push: [payload.workLog],
             },
           },
         },
@@ -535,8 +502,6 @@ const reducer = (state = initialState, action) => {
     case UPDATE_ORDER_ITEM_SUMARIZE_ACTION.ERROR:
     case UPDATE_ORDER_ITEM_SUMARIZE_ACTION.SUCCESS:
     case UPDATE_ORDER_ITEM_FILES_ACTION.ERROR:
-    case UPDATE_ORDER_STATUS_ACTION.ERROR:
-    case CREATE_ORDER_CANVAS_WORK_LOG_ACTION.ERROR:
     case UPLOAD_FILE_WORK_LOG_ACTION.ERROR:
     case UPLOAD_COMMENT_WORK_LOG_ACTION.ERROR:
     case DELETE_COMMENT_WORK_LOG_ACTION.ERROR:

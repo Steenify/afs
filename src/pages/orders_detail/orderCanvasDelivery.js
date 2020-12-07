@@ -62,7 +62,6 @@ const OrderCanvasDelivery = ({ order, images, works, workLog, uploadFileWorkLog,
         () => {
           dropbox.current.clearFiles();
         },
-        undefined,
         lastExport?.artist?.id,
       );
     }

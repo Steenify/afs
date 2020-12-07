@@ -3,12 +3,17 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from 'components/common/button';
+import ComponentEditModal from '../componentEditModal';
 
-const ComponentNameCell = ({ id, name }) => {
+const ComponentNameCell = ({ item }) => {
+  const { id, name } = item;
   return (
-    <Button tag={Link} className='w-100 justify-content-start uiComponents__name uiComponents__cell pl-0' to={`/ui-components/${id}`} color='link'>
-      {name}
-    </Button>
+    <div className='d-flex'>
+      <Button tag={Link} className='w-100 justify-content-start uiComponents__name uiComponents__cell pl-0' to={`/ui-components/${id}`} color='link'>
+        {name}
+      </Button>
+      <ComponentEditModal item={item} containerClassName='ml-auto' form={`ComponentEditModal_${id}`} />
+    </div>
   );
 };
 
@@ -16,10 +21,7 @@ const mapStateToProps = ({ uiComponents }, ownProps) => {
   const { data } = ownProps;
   const { items } = uiComponents.data;
   const item = items[data] || {};
-  return {
-    id: item?.id || '',
-    name: item?.name || '',
-  };
+  return { item };
 };
 
 const mapDispatchToProps = {};

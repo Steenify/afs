@@ -6,7 +6,7 @@ import { getOrderItem } from 'utils';
 
 import OrderSumaryBox from './orderSumaryBox';
 import OrderItemBox from './orderItemBox';
-import OrderArtWorkBox from './orderArtWorkBox';
+import OrderWorkBox from './orderWorkBox';
 
 const OrderDetailItem = (props) => {
   const { item, order, active } = props;
@@ -25,7 +25,7 @@ const OrderDetailItem = (props) => {
           </div>
         </div>
       </div>
-      <OrderArtWorkBox order={order} item={item} />
+      <OrderWorkBox order={order} item={item} />
     </div>
   );
 };

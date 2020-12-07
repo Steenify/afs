@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 
@@ -8,6 +8,8 @@ import CanShow from 'components/layout/canshow';
 import { PERMITTIONS_CONFIG, statusPayments, mapStatusPayment, ORDER_STATUS_FRIENDLY } from 'configs';
 import { dateTimeStringFromDate, getSelectedStatus } from 'utils';
 
+import { getComponentsAction } from 'pages/ui_components/actions';
+
 import EmaiNotify from './emailNotify';
 import EmailRemind from './remindCustomer';
 import AddProductModal from './modal/addProductModal';
@@ -16,16 +18,24 @@ import BudgetHistoryModal from './modal/budgetHistoryModal';
 import ChangeArtistModal from './modal/changeArtistModal';
 import ChangeBudgetModal from './modal/changeBudgetModal';
 import OrderDetailItemList from './orderDetailItemList';
-
+import OrderCustomerBox from './orderCustomerBox';
 import OrderAssignedBox from './orderAssignedBox';
 import OrderBudget from './orderBudget';
 
-import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs } from './actions';
+import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, resetOrderDetailAction } from './actions';
 
-const OrderDetail = ({ loading, order, status, accountInfo, updateShowAssignedBox }) => {
-  if (isEmpty(order) || !status.length) {
+const OrderDetail = ({ loading, order, accountInfo, updateShowAssignedBox, resetOrderDetailAction, getComponentsAction }) => {
+  useEffect(() => {
+    getComponentsAction();
+    return resetOrderDetailAction;
+  }, [getComponentsAction, resetOrderDetailAction]);
+
+  if (isEmpty(order)) {
     return <InPageLoading isLoading={loading} />;
   }
+
+  const canEditAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;
+  const canGetArtists = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) || false;
 
   return (
     <div className='order_detail'>
@@ -35,7 +45,7 @@ const OrderDetail = ({ loading, order, status, accountInfo, updateShowAssignedBo
             <div className='info__left mb-3'>
               <div className='number'>#{order?.number}</div>
               <div className='status'>
-                <span className={`order__status mr-2 ${order?.artistPaymentStatus || statusPayments[1]}}`}> {mapStatusPayment[order?.artistPaymentStatus] || mapStatusPayment.UNPAID}</span>
+                <span className={`order__status mr-2 ${order?.artistPaymentStatus || statusPayments[1]}`}> {mapStatusPayment[order?.artistPaymentStatus] || mapStatusPayment.UNPAID}</span>
                 <span className={`order__status mr-2 ${order.overallStatus}`}>{getSelectedStatus(order.overallStatus, ORDER_STATUS_FRIENDLY).friendlyName}</span>
               </div>
               <div className='deadline'>
@@ -99,16 +109,18 @@ const OrderDetail = ({ loading, order, status, accountInfo, updateShowAssignedBo
   );
 };
 
-const mapStateToProps = ({ orderDetail, orderTable }) => {
+const mapStateToProps = ({ orderDetail, auth }) => {
   return {
     loading: orderDetail.ui.loading,
     order: orderDetail.data.order,
-    status: orderTable.orders.status,
+    accountInfo: auth.data.accountInfo,
   };
 };
 
 const mapDispatchToProps = {
   updateShowAssignedBox: updateShowAssignedBoxAction,
+  resetOrderDetailAction,
+  getComponentsAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderDetail);

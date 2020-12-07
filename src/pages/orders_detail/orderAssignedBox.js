@@ -8,6 +8,7 @@ import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 import ListArtists from 'components/layout/ListArtistAssign';
 
 import { updateOrderTableAssignArtistAction } from 'components/tables/orders/actions';
+import { getOrderWorkLogAction } from 'pages/orders_detail/actions';
 
 class OrderAssignedBox extends Component {
   constructor() {
@@ -25,7 +26,7 @@ class OrderAssignedBox extends Component {
 
   onSave = (artist) => {
     const { isPopoverOpen } = this.state;
-    const { order, updateOrderTableAssignArtistAction } = this.props;
+    const { order, updateOrderTableAssignArtistAction, getOrderWorkLogAction } = this.props;
     const { assignedTo } = order;
 
     if ((assignedTo || {})['login'] === artist?.login) {
@@ -45,7 +46,13 @@ class OrderAssignedBox extends Component {
       () => {
         const payload = { id: order.id, to: artist.login };
         const name = artist.login !== 'null' ? artist.firstName : '_______';
-        updateOrderTableAssignArtistAction({ payload, onSuccess: () => toast.dark(`Order [#${order?.number}] is assigned to [${name}]`) });
+        updateOrderTableAssignArtistAction({
+          payload,
+          onSuccess: () => {
+            toast.dark(`Order [#${order?.number}] is assigned to [${name}]`);
+            getOrderWorkLogAction(order.id);
+          },
+        });
       },
     );
   };
@@ -90,6 +97,7 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   updateOrderTableAssignArtistAction,
+  getOrderWorkLogAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderAssignedBox);
