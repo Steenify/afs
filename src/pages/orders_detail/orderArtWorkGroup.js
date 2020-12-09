@@ -41,9 +41,6 @@ const OrderArtWorkGroup = ({
     isOpened = true;
   }
 
-  const isNotifyStatus = mapStatusNotiy.indexOf(order.status) !== -1;
-  const needCheckFile = mapStatusVerifyFile.indexOf(order.status) !== -1;
-
   const [isOpen, setIsOpen] = useState(isOpened || false);
   const toggle = () => setIsOpen(!isOpen);
 
@@ -194,6 +191,9 @@ const OrderArtWorkGroup = ({
           {works.map((work) => {
             const showActionState = lastWorkLog.id === work.id && isCurrentArtist;
             const showActionPermitions = canNotifyCustomer || canAprroved || canRejected;
+
+            const isNotifyStatus = mapStatusNotiy.indexOf(work.status) !== -1;
+            const needCheckFile = mapStatusVerifyFile.indexOf(work.status) !== -1;
 
             const isNewStatus = work.status === 'NEW_ORDER';
             const isDoneStatus = work.status === 'DONE';
