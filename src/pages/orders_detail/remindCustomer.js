@@ -190,10 +190,8 @@ const RemindCustomer = (props) => {
                     apiKey: '8yd4ibfq5z8v9bj8ddn2hezmxgm68ijow36krpjasr0ucty8',
                     height: 500,
                     menubar: false,
-                    plugins: ['advlist autolink lists link', 'visualblocks code paste'],
-                    toolbar: `undo redo | formatselect | link | bold italic |
-              alignleft aligncenter alignright | code | \
-              bullist numlist outdent indent`,
+                    plugins: ['advlist autolink lists link', 'visualblocks code paste image'],
+                    toolbar: `undo redo | formatselect | link | bold italic | alignleft aligncenter alignright | code | image | bullist numlist outdent indent`,
                   }}
                   onChange={handleUpdateEmail}
                 />

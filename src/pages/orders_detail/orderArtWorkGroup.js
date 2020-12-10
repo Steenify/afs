@@ -15,7 +15,15 @@ import Button from 'components/common/button';
 import OrderWorkLogItem from './orderWorkLogItem';
 import OrderRejectModal from './orderRejectModal';
 
-import { approvedWorkLogAction, rejectedWorkLogAction, getNotifyTemplatesAction, getRemindTemplatesAction, createOrderCanvasWorkLogAction, canceledWorkLogAction } from './actions';
+import {
+  approvedWorkLogAction,
+  rejectedWorkLogAction,
+  getNotifyTemplatesAction,
+  getRemindTemplatesAction,
+  createOrderCanvasWorkLogAction,
+  canceledWorkLogAction,
+  updateCurrentNotifyStatusAction,
+} from './actions';
 
 const OrderArtWorkGroup = ({
   order,
@@ -34,6 +42,7 @@ const OrderArtWorkGroup = ({
   lastWorkLog,
   hasPoster,
   isCurrentArtist,
+  updateCurrentNotifyStatus,
 }) => {
   let isOpened = false;
 
@@ -94,9 +103,10 @@ const OrderArtWorkGroup = ({
     });
   };
 
-  const handleNotifyEmail = (workLogIndex) => {
-    const currentStatus = getSelectedStatus(order.status, status);
+  const handleNotifyEmail = (workLogIndex, work) => {
+    const currentStatus = getSelectedStatus(work?.status, status);
     if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
+      updateCurrentNotifyStatus(work?.status);
       getNotifyTemplatesAction(order.id, currentStatus.emailTemplates[0].id, workLogIndex, undefined, lastWork?.artist?.id);
     } else {
       toast.warn('No Email template found!');
@@ -235,12 +245,12 @@ const OrderArtWorkGroup = ({
                       <div className='order_detail__ctas ctas d-flex flex-wrap justify-content-between'>
                         <div className='ctas__group'>
                           {canNotifyCustomer && isNotifyStatus && (
-                            <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex)} containerClassName='ctas__item' className='ctas__button mb-3 ctas__notify' type='button'>
+                            <Button color='primary' onClick={() => handleNotifyEmail(workLogIndex, work)} containerClassName='ctas__item' className='ctas__button mb-3 ctas__notify' type='button'>
                               Notify Customer
                             </Button>
                           )}
                           {canNotifyCustomer && isNotifyStatus && (
-                            <Button color='primary' onClick={() => handleRemindEmail(workLogIndex)} containerClassName='ctas__item' className='ctas__button mb-3 ctas__remind' type='button'>
+                            <Button color='primary' onClick={() => handleRemindEmail(workLogIndex, work)} containerClassName='ctas__item' className='ctas__button mb-3 ctas__remind' type='button'>
                               Remind Customer
                             </Button>
                           )}
@@ -319,6 +329,7 @@ const mapDispatchToProps = {
   getRemindTemplatesAction,
   createOrderCanvasWorkLogAction,
   canceledWorkLog: canceledWorkLogAction,
+  updateCurrentNotifyStatus: updateCurrentNotifyStatusAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderArtWorkGroup);

@@ -56,6 +56,7 @@ export const ORDER_DETAIL_ACTIONS = {
   UPDATE_SHOW_ASSIGNED_MODAL: 'UPDATE_SHOW_ASSIGNED_MODAL',
   SET_ORDER_DETAIL_BUDGET: 'SET_ORDER_DETAIL_BUDGET',
   UPDATE_SENT_DELIVERY_EMAIL: 'UPDATE_SENT_DELIVERY_EMAIL',
+  UPDATE_CURRENT_NOTIFY_STATUS: 'UPDATE_CURRENT_NOTIFY_STATUS',
 };
 
 export const updateOrderItemSumarizeAction = (payload) => (dispatch) => {
@@ -74,6 +75,14 @@ export const updateShowEmailNotifyAction = (payload) => (dispatch) => {
     payload: false,
   });
 };
+
+export const updateCurrentNotifyStatusAction = (payload) => (dispatch) => {
+  dispatch({
+    type: ORDER_DETAIL_ACTIONS.UPDATE_CURRENT_NOTIFY_STATUS,
+    payload,
+  });
+};
+
 export const updateShowEmailRemindAction = (payload) => (dispatch) => {
   dispatch({
     type: ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_REMIND,

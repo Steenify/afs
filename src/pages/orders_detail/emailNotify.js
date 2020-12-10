@@ -50,6 +50,7 @@ const EmaiNotify = (props) => {
     currentArtistId,
     currentWorkLogType,
     isDeliveryEmail,
+    currentNotifyStatus,
   } = props;
 
   const [notifyType, setNotifyType] = useState('email');
@@ -66,6 +67,10 @@ const EmaiNotify = (props) => {
   };
 
   let emailStatus = getSelectedStatus(order.statusForCanvas || order.status, status);
+
+  if (currentNotifyStatus) {
+    emailStatus = getSelectedStatus(currentNotifyStatus, status);
+  }
 
   if (isDeliveryEmail) {
     emailStatus = getSelectedStatus('SEND_FILE', status);
@@ -187,10 +192,8 @@ const EmaiNotify = (props) => {
                     apiKey: '8yd4ibfq5z8v9bj8ddn2hezmxgm68ijow36krpjasr0ucty8',
                     height: 500,
                     menubar: false,
-                    plugins: ['advlist autolink lists link', 'visualblocks code paste'],
-                    toolbar: `undo redo | formatselect | link | bold italic |
-              alignleft aligncenter alignright | code | \
-              bullist numlist outdent indent`,
+                    plugins: ['advlist autolink lists link', 'visualblocks code paste image'],
+                    toolbar: `undo redo | formatselect | link | bold italic | alignleft aligncenter alignright | code | image | bullist numlist outdent indent`,
                   }}
                   onChange={handleUpdateEmail}
                 />
@@ -234,6 +237,7 @@ const mapStateToProps = ({ orderDetail, orderTable }) => ({
   status: orderTable.orders.status,
   isShowEmail: orderDetail.ui.isShowEmail,
   isDeliveryEmail: orderDetail.ui.isDeliveryEmail,
+  currentNotifyStatus: orderDetail.ui.currentNotifyStatus,
   loadingEmail: orderDetail.ui.loadingEmail,
   selectedEmailTemplate: orderDetail.data.selectedEmailTemplate,
   email: orderDetail.data.email,

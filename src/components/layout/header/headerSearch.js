@@ -88,7 +88,7 @@ class HeaderSearch extends Component {
       this.setState({
         isShow: false,
       });
-    }, 100);
+    }, 300);
   };
 
   render() {
