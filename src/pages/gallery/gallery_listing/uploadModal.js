@@ -20,6 +20,7 @@ const UploadModal = ({ onClose, onConfirm, item, tagItems = [], isLoading = fals
   const [tags, setTags] = useState(item?.tags?.map((tag) => ({ value: tag?.id, label: tag?.name })) || []);
   const [attachment, setAttachment] = useState(item?.attachment || null);
   const dropbox = useRef(null);
+  const dropboxPsd = useRef(null);
   const toggle = () => {
     onClose();
   };
@@ -73,6 +74,11 @@ const UploadModal = ({ onClose, onConfirm, item, tagItems = [], isLoading = fals
     }
   };
 
+  const handleUploadPsd = (files) => {
+    const file = files[0] || {};
+    setDestinationLink(file?.url);
+  };
+
   return (
     <form action='' onSubmit={onSave}>
       <Modal isOpen={item !== null} toggle={toggle} fade={false} size='lg' className='modal-dialog-centered  modal-no-border'>
@@ -106,15 +112,17 @@ const UploadModal = ({ onClose, onConfirm, item, tagItems = [], isLoading = fals
                     <div className='upload-file__list p-0'>
                       <div className='upload-file__items'>
                         <div className='file-item'>
-                          <div className={`image__file file-item__img`}>{attachment && <img src={attachment?.url} alt={attachment?.fileName} />}</div>
+                          <div className={`image__file file-item__img`}>{attachment && <img src={attachment?.url} alt={`${attachment?.fileName} file`} />}</div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <Dropbox className='upload' ref={dropbox} id={`Gallery__upload`} quality='low' orderNumber='artwork' handleChangeFiles={() => setAttachment(null)} />
                 </WrapperRow>
-                <WrapperRow label='Destination Link:'>
-                  <input type='text' className='form-control' value={destinationLink} onChange={(e) => setDestinationLink(e.target.value)} />
+                <WrapperRow label='Destination Link: (PSD)'>
+                  <input type='text' className='form-control mb-3' value={destinationLink} onChange={(e) => setDestinationLink(e.target.value)} />
+
+                  <Dropbox className='upload' ref={dropboxPsd} onUploadFile={handleUploadPsd} id={`Gallery__upload__PSD`} orderNumber='artwork' />
                 </WrapperRow>
               </>
             )}
