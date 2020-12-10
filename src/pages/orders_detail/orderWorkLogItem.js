@@ -72,7 +72,7 @@ const OrderWorkLogItem = ({
   const isExported = order.status === 'EXPORT_FILE';
   const workLogIndex = findIndex(workLog[work?.artist?.id] || [], (log) => log.id === work.id);
 
-  const notUpload = mapStatusCanNotUpload.indexOf(order.statusForCanvas || order.status) !== -1;
+  const notUpload = mapStatusCanNotUpload.indexOf(work?.status) !== -1;
 
   const activities = work?.activities || [];
   const activitiesGroup = groupBy(activities, 'activityType');
