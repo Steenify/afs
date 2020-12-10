@@ -55,6 +55,7 @@ export const ORDER_DETAIL_ACTIONS = {
   UPDATE_SHOW_ADD_PRODUCT_MODAL: 'UPDATE_SHOW_ADD_PRODUCT_MODAL',
   UPDATE_SHOW_ASSIGNED_MODAL: 'UPDATE_SHOW_ASSIGNED_MODAL',
   SET_ORDER_DETAIL_BUDGET: 'SET_ORDER_DETAIL_BUDGET',
+  UPDATE_SENT_DELIVERY_EMAIL: 'UPDATE_SENT_DELIVERY_EMAIL',
 };
 
 export const updateOrderItemSumarizeAction = (payload) => (dispatch) => {
@@ -67,6 +68,10 @@ export const updateShowEmailNotifyAction = (payload) => (dispatch) => {
   dispatch({
     type: ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_NOTIFY,
     payload,
+  });
+  dispatch({
+    type: ORDER_DETAIL_ACTIONS.UPDATE_SENT_DELIVERY_EMAIL,
+    payload: false,
   });
 };
 export const updateShowEmailRemindAction = (payload) => (dispatch) => {
@@ -716,9 +721,16 @@ export const canceledWorkLogAction = (id, logId, index, workLogType = 'workLog',
   });
 };
 
-export const getNotifyTemplatesAction = (id, templateId, workLogIndex, workLogType = 'workLog', artistId) => (dispatch) => {
-  dispatch(getEmailTemplateAction(id, templateId, workLogIndex, workLogType, artistId));
-  dispatch(getFBMessageTemplateAction(id, templateId, workLogIndex, workLogType, artistId));
+export const getNotifyTemplatesAction = (id, templateId, workLogIndex, workLogType = 'workLog', artistId, parrams = {}) => (dispatch) => {
+  dispatch(getEmailTemplateAction(id, templateId, workLogIndex, workLogType, artistId, parrams));
+  dispatch(getFBMessageTemplateAction(id, templateId, workLogIndex, workLogType, artistId, parrams));
+
+  if (parrams?.delivery) {
+    dispatch({
+      type: ORDER_DETAIL_ACTIONS.UPDATE_SENT_DELIVERY_EMAIL,
+      payload: true,
+    });
+  }
 };
 
 export const getRemindTemplatesAction = (id, workLogIndex, workLogType = 'workLog', artistId) => (dispatch) => {
@@ -727,7 +739,7 @@ export const getRemindTemplatesAction = (id, workLogIndex, workLogType = 'workLo
 };
 
 export const GET_EMAIL_TEMPLATE_ACTION = actionCreator('GET_EMAIL_TEMPLATE_ACTION');
-export const getEmailTemplateAction = (id, templateId, workLogIndex, workLogType = 'workLog', artistId) => (dispatch) => {
+export const getEmailTemplateAction = (id, templateId, workLogIndex, workLogType = 'workLog', artistId, parrams = {}) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.PENDING,
@@ -748,7 +760,7 @@ export const getEmailTemplateAction = (id, templateId, workLogIndex, workLogType
   };
 
   actionTryCatchCreator({
-    service: getOrderEmailService({ id, templateId }),
+    service: getOrderEmailService({ id, templateId }, parrams),
     onPending,
     onSuccess,
     onError,
@@ -811,6 +823,7 @@ export const sendEmailNotifyAction = (customerEmail = '', workLogType = 'workLog
         workLogType,
       },
     });
+
     toast.dark('Notified Customer!');
   };
   const onError = (error) => {
@@ -836,7 +849,7 @@ export const sendEmailNotifyAction = (customerEmail = '', workLogType = 'workLog
 };
 
 export const GET_FB_MESSAGE_TEMPLATE_ACTION = actionCreator('GET_FB_MESSAGE_TEMPLATE_ACTION');
-export const getFBMessageTemplateAction = (id, templateId, workLogIndex, workLogType = 'workLog', artistId) => (dispatch) => {
+export const getFBMessageTemplateAction = (id, templateId, workLogIndex, workLogType = 'workLog', artistId, parrams = {}) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_FB_MESSAGE_TEMPLATE_ACTION.PENDING,
@@ -857,7 +870,7 @@ export const getFBMessageTemplateAction = (id, templateId, workLogIndex, workLog
   };
 
   actionTryCatchCreator({
-    service: getOrderFBTemplateService({ id, templateId }),
+    service: getOrderFBTemplateService({ id, templateId }, parrams),
     onPending,
     onSuccess,
     onError,

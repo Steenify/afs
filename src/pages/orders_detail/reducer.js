@@ -46,6 +46,7 @@ const initialState = {
     loadingWorkLog: false,
     loadingCanvasWorkLog: false,
     isShowEmail: false,
+    isDeliveryEmail: false,
     isShowAddProduct: false,
     loadingEmail: false,
     loadingTodo: true,
@@ -126,6 +127,14 @@ const reducer = (state = initialState, action) => {
       return update(state, {
         ui: {
           isShowEmail: {
+            $set: payload,
+          },
+        },
+      });
+    case ORDER_DETAIL_ACTIONS.UPDATE_SENT_DELIVERY_EMAIL:
+      return update(state, {
+        ui: {
+          isDeliveryEmail: {
             $set: payload,
           },
         },

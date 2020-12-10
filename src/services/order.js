@@ -125,10 +125,11 @@ export const canceledOrderWorkLogService = ({ id, logId }) =>
     method: 'PUT',
   });
 
-export const getOrderEmailService = ({ id, templateId }) =>
+export const getOrderEmailService = ({ id, templateId }, params) =>
   request({
     url: `${ORDERS_API}/${id}/email/${templateId}`,
     method: 'GET',
+    params,
   });
 
 export const sentOrderEmailNotifyService = ({ id, data }) =>
@@ -138,10 +139,11 @@ export const sentOrderEmailNotifyService = ({ id, data }) =>
     data,
   });
 
-export const getOrderFBTemplateService = ({ id, templateId }) =>
+export const getOrderFBTemplateService = ({ id, templateId }, params) =>
   request({
     url: `${ORDERS_API}/${id}/message/${templateId}`,
     method: 'GET',
+    params,
   });
 
 export const sentOrderFBTemplateNotifyService = ({ id, data }) =>
