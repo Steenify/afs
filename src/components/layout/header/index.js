@@ -51,7 +51,6 @@ const Header = (props) => {
               <span className='line'></span>
               <span className='line'></span>
             </button>
-
             <HeaderSearch />
           </Nav>
 

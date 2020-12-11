@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { debounce, get } from 'lodash';
 import { Spinner } from 'reactstrap';
 
@@ -69,14 +69,6 @@ class HeaderSearch extends Component {
     );
   };
 
-  handleClick = (order) => {
-    const { history } = this.props;
-    this.setState({
-      isShow: false,
-    });
-    history.push(WEB_ROUTES.ORDERS_DETAIL.path.replace(':id', order.code));
-  };
-
   hanldeFocus = () => {
     this.setState({
       isShow: true,
@@ -114,14 +106,14 @@ class HeaderSearch extends Component {
             ) : (
               results.map((res) => (
                 <div key={`search__results__item__${res.id}`} className='search__result result'>
-                  <button className='search__wrapper' onClick={() => this.handleClick(res)} type='button'>
+                  <Link className='search__wrapper' to={`${WEB_ROUTES.ORDERS_DETAIL.path.replace(':id', res.code)}`}>
                     <div className='result__number'>#{res?.number}</div>
                     <div className='result__date'>{dateTimeToDeadline(res?.paidAt)}</div>
                     <div className='result__customer'>{res?.customer?.fullName}</div>
                     <div className='result__status'>
                       <div className={`order__status cursor-pointer ${getSelectedStatus(res?.status, statuses).name}`}>{getSelectedStatus(res?.status, statuses).friendlyName}</div>
                     </div>
-                  </button>
+                  </Link>
                 </div>
               ))
             )}
@@ -141,4 +133,4 @@ const mapStateToProps = (reducers) => {
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HeaderSearch));
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderSearch);
