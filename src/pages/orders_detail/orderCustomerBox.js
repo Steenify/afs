@@ -94,6 +94,21 @@ const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, acco
           <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO}>
             <div className='box__device'></div>
             <div className='box__header mb-2'>
+              <div className='box__title'>Previous Artists </div>
+            </div>
+
+            <div className='div'>
+              {(customer?.prevArtists || []).map((art) => (
+                <p className='artist mb-1' key={`order__prev__art__${art.id}`}>
+                  <Link to={`/artists/${art.login}`}>{art?.fullName || `${art?.firstName} ${art?.lastName}`}</Link>
+                </p>
+              ))}
+            </div>
+          </CanShow>
+
+          <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO}>
+            <div className='box__device'></div>
+            <div className='box__header mb-2'>
               <div className='box__title'>Contact Info</div>
             </div>
             {contact?.email && <p className='mb-1'>Email: {contact?.email}</p>}
@@ -222,20 +237,6 @@ const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, acco
             )}
           </CanShow>
 
-          <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO}>
-            <div className='box__device'></div>
-            <div className='box__header mb-2'>
-              <div className='box__title'>Previous Artists </div>
-            </div>
-
-            <div className='div'>
-              {(customer?.prevArtists || []).map((art) => (
-                <p className='artist mb-1' key={`order__prev__art__${art.id}`}>
-                  <Link to={`/artists/${art.login}`}>{art?.fullName || `${art?.firstName} ${art?.lastName}`}</Link>
-                </p>
-              ))}
-            </div>
-          </CanShow>
           <CanShow permission={PERMITTIONS_CONFIG.UPDATE_BOOKING_CUSTOMER}>
             <div className='box__device'></div>
             <div className='box__header mb-2'>

@@ -31,4 +31,10 @@
 		margin-top: -20px;
 		z-index: 1;
 	}
+
+	&__text {
+		.ticker__element {
+			white-space: nowrap;
+		}
+	}
 }
