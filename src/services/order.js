@@ -300,8 +300,8 @@ export const adjustOrderBudgetService = (orderId, data) =>
     data,
   });
 
-export const deleteArtistBudgetOrderService = (orderId, budgetId) =>
+export const deleteArtistLogOrderService = (orderId, logId) =>
   request({
-    url: `${ORDERS_API}/${orderId}/artist-budget/${budgetId}`,
+    url: `${ORDERS_API}/${orderId}/artist-log/${logId}`,
     method: 'DELETE',
   });

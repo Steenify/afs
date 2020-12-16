@@ -11,10 +11,10 @@ import CanShow from 'components/layout/canshow';
 import OrderArtWorkGroup from './orderArtWorkGroup';
 import OrderCustomerBox from './orderCustomerBox';
 import OrderArtDelivery from './orderArtDelivery';
-import { getOrderWorkLogAction, deleteArtistBudgetOrderAction } from './actions';
+import { getOrderWorkLogAction, deleteArtistLogOrderAction } from './actions';
 import { PERMITTIONS_CONFIG } from 'configs';
 
-const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, hasPoster, artists = [], deleteArtistBudgetOrder }) => {
+const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, hasPoster, artists = [], deleteArtistLogOrder }) => {
   useEffect(() => {
     if (order.id) {
       getOrderWorkLog(order.id);
@@ -53,7 +53,7 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
               <button
                 className='comfirm_cus__accept comfirm_cus__control'
                 onClick={() => {
-                  deleteArtistBudgetOrder(order.id, artist?.budgetId, artist?.index, () => {
+                  deleteArtistLogOrder(order.id, artist?.logId, artist?.index, () => {
                     toast.dark(`[${artist?.firstName}] is removed from this order!`);
                   });
                   onClose();
@@ -128,7 +128,7 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
         <div className='col-lg-8'>
           <div className='order_detail__tabs'>
             {artists.map((art) => {
-              const { id, firstName = '', calculatePayout } = art;
+              const { id, firstName = '' } = art;
               const activityKey = `activity_${id}`;
               const postText = artists.length > 1 ? `(${firstName})` : '';
               const artistWorkLog = workLog[id] || [];
@@ -149,7 +149,7 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
                     {`Activity ${postText}`}
                   </button>
                   <CanShow permission={PERMITTIONS_CONFIG.DELETE_ARTIST_BUDGET}>
-                    {(artistWorkLogNew || !calculatePayout) && !isAssigning && (
+                    {artistWorkLogNew && !isAssigning && (
                       <button type='button' className='tab__delete' onClick={() => handleDeleteArtistBudget(art)}>
                         <span className='icon'>
                           <Close />
@@ -222,13 +222,13 @@ const OrderArtWorkBox = ({ order, status, getOrderWorkLog, loading, workLog, has
 };
 
 const mapStateToProps = ({ orderTable, orderDetail, auth }) => {
-  const { artistBudgets, assignedTo } = orderDetail.data.order;
+  const { artistLogs, assignedTo } = orderDetail.data.order;
   const permissions = auth.data.accountInfo?.permissions || [];
   const canViewArtistTabs = permissions.includes(PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS) || false;
 
   const artists =
-    artistBudgets
-      ?.map((item, index) => ({ ...item?.artist, calculatePayout: item?.calculatePayout, budgetId: item.id, index }))
+    artistLogs
+      ?.map((item, index) => ({ ...item?.artist, logId: item.id, index }))
       ?.sort((a) => (a?.id === assignedTo?.id ? -1 : 1))
       ?.filter((item) => {
         if (canViewArtistTabs) {
@@ -249,7 +249,7 @@ const mapStateToProps = ({ orderTable, orderDetail, auth }) => {
 
 const mapDispatchToProps = {
   getOrderWorkLog: getOrderWorkLogAction,
-  deleteArtistBudgetOrder: deleteArtistBudgetOrderAction,
+  deleteArtistLogOrder: deleteArtistLogOrderAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderArtWorkBox);

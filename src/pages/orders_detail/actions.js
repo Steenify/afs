@@ -40,7 +40,7 @@ import {
   getBudgetsHistoryService,
   updateOrderBudgetService,
   adjustOrderBudgetService,
-  deleteArtistBudgetOrderService,
+  deleteArtistLogOrderService,
 } from 'services/order';
 import { getAssignArtistsService } from 'services/artist';
 
@@ -1372,17 +1372,17 @@ export const getAssignArtistsAction = ({ params = '', onPending = () => {}, onSu
   });
 };
 
-export const DELETE_ARTIST_BUDGET_ORDER_ACTION = actionCreator('DELETE_ARTIST_BUDGET_ORDER_ACTION');
-export const deleteArtistBudgetOrderAction = (orderId, budgetId, index, cb) => (dispatch) => {
+export const DELETE_ARTIST_LOG_ORDER_ACTION = actionCreator('DELETE_ARTIST_LOG_ORDER_ACTION');
+export const deleteArtistLogOrderAction = (orderId, logId, index, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
-      type: DELETE_ARTIST_BUDGET_ORDER_ACTION.PENDING,
+      type: DELETE_ARTIST_LOG_ORDER_ACTION.PENDING,
     });
   };
   const onSuccess = (data) => {
     console.log('🚀 ~ file: actions.js ~ line 1361 ~ onSuccess ~ data', data);
     dispatch({
-      type: DELETE_ARTIST_BUDGET_ORDER_ACTION.SUCCESS,
+      type: DELETE_ARTIST_LOG_ORDER_ACTION.SUCCESS,
       payload: {
         index,
       },
@@ -1390,15 +1390,15 @@ export const deleteArtistBudgetOrderAction = (orderId, budgetId, index, cb) => (
     cb && cb();
   };
   const onError = (error) => {
-    console.log('deleteArtistBudgetOrderAction => onError -> error', JSON.stringify(error));
+    console.log('deleteArtistLogOrderAction => onError -> error', JSON.stringify(error));
     dispatch({
-      type: DELETE_ARTIST_BUDGET_ORDER_ACTION.ERROR,
+      type: DELETE_ARTIST_LOG_ORDER_ACTION.ERROR,
       payload: error.response,
     });
   };
 
   actionTryCatchCreator({
-    service: deleteArtistBudgetOrderService(orderId, budgetId),
+    service: deleteArtistLogOrderService(orderId, logId),
     onPending,
     onSuccess,
     onError,
