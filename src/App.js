@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 
 import { getOrderTableCountByStatusAction } from 'components/tables/orders/actions';
+import { actGetAllSystemProperties } from 'pages/system_property_management/actions';
 
 import Route from 'components/common/Route';
 import FirerBaseApp from 'components/layout/firebaseapp';
@@ -59,14 +60,17 @@ import CustomerChat from 'vendor/facebookChat';
 
 import { actGetAccount, renewTokenAction } from 'pages/auth/actions';
 
-const App = ({ getOrderTableCountByStatusAction, renewTokenAction, actGetAccount, accountInfo, isTokenRenewed, isAuthUser }) => {
+const App = ({ getOrderTableCountByStatusAction, renewTokenAction, actGetAccount, accountInfo, isTokenRenewed, isAuthUser, getAllSystemProperties }) => {
   const isLogged = !isEmpty(accountInfo);
 
   const isArtist = accountInfo?.authorities?.includes(mapRoles.ROLE_ARTIST) || false;
 
   useEffect(() => {
-    isAuthUser && renewTokenAction();
-  }, [renewTokenAction, isAuthUser]);
+    if (isAuthUser) {
+      renewTokenAction();
+      getAllSystemProperties();
+    }
+  }, [renewTokenAction, isAuthUser, getAllSystemProperties]);
 
   useEffect(() => {
     if (isTokenRenewed) {
@@ -164,6 +168,7 @@ const mapDispatchToProps = {
   getOrderTableCountByStatusAction,
   renewTokenAction,
   actGetAccount,
+  getAllSystemProperties: actGetAllSystemProperties,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

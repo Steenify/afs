@@ -6,6 +6,11 @@ import Popover from 'react-tiny-popover';
 
 import { ReactComponent as Pencil } from 'assets/img/pencil.svg';
 import ListArtists from 'components/layout/ListArtistAssign';
+import CanShow from 'components/layout/canshow';
+
+import { PERMITTIONS_CONFIG } from 'configs';
+
+import { ReactComponent as AssignedIcon } from 'assets/img/assigned.svg';
 
 import { updateOrderTableAssignArtistAction } from 'components/tables/orders/actions';
 import { getOrderWorkLogAction } from 'pages/orders_detail/actions';
@@ -59,9 +64,11 @@ class OrderAssignedBox extends Component {
 
   render() {
     const { order } = this.props;
-    const { assignedTo } = order;
-
     const { isPopoverOpen } = this.state;
+
+    const { assignedTo, artistBudgets } = order;
+
+    const hasMultiArtist = artistBudgets.length > 1;
 
     if (isEmpty(order)) {
       return null;
@@ -78,6 +85,13 @@ class OrderAssignedBox extends Component {
           content={() => <ListArtists onSave={this.onSave} assignedTo={assignedTo} />}>
           <button type='button' onClick={this.toggle} className='order__toggle order__assigned assign__artist budget p-0'>
             <div className='d-flex align-items-end'>
+              <CanShow permission={PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS}>
+                {hasMultiArtist && (
+                  <span style={{ marginBottom: '3px' }} className='d-block mr-1'>
+                    <AssignedIcon />
+                  </span>
+                )}
+              </CanShow>
               <strong className='mr-2'> Artist:</strong>
               <span className='name'>
                 {isEmpty(assignedTo) || assignedTo?.login === 'null' ? '____________' : `${assignedTo?.fullName || ''}` || `${assignedTo?.firstName || ''} ${assignedTo?.lastName || ''}`}

@@ -126,10 +126,11 @@ export const canceledOrderWorkLogService = ({ id, logId }) =>
     method: 'PUT',
   });
 
-export const getOrderEmailService = ({ id, templateId }) =>
+export const getOrderEmailService = ({ id, templateId }, params) =>
   request({
     url: `${ORDERS_API}/${id}/email/${templateId}`,
     method: 'GET',
+    params,
   });
 
 export const sentOrderEmailNotifyService = ({ id, data }) =>
@@ -139,10 +140,11 @@ export const sentOrderEmailNotifyService = ({ id, data }) =>
     data,
   });
 
-export const getOrderFBTemplateService = ({ id, templateId }) =>
+export const getOrderFBTemplateService = ({ id, templateId }, params) =>
   request({
     url: `${ORDERS_API}/${id}/message/${templateId}`,
     method: 'GET',
+    params,
   });
 
 export const sentOrderFBTemplateNotifyService = ({ id, data }) =>
@@ -299,8 +301,8 @@ export const adjustOrderBudgetService = (orderId, data) =>
     data,
   });
 
-export const deleteArtistBudgetOrderService = (orderId, budgetId) =>
+export const deleteArtistLogOrderService = (orderId, logId) =>
   request({
-    url: `${ORDERS_API}/${orderId}/artist-budget/${budgetId}`,
+    url: `${ORDERS_API}/${orderId}/artist-log/${logId}`,
     method: 'DELETE',
   });

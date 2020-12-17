@@ -67,16 +67,14 @@ const OrderDetail = ({ loading, order, permissions, updateShowAssignedBox, reset
                     Budget History
                   </button>
                 </CanShow>
-                {isUnpaid && (
-                  <CanShow permission={PERMITTIONS_CONFIG.ADJUST_BUDGET}>
-                    <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.INCREASE_BUDGET)} className='btn info__cta info__increase btn-success'>
-                      Increase $
-                    </button>
-                    <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.DECREASE_BUDGET)} className='btn info__cta info__decrease btn-danger'>
-                      Decrease $
-                    </button>
-                  </CanShow>
-                )}
+                <CanShow permission={PERMITTIONS_CONFIG.ADJUST_BUDGET}>
+                  <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.INCREASE_BUDGET)} className='btn info__cta info__increase btn-success'>
+                    Increase $
+                  </button>
+                  <button type='button' onClick={() => updateShowAssignedBox(ASSIGNED_MODAL_KEYs.DECREASE_BUDGET)} className='btn info__cta info__decrease btn-danger'>
+                    Decrease $
+                  </button>
+                </CanShow>
               </div>
             </CanShow>
           </div>

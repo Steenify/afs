@@ -10,10 +10,11 @@ import CanShow from 'components/layout/canshow';
 
 import OrderWorkGroup from './orderWorkGroup';
 import OrderArtDelivery from './orderDelivery';
-import { deleteArtistBudgetOrderAction, getLastWorkLogStateAction } from './actions';
+import { deleteArtistLogOrderAction, getLastWorkLogStateAction } from './actions';
 import { PERMITTIONS_CONFIG } from 'configs';
 
-const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, artists = [], deleteArtistBudgetOrder, getLastWorkLogStateAction }) => {
+const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, artists = [], deleteArtistLogOrderAction, getLastWorkLogStateAction }) => {
+  console.log('🚀 ~ file: orderWorkBox.js ~ line 17 ~ OrderWorkBox ~ artists', artists);
   const [tab, setTab] = useState('activity');
   const [artistId, setArtistId] = useState(0);
   const [lastWorkLogState, setLastWorkLogState] = useState({});
@@ -60,7 +61,7 @@ const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, artists = 
               <button
                 className='comfirm_cus__accept comfirm_cus__control'
                 onClick={() => {
-                  deleteArtistBudgetOrder(order.id, artist?.budgetId, artist?.index, () => {
+                  deleteArtistLogOrderAction(order.id, artist?.logId, artist?.index, () => {
                     toast.dark(`[${artist?.firstName}] is removed from this order!`);
                   });
                   onClose();
@@ -88,7 +89,7 @@ const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, artists = 
         <div className='col-lg-12'>
           <div className='order_detail__tabs'>
             {artists.map((art) => {
-              const { id, firstName = '', calculatePayout } = art;
+              const { id, firstName = '' } = art;
               const activityKey = `activity_${id}`;
               const postText = artists.length > 1 ? `(${firstName})` : '';
               const artistWorkLog = workLog[id] || [];
@@ -109,7 +110,7 @@ const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, artists = 
                     {`Activity ${postText}`}
                   </button>
                   <CanShow permission={PERMITTIONS_CONFIG.DELETE_ARTIST_BUDGET}>
-                    {(artistWorkLogNew || !calculatePayout) && !isAssigning && (
+                    {artistWorkLogNew && !isAssigning && (
                       <button type='button' className='tab__delete' onClick={() => handleDeleteArtistBudget(art)}>
                         <span className='icon'>
                           <Close />
@@ -203,7 +204,7 @@ const mapStateToProps = ({ orderTable, orderDetail, auth }) => {
 };
 
 const mapDispatchToProps = {
-  deleteArtistBudgetOrder: deleteArtistBudgetOrderAction,
+  deleteArtistLogOrderAction,
   getLastWorkLogStateAction,
 };
 

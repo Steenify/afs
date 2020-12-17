@@ -43,7 +43,7 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
   const toggle = () => updateShowAssignedBoxAction(false);
 
   const getLogStatusPayment = (art) => {
-    const index = findIndex(artistBudgets, (bg) => bg?.artist?.login === art?.login);
+    const index = findIndex(artistBudgets, (bg) => bg?.id === art?.bookingArtistBudgetId);
     const budget = artistBudgets[index] || {};
 
     return budget?.artistPaymentStatus || 'N/A';
@@ -102,7 +102,7 @@ const BudgetHistoryModal = ({ order, isOpen, updateShowAssignedBoxAction, getBud
                       <td style={{ textAlign: 'right' }}>{formatMoney(item?.amount)}</td>
                       <td>{item?.artist?.fullName}</td>
                       <td>{item?.note}</td>
-                      <td>{getLogStatusPayment(item?.artist)}</td>
+                      <td>{getLogStatusPayment(item)}</td>
                     </tr>
                   ))}
                 </tbody>

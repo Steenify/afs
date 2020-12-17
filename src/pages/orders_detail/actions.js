@@ -37,7 +37,7 @@ import {
   getBudgetsHistoryService,
   updateOrderBudgetService,
   adjustOrderBudgetService,
-  deleteArtistBudgetOrderService,
+  deleteArtistLogOrderService,
 } from 'services/order';
 import { getAssignArtistsService } from 'services/artist';
 import { getWorkflowStateInfoService } from 'services/workflow.service';
@@ -75,6 +75,8 @@ export const ORDER_DETAIL_ACTIONS = {
   UPDATE_SHOW_ADD_PRODUCT_MODAL: 'UPDATE_SHOW_ADD_PRODUCT_MODAL',
   UPDATE_SHOW_ASSIGNED_MODAL: 'UPDATE_SHOW_ASSIGNED_MODAL',
   SET_ORDER_DETAIL_BUDGET: 'SET_ORDER_DETAIL_BUDGET',
+  UPDATE_SENT_DELIVERY_EMAIL: 'UPDATE_SENT_DELIVERY_EMAIL',
+  UPDATE_CURRENT_NOTIFY_STATUS: 'UPDATE_CURRENT_NOTIFY_STATUS',
 };
 
 export const RESET_ORDER_DETAIL_ACTION = 'RESET_ORDER_DETAIL_ACTION';
@@ -95,7 +97,19 @@ export const updateShowEmailNotifyAction = (payload) => (dispatch) => {
     type: ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_NOTIFY,
     payload,
   });
+  dispatch({
+    type: ORDER_DETAIL_ACTIONS.UPDATE_SENT_DELIVERY_EMAIL,
+    payload: false,
+  });
 };
+
+export const updateCurrentNotifyStatusAction = (payload) => (dispatch) => {
+  dispatch({
+    type: ORDER_DETAIL_ACTIONS.UPDATE_CURRENT_NOTIFY_STATUS,
+    payload,
+  });
+};
+
 export const updateShowEmailRemindAction = (payload) => (dispatch) => {
   dispatch({
     type: ORDER_DETAIL_ACTIONS.UPDATE_SHOW_EMAIL_REMIND,
@@ -610,18 +624,25 @@ export const canceledWorkLogAction = (id, logId, index, artistId) => (dispatch, 
   });
 };
 
-export const getNotifyTemplatesAction = (id, templateId, workLogIndex, artistId) => (dispatch) => {
-  dispatch(getEmailTemplateAction(id, templateId, workLogIndex, 'workLog', artistId));
-  dispatch(getFBMessageTemplateAction(id, templateId, workLogIndex, 'workLog', artistId));
+export const getNotifyTemplatesAction = (id, templateId, workLogIndex, artistId, parrams = {}) => (dispatch) => {
+  dispatch(getEmailTemplateAction(id, templateId, workLogIndex, artistId, parrams));
+  dispatch(getFBMessageTemplateAction(id, templateId, workLogIndex, artistId, parrams));
+
+  if (parrams?.delivery) {
+    dispatch({
+      type: ORDER_DETAIL_ACTIONS.UPDATE_SENT_DELIVERY_EMAIL,
+      payload: true,
+    });
+  }
 };
 
 export const getRemindTemplatesAction = (id, workLogIndex, artistId) => (dispatch) => {
-  dispatch(getRemindEmailTemplateAction(id, workLogIndex, 'workLog', artistId));
-  dispatch(getRemindFBMessageTemplateAction(id, workLogIndex, 'workLog', artistId));
+  dispatch(getRemindEmailTemplateAction(id, workLogIndex, artistId));
+  dispatch(getRemindFBMessageTemplateAction(id, workLogIndex, artistId));
 };
 
 export const GET_EMAIL_TEMPLATE_ACTION = actionCreator('GET_EMAIL_TEMPLATE_ACTION');
-export const getEmailTemplateAction = (id, templateId, workLogIndex, artistId) => (dispatch) => {
+export const getEmailTemplateAction = (id, templateId, workLogIndex, artistId, parrams = {}) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.PENDING,
@@ -642,7 +663,7 @@ export const getEmailTemplateAction = (id, templateId, workLogIndex, artistId) =
   };
 
   actionTryCatchCreator({
-    service: getOrderEmailService({ id, templateId }),
+    service: getOrderEmailService({ id, templateId }, parrams),
     onPending,
     onSuccess,
     onError,
@@ -704,6 +725,7 @@ export const sendEmailNotifyAction = (customerEmail = '') => (dispatch, getState
         activives,
       },
     });
+
     toast.dark('Notified Customer!');
   };
   const onError = (error) => {
@@ -729,7 +751,7 @@ export const sendEmailNotifyAction = (customerEmail = '') => (dispatch, getState
 };
 
 export const GET_FB_MESSAGE_TEMPLATE_ACTION = actionCreator('GET_FB_MESSAGE_TEMPLATE_ACTION');
-export const getFBMessageTemplateAction = (id, templateId, workLogIndex, artistId) => (dispatch) => {
+export const getFBMessageTemplateAction = (id, templateId, workLogIndex, artistId, parrams = {}) => (dispatch) => {
   const onPending = () => {
     dispatch({
       type: GET_FB_MESSAGE_TEMPLATE_ACTION.PENDING,
@@ -750,7 +772,7 @@ export const getFBMessageTemplateAction = (id, templateId, workLogIndex, artistI
   };
 
   actionTryCatchCreator({
-    service: getOrderFBTemplateService({ id, templateId }),
+    service: getOrderFBTemplateService({ id, templateId }, parrams),
     onPending,
     onSuccess,
     onError,
@@ -1240,17 +1262,17 @@ export const getAssignArtistsAction = ({ params = '', onPending = () => {}, onSu
   });
 };
 
-export const DELETE_ARTIST_BUDGET_ORDER_ACTION = actionCreator('DELETE_ARTIST_BUDGET_ORDER_ACTION');
-export const deleteArtistBudgetOrderAction = (orderId, budgetId, index, cb) => (dispatch) => {
+export const DELETE_ARTIST_LOG_ORDER_ACTION = actionCreator('DELETE_ARTIST_LOG_ORDER_ACTION');
+export const deleteArtistLogOrderAction = (orderId, logId, index, cb) => (dispatch) => {
   const onPending = () => {
     dispatch({
-      type: DELETE_ARTIST_BUDGET_ORDER_ACTION.PENDING,
+      type: DELETE_ARTIST_LOG_ORDER_ACTION.PENDING,
     });
   };
   const onSuccess = (data) => {
     console.log('🚀 ~ file: actions.js ~ line 1361 ~ onSuccess ~ data', data);
     dispatch({
-      type: DELETE_ARTIST_BUDGET_ORDER_ACTION.SUCCESS,
+      type: DELETE_ARTIST_LOG_ORDER_ACTION.SUCCESS,
       payload: {
         index,
       },
@@ -1258,15 +1280,15 @@ export const deleteArtistBudgetOrderAction = (orderId, budgetId, index, cb) => (
     cb && cb();
   };
   const onError = (error) => {
-    console.log('deleteArtistBudgetOrderAction => onError -> error', JSON.stringify(error));
+    console.log('deleteArtistLogOrderAction => onError -> error', JSON.stringify(error));
     dispatch({
-      type: DELETE_ARTIST_BUDGET_ORDER_ACTION.ERROR,
+      type: DELETE_ARTIST_LOG_ORDER_ACTION.ERROR,
       payload: error.response,
     });
   };
 
   actionTryCatchCreator({
-    service: deleteArtistBudgetOrderService(orderId, budgetId),
+    service: deleteArtistLogOrderService(orderId, logId),
     onPending,
     onSuccess,
     onError,

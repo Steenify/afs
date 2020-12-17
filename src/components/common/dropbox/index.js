@@ -163,7 +163,7 @@ class DropBox extends Component {
   };
 
   handleUploadFile = (file, uui) => {
-    const { finalDriveId, orderNumber, quality } = this.props;
+    const { finalDriveId, orderNumber, quality, onUploadFile } = this.props;
     const data = new FormData();
     if (finalDriveId) {
       data.append('driveId', finalDriveId);
@@ -186,6 +186,7 @@ class DropBox extends Component {
         newList[fileIndex].isUploading = false;
         newList[fileIndex] = { ...newList[fileIndex], ...data[0] };
         this.setState({ fileList: newList });
+        onUploadFile(newList);
       }
     };
     const onError = (error) => {
@@ -282,6 +283,7 @@ class DropBox extends Component {
 
 DropBox.defaultProps = {
   finalDriveId: '',
+  onUploadFile: () => {},
 };
 
 export default DropBox;

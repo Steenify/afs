@@ -31,6 +31,7 @@ import {
   EDIT_ORDER_TODO_LIST_ACTION,
   RESOLVED_ORDER_TODO_LIST_ACTION,
   REMOVE_ORDER_TODO_LIST_ACTION,
+  DELETE_ARTIST_LOG_ORDER_ACTION,
   RESET_ORDER_DETAIL_ACTION,
   DELETE_ARTIST_BUDGET_ORDER_ACTION,
   GET_LAST_WORKLOG_STATE,
@@ -45,6 +46,8 @@ const initialState = {
     loadingWorkLog: false,
     loadingCanvasWorkLog: false,
     isShowEmail: false,
+    isDeliveryEmail: false,
+    currentNotifyStatus: '',
     isShowAddProduct: false,
     loadingEmail: false,
     loadingTodo: true,
@@ -157,6 +160,22 @@ const reducer = (state = initialState, action) => {
       return update(state, {
         ui: {
           isShowEmail: {
+            $set: payload,
+          },
+        },
+      });
+    case ORDER_DETAIL_ACTIONS.UPDATE_SENT_DELIVERY_EMAIL:
+      return update(state, {
+        ui: {
+          isDeliveryEmail: {
+            $set: payload,
+          },
+        },
+      });
+    case ORDER_DETAIL_ACTIONS.UPDATE_CURRENT_NOTIFY_STATUS:
+      return update(state, {
+        ui: {
+          currentNotifyStatus: {
             $set: payload,
           },
         },
@@ -761,11 +780,11 @@ const reducer = (state = initialState, action) => {
         },
       });
     }
-    case DELETE_ARTIST_BUDGET_ORDER_ACTION.SUCCESS: {
+    case DELETE_ARTIST_LOG_ORDER_ACTION.SUCCESS: {
       return update(state, {
         data: {
           order: {
-            artistBudgets: {
+            artistLogs: {
               $splice: [[payload.index, 1]],
             },
           },

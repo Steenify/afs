@@ -11,6 +11,7 @@ import { WEB_ROUTES } from 'configs';
 
 import Notification from '../notification';
 import AccountInfo from './AccountInfo';
+import HeaderSearch from './headerSearch';
 
 import './style.scss';
 
@@ -42,14 +43,15 @@ const Header = (props) => {
 
   return (
     <header className={`header__main ${className || ''}`}>
-      <div className='container-fluid p-0'>
+      <div className='container-fluid p-0 header__content'>
         <Navbar theme='light' className='align-items-stretch flex-md-nowrap p-0'>
-          <Nav>
+          <Nav className='header__menu'>
             <button className='hamburger' onClick={handleToggle}>
               <span className='line'></span>
               <span className='line'></span>
               <span className='line'></span>
             </button>
+            <HeaderSearch />
           </Nav>
 
           <Nav navbar className={`flex-row align-items-center header__nav ${isMenuOpen ? 'opening' : ''}`}>

@@ -1,0 +1,40 @@
+@import 'styles/var.scss';
+
+.announcement {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: $main_color;
+	color: $white;
+	z-index: 1003;
+	font-size: 18px;
+
+	&__container {
+		height: 40px;
+		position: relative;
+		width: 100%;
+		padding-right: 40px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+
+	&__cta {
+		width: 40px;
+		height: 40px;
+		background: none;
+		color: $white;
+		border: none;
+		position: absolute;
+		right: 0;
+		top: 50%;
+		margin-top: -20px;
+		z-index: 1;
+	}
+
+	&__text {
+		.ticker__element {
+			white-space: nowrap;
+		}
+	}
+}

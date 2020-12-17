@@ -15,9 +15,9 @@ import { getOrderCustomerAction, updateShowAddProductAction } from './actions';
 import OrderChangeCustomer from './orderChangeCustomer';
 import OrderTodoList from './orderTodoList';
 
-const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, permissions, updateShowAddProduct }) => {
-  const canViewCustommer = permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO) || false;
-  const canViewContactInfo = permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO) || false;
+const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, accountInfo, updateShowAddProduct, shippingAddress, prevArtists }) => {
+  const canViewCustommer = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO) || false;
+  const canViewContactInfo = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO) || false;
 
   useEffect(() => {
     if (canViewCustommer && order.id) {
@@ -89,6 +89,21 @@ const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, perm
             {customer?.age && <p className='mb-1'>Age: {customer?.age || ''} </p>}
 
             {customer?.dob && <p className='mb-1'>DoB: {customer?.dob || ''} </p>}
+          </CanShow>
+
+          <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO}>
+            <div className='box__device'></div>
+            <div className='box__header mb-2'>
+              <div className='box__title'>Previous Artists </div>
+            </div>
+
+            <div className='div'>
+              {(customer?.prevArtists || []).map((art) => (
+                <p className='artist mb-1' key={`order__prev__art__${art.id}`}>
+                  <Link to={`/artists/${art.login}`}>{art?.fullName || `${art?.firstName} ${art?.lastName}`}</Link>
+                </p>
+              ))}
+            </div>
           </CanShow>
 
           <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO}>
@@ -181,14 +196,45 @@ const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, perm
             {orderInfo?.address1 && <p className='mb-1'>{`${orderInfo?.address1 || ''}`}</p>}
             {orderInfo?.address2 && <p className='mb-1'>{`${orderInfo?.address2 || ''}`}</p>}
 
-            {orderInfo?.province ||
-              orderInfo?.city ||
-              (orderInfo?.zip && (
-                <p className='mb-1'>
-                  {orderInfo?.city || ''} {orderInfo?.province || ''} {orderInfo?.zip || ''}
-                </p>
-              ))}
-            {orderInfo?.country && <p className='mb-1'>{orderInfo?.country || ''}</p>}
+            {(orderInfo?.province || orderInfo?.city || orderInfo?.zip) && (
+              <p className='mb-1'>
+                {orderInfo?.city || ''} {orderInfo?.province || ''} {orderInfo?.zip || ''}
+              </p>
+            )}
+            {orderInfo?.country && (
+              <p className='mb-1'>
+                {orderInfo?.country || ''} {orderInfo?.countryCode || ''}
+              </p>
+            )}
+          </CanShow>
+          <CanShow permission={PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO}>
+            <div className='box__device'></div>
+            <div className='box__header mb-2'>
+              <div className='box__title'>Shipping Address</div>
+            </div>
+            {shippingAddress?.name && (
+              <p className='mb-1'>
+                <span>{shippingAddress?.name}</span>
+              </p>
+            )}
+
+            {shippingAddress?.phone && <p className='mb-1'>Phone: {shippingAddress?.phone}</p>}
+
+            {shippingAddress?.address1 && <p className='mb-1'>{`${shippingAddress?.address1 || ''}`}</p>}
+            {shippingAddress?.address2 && <p className='mb-1'>{`${shippingAddress?.address2 || ''}`}</p>}
+
+            {shippingAddress?.company && <p className='mb-1'>{shippingAddress?.company || ''}</p>}
+
+            {(shippingAddress?.province || shippingAddress?.city || shippingAddress?.zip) && (
+              <p className='mb-1'>
+                {shippingAddress?.city || ''} {shippingAddress?.province || ''} {shippingAddress?.provinceCode || ''} {shippingAddress?.zip || ''}
+              </p>
+            )}
+            {shippingAddress?.country && (
+              <p className='mb-1'>
+                {shippingAddress?.country || ''} {shippingAddress?.countryCode || ''}
+              </p>
+            )}
           </CanShow>
 
           <CanShow permission={PERMITTIONS_CONFIG.UPDATE_BOOKING_CUSTOMER}>
@@ -210,7 +256,8 @@ const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, perm
 const mapStateToProps = ({ orderDetail, auth }) => ({
   loadingUser: orderDetail.ui.loadingUser,
   customer: orderDetail.data.customer,
-  permissions: auth.data.accountInfo?.permissions || [],
+  accountInfo: auth.data.accountInfo,
+  shippingAddress: orderDetail.data.order.shippingAddress || {},
 });
 
 const mapDispatchToProps = {

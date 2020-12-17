@@ -55,7 +55,7 @@ class CustomersFilters extends Component {
           <button data='NEW' onClick={this.handleChangeGroup} key={`list__status_option__new`} className={`status ${customerGroup === 'NEW' && 'active'}`}>
             New
           </button>
-          <button data='RETURNING' onClick={this.handleChangeGroup} key={`list__status_option__returning`} className={`status ${customerGroup === 'RETURNING' && 'active'}`}>
+          <button data='RETURNING' onClick={this.handleChangeGroup} key={`list__status_option_reminder__returning`} className={`status ${customerGroup === 'RETURNING' && 'active'}`}>
             Returning
           </button>
         </div>
@@ -98,7 +98,7 @@ const ReminderFilters = ({ updateReminderFilterAction, status, type }) => {
           All
         </button>
         {[ANNIVERSARY, BIRTHDAY, DAY_AFTER_FIRST_ORDER_COMPLETE, RETURN_CUSTOMERS].map((item) => (
-          <button data={item} onClick={handleChangeType} key={`list__status_option__returning`} className={`status ${REMINDER_TYPES_COLOR[item] || ''} ${type === item && 'active'}`}>
+          <button data={item} onClick={handleChangeType} key={`list__status_option__returning__${item}`} className={`status ${REMINDER_TYPES_COLOR[item] || ''} ${type === item && 'active'}`}>
             {REMINDER_TYPES_TEXT[item]}
           </button>
         ))}
