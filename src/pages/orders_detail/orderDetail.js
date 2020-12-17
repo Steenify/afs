@@ -24,7 +24,7 @@ import OrderBudget from './orderBudget';
 
 import { updateShowAssignedBoxAction, ASSIGNED_MODAL_KEYs, resetOrderDetailAction } from './actions';
 
-const OrderDetail = ({ loading, order, accountInfo, updateShowAssignedBox, resetOrderDetailAction, getComponentsAction }) => {
+const OrderDetail = ({ loading, order, permissions, updateShowAssignedBox, resetOrderDetailAction, getComponentsAction }) => {
   useEffect(() => {
     getComponentsAction();
     return resetOrderDetailAction;
@@ -34,8 +34,8 @@ const OrderDetail = ({ loading, order, accountInfo, updateShowAssignedBox, reset
     return <InPageLoading isLoading={loading} />;
   }
 
-  const canEditAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;
-  const canGetArtists = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) || false;
+  const canEditAssign = permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING) || false;
+  const canGetArtists = permissions?.includes(PERMITTIONS_CONFIG.VIEW_ARTIST_LIST) || false;
   const isUnpaid = order?.artistPaymentStatus === 'UNPAID';
 
   return (
@@ -116,7 +116,7 @@ const mapStateToProps = ({ orderDetail, auth }) => {
   return {
     loading: orderDetail.ui.loading,
     order: orderDetail.data.order,
-    accountInfo: auth.data.accountInfo,
+    permissions: auth.data.accountInfo?.permissions || [],
   };
 };
 

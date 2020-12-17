@@ -4,7 +4,7 @@ import { Collapse } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import { findIndex } from 'lodash';
-import { getSelectedStatus, dateTimeStringFromDate } from 'utils';
+import { dateTimeStringFromDate } from 'utils';
 import { PERMITTIONS_CONFIG, WORKFLOW_STATE_TYPE, WORKFLOW_TRANSITION_ACTION_TYPE } from 'configs';
 
 import { ReactComponent as Toggle } from 'assets/img/toggle.svg';
@@ -23,29 +23,28 @@ const OrderWorkGroup = ({
   group,
   works,
   item,
-  status,
   approvedWorkLogAction,
   rejectedWorkLogAction,
   canceledWorkLog,
   getNotifyTemplatesAction,
   getRemindTemplatesAction,
-  accountInfo,
-  isNewOrder,
+  permissions,
   workLog,
   lastWorkLog,
-  hasPoster,
+  lastWorkLogState,
   isCurrentArtist,
 }) => {
-  const canNotifyCustomer = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.NOTIFY_BOOKING_TO_CUSTOMER) || false;
-  const canAprroved = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) || false;
-  const canRejected = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.REJECT_WORK_LOG) || false;
-  const canCanceled = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CANCELED_STEP_BOOKING) || false;
-  const canChangeStatus = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_STATUS_BOOKING) || false;
+  const canNotifyCustomer = permissions?.includes(PERMITTIONS_CONFIG.NOTIFY_BOOKING_TO_CUSTOMER) || false;
+  const canAprroved = permissions?.includes(PERMITTIONS_CONFIG.APPROVE_WORK_LOG) || false;
+  const canRejected = permissions?.includes(PERMITTIONS_CONFIG.REJECT_WORK_LOG) || false;
+  const canCanceled = permissions?.includes(PERMITTIONS_CONFIG.CANCELED_STEP_BOOKING) || false;
 
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
 
   const lastWork = works[works.length - 1];
+  const component = uiComponents?.find((i) => i.name === lastWorkLogState?.component) || {};
+  const { canNotify, canRemind, canVerifyFile, canUpload } = component;
 
   const handleApproveWorkLog = (logId, artistId) => {
     confirmAlert({
@@ -82,19 +81,16 @@ const OrderWorkGroup = ({
     });
   };
 
-  // TODO: check again for logic to get Email templates
-
   const handleNotifyEmail = (workLogIndex) => {
-    const currentStatus = getSelectedStatus(order.status, status);
-    if (currentStatus.emailTemplates && currentStatus.emailTemplates.length) {
-      getNotifyTemplatesAction(order.id, currentStatus.emailTemplates[0].id, workLogIndex, undefined, lastWork?.artist?.id);
+    if (lastWorkLogState.messageTemplates && lastWorkLogState.messageTemplates.length) {
+      getNotifyTemplatesAction(order.id, lastWorkLogState.messageTemplates[0].id, workLogIndex, lastWork?.artist?.id);
     } else {
       toast.warn('No Email template found!');
     }
   };
 
   const handleRemindEmail = (workLogIndex) => {
-    getRemindTemplatesAction(order.id, workLogIndex, undefined, lastWork?.artist?.id);
+    getRemindTemplatesAction(order.id, workLogIndex, lastWork?.artist?.id);
   };
 
   const handleConfirmRejectWorkLog = (LogId, workLogIndex, artistId) => {
@@ -156,7 +152,7 @@ const OrderWorkGroup = ({
     <div className='order_detail__work_group group'>
       <div className={`group__header ${group || ''}`}>
         <div className='group__title' onClick={toggle}>
-          <div className='state dot'>{group}</div>
+          <div className='state dot'>{works[0].name}</div>
           <div className='deadline'>{dateTimeStringFromDate(lastWork?.createdDate)}</div>
         </div>
 
@@ -167,11 +163,9 @@ const OrderWorkGroup = ({
         </button>
       </div>
       <Collapse isOpen={isOpen}>
-        <div className={`group__body ${isNewOrder && 'isNewOrder'}`}>
+        <div className='group__body'>
           {works.map((work) => {
-            const component = uiComponents?.find((i) => i.name === work.component) || {};
-            const { canNotify, canRemind, canVerifyFile } = component;
-            const showActionState = lastWorkLog.id === work.id && isCurrentArtist;
+            const showActionState = item.id === work.bookingItemId && lastWorkLog.id === work.id && isCurrentArtist;
             const nextTransitions = work.nextTransitions;
 
             const isNewStatus = work.wlStateType === WORKFLOW_STATE_TYPE.START;
@@ -185,10 +179,10 @@ const OrderWorkGroup = ({
               return null;
             }
             if (isNewStatus) {
-              if (isCurrentArtist && isNewOrder) {
+              if (showActionState && nextTransitions.length > 0) {
                 return (
                   <div key={`order_detail__work__${work.id}`} className='order_detail__work'>
-                    {canChangeStatus && (
+                    {canAprroved && (
                       <div className='order_detail__ctas text-center justify-content-center'>
                         <Button onClick={() => handleApproveWorkLog(work.id, work?.artist?.id)} color='primary' className='cta' type='button'>
                           Start Working
@@ -226,7 +220,7 @@ const OrderWorkGroup = ({
                               containerClassName='ctas__item'
                               onClick={() => handleConfirmRejectWorkLog(work.id, workLogIndex, work?.artist?.id)}
                               className='ctas__button mb-3'
-                              disabled={!(work.attachments.length > 0) && canVerifyFile}
+                              disabled={canUpload ? !(work.attachments.length > 0) && canVerifyFile : false}
                               type='button'>
                               Reject
                             </Button>
@@ -237,7 +231,7 @@ const OrderWorkGroup = ({
                               onClick={() => handleApproveWorkLog(work.id, work?.artist?.id)}
                               containerClassName='ctas__item'
                               className='ctas__button mb-3'
-                              disabled={!(work.attachments.length > 0) && canVerifyFile}
+                              disabled={canUpload ? !(work.attachments.length > 0) && canVerifyFile : false}
                               type='button'>
                               {transition.nextState?.type === WORKFLOW_STATE_TYPE.DONE ? 'Mark as Done' : 'Approved'}
                             </Button>
@@ -268,7 +262,7 @@ const OrderWorkGroup = ({
 };
 
 const mapStateToProps = ({ auth, orderDetail, uiComponents }) => ({
-  accountInfo: auth.data.accountInfo,
+  permissions: auth.data?.accountInfo?.permissions || [],
   workLog: orderDetail.data.workLog,
   uiComponents: uiComponents.data.components,
 });

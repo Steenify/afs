@@ -15,9 +15,9 @@ import { getOrderCustomerAction, updateShowAddProductAction } from './actions';
 import OrderChangeCustomer from './orderChangeCustomer';
 import OrderTodoList from './orderTodoList';
 
-const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, accountInfo, updateShowAddProduct }) => {
-  const canViewCustommer = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO) || false;
-  const canViewContactInfo = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO) || false;
+const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, permissions, updateShowAddProduct }) => {
+  const canViewCustommer = permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_INFO) || false;
+  const canViewContactInfo = permissions?.includes(PERMITTIONS_CONFIG.VIEW_CUSTOMER_CONTACT_INFO) || false;
 
   useEffect(() => {
     if (canViewCustommer && order.id) {
@@ -210,7 +210,7 @@ const OrderCustomerBox = ({ order, customer, loadingUser, getOrderCustomer, acco
 const mapStateToProps = ({ orderDetail, auth }) => ({
   loadingUser: orderDetail.ui.loadingUser,
   customer: orderDetail.data.customer,
-  accountInfo: auth.data.accountInfo,
+  permissions: auth.data.accountInfo?.permissions || [],
 });
 
 const mapDispatchToProps = {

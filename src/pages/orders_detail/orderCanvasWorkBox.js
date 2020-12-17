@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Spinner } from 'reactstrap';
 import { groupBy, sortBy, map } from 'lodash';
 
 import OrderCanvasWorkGroup from './orderCanvasWorkGroup';
-// import OrderCanvasDelivery from './orderCanvasDelivery';
-import { getOrderCanvasWorkLogAction } from './actions';
 
-const OrderCanvasWorkBox = ({ order, status, getOrderCanvasWorkLogAction, loading, workLog }) => {
-  useEffect(() => {
-    if (order.id) {
-      getOrderCanvasWorkLogAction(order.id);
-    }
-  }, [getOrderCanvasWorkLogAction, order.id]);
-
+const OrderCanvasWorkBox = ({ order, status, loading, workLog }) => {
   const [tab, setTab] = useState('activity');
 
   if (loading || !status.length) {
@@ -100,8 +92,6 @@ const mapStateToProps = ({ orderTable, orderDetail, auth }) => {
   };
 };
 
-const mapDispatchToProps = {
-  getOrderCanvasWorkLogAction,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderCanvasWorkBox);

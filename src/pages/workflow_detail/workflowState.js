@@ -130,8 +130,12 @@ const WorkflowState = (props) => {
 
   const renderTransitions = ({ fields, meta: { error } }) => {
     const onDeleteTransition = (index) => {
-      const { transitionId } = state.transitions[index];
-      deleteWorkflowTransitionZapierAction({ flowId: id, transitionId });
+      const { transitionId } = state.transitions[index] || {};
+      if (transitionId) {
+        deleteWorkflowTransitionZapierAction({ flowId: id, transitionId });
+      } else {
+        fields.remove(index);
+      }
     };
     return (
       <div>

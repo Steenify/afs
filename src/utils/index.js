@@ -58,7 +58,7 @@ export const actionTryCatchCreator = async ({ service, onPending, onSuccess, onE
       throw String(`HTTP request with code ${status} \n ${data.detail || data.message || ''}`);
     }
   } catch (error) {
-    console.log('error', JSON.stringify(error));
+    console.log('actionTryCatchCreator error', error, JSON.stringify(error));
 
     if (onError) onError(error);
     if (isIgnoreError) {

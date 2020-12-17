@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Spinner, Alert } from 'reactstrap';
-import { groupBy, sortBy, map, isEmpty, reduce } from 'lodash';
+import { groupBy, map, isEmpty } from 'lodash';
 import { toast } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import { ReactComponent as Close } from 'assets/img/close_white.svg';
@@ -9,20 +9,31 @@ import { ReactComponent as Close } from 'assets/img/close_white.svg';
 import CanShow from 'components/layout/canshow';
 
 import OrderWorkGroup from './orderWorkGroup';
-import OrderCustomerBox from './orderCustomerBox';
 import OrderArtDelivery from './orderDelivery';
-import { deleteArtistBudgetOrderAction } from './actions';
-import { PERMITTIONS_CONFIG, WORKFLOW_STATE_TYPE } from 'configs';
+import { deleteArtistBudgetOrderAction, getLastWorkLogStateAction } from './actions';
+import { PERMITTIONS_CONFIG } from 'configs';
 
-const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster, artists = [], deleteArtistBudgetOrder }) => {
+const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, artists = [], deleteArtistBudgetOrder, getLastWorkLogStateAction }) => {
   const [tab, setTab] = useState('activity');
   const [artistId, setArtistId] = useState(0);
+  const [lastWorkLogState, setLastWorkLogState] = useState({});
 
   const worklogToDeliver = (workLog[artists[0]?.id] || []).filter((w) => w.bookingItemId === item.id);
+
+  const currentWorkLog = (workLog[artistId] || []).filter((w) => w.bookingItemId === item.id);
+
+  const isCurrentArtist = artistId === order?.assignedTo?.id;
+  const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
 
   useEffect(() => {
     setArtistId(artists[0]?.id);
   }, [artists]);
+
+  useEffect(() => {
+    if (lastWorkLog) {
+      getLastWorkLogStateAction({ flowId: lastWorkLog.wlFlowId, stateName: lastWorkLog.wlState, onSuccess: setLastWorkLogState });
+    }
+  }, [lastWorkLog, getLastWorkLogStateAction]);
 
   const handleDeleteArtistBudget = (artist) => {
     confirmAlert({
@@ -63,8 +74,6 @@ const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster,
     });
   };
 
-  const currentWorkLog = workLog[artistId] || [];
-
   if (loadingWorkLog || !status.length) {
     return (
       <div style={{ minHeight: '100px' }} className='order_detail__work_list box d-flex align-items-center justify-content-center'>
@@ -72,19 +81,6 @@ const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster,
       </div>
     );
   }
-
-  const isCurrentArtist = artistId === order?.assignedTo?.id;
-  const isNewOrder = currentWorkLog.length === 1 && currentWorkLog[0]?.wlStateType === WORKFLOW_STATE_TYPE.START;
-  const lastWorkLog = currentWorkLog[currentWorkLog.length - 1];
-  const worklogGroupedByState = groupBy(currentWorkLog, 'wlState');
-
-  // const allExportImage = reduce(
-  //   EXPORT_FILE,
-  //   (list, item) => {
-  //     return [...list, ...item.attachments];
-  //   },
-  //   [],
-  // );
 
   return (
     <div className='order_detail__work_list'>
@@ -124,15 +120,17 @@ const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster,
                 </div>
               );
             })}
-            <button
-              type='button'
-              onClick={() => {
-                setTab('delivery');
-                setArtistId(order?.assignedTo?.id);
-              }}
-              className={`order_detail__tab ${tab === 'delivery' && artistId === order?.assignedTo?.id && 'active'}`}>
-              Delivery
-            </button>
+            {artists.length > 0 && (
+              <button
+                type='button'
+                onClick={() => {
+                  setTab('delivery');
+                  setArtistId(order?.assignedTo?.id);
+                }}
+                className={`order_detail__tab ${tab === 'delivery' && artistId === order?.assignedTo?.id && 'active'}`}>
+                Delivery
+              </button>
+            )}
           </div>
         </div>
 
@@ -146,17 +144,15 @@ const OrderWorkBox = ({ item, order, status, loadingWorkLog, workLog, hasPoster,
               )}
 
               {!isEmpty(order.assignedTo) &&
-                map(worklogGroupedByState, (works, key) => {
+                currentWorkLog.map((works, index) => {
                   return (
                     <OrderWorkGroup
-                      hasPoster={hasPoster}
-                      isNewOrder={isNewOrder}
+                      lastWorkLogState={lastWorkLogState}
                       isCurrentArtist={isCurrentArtist}
-                      works={works}
+                      works={[works]}
                       order={order}
-                      group={key}
                       item={item}
-                      key={`workGroup__item__${key}`}
+                      key={`workGroup__item__${index}`}
                       lastWorkLog={lastWorkLog}
                       status={status}
                     />
@@ -208,6 +204,7 @@ const mapStateToProps = ({ orderTable, orderDetail, auth }) => {
 
 const mapDispatchToProps = {
   deleteArtistBudgetOrder: deleteArtistBudgetOrderAction,
+  getLastWorkLogStateAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderWorkBox);

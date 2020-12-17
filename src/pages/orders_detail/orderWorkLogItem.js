@@ -5,7 +5,6 @@ import { Collapse } from 'reactstrap';
 import { findIndex, isEmpty, groupBy } from 'lodash';
 import moment from 'moment';
 import { confirmAlert } from 'react-confirm-alert';
-// import { Picker, Emoji } from 'emoji-mart';
 
 import Dropbox from 'components/common/dropbox';
 import ImageGallery from 'components/common/imageGallery';
@@ -16,8 +15,6 @@ import CommentBox from 'components/common/commentBox';
 import TrackingInfoForm from './workingTrackingInfos';
 import TrackingInfo from './trackingInfos';
 
-// import { ReactComponent as EmojiIcon } from 'assets/img/emoji.svg';
-
 import { ReactComponent as Close } from 'assets/img/close.svg';
 import { ReactComponent as PencilLine } from 'assets/img/pencil_line.svg';
 import { ReactComponent as Message } from 'assets/img/message.svg';
@@ -26,23 +23,10 @@ import { ReactComponent as Feedback } from 'assets/img/message__yellow.svg';
 import { getListImageUrl, dateTimeFromNow, dateTimeToDeadline } from 'utils';
 import { PERMITTIONS_CONFIG } from 'configs';
 
-import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction, updateTrackingCodeWorkLogAction } from './actions';
+import { uploadFileWorkLogAction, uploadCommentWorkLogAction, deleteCommentWorkLogAction, updateCommentWorkLogAction, deleteAttachmentWorkLogAction } from './actions';
 import CanShow from 'components/layout/canshow';
 
-const OrderWorkLogItem = ({
-  workLogType, // TODO: remove
-  work,
-  order,
-  component,
-  isOpened,
-  uploadFileWorkLog,
-  workLog,
-  uploadCommentWorkLog,
-  deleteCommentWorkLog,
-  updateCommentWorkLog,
-  deleteAttachmentWorkLog,
-  updateTrackingCodeWorkLogAction,
-}) => {
+const OrderWorkLogItem = ({ work, order, component, isOpened, uploadFileWorkLog, workLog, uploadCommentWorkLog, deleteCommentWorkLog, updateCommentWorkLog, deleteAttachmentWorkLog }) => {
   const { canTracking, canUpload, canExportFile } = component;
 
   const [isOpenWork, setIsOpenWork] = useState(isOpened || false);
@@ -57,11 +41,6 @@ const OrderWorkLogItem = ({
   const [isEdit, setIsEdit] = useState(false);
   const dropbox = useRef(null);
   const commentBox = useRef(null);
-
-  const trackingURLInput = useRef(null);
-  const trackingCodeInput = useRef(null);
-  const [trackingDeliveryFromDate, setTrackingDeliveryFromDate] = useState(moment(order.printfulEstimatedDeliveryFrom || moment()));
-  const [trackingDeliveryToDate, setTrackingDeliveryToDate] = useState(moment(order.printfulEstimatedDeliveryTo || moment()));
 
   const [editComment, setEditComment] = useState({});
   const [editCommentIndex, setEditCommentIndex] = useState(0);
@@ -80,16 +59,6 @@ const OrderWorkLogItem = ({
   const Act_REJECTED = activitiesGroup?.REJECTED || [];
   const Act_NOTIFIED_CUSTOMER = activitiesGroup?.NOTIFIED_CUSTOMER || [];
   const Act_REMINDER_CUSTOMER = activitiesGroup?.REMINDER_CUSTOMER || [];
-
-  const handleUpdateTrackingInfo = () => {
-    const printfulTrackingUrl = trackingURLInput.current.value;
-    const printfulTrackingCode = trackingCodeInput.current.value;
-    const printfulEstimatedDeliveryFrom = moment(trackingDeliveryFromDate).toISOString();
-    const printfulEstimatedDeliveryTo = moment(trackingDeliveryToDate).toISOString();
-    updateTrackingCodeWorkLogAction(order.id, { printfulTrackingCode, printfulTrackingUrl, printfulEstimatedDeliveryFrom, printfulEstimatedDeliveryTo }, () => {
-      toast.dark('Tracking info is updated.');
-    });
-  };
 
   const handleUploadSketch = () => {
     if (dropbox.current) {
@@ -181,7 +150,6 @@ const OrderWorkLogItem = ({
             setEditComment({});
             setEditCommentIndex(0);
           },
-          workLogType,
           work?.artist?.id,
         );
       } else {
@@ -201,7 +169,7 @@ const OrderWorkLogItem = ({
   };
 
   const handleDeleteComment = (comId, comIndex) => {
-    deleteCommentWorkLog(order.id, work.id, comId, workLogIndex, comIndex, workLogType, work?.artist?.id);
+    deleteCommentWorkLog(order.id, work.id, comId, workLogIndex, comIndex, work?.artist?.id);
   };
 
   const handleCheckEdit = (com, index) => {
@@ -510,7 +478,6 @@ const mapDispatchToProps = {
   deleteCommentWorkLog: deleteCommentWorkLogAction,
   updateCommentWorkLog: updateCommentWorkLogAction,
   deleteAttachmentWorkLog: deleteAttachmentWorkLogAction,
-  updateTrackingCodeWorkLogAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderWorkLogItem);

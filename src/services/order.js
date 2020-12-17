@@ -87,12 +87,6 @@ export const createOrderCanvasWorkLogService = ({ id }) =>
     method: 'POST',
   });
 
-export const getOrderCanvasWorkLogService = ({ id }) =>
-  request({
-    url: `${ORDERS_API}/${id}/work-logs/canvas`,
-    method: 'GET',
-  });
-
 export const updateOrderCanvasTrackingCodeWorkLogService = ({ id, data }) =>
   request({
     url: `${ORDERS_API}/${id}/work-logs/canvas/tracking`,

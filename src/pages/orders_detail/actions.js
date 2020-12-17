@@ -1,4 +1,4 @@
-import { find, findIndex } from 'lodash';
+import { findIndex } from 'lodash';
 import { toast } from 'react-toastify';
 
 import { actionCreator, actionTryCatchCreator } from 'utils';
@@ -7,10 +7,7 @@ import {
   updateOrderItemSumarizeService,
   updateOrderItemFileService,
   getOrderCustomerService,
-  changeOrderStatusService,
   getOrderWorkLogService,
-  getOrderCanvasWorkLogService,
-  createOrderCanvasWorkLogService,
   uploadOrderWorkLogService,
   uploadOrderWorkLogCommentService,
   deleteOrderWorkLogCommentService,
@@ -43,6 +40,29 @@ import {
   deleteArtistBudgetOrderService,
 } from 'services/order';
 import { getAssignArtistsService } from 'services/artist';
+import { getWorkflowStateInfoService } from 'services/workflow.service';
+
+export const GET_LAST_WORKLOG_STATE = actionCreator('GET_LAST_WORKLOG_STATE');
+export const getLastWorkLogStateAction = ({ flowId, stateName, onSuccess }) => (dispatch) => {
+  actionTryCatchCreator({
+    service: getWorkflowStateInfoService(flowId, stateName),
+    onPending: () => dispatch({ type: GET_LAST_WORKLOG_STATE.PENDING }),
+    onSuccess: (data) => {
+      dispatch({
+        type: GET_LAST_WORKLOG_STATE.SUCCESS,
+        payload: data,
+      });
+      onSuccess && onSuccess(data);
+    },
+    onError: (error) => {
+      console.log('getLastWorkLogStateAction => onError -> error', JSON.stringify(error));
+      dispatch({
+        type: GET_LAST_WORKLOG_STATE.ERROR,
+        payload: error.response,
+      });
+    },
+  });
+};
 
 export const ORDER_DETAIL_ACTIONS = {
   UPDATE_ORDER_ITEM_SUMARIZE: 'UPDATE_ORDER_ITEM_SUMARIZE',
@@ -244,37 +264,6 @@ export const getOrderCustomerAction = (id) => (dispatch) => {
   });
 };
 
-export const GET_ORDER_CANVAS_WORK_LOG_ACTION = actionCreator('GET_ORDER_CANVAS_WORK_LOG_ACTION');
-export const getOrderCanvasWorkLogAction = (id) => (dispatch) => {
-  const onPending = () => {
-    dispatch({
-      type: GET_ORDER_CANVAS_WORK_LOG_ACTION.PENDING,
-    });
-  };
-
-  const onSuccess = (data) => {
-    dispatch({
-      type: GET_ORDER_CANVAS_WORK_LOG_ACTION.SUCCESS,
-      payload: { data },
-    });
-  };
-
-  const onError = (error) => {
-    console.log('getOrderCanvasWorkLogAction => onError -> error', JSON.stringify(error));
-    dispatch({
-      type: GET_ORDER_CANVAS_WORK_LOG_ACTION.ERROR,
-      payload: error.response,
-    });
-  };
-
-  actionTryCatchCreator({
-    service: getOrderCanvasWorkLogService({ id }),
-    onPending,
-    onSuccess,
-    onError,
-  });
-};
-
 export const GET_ORDER_WORK_LOG_ACTION = actionCreator('GET_ORDER_WORK_LOG_ACTION');
 export const getOrderWorkLogAction = (id) => (dispatch) => {
   const onPending = () => {
@@ -329,7 +318,7 @@ export const uploadFileWorkLogAction = (id, logId, payload, index, files, cb, ar
       cb && cb();
       dispatch({
         type: UPLOAD_FILE_WORK_LOG_ACTION.SUCCESS,
-        payload: { data: files, index, activives, worklogType: 'worklog', artistId },
+        payload: { data: files, index, activives, artistId },
       });
     } else {
       toast.error('Can not saved file, Please try again later!');
@@ -361,7 +350,7 @@ export const uploadCommentWorkLogAction = (id, logId, payload, index, cb, artist
   const onSuccess = (data) => {
     dispatch({
       type: UPLOAD_COMMENT_WORK_LOG_ACTION.SUCCESS,
-      payload: { data, index, worklogType: 'worklog', artistId },
+      payload: { data, index, artistId },
     });
 
     cb && cb();
@@ -393,7 +382,7 @@ export const deleteAttachmentWorkLogAction = (id, logId, attachmentId, logIndex,
     if (cb) cb();
     dispatch({
       type: DELETE_ATTACHMENT_WORK_LOG_ACTION.SUCCESS,
-      payload: { logIndex, attachmentIndex, worklogType: 'worklog', artistId },
+      payload: { logIndex, attachmentIndex, artistId },
     });
   };
   const onError = (error) => {
@@ -422,7 +411,7 @@ export const deleteCommentWorkLogAction = (id, logId, comId, logIndex, comIndex,
   const onSuccess = (data) => {
     dispatch({
       type: DELETE_COMMENT_WORK_LOG_ACTION.SUCCESS,
-      payload: { logIndex, comIndex, worklogType: 'worklog', artistId },
+      payload: { logIndex, comIndex, artistId },
     });
   };
   const onError = (error) => {
@@ -481,7 +470,7 @@ export const updateCommentWorkLogAction = (id, logId, comId, payload, logIndex, 
   const onSuccess = (data) => {
     dispatch({
       type: UPDATE_COMMENT_WORK_LOG_ACTION.SUCCESS,
-      payload: { logIndex, comIndex, data, worklogType: 'worklog', artistId },
+      payload: { logIndex, comIndex, data, artistId },
     });
     cb && cb();
   };
@@ -507,8 +496,8 @@ export const updateCommentWorkLogAction = (id, logId, comId, payload, logIndex, 
 };
 
 export const APPROVED_WORK_LOG_ACTION = actionCreator('APPROVED_WORK_LOG_ACTION');
-export const approvedWorkLogAction = ({ id, itemId, logId, isMarkAsDone = false, artistId }) => (dispatch, getState) => {
-  const workLog = getState().orderDetail.data['worklog']?.[artistId] || [];
+export const approvedWorkLogAction = ({ id, itemId, logId, artistId }) => (dispatch, getState) => {
+  const workLog = getState().orderDetail.data?.workLog?.[artistId] || [];
   const workLogIndex = findIndex(workLog, (log) => log.id === logId);
 
   actionTryCatchCreator({
@@ -528,9 +517,10 @@ export const approvedWorkLogAction = ({ id, itemId, logId, isMarkAsDone = false,
           lastActionDate: new Date(),
         },
       ];
+      data.workLog.nextTransitions = data.nextTransitions;
       dispatch({
         type: APPROVED_WORK_LOG_ACTION.SUCCESS,
-        payload: { workLog: data.workLog, index: workLogIndex, activives, worklogType: 'worklog', isMarkAsDone, artistId },
+        payload: { ...data, index: workLogIndex, activives, artistId },
       });
     },
     onError: (error) => {
@@ -545,9 +535,6 @@ export const approvedWorkLogAction = ({ id, itemId, logId, isMarkAsDone = false,
 
 export const REJECTED_WORK_LOG_ACTION = actionCreator('REJECTED_WORK_LOG_ACTION');
 export const rejectedWorkLogAction = ({ id, itemId, logId, payload, index, onSuccess, artistId }) => (dispatch, getState) => {
-  // const { workLog } = getState().orderDetail.data;
-  // const workLogIndex = findIndex(workLog, (log) => log.id === logId);
-
   actionTryCatchCreator({
     service: rejectedOrderWorkLogService({ id, itemId, logId, data: payload }),
     onPending: () => dispatch({ type: REJECTED_WORK_LOG_ACTION.PENDING }),
@@ -568,14 +555,15 @@ export const rejectedWorkLogAction = ({ id, itemId, logId, payload, index, onSuc
       const comment = data?.workLog?.comments[0] || {};
       dispatch({
         type: UPLOAD_COMMENT_WORK_LOG_ACTION.SUCCESS,
-        payload: { data: comment, index, worklogType: 'worklog', artistId },
+        payload: { data: comment, index, artistId },
       });
 
       data.workLog.comments = [];
+      data.workLog.nextTransitions = data.nextTransitions;
 
       dispatch({
         type: REJECTED_WORK_LOG_ACTION.SUCCESS,
-        payload: { workLog: data.workLog, index, activives, worklogType: 'worklog', artistId },
+        payload: { ...data, index, activives, artistId },
       });
     },
     onError: (error) => {
@@ -601,7 +589,6 @@ export const canceledWorkLogAction = (id, logId, index, artistId) => (dispatch, 
       type: CANCELED_WORK_LOG_ACTION.SUCCESS,
       payload: {
         index,
-        worklogType: 'worklog',
         orderStatus: data?.status || '',
         artistId,
       },
@@ -643,7 +630,7 @@ export const getEmailTemplateAction = (id, templateId, workLogIndex, artistId) =
   const onSuccess = (data) => {
     dispatch({
       type: GET_EMAIL_TEMPLATE_ACTION.SUCCESS,
-      payload: { data, templateId, workLogIndex, worklogType: 'worklog', artistId },
+      payload: { data, templateId, workLogIndex, artistId },
     });
   };
   const onError = (error) => {
@@ -672,7 +659,7 @@ export const getRemindEmailTemplateAction = (id, workLogIndex, artistId) => (dis
   const onSuccess = (data) => {
     dispatch({
       type: GET_REMIND_EMAIL_TEMPLATE_ACTION.SUCCESS,
-      payload: { data, workLogIndex, worklogType: 'worklog', artistId },
+      payload: { data, workLogIndex, artistId },
     });
   };
   const onError = (error) => {
@@ -693,7 +680,7 @@ export const getRemindEmailTemplateAction = (id, workLogIndex, artistId) => (dis
 };
 
 export const SENT_EMAIL_NOTIFY_ACTION = actionCreator('SENT_EMAIL_NOTIFY_ACTION');
-export const sendEmailNotifyAction = (customerEmail = '', workLogType = 'workLog') => (dispatch, getState) => {
+export const sendEmailNotifyAction = (customerEmail = '') => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: SENT_EMAIL_NOTIFY_ACTION.PENDING,
@@ -715,7 +702,6 @@ export const sendEmailNotifyAction = (customerEmail = '', workLogType = 'workLog
       type: SENT_EMAIL_NOTIFY_ACTION.SUCCESS,
       payload: {
         activives,
-        worklogType: 'worklog',
       },
     });
     toast.dark('Notified Customer!');
@@ -752,7 +738,7 @@ export const getFBMessageTemplateAction = (id, templateId, workLogIndex, artistI
   const onSuccess = (data) => {
     dispatch({
       type: GET_FB_MESSAGE_TEMPLATE_ACTION.SUCCESS,
-      payload: { data, templateId, workLogIndex, worklogType: 'worklog', artistId },
+      payload: { data, templateId, workLogIndex, artistId },
     });
   };
   const onError = (error) => {
@@ -781,7 +767,7 @@ export const getRemindFBMessageTemplateAction = (id, workLogIndex, artistId) => 
   const onSuccess = (data) => {
     dispatch({
       type: GET_REMIND_FB_MESSAGE_TEMPLATE_ACTION.SUCCESS,
-      payload: { data, workLogIndex, worklogType: 'worklog', artistId },
+      payload: { data, workLogIndex, artistId },
     });
   };
   const onError = (error) => {
@@ -801,7 +787,7 @@ export const getRemindFBMessageTemplateAction = (id, workLogIndex, artistId) => 
 };
 
 export const SENT_FB_MESSAGES_NOTIFY_ACTION = actionCreator('SENT_FB_MESSAGES_NOTIFY_ACTION');
-export const sendFBMessageNotifyAction = (psid, workLogType = 'workLog') => (dispatch, getState) => {
+export const sendFBMessageNotifyAction = (psid) => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: SENT_FB_MESSAGES_NOTIFY_ACTION.PENDING,
@@ -823,7 +809,6 @@ export const sendFBMessageNotifyAction = (psid, workLogType = 'workLog') => (dis
       type: SENT_FB_MESSAGES_NOTIFY_ACTION.SUCCESS,
       payload: {
         activives,
-        worklogType: 'worklog',
       },
     });
     toast.dark('Notified Customer!');
@@ -863,7 +848,7 @@ export const deleteFileDeliveryAction = (id, fileId, logIndex, fileIndex, cb, ar
       cb && cb();
       dispatch({
         type: DELETE_FILE_DELIVERY_ACTION.SUCCESS,
-        payload: { logIndex, fileIndex, worklogType: 'worklog', artistId },
+        payload: { logIndex, fileIndex, artistId },
       });
     } else {
       toast.error('Can not delete file, Please try again later!');
@@ -920,7 +905,7 @@ export const deleteFileSummaryAction = (id, itemId, fileId, itemIndex, fileIndex
 };
 
 export const SENT_EMAIL_REMIND_ACTION = actionCreator('SENT_EMAIL_REMIND_ACTION');
-export const sentEmailRemindAction = (data, orderId, workLogType = 'workLog') => (dispatch, getState) => {
+export const sentEmailRemindAction = (data, orderId) => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: SENT_EMAIL_REMIND_ACTION.PENDING,
@@ -942,7 +927,6 @@ export const sentEmailRemindAction = (data, orderId, workLogType = 'workLog') =>
       type: SENT_EMAIL_REMIND_ACTION.SUCCESS,
       payload: {
         activives,
-        worklogType: 'worklog',
       },
     });
     toast.dark('Reminded Customer via email!');
@@ -964,7 +948,7 @@ export const sentEmailRemindAction = (data, orderId, workLogType = 'workLog') =>
 };
 
 export const SENT_MESSAGE_REMIND_ACTION = actionCreator('SENT_MESSAGE_REMIND_ACTION');
-export const sentMessageRemindAction = (data, orderId, workLogType = 'workLog') => (dispatch, getState) => {
+export const sentMessageRemindAction = (data, orderId) => (dispatch, getState) => {
   const onPending = () => {
     dispatch({
       type: SENT_MESSAGE_REMIND_ACTION.PENDING,
@@ -986,7 +970,6 @@ export const sentMessageRemindAction = (data, orderId, workLogType = 'workLog') 
       type: SENT_MESSAGE_REMIND_ACTION.SUCCESS,
       payload: {
         activives,
-        worklogType: 'worklog',
       },
     });
     toast.dark('Reminded Customer via fb/ig!');

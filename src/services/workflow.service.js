@@ -60,3 +60,9 @@ export const deleteWorkflowTransitionZapierService = ({ flowId, transitionId }) 
     url: `${WORKFLOW_API}/${flowId}/view-by-state/transitions/${transitionId}`,
     method: 'DELETE',
   });
+
+export const getWorkflowStateInfoService = (flowId, stateName) =>
+  request({
+    url: `${WORKFLOW_API}/${flowId}/states/${stateName}`,
+    method: 'GET',
+  });
