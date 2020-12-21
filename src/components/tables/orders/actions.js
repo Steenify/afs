@@ -30,6 +30,9 @@ const buildSearchParam = (input = {}) => {
   if (input.cs) {
     params.append('cs', input.cs || '');
   }
+  if (input.source) {
+    params.append('source', input.source || '');
+  }
   params.append('text', input.text || '');
   params.append('page', input.page || 0);
   params.append('size', (input.size && parseInt(input.size)) || 100);

@@ -24,6 +24,7 @@ const templateState = {
     alert: '',
     hasPoster: false,
     cs: '',
+    source: '',
   },
   table: {
     orders: [],
