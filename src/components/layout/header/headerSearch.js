@@ -107,10 +107,11 @@ class HeaderSearch extends Component {
               results.map((res) => (
                 <div key={`search__results__item__${res.id}`} className='search__result result'>
                   <Link className='search__wrapper' to={`${WEB_ROUTES.ORDERS_DETAIL.path.replace(':id', res.code)}`}>
-                    <div className='result__number'>#{res?.number}</div>
-                    <div className='result__date'>{dateTimeToDeadline(res?.paidAt)}</div>
-                    <div className='result__customer'>{res?.customer?.fullName}</div>
-                    <div className='result__status'>
+                    <div className='result__number result__col'>#{res?.number}</div>
+                    <div className='result__date result__col'>{dateTimeToDeadline(res?.paidAt)}</div>
+                    <div className='result__customer result__col'>{res?.customer?.fullName}</div>
+                    <div className='result__artist result__col'>{res?.assignedTo?.fullName || 'Not Assigned'}</div>
+                    <div className='result__status result__col'>
                       <div className={`order__status cursor-pointer ${getSelectedStatus(res?.status, statuses).name}`}>{getSelectedStatus(res?.status, statuses).friendlyName}</div>
                     </div>
                   </Link>

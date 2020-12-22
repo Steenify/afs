@@ -22,7 +22,13 @@ const OrderFilterAssignee = ({ assignee, updateOrderTableFilterAction, reducer }
   };
 
   return (
-    <Popover isOpen={isPopoverOpen} position={'bottom'} transitionDuration={0.000001} padding={10} onClickOutside={toggle} content={() => <ListArtists onSave={onSave} assignedTo={{}} />}>
+    <Popover
+      isOpen={isPopoverOpen}
+      position={'bottom'}
+      transitionDuration={0.000001}
+      padding={10}
+      onClickOutside={toggle}
+      content={() => <ListArtists onSave={onSave} canUnAssign={true} assignedTo={{}} />}>
       <button onClick={() => setIsPopoverOpen(!isPopoverOpen)} className='filter__toggle'>
         <span className='dispaly_name'>{assignee && assignee !== 'null' ? assignee : 'Artist'}</span>
         <span className='icon mb-1 ml-2'>

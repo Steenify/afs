@@ -70,7 +70,7 @@ class ListArtists extends Component {
 
   render() {
     const { artists, isLoading, text } = this.state;
-    const { onSave, assignedTo } = this.props;
+    const { onSave, assignedTo, canUnAssign } = this.props;
     return (
       <div className='order__info p-3 list_artist_assign'>
         <div className='order__artist'>
@@ -85,6 +85,19 @@ class ListArtists extends Component {
               </div>
             ) : (
               <div>
+                {canUnAssign ? (
+                  <button onClick={() => onSave({ login: 'null' })} key={`list__artist__all`} className={`artist__select ${assignedTo?.login === 'null' ? 'active' : ''}`}>
+                    <div className='avt'>
+                      <img src={`https://ui-avatars.com/api/?name=${'all'}`} alt='comments__author' />
+                    </div>
+
+                    <div className='info'>
+                      <strong className='name'>____________</strong>
+                      <div className='status'></div>
+                    </div>
+                  </button>
+                ) : null}
+
                 {artists.map((art) => {
                   const doing = (art?.numNewOrder || 0) + (art?.numSketch || 0) + (art?.numSketchEdit || 0) + (art?.numColorEdit || 0) + (art?.numColor || 0);
                   const reviewing = (art?.numSketchReview || 0) + (art?.numColorReview || 0) + (art?.numExportFile || 0);
@@ -114,5 +127,9 @@ class ListArtists extends Component {
     );
   }
 }
+
+ListArtists.defaultProps = {
+  canUnAssign: false,
+};
 
 export default ListArtists;
