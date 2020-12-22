@@ -11,7 +11,7 @@ const OrderSourceCell = ({ goToDetail, code, source }) => {
 
   return (
     <div onClick={() => goToDetail(code)} className={`order__created_date cursor-pointer`}>
-      <div className=''>{message}</div>
+      <div className={`order__status order__source  ${source}`}>{message}</div>
     </div>
   );
 };

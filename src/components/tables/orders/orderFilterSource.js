@@ -41,11 +41,11 @@ const OrderFilterSource = ({ source, updateOrderTableFilterAction, reducer }) =>
             <button data='' onClick={handleChangeStatus} key={`list__source_option__all`} className={`status ${!source && 'active'}`}>
               All
             </button>
-            <button data='TURNED_NINJA' onClick={handleChangeStatus} key={`list__source_option__TURNED_NINJA`} className={`status ${source === 'TURNED_NINJA' && 'active'}`}>
+            <button data='TURNED_NINJA' onClick={handleChangeStatus} key={`list__source_option__TURNED_NINJA`} className={`status order__source TURNED_NINJA ${source === 'TURNED_NINJA' && 'active'}`}>
               {MapSource['TURNED_NINJA']}
             </button>
 
-            <button data='TURNED_HUMAN' onClick={handleChangeStatus} key={`list__source_option__TURNED_HUMAN`} className={`status ${source === 'TURNED_HUMAN' && 'active'}`}>
+            <button data='TURNED_HUMAN' onClick={handleChangeStatus} key={`list__source_option__TURNED_HUMAN`} className={`status order__source TURNED_HUMAN ${source === 'TURNED_HUMAN' && 'active'}`}>
               {MapSource['TURNED_HUMAN']}
             </button>
           </div>

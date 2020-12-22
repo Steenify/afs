@@ -948,6 +948,21 @@
 		}
 	}
 
+	&__source {
+		&::before {
+			display: none;
+		}
+		padding-left: 15px;
+
+		&.TURNED_HUMAN {
+			background: #ffdff1;
+		}
+
+		&.TURNED_NINJA {
+			background: #ffe593;
+		}
+	}
+
 	@include max-md() {
 		&__filter {
 			.list_status {
