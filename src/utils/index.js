@@ -196,7 +196,7 @@ export const getListImageUrl = (list = []) => {
   return list.map((item) => {
     if (item.fileName && item.fileName.toLowerCase().indexOf('.psd') !== -1) {
       return {
-        download: PSDFile,
+        download: item?.url,
         fullscreen: PSDFile,
         regular: PSDFile,
         thumbnail: PSDFile,
