@@ -25,6 +25,8 @@ const templateState = {
     hasPoster: false,
     cs: '',
     source: '',
+    store: '',
+    storeName: '',
   },
   table: {
     orders: [],

@@ -70,7 +70,7 @@ class ListStoreAssign extends Component {
 
   render() {
     const { store_list, isLoading, text } = this.state;
-    const { onSave, store } = this.props;
+    const { onSave, store, canUnAssign } = this.props;
     return (
       <div className='order__info p-3 list_artist_assign'>
         <div className='order__artist'>
@@ -85,6 +85,18 @@ class ListStoreAssign extends Component {
               </div>
             ) : (
               <div>
+                {canUnAssign ? (
+                  <button onClick={() => onSave({ id: '', name: '' })} key={`list__artist__all`} className={`artist__select ${!store?.id ? 'active' : ''}`}>
+                    <div className='avt'>
+                      <img src={`https://ui-avatars.com/api/?name=${'all'}`} alt='comments__author' />
+                    </div>
+
+                    <div className='info'>
+                      <strong className='name'>____________</strong>
+                      <div className='status'></div>
+                    </div>
+                  </button>
+                ) : null}
                 {store_list.map((sto) => {
                   return (
                     <button onClick={() => onSave(sto)} key={`list__cs__${sto.id}`} className={`artist__select align-items-center ${sto.id === store?.id ? 'active' : ''}`}>

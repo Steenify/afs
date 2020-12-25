@@ -12,6 +12,7 @@ import OrderFilterAssignee from './orderFilterAssignee';
 import OrderFilterStatus from './orderFilterStatus';
 import OrderFilterTag from './orderFilterTag';
 import OrderFilterSource from './orderFilterSource';
+import OrderFilterStore from './orderFilterStore';
 import { countTotalOrders } from 'utils';
 
 class OrderFilters extends Component {
@@ -133,6 +134,9 @@ class OrderFilters extends Component {
             <input type='text' defaultValue={text} placeholder='Search orders' className='search__box form-control' onChange={this.handleChangeText} />
           </div>
           <div className='filter__filters'>
+            <CanShow permission={PERMITTIONS_CONFIG.VIEW_ORDER_OF_STORE}>
+              <OrderFilterStore reducer={reducer} />
+            </CanShow>
             <CanShow permission={PERMITTIONS_CONFIG.VIEW_ORDER_SOURCE}>
               <OrderFilterSource reducer={reducer} />
             </CanShow>

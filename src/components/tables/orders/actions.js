@@ -34,6 +34,9 @@ const buildSearchParam = (input = {}) => {
   if (input.source) {
     params.append('source', input.source || '');
   }
+  if (input.store) {
+    params.append('store', input.store || '');
+  }
   params.append('text', input.text || '');
   params.append('page', input.page || 0);
   params.append('size', (input.size && parseInt(input.size)) || 100);
