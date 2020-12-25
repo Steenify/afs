@@ -4,6 +4,7 @@ import {
   updateOrderBudgetService,
   assignOrderService,
   assignCSOrderService,
+  assignStoreOrderService,
   getOrderCountByStatusService,
   getOrderBulkMarkAsDoneService,
   getAllBookingTagsService,
@@ -192,6 +193,31 @@ export const updateOrderTableAssignCSAction = ({ payload, reducer, onSuccess }) 
       console.log('updateOrderTableAssignCSAction => onError -> error', JSON.stringify(error));
       dispatch({
         type: ORDER_TABLE_UPDATE_CS_ACTION.ERROR,
+        payload: error.response,
+        reducer,
+      });
+    },
+  });
+};
+
+export const ORDER_TABLE_UPDATE_STORE_ACTION = actionCreator('ORDER_TABLE_UPDATE_STORE_ACTION');
+export const updateOrderTableAssignStoreAction = ({ payload, reducer, onSuccess }) => (dispatch) => {
+  actionTryCatchCreator({
+    service: assignStoreOrderService(payload),
+    onPending: () => {
+      dispatch({
+        type: ORDER_TABLE_UPDATE_STORE_ACTION.PENDING,
+        reducer,
+      });
+    },
+    onSuccess: (data) => {
+      dispatch({ type: ORDER_TABLE_UPDATE_STORE_ACTION.SUCCESS, payload: data, reducer });
+      onSuccess && onSuccess();
+    },
+    onError: (error) => {
+      console.log('updateOrderTableAssignStoreAction => onError -> error', JSON.stringify(error));
+      dispatch({
+        type: ORDER_TABLE_UPDATE_STORE_ACTION.ERROR,
         payload: error.response,
         reducer,
       });

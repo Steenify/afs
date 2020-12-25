@@ -41,6 +41,12 @@ export const assignCSOrderService = ({ id, to }) =>
     method: 'PUT',
   });
 
+export const assignStoreOrderService = ({ id, to }) =>
+  request({
+    url: `${ORDERS_API}/${id}/stores/${to}`,
+    method: 'PUT',
+  });
+
 export const changeOrderStatusService = ({ id, to }) =>
   request({
     url: `${ORDERS_API}/${id}/status/${to}`,
@@ -304,4 +310,10 @@ export const deleteArtistLogOrderService = (orderId, logId) =>
   request({
     url: `${ORDERS_API}/${orderId}/artist-log/${logId}`,
     method: 'DELETE',
+  });
+
+export const getBookingStoreService = () =>
+  request({
+    url: `${ORDERS_API}/stores`,
+    method: 'GET',
   });
