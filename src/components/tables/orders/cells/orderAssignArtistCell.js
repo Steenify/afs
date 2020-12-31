@@ -62,7 +62,13 @@ const AssignArtistCell = ({ assignedTo, accountInfo, id, updateOrderTableItemsAc
   }
 
   return (
-    <Popover isOpen={isPopoverOpen} position={'bottom'} transitionDuration={0.000001} padding={10} onClickOutside={toggle} content={() => <ListArtists onSave={onSave} assignedTo={assignedTo} />}>
+    <Popover
+      isOpen={isPopoverOpen}
+      position={'bottom'}
+      transitionDuration={0.000001}
+      padding={10}
+      onClickOutside={toggle}
+      content={() => <ListArtists canUnAssign={true} onSave={onSave} assignedTo={assignedTo} />}>
       <button type='button' onClick={() => setIsPopoverOpen(!isPopoverOpen)} className='order__toggle order__assigned w-100'>
         <div className='d-flex align-items-center'>
           <CanShow permission={PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS}>

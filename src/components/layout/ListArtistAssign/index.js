@@ -129,7 +129,7 @@ class ListArtists extends Component {
 }
 
 ListArtists.defaultProps = {
-  canUnAssign: false,
+  canUnAssign: true,
 };
 
 export default ListArtists;
