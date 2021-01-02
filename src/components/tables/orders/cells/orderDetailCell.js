@@ -56,7 +56,9 @@ const OrderDetailCell = ({ number, code, items, accountInfo, id }) => {
                 {filteredItems.map((item) => {
                   return (
                     <div key={`order__item__${number}__${item.id}`} className='content'>
-                      <strong className='name d-block'>{item.name}</strong>
+                      <strong className='name d-block'>
+                        {item.name} ({item?.quantity})
+                      </strong>
                       {hasFaster && <strong className='name'>(Faster Processing)</strong>}
                       {item.note ? (
                         <div>
