@@ -5,15 +5,16 @@ import { get } from 'lodash';
 
 import { ReactComponent as Cavet } from 'assets/img/cavet.svg';
 
+import ListTags from 'components/layout/ListTags';
+
 import { updateOrderTableFilterAction, getOrderTableCountByStatusAction } from './actions';
 
 const OrderFilterAssignee = ({ updateOrderTableFilterAction, reducer, tagItems, tags, orderStatusCount }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const toggle = () => setIsPopoverOpen(!isPopoverOpen);
 
-  const handleChangeTag = (event) => {
-    const { target } = event;
-    const tags = target.getAttribute('data');
+  const handleChangeTag = (tags) => {
+    toggle();
     updateOrderTableFilterAction({
       payload: {
         tags: tags ? [tags] : [],
@@ -23,10 +24,6 @@ const OrderFilterAssignee = ({ updateOrderTableFilterAction, reducer, tagItems, 
     });
   };
 
-  const totalCount = tagItems.reduce((total = 0, current) => {
-    return (total += orderStatusCount[current.id] || 0);
-  }, 0);
-
   return (
     <Popover
       isOpen={isPopoverOpen}
@@ -34,22 +31,7 @@ const OrderFilterAssignee = ({ updateOrderTableFilterAction, reducer, tagItems, 
       transitionDuration={0.000001}
       padding={10}
       onClickOutside={toggle}
-      content={() => (
-        <div className='order__filter inside_popover'>
-          <div className='list_status'>
-            <button data={null} onClick={handleChangeTag} key={`list__status_option__all`} className={`status ${!tags.length && 'active'}`}>
-              All
-              <span className='number'>{totalCount || 0}</span>
-            </button>
-            {tagItems.map(({ value = '', id = '' }) => (
-              <button data={value} onClick={handleChangeTag} key={`list__productAction_option__${id}`} className={`status ${tags?.includes(value) && 'active'}`}>
-                {value}
-                {orderStatusCount[id] && <span className='number'>{orderStatusCount[id]}</span>}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}>
+      content={() => <ListTags tagItems={tagItems} tags={tags} orderStatusCount={orderStatusCount} onSave={handleChangeTag} />}>
       <button onClick={() => setIsPopoverOpen(!isPopoverOpen)} className='filter__toggle middle'>
         <span className='dispaly_name'>{tags[0] || 'Product'}</span>
         <span className='icon mb-1 ml-2'>
