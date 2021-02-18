@@ -71,7 +71,9 @@ const OrderDetail = ({ loading, order, status, accountInfo, updateShowAssignedBo
           <div className='col-lg-6 col-xl-5'>
             <div className='info__right '>
               {canEditAssign && canGetArtists && <OrderAssignedBox order={order} />}
-              <OrderBudget order={order} />
+              <CanShow permission={PERMITTIONS_CONFIG.CAN_SEE_BUDGET_ORDER}>
+                <OrderBudget order={order} />
+              </CanShow>
             </div>
             <CanShow permission={PERMITTIONS_CONFIG.VIEW_ALL_ARTIST_TABS}>
               <div className='d-flex flex-wrap justify-content-end align-items-center  mt-3'>

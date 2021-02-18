@@ -179,6 +179,12 @@ class OrderTable extends PureComponent {
     if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.VIEW_ORDER_OF_STORE)) {
       columnsOrder = remove(columnsOrder, (col) => col.Header !== 'Store');
     }
+    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CAN_SEE_BUDGET_ORDER)) {
+      columnsOrder = remove(columnsOrder, (col) => col.Header !== 'Budget');
+    }
+    if (!accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.CAN_SEE_ASSIGN_ORDER)) {
+      columnsOrder = remove(columnsOrder, (col) => col.Header !== 'Assigned');
+    }
 
     const isCanPay = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.UPDATE_PAYMENT_STATUS);
 
