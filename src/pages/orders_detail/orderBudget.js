@@ -39,7 +39,7 @@ class OrderBudget extends Component {
 
     const number = parseInt(value || 0, 10);
 
-    if (number < 1) {
+    if (number < 0) {
       toast.warn("Budget can't be negative");
       return;
     }

@@ -56,7 +56,7 @@ const ChangeBudgetModal = ({ order, isOpen, currentShow, updateShowAssignedBoxAc
       toast.warn(`Please enter ${lowerCase(title)}`);
       return;
     }
-    if (number < 1) {
+    if (number < 0) {
       toast.warn(`${upperFirst(lowerCase(title))} can't be negative`);
       return;
     }
