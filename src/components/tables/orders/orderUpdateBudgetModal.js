@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import NumberFormat from 'react-number-format';
-import { get } from 'lodash';
+import { get, isNumber } from 'lodash';
 import { toast } from 'react-toastify';
 
 import Button from 'components/common/button';
@@ -43,7 +43,7 @@ const OrderUpdateBudgetModal = ({
       toast.warn('Please select action!');
     }
 
-    if (!amount) {
+    if (!isNumber(number)) {
       toast.warn(`Please enter number`);
       return;
     }
@@ -129,7 +129,6 @@ const OrderUpdateBudgetModal = ({
               ))}
             </div>
           </div>
-
           <div className=' mb-3'>
             <div className='label'>{`Amount:`}</div>
             <NumberFormat prefix={'$  '} thousandSeparator={true} className='form-control amount' value={amount} onValueChange={(data) => setAmount(data?.value || 0)} />

@@ -635,7 +635,8 @@
 
 				&.active {
 					background: #c6d0dc;
-					border: 1px solid #c6d0dc;
+					// border: 1px solid #c6d0dc;
+					border: 1px solid #222222 !important;
 				}
 
 				&.NEW_ORDER {
@@ -754,6 +755,22 @@
 
 					&.active {
 						background: #c6c6c6;
+					}
+				}
+
+				&.TurnedNinja {
+					background-color: #efae97;
+					color: $white;
+					&:hover,
+					&:active,
+					&:focus {
+						background: #f3a082;
+						border: 1px solid #f3a082;
+					}
+
+					&.active {
+						background: #df5525;
+						border: 1px solid #222222;
 					}
 				}
 			}

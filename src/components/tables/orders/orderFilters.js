@@ -99,7 +99,7 @@ class OrderFilters extends Component {
     return (
       <div className='order__filter'>
         <div className='list_status d-none d-sm-block'>
-          <button data='' onClick={this.handleChangeStatusResset} key={`list__status_option__all`} className={`status ${!selectedAlertType && 'active'}`}>
+          <button data='' onClick={this.handleChangeStatusResset} key={`list__status_option__all`} className={`status ${!selectedAlertType && vendor !== 'TurnedNinja' && 'active'}`}>
             All
             <span className='number'>{totalOrders || 0}</span>
           </button>
@@ -139,7 +139,7 @@ class OrderFilters extends Component {
           </CanShow>
 
           <CanShow permission={PERMITTIONS_CONFIG.CAN_SEE_FILTER_VENDER}>
-            <button onClick={this.handleCheckVendor} key={`list__alert_option__has_poster`} className={`status ${vendor === 'TurnedNinja' && 'active'}`}>
+            <button onClick={this.handleCheckVendor} key={`list__alert_option__has_poster`} className={`status TurnedNinja ${vendor === 'TurnedNinja' && 'active'}`}>
               Turned Ninja
             </button>
           </CanShow>
