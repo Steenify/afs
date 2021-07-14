@@ -29,7 +29,7 @@ class OrderFilters extends Component {
         page: 0,
         cs: '',
         hasPoster: false,
-        vendor: 'TurnedNinja',
+        vendor: '',
       },
       reducer,
     });
@@ -85,7 +85,7 @@ class OrderFilters extends Component {
   handleCheckVendor = () => {
     const { updateOrderTableFilterAction, reducer, vendor } = this.props;
     updateOrderTableFilterAction({
-      payload: { vendor: vendor === 'Printify' ? 'TurnedNinja' : 'Printify', page: 0 },
+      payload: { vendor: vendor === 'TurnedNinja' ? '' : 'TurnedNinja', page: 0 },
       reducer,
     });
   };
@@ -139,8 +139,8 @@ class OrderFilters extends Component {
           </CanShow>
 
           <CanShow permission={PERMITTIONS_CONFIG.CAN_SEE_FILTER_VENDER}>
-            <button onClick={this.handleCheckVendor} key={`list__alert_option__has_poster`} className={`status ${vendor === 'Printify' && 'active'}`}>
-              Printify
+            <button onClick={this.handleCheckVendor} key={`list__alert_option__has_poster`} className={`status ${vendor === 'TurnedNinja' && 'active'}`}>
+              Turned Ninja
             </button>
           </CanShow>
         </div>
