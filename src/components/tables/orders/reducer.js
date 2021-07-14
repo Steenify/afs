@@ -27,6 +27,7 @@ const templateState = {
     source: '',
     store: '',
     storeName: '',
+    vendor: 'TurnedNinja',
   },
   table: {
     orders: [],

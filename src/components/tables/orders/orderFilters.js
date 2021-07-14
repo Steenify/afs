@@ -29,6 +29,7 @@ class OrderFilters extends Component {
         page: 0,
         cs: '',
         hasPoster: false,
+        vendor: 'TurnedNinja',
       },
       reducer,
     });
@@ -81,8 +82,16 @@ class OrderFilters extends Component {
     });
   };
 
+  handleCheckVendor = () => {
+    const { updateOrderTableFilterAction, reducer, vendor } = this.props;
+    updateOrderTableFilterAction({
+      payload: { vendor: vendor === 'Printify' ? 'TurnedNinja' : 'Printify', page: 0 },
+      reducer,
+    });
+  };
+
   render() {
-    const { text, accountInfo, reducer, selectedAlertType, orderStatusCount, hasPoster, cs } = this.props;
+    const { text, accountInfo, reducer, selectedAlertType, orderStatusCount, hasPoster, cs, vendor } = this.props;
 
     const canAssign = accountInfo?.permissions?.includes(PERMITTIONS_CONFIG.ASSIGN_BOOKING);
     const totalOrders = countTotalOrders(orderStatusCount);
@@ -128,6 +137,12 @@ class OrderFilters extends Component {
               <span className='number'>{orderStatusCount['MY_ORDERS'] || 0}</span>
             </button>
           </CanShow>
+
+          <CanShow permission={PERMITTIONS_CONFIG.CAN_SEE_FILTER_VENDER}>
+            <button onClick={this.handleCheckVendor} key={`list__alert_option__has_poster`} className={`status ${vendor === 'Printify' && 'active'}`}>
+              Printify
+            </button>
+          </CanShow>
         </div>
         <div className='filter__main flex-wrap'>
           <div className='filter__text'>
@@ -160,6 +175,7 @@ const mapStateToProps = ({ orderTable, auth }, ownProps) => {
     orderStatusCount: table.orderStatusCount,
     hasPoster: table.filter.hasPoster,
     cs: table.filter.cs,
+    vendor: table.filter.vendor,
   };
 };
 
